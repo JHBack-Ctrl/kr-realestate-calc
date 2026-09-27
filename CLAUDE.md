@@ -12,19 +12,32 @@
 python3 tools/build/build.py
 ```
 
-등록부에서 100쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
+등록부에서 101쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
 같은 소스로 두 번 돌리면 결과가 같아야 합니다(멱등). 달라지면 버그입니다.
 
 - `site_core.py` — 등록부(TOOLS, TABLES, FORMS, REFS, GUIDES, HUBS, RATE_HISTORY)와 공통 틀.
   메뉴·사이트맵·홈 타일이 전부 여기서 나옵니다
 - `pages_new.py` / `pages_cgt.py` / `pages_tools2.py` — 계산기 본문
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽, 안내 글 4편
-- `pages_guides2.py` — 안내 글 16편
+- `pages_guides2.py` — 안내 글 17편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
 - `build.py` — 위를 모아 쓰고 `manifest.json`, `sw.js`, `sitemap.xml`, `js/analytics.js`를 생성
 
 `sw.js`의 VERSION은 캐시 대상 파일 내용 해시로 자동 생성됩니다. 손으로 올리지 마세요.
 이 값이 안 바뀌면 방문자 브라우저가 옛 파일을 계속 씁니다(실제로 한 번 겪음).
+
+## 배포
+
+main에 머지하면 `.github/workflows/pages.yml`이 GitHub Pages로 올립니다.
+이때 `tools/`, `CLAUDE.md`, `README.md`는 빼고 올립니다. 저장소에는 그대로 있으니
+빌드·수정에는 영향이 없고, 사이트 주소로 개발 문서를 열 수만 없게 한 것입니다.
+사이트에 새로 개발용 파일을 두게 되면 이 워크플로의 제외 목록에도 넣으세요.
+
+저장소는 공개입니다. 무료 계정은 비공개 저장소에서 Pages를 못 쓰므로 그대로 둡니다.
+정적 사이트라 HTML·CSS·JS는 방문자가 이미 전부 받아가서 복제는 막을 수 없고 막을
+필요도 없습니다. 그러니 **저장소에 비밀번호·API 키·토큰·개인 연락처를 적지 마세요.**
+운영 문서에 서치콘솔 계정 이메일을 적었다가 지운 적이 있는데, 공개 저장소의 과거 커밋
+기록에는 지금도 남아 있습니다.
 
 ## 검증
 
@@ -32,7 +45,7 @@ python3 tools/build/build.py
 node <스크래치>/verify3.js <출력폴더>
 ```
 
-100쪽의 중복 id, 깨진 링크, 가로 넘침(320/390px), JSON-LD 파싱과 계산기 값을 확인합니다.
+101쪽의 중복 id, 깨진 링크, 가로 넘침(320/390px), JSON-LD 파싱과 계산기 값을 확인합니다.
 커밋 전에 반드시 돌리세요.
 
 ## 새 글 올린 뒤 할 일
@@ -114,7 +127,8 @@ https://전국부동산계산기.com/guide-prepayment.html
 
 ## 외부 연결
 
-- 구글 서치콘솔 — 도메인 속성(가비아 TXT). 계정: junhyunback0914@gmail.com
+- 구글 서치콘솔 — 도메인 속성(가비아 TXT). 계정: 운영자 개인 지메일(100lab 계정 아님 —
+  100lab으로 로그인하면 접근 거부가 뜸)
 - 네이버 서치어드바이저 — HTML 태그. 값은 `site_core.NAVER_VERIFY`
 - GA4 `G-H6LHC9GYQH`, 네이버 애널리틱스 `1c5c9c6d95dc2d0` — `build.py`의 analytics 생성부
 - 문의 메일 100lab.studio@gmail.com — `about.html`에 난독화해 넣음
@@ -123,7 +137,7 @@ https://전국부동산계산기.com/guide-prepayment.html
 
 ## 미뤄둔 일
 
-### 1. 검증 스크립트를 저장소에 넣기
+### 검증 스크립트를 저장소에 넣기
 
 위 「검증」 절이 가리키는 `verify3.js`가 **저장소에 없습니다.** 작업 세션의 임시 폴더에만
 있어서 세션이 끝나면 사라집니다. 즉 지금 이 문서는 없는 파일을 가리키고 있고,
@@ -144,32 +158,3 @@ Playwright(headless Chromium)로 100쪽을 차례로 열어서:
 
 `blog-brief.md`(블로그 홍보글용 배경 정리)도 같은 이유로 임시 폴더에만 있습니다.
 쓸 일이 또 있으면 `docs/`에 함께 넣을 것.
-
-### 2. 배포에서 개발 파일 빼기
-
-2026-09-22 확인. 급하지 않지만 언젠가 할 것.
-
-`.github/workflows/pages.yml`이 `path: .`로 저장소 루트 전체를 올립니다.
-`upload-pages-artifact`는 `.git`과 `.github`만 빼므로 나머지가 전부 배포됩니다.
-즉 아래 주소들이 열립니다(브라우저로 확인 필요).
-
-```
-https://전국부동산계산기.com/CLAUDE.md
-https://전국부동산계산기.com/tools/build/site_core.py
-https://전국부동산계산기.com/README.md
-```
-
-할 일 두 가지:
-
-1. **이 파일 117줄의 개인 이메일을 지울 것.** 서치콘솔 계정 주소가 평문으로 있고
-   저장소가 공개라 스팸 수집 봇에 긁힙니다. "개인 지메일 계정" 정도로 바꾸면 운영에 지장 없음
-2. 배포 단계에서 `tools/`, `CLAUDE.md`, `README.md`를 제외
-
-저장소는 공개입니다(`visibility: public`). 무료 계정은 비공개 저장소에서 GitHub Pages를
-못 쓰므로 비공개 전환은 선택지가 아닙니다. 위 두 가지로 충분합니다.
-
-**배포에서 빼도 파일은 저장소에 그대로 남습니다.** 빌드·수정 작업에는 아무 영향이 없습니다.
-
-참고 — 정적 사이트라 HTML·CSS·JS는 방문자가 이미 전부 받아갑니다. 복제는 원래 막을 수
-없고 막을 필요도 없습니다. 비밀번호·API 키·토큰은 저장소에 없고, 서버·DB가 없어서
-사용자 데이터 유출은 구조적으로 불가능합니다.
