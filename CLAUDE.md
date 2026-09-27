@@ -132,8 +132,10 @@ https://전국부동산계산기.com/guide-prepayment.html
 - 네이버 서치어드바이저 — HTML 태그. 값은 `site_core.NAVER_VERIFY`
 - GA4 `G-H6LHC9GYQH`, 네이버 애널리틱스 `1c5c9c6d95dc2d0` — `build.py`의 analytics 생성부
 - 문의 메일 100lab.studio@gmail.com — `about.html`에 난독화해 넣음
-- 애드센스 미신청. `site_core.rail()`, `INLINE_AD`, `pages_new.AD_SIDE`가 빈 값으로 자리만 있음.
-  승인되면 거기에 코드를 넣고, 슬롯에 "광고" 라벨을 반드시 붙일 것
+- 애드센스 — 2026-09-27 가입, 검토 요청. 게시자 ID는 `site_core.ADSENSE_PUB` 한 곳.
+  모든 쪽 `<head>`의 소유확인 메타 태그와 `ads.txt`가 빌드 때 여기서 나옴.
+  광고 슬롯은 아직 빈 값: `site_core.rail()`, `INLINE_AD`, `pages_new.AD_SIDE`.
+  승인되면 거기에 광고 코드를 넣고, 슬롯에 "광고" 라벨을 반드시 붙일 것
 
 ## 미뤄둔 일
 
