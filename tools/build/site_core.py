@@ -11,6 +11,10 @@ BASE = "https://xn--989anm2s84p8on6teba611m.com/"   # = https://전국부동산�
 # 구글 서치 콘솔은 도메인 속성(가비아 TXT 레코드)으로 확인해 태그가 필요 없다.
 # 네이버 서치어드바이저(searchadvisor.naver.com)는 HTML 태그 방식. 재발급받으면 이 값만 바꾸면 된다.
 NAVER_VERIFY = "23a58d13ef990301f4ed06e8867ec8a3350cd4cb"
+
+# 구글 애드센스 게시자 ID. 모든 페이지 <head>의 소유확인 메타 태그와 ads.txt가 이 값에서 나온다.
+# 공개 값이다(광고가 붙으면 페이지 소스에 그대로 보임). 비밀번호가 아니다.
+ADSENSE_PUB = "ca-pub-8294238973326626"
 TODAY = "2026-09-21"
 
 # ---------------- 페이지 등록부 ----------------
@@ -350,6 +354,7 @@ def head(title, desc, path, extra="", noindex=False, og_type="website"):
   <meta name="description" content="{desc}">
   <meta name="theme-color" content="#f6f4ee">
   <meta name="naver-site-verification" content="{NAVER_VERIFY}">
+  <meta name="google-adsense-account" content="{ADSENSE_PUB}">
 {'  <meta name="robots" content="noindex, follow">' + chr(10) if noindex else ''}  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <link rel="stylesheet" href="css/site.css">

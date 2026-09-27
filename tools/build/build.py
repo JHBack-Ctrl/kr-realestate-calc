@@ -79,6 +79,10 @@ manifest = {
 }
 write("manifest.json", json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
 
+# ads.txt — 애드센스 게시자 ID는 site_core.ADSENSE_PUB 한 곳에서. 파일에는 "ca-" 없이 pub-만 쓴다.
+# f08c47fec0942fa0는 구글의 공인 인증기관 ID(고정값).
+write("ads.txt", "google.com, " + ADSENSE_PUB.replace("ca-", "", 1) + ", DIRECT, f08c47fec0942fa0\n")
+
 TERM_HTML = [term_path(t[0]) for t in TERMS]
 ALL_HTML = [t[0] for t in TOOLS] + [r[0] for r in REFS] + [h[0] for h in HUBS] + [g[0] for g in GUIDES] + [d[0] for d in DOCS] + [x[0] for x in TABLES] + [x[0] for x in FORMS] + ["glossary.html", "index.html", "404.html"]
 assets = ["css/site.css", "js/common.js", "js/analytics.js", "js/forms.js", "js/home.js", "favicon.svg", "apple-touch-icon.png", "icon-192.png", "icon-512.png", "manifest.json"] + \
