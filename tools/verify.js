@@ -166,6 +166,17 @@ function near(label, got, want, tol) {
   await page.fill('#rate', '3');
   expect('보증금 A 3%', await get('ab-a-total'), '825,000'); expect('보증금 B 3%', await get('ab-b-total'), '775,000'); expect('보증금 2년 차이', await get('ab-d-cum'), '1,200,000');
 
+  // guide-subscription-notice-date.html 본문 숫자 — 공고일만 바꿔 점수 변화
+  await fresh('subscription.html');
+  await page.fill('#birth', '1994-11-15'); await page.fill('#dependents', '0'); await page.fill('#account', '2019-11-20');
+  await page.fill('#notice', '2026-11-10'); expect('청약 11/10 총점', await get('out-total'), '17');
+  await page.fill('#notice', '2026-11-15'); expect('청약 11/15 무주택', await get('out-homeless'), '6');
+  await page.fill('#notice', '2026-11-20'); expect('청약 11/20 총점', await get('out-total'), '20');
+  await page.fill('#notice', '2039-11-15'); expect('청약 혼자 최대', await get('out-total'), '54');
+  if (!(await page.isChecked('#married'))) await toggle('married');
+  await page.fill('#marriage', '2022-11-15'); await page.fill('#dependents', '1'); await page.fill('#notice', '2026-11-20');
+  expect('청약 28세 혼인 무주택', await get('out-homeless'), '10'); expect('청약 28세 혼인 총점', await get('out-total'), '29');
+
   // guide-yield-vacancy.html 본문의 '반영 후' 값 — 계산기 PRESETS.small
   await fresh('yield.html');
   await page.click('.chip[data-preset="small"]');
