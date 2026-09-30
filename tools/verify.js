@@ -141,9 +141,13 @@ function near(label, got, want, tol) {
   expect('고정 월상환', await get('out-fixed-pay'), '1,060,655'); expect('변동 첫달', await get('out-var-first'), '1,060,655'); expect('총이자 차이 0', await get('out-big'), '0');
   await page.fill('#varChange', '1'); expect('상승 시 고정 유리', (await get('out-kicker')).startsWith('고정'), true);
 
+  // 8억 예시 버튼 — 취득세율을 8억 1주택 실효세율(2.57%)로 채워야 한다. 지우기는 기본값 1.1%로 되돌린다.
   await fresh('buy-vs-rent.html');
-  await type('price', '800000000'); await type('loan', '400000000'); await page.fill('#loanRate', '4'); await type('jeonse', '500000000'); await type('jLoan', '200000000'); await page.fill('#jRate', '3.5');
-  expect('매매 총비용', await get('out-buy-total'), '161,200,000'); expect('전세 총비용', await get('out-j-total'), '81,500,000'); expect('차이', await get('out-big'), '79,700,000'); expect('손익분기', await get('out-be'), '1.92%');
+  await page.click('.chip[data-preset="flat"]');
+  expect('8억 예시 취득세율', await page.inputValue('#acqRate'), '2.57');
+  expect('매매 총비용', await get('out-buy-total'), '172,960,000'); expect('전세 총비용', await get('out-j-total'), '81,500,000'); expect('차이', await get('out-big'), '91,460,000'); expect('손익분기', await get('out-be'), '2.19%');
+  await page.click('.chip[data-preset="clear"]');
+  expect('지우기 후 취득세율', await page.inputValue('#acqRate'), '1.1');
 
   // guide-buy-vs-rent.html 본문 숫자 — 6억 매매 / 4억 전세, 나머지는 기본 비율
   await fresh('buy-vs-rent.html');

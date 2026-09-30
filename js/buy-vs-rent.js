@@ -4,6 +4,10 @@
   var S = window.Site, $ = S.$;
   var DEFAULT_YEARS = 5, DEFAULT_OPP = 3.0, DEFAULT_ACQ_RATE = 1.1, DEFAULT_BUY_FEE = 0.4, DEFAULT_JEONSE_FEE = 0.3, DEFAULT_PROP_TAX = 0.15; // % 단위 기본값
   var JEONSE_TERM_YEARS = 2; // 전세 계약 단위 (갱신 시 중개보수 재발생 가정 안 함)
+  // 예시 버튼(8억)의 취득세율. acquisition-tax.html에 8억·1주택·85㎡ 이하를 넣은 실효세율
+  // (취득세 2.33% + 지방교육세). 기본값 1.1%는 6억 이하 세율이라 8억 예시에는 맞지 않는다.
+  // 취득세율이 바뀌면 이 값도 취득세 계산기로 다시 뽑을 것. 기준 2026-09.
+  var PRESET_ACQ_RATE = 2.57;
 
   function pct(id) { return S.parseNonNegative($(id).value); }
   function readInput() {
@@ -59,8 +63,9 @@
       key: 'buy-vs-rent',
       recalc: function () { render(readInput()); },
       preset: function (name) {
-        if (name === 'clear') { ['price', 'loan', 'jeonse', 'jLoan'].forEach(function (k) { S.setMoney(k, 0); }); return; }
+        if (name === 'clear') { ['price', 'loan', 'jeonse', 'jLoan'].forEach(function (k) { S.setMoney(k, 0); }); $('acqRate').value = DEFAULT_ACQ_RATE.toFixed(1); return; }
         S.setMoney('price', 800000000); S.setMoney('loan', 400000000); $('loanRate').value = '4.0'; S.setMoney('jeonse', 500000000);
+        $('acqRate').value = PRESET_ACQ_RATE.toFixed(2);
         S.setMoney('jLoan', 200000000); $('jRate').value = '3.5'; $('growth').value = name === 'up' ? '3' : '0';
       },
       share: function () { return { title: '매매 vs 전세 비교', text: '[매매 vs 전세] ' + last.i.years + '년 · 매매 ' + S.fmtWon(last.r ? last.r.buyTotal : 0) + '원 / 전세 ' + S.fmtWon(last.r ? last.r.jTotal : 0) + '원 · 손익분기 상승률 ' + (last.be === null ? '—' : last.be.toFixed(2) + '%') }; },
