@@ -145,6 +145,12 @@ function near(label, got, want, tol) {
   await type('price', '800000000'); await type('loan', '400000000'); await page.fill('#loanRate', '4'); await type('jeonse', '500000000'); await type('jLoan', '200000000'); await page.fill('#jRate', '3.5');
   expect('매매 총비용', await get('out-buy-total'), '161,200,000'); expect('전세 총비용', await get('out-j-total'), '81,500,000'); expect('차이', await get('out-big'), '79,700,000'); expect('손익분기', await get('out-be'), '1.92%');
 
+  // guide-buy-vs-rent.html 본문 숫자 — 6억 매매 / 4억 전세, 나머지는 기본 비율
+  await fresh('buy-vs-rent.html');
+  await type('price', '600000000'); await type('loan', '300000000'); await page.fill('#loanRate', '4.0');
+  await type('jeonse', '400000000'); await type('jLoan', '160000000'); await page.fill('#jRate', '3.5');
+  expect('6억 매매 총비용', await get('out-buy-total'), '120,900,000'); expect('4억 전세 총비용', await get('out-j-total'), '65,200,000'); expect('6억/4억 손익분기', await get('out-be'), '1.79%');
+
   // guide-yield-vacancy.html 본문의 '반영 후' 값 — 계산기 PRESETS.small
   await fresh('yield.html');
   await page.click('.chip[data-preset="small"]');
