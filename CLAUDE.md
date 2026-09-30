@@ -109,7 +109,8 @@ https://전국부동산계산기.com/guide-prepayment.html
 - 다주택 양도세 중과: `js/capital-gains-tax.js`의 `HEAVY_ADD`, `HEAVY_SUSPENDED_UNTIL`
   2026-05-09로 유예 종료됨. 정부안에 2027년 +5/+10%p, 2028년 +10/+15%p 완화가 있으나
   **국회 통과 전이라 미반영**. 통과되면 양도 연도별로 바꿔야 함
-- 취득세: `js/acquisition-tax.js`
+- 취득세: `js/acquisition-tax.js`. 바뀌면 `js/buy-vs-rent.js`의 `PRESET_ACQ_RATE`(8억 예시 버튼의
+  취득세율, 현재 2.57%)도 취득세 계산기에 8억·1주택을 넣어 다시 뽑은 실효세율로 바꿀 것
 - 표: `tools/build/pages_tables.py`
 
 ### 1월 — 4대보험 요율·소득세
