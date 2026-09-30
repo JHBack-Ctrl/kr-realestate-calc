@@ -155,6 +155,17 @@ function near(label, got, want, tol) {
   await type('jeonse', '400000000'); await type('jLoan', '160000000'); await page.fill('#jRate', '3.5');
   expect('6억 매매 총비용', await get('out-buy-total'), '120,900,000'); expect('4억 전세 총비용', await get('out-j-total'), '65,200,000'); expect('6억/4억 손익분기', await get('out-be'), '1.79%');
 
+  // guide-deposit-vs-rent.html 본문 숫자 — 두 매물 비교, 대출금리 4.5%에서 두 값이 같아짐
+  await fresh('rent.html');
+  if (!(await page.isChecked('#ab-toggle'))) await toggle('ab-toggle');
+  await type('rent', '700000'); await type('maint', '100000'); await type('deposit', '10000000');
+  await type('b-rent', '550000'); await type('b-maint', '100000'); await type('b-deposit', '50000000');
+  await page.fill('#months', '24');
+  await page.check('input[name="mode"][value="loan"]', { force: true }); await page.fill('#rate', '4.5');
+  expect('보증금 A 4.5%', await get('ab-a-total'), '837,500'); expect('보증금 B 4.5%', await get('ab-b-total'), '837,500');
+  await page.fill('#rate', '3');
+  expect('보증금 A 3%', await get('ab-a-total'), '825,000'); expect('보증금 B 3%', await get('ab-b-total'), '775,000'); expect('보증금 2년 차이', await get('ab-d-cum'), '1,200,000');
+
   // guide-yield-vacancy.html 본문의 '반영 후' 값 — 계산기 PRESETS.small
   await fresh('yield.html');
   await page.click('.chip[data-preset="small"]');
