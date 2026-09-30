@@ -227,7 +227,8 @@ def home():
                    "guide-property-tax.html": "재산세·종부세와 6월 1일",
                    "guide-prepayment.html": "중도상환수수료와 3년",
                    "guide-moving-14days.html": "이사 후 14일",
-                   "guide-yield-vacancy.html": "상가 수익률과 공실"}
+                   "guide-yield-vacancy.html": "상가 수익률과 공실",
+                   "guide-buy-vs-rent.html": "매매 vs 전세 손익분기"}
     ref = ("".join(f'<a class="tile" href="{f}" data-k="{n}">{tile_icon(f)}<span class="t">{GUIDE_SHORT.get(f, n)}</span></a>'
                    for (f, n, _t, _d) in GUIDES)
            + "".join(tile(f, n, "") for (f, n, _t, _d, _c, _s) in REFS if f != "guides.html"))

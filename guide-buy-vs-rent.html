@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>매매 vs 전세 비교 — 총비용과 손익분기 집값 상승률</title>
+  <meta name="description" content="매매와 전세 중 어느 쪽이 덜 드는지는 앞으로의 집값에 달려 있습니다. 6억원 매매와 4억원 전세를 5년 기준으로 놓고, 사라지는 돈만 모아 비교한 총비용, 두 선택이 같아지는 연 집값 상승률, 기회비용과 보유기간에 따라 그 경계가 움직이는 폭을 계산기로 확인합니다.">
+  <meta name="theme-color" content="#f6f4ee">
+  <meta name="naver-site-verification" content="23a58d13ef990301f4ed06e8867ec8a3350cd4cb">
+  <meta name="google-adsense-account" content="ca-pub-8294238973326626">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="css/site.css">
+  <link rel="canonical" href="https://xn--989anm2s84p8on6teba611m.com/guide-buy-vs-rent.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.json">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="전국부동산계산기">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="매매 vs 전세 비교 — 총비용과 손익분기 집값 상승률">
+  <meta property="og:description" content="매매와 전세 중 어느 쪽이 덜 드는지는 앞으로의 집값에 달려 있습니다. 6억원 매매와 4억원 전세를 5년 기준으로 놓고, 사라지는 돈만 모아 비교한 총비용, 두 선택이 같아지는 연 집값 상승률, 기회비용과 보유기간에 따라 그 경계가 움직이는 폭을 계산기로 확인합니다.">
+  <meta property="og:url" content="https://xn--989anm2s84p8on6teba611m.com/guide-buy-vs-rent.html">
+  <meta property="og:image" content="https://xn--989anm2s84p8on6teba611m.com/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="매매 vs 전세 비교 — 총비용과 손익분기 집값 상승률">
+  <meta name="twitter:description" content="매매와 전세 중 어느 쪽이 덜 드는지는 앞으로의 집값에 달려 있습니다. 6억원 매매와 4억원 전세를 5년 기준으로 놓고, 사라지는 돈만 모아 비교한 총비용, 두 선택이 같아지는 연 집값 상승률, 기회비용과 보유기간에 따라 그 경계가 움직이는 폭을 계산기로 확인합니다.">
+  <meta name="twitter:image" content="https://xn--989anm2s84p8on6teba611m.com/og.png">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "매매 vs 전세 비교 — 총비용과 손익분기 집값 상승률",
+  "description": "매매와 전세 중 어느 쪽이 덜 드는지는 앞으로의 집값에 달려 있습니다. 6억원 매매와 4억원 전세를 5년 기준으로 놓고, 사라지는 돈만 모아 비교한 총비용, 두 선택이 같아지는 연 집값 상승률, 기회비용과 보유기간에 따라 그 경계가 움직이는 폭을 계산기로 확인합니다.",
+  "url": "https://xn--989anm2s84p8on6teba611m.com/guide-buy-vs-rent.html",
+  "datePublished": "2026-09-21",
+  "dateModified": "2026-09-21",
+  "inLanguage": "ko-KR",
+  "author": {
+    "@type": "Organization",
+    "name": "전국부동산계산기"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "전국부동산계산기",
+    "url": "https://xn--989anm2s84p8on6teba611m.com/"
+  }
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "전국부동산계산기",
+      "item": "https://xn--989anm2s84p8on6teba611m.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "매매와 전세, 집값이 몇 % 올라야 같아지나",
+      "item": "https://xn--989anm2s84p8on6teba611m.com/guide-buy-vs-rent.html"
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="header-row">
+        <a class="brand" href="./" aria-label="전국부동산계산기 홈"><span class="brand-mark" aria-hidden="true"></span>전국부동산계산기</a>
+        <div class="header-actions">
+          <button type="button" id="theme-toggle" class="icon-btn" aria-pressed="false" aria-label="어두운 화면으로 전환"><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+          <button type="button" id="menu-toggle" class="icon-btn" aria-expanded="false" aria-controls="menu-panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span class="btn-label">전체 계산기</span></button>
+        </div>
+      </div>
+      <nav aria-label="빠른 메뉴">
+        <ul class="tool-nav"><li><a href="index.html">홈</a></li><li><a href="rent.html">월세</a></li><li><a href="loan.html">대출이자</a></li><li><a href="acquisition-tax.html">취득세</a></li><li><a href="capital-gains-tax.html">양도세</a></li><li><a href="salary.html">연봉</a></li><li><a href="subscription.html">청약</a></li><li><a href="tables.html">표·자료</a></li><li><a href="forms.html">서식·용어</a></li><li><a href="refs.html">참고 자료</a></li><li><a href="guides.html">안내 글</a></li></ul>
+      </nav>
+    </div>
+      <div id="menu-panel" class="menu-panel" hidden>
+        <div class="container">
+          <div class="menu-groups">
+            <div class="menu-group"><h3>임대</h3><ul><li><a href="rent.html">월세 실부담<small>관리비와 보증금 기회비용까지 더한 진짜 월 지출</small></a></li><li><a href="conversion.html">전월세 전환율<small>법정 전환율로 전세를 월세로, 월세를 전세로</small></a></li><li><a href="rent-tax-credit.html">월세 세액공제<small>연말정산에서 돌려받는 월세 세액공제액</small></a></li><li><a href="fee.html">중개보수<small>법정 상한 요율 기준 예상 최대 중개보수</small></a></li><li><a href="renewal.html">계약 갱신 청구권<small>갱신 요구 기간 D-day와 5% 인상 상한</small></a></li><li><a href="jeonse-insurance.html">전세보증보험 자가진단<small>HUG 요건별 판정과 가능 보증금 상한</small></a></li><li><a href="jeonse-fraud-check.html">전세 사기 위험 체크<small>전세가율과 위험 신호 점수로 계약 전 점검</small></a></li><li><a href="moving.html">이사 체크리스트<small>이사일 기준 단계별 할 일과 법정 기한</small></a></li></ul></div><div class="menu-group"><h3>대출</h3><ul><li><a href="loan.html">대출이자<small>상환 방식별 월 상환액과 회차별 상환표</small></a></li><li><a href="dsr.html">DSR·LTV 한도<small>연소득과 담보로 보는 대출 가능 금액</small></a></li><li><a href="prepayment.html">중도상환수수료<small>잔여일수 비율로 계산한 수수료와 면제일</small></a></li><li><a href="rate-compare.html">고정 vs 변동금리<small>금리가 얼마나 올라야 고정이 유리한지</small></a></li></ul></div><div class="menu-group"><h3>매매·투자</h3><ul><li><a href="acquisition-tax.html">취득세<small>취득세·지방교육세·농특세 참고용 추정</small></a></li><li><a href="capital-gains-tax.html">양도소득세<small>비과세·장특공제·중과까지 반영한 참고용 추정</small></a></li><li><a href="yield.html">상가 수익률<small>공실과 대출을 반영한 총투자·자기자본 수익률</small></a></li><li><a href="subscription.html">청약 가점<small>무주택기간·부양가족·통장기간 84점 만점</small></a></li><li><a href="area.html">평수 변환<small>평 ↔ ㎡ 변환과 평당 가격</small></a></li><li><a href="buy-vs-rent.html">매매 vs 전세<small>보유기간 총비용과 손익분기 집값 상승률</small></a></li><li><a href="tax-calendar.html">세금 달력<small>취득·양도·보유 세금 기한을 D-day로</small></a></li></ul></div><div class="menu-group"><h3>생활</h3><ul><li><a href="salary.html">연봉 실수령액<small>4대보험·세금 뺀 월 실수령액</small></a></li><li><a href="severance.html">퇴직금<small>평균임금 × 30일 × 재직일수 ÷ 365와 세금</small></a></li></ul></div><div class="menu-group"><h3>참고</h3><ul><li><a href="checklist.html">양도·취득 체크리스트<small>계약 전후 확인 항목과 준비 서류</small></a></li><li><a href="policy.html">세제·정책 참고<small>세금별 확인 포인트와 공식 기관 링크</small></a></li><li><a href="guides.html">안내 글<small>개념 설명과 계산 방법</small></a></li></ul></div><div class="menu-group"><h3>표·자료</h3><ul><li><a href="table-acquisition-tax.html">취득세율표<small>주택 수·지역·면적별 세율 한 표</small></a></li><li><a href="table-capital-gains-tax.html">양도세율표<small>누진세율·단기·중과·장특공제 한 표</small></a></li><li><a href="table-brokerage-fee.html">중개보수 요율표<small>거래금액 구간별 상한 요율과 한도액</small></a></li><li><a href="table-subscription-points.html">청약 가점표<small>84점 만점 배점표</small></a></li><li><a href="base-rate-history.html">기준금리 변동 이력<small>결정일별 금리와 변동폭</small></a></li></ul></div><div class="menu-group"><h3>서식·용어</h3><ul><li><a href="form-rent-receipt.html">월세 영수증 양식<small>입력하면 완성되는 영수증, 바로 인쇄</small></a></li><li><a href="form-notice.html">통지문 예시<small>갱신 요구·종료 통지·반환 요청 문구</small></a></li><li><a href="form-special-terms.html">특약 문구 모음<small>상황별 특약 문구 복사</small></a></li><li><a href="glossary.html">부동산 용어 사전<small>계약·등기·세금·대출 용어 설명</small></a></li></ul></div>
+          </div>
+          <ul class="footer-links" style="margin:14px 0 0"><li><a href="about.html">사이트 소개</a></li><li><a href="privacy.html">개인정보처리방침</a></li><li><a href="terms.html">이용약관</a></li></ul>
+        </div>
+      </div>
+  </header>
+
+<div class="page-shell">
+  <aside class="rail" aria-hidden="true"></aside>
+  <main id="main" class="container">
+    <article class="article">
+      <section class="hero">
+        <p class="eyebrow">Guide</p>
+        <h1>매매와 전세, 집값이 몇 % 올라야 같아지나</h1>
+        <p class="lead">어느 쪽이 덜 드는지는 앞으로의 집값에 달려 있습니다. 그 경계가 몇 %인지, 가정에 따라 얼마나 움직이는지를 계산기로 확인합니다.</p>
+        <p class="meta">전국부동산계산기 · 2026.09.21 · 참고용 설명이며 금융·세무·법률 자문이 아닙니다</p>
+      </section>
+      <section class="card">
+        <div class="prose">
+<p>집을 살지 전세로 살지는 결국 <strong>앞으로 집값이 어떻게 되느냐</strong>에 달려 있습니다. 그건 이 계산으로도, 다른 어떤 계산으로도 알 수 없습니다.</p>
+<p>대신 알 수 있는 게 하나 있습니다. <strong>집값이 매년 몇 % 올라야 두 선택의 비용이 같아지는지</strong>입니다. 그 경계를 알면 판단은 각자 할 수 있습니다.</p>
+<h2>원금이 아니라 사라지는 돈을 비교한다</h2>
+<p>매매가와 전세금은 비용이 아닙니다. 집은 팔면, 전세금은 계약이 끝나면 돌아오는 돈이기 때문입니다. 비교할 것은 그동안 <strong>돌아오지 않고 사라지는 돈</strong>입니다.</p>
+<ul><li><strong>대출이자</strong> — 매매대출이든 전세대출이든 빌린 돈의 이자</li><li><strong>기회비용</strong> — 집값이나 전세금에 묶인 내 돈을 예금 등에 두었으면 받았을 이자</li><li><strong>취득세·중개보수</strong> — 한 번 내고 끝나는 돈</li><li><strong>보유세</strong> — 집을 가진 동안 매년 내는 재산세 등</li></ul>
+<p>그리고 매매에만 하나가 더 붙습니다. <strong>집값 변동</strong>입니다. 오르면 비용을 줄이고, 내리면 비용을 늘립니다.</p>
+<h2>예시</h2>
+<div class="table-wrap"><table class="tbl"><thead><tr><th scope="col">항목</th><th scope="col">매매</th><th scope="col">전세</th></tr></thead><tbody><tr><th scope="row">가격</th><td>6억원</td><td>4억원</td></tr><tr><th scope="row">대출</th><td>3억원 (연 4.0%)</td><td>1억 6,000만원 (연 3.5%)</td></tr><tr><th scope="row">내 돈</th><td>3억원</td><td>2억 4,000만원</td></tr><tr><th scope="row">취득세 등</th><td>1.1%</td><td>—</td></tr><tr><th scope="row">중개보수</th><td>0.4% (살 때·팔 때)</td><td>0.3%</td></tr><tr><th scope="row">보유세</th><td>매년 0.15% (가정)</td><td>—</td></tr></tbody></table></div>
+<p>보유기간은 5년, 기회비용은 연 3%로 잡았습니다. 취득세 1.1%와 중개보수 0.4%·0.3%는 이 사이트의 <a href='acquisition-tax.html'>취득세 계산기</a>와 <a href='fee.html'>중개보수 계산기</a>에 같은 금액을 넣었을 때의 값입니다(6억원 1주택, 전용 85㎡ 이하). 보유세 0.15%는 대략적인 가정이라 본인 집의 재산세로 바꿔 넣는 게 좋습니다.</p>
+<h2>집값이 그대로면</h2>
+<div class="table-wrap"><table class="tbl"><thead><tr><th scope="col">5년간</th><th scope="col">매매</th><th scope="col">전세</th></tr></thead><tbody><tr><th scope="row">대출이자</th><td>6,000만원</td><td>2,800만원</td></tr><tr><th scope="row">기회비용</th><td>4,500만원</td><td>3,600만원</td></tr><tr><th scope="row">취득세 등</th><td>660만원</td><td>—</td></tr><tr><th scope="row">중개보수</th><td>480만원</td><td>120만원</td></tr><tr><th scope="row">보유세</th><td>450만원</td><td>—</td></tr><tr><th scope="row"><strong>합계</strong></th><td><strong>1억 2,090만원</strong></td><td><strong>6,520만원</strong></td></tr></tbody></table></div>
+<p>한 달로 나누면 매매는 201만 5,000원, 전세는 약 108만 7,000원입니다. 5년 동안 5,570만원 차이입니다.</p>
+<p>차이의 대부분은 두 가지에서 옵니다. 매매가 전세보다 2억원 비싸서 이자와 기회비용이 더 크고, 취득세와 보유세처럼 <strong>매매에만 있는 비용</strong>이 5년간 1,110만원입니다. 중개보수도 살 때와 팔 때 두 번이라 전세보다 360만원 많습니다.</p>
+<h2>손익분기: 연 1.79%</h2>
+<p>집값이 오르면 매매 쪽 비용에서 오른 만큼이 빠집니다. 계산기는 두 합계가 같아지는 상승률을 찾아줍니다. 이 예시에서는 <strong>연 1.79%</strong>입니다.</p>
+<div class="table-wrap"><table class="tbl"><thead><tr><th scope="col">연 상승률</th><th scope="col">매매 총비용</th><th scope="col">전세 총비용</th></tr></thead><tbody><tr><th scope="row">−2%</th><td>1억 7,855만원</td><td>6,520만원</td></tr><tr><th scope="row">0%</th><td>1억 2,090만원</td><td>6,520만원</td></tr><tr><th scope="row">1%</th><td>9,029만원</td><td>6,520만원</td></tr><tr><th scope="row"><strong>1.79%</strong></th><td><strong>6,524만원</strong></td><td><strong>6,520만원</strong></td></tr><tr><th scope="row">3%</th><td>2,534만원</td><td>6,520만원</td></tr></tbody></table></div>
+<p>1.79%에서도 4만원가량 차이가 나는 건 상승률을 소수 둘째 자리에서 반올림했기 때문입니다.</p>
+<p>읽는 법은 이렇습니다. 앞으로 5년간 이 집값이 <strong>연평균 1.79%보다 더 오르면</strong> 매매의 총비용이 적고, <strong>덜 오르거나 내리면</strong> 전세의 총비용이 적습니다. 집값이 연 2%씩 내리면 매매 쪽 비용은 1억 7,855만원으로 전세의 약 2.7배가 됩니다.</p>
+<h2>가정을 바꾸면 경계도 움직인다</h2>
+<p>1.79%는 위 가정에서 나온 숫자입니다. 가정 두 가지를 바꿔보면 경계가 얼마나 움직이는지 보입니다.</p>
+<p><strong>기회비용</strong> — 내 돈을 다른 데 두었을 때 받을 수 있는 이자율입니다. 예금금리가 높을수록 커집니다.</p>
+<div class="table-wrap"><table class="tbl"><thead><tr><th scope="col">기회비용</th><th scope="col">손익분기 상승률</th></tr></thead><tbody><tr><th scope="row">연 2%</th><td>1.70%</td></tr><tr><th scope="row">연 3%</th><td>1.79%</td></tr><tr><th scope="row">연 4%</th><td>1.88%</td></tr></tbody></table></div>
+<p>1%p 바뀔 때 경계는 0.09%p 정도 움직입니다. 매매와 전세 모두 내 돈이 묶여 있어서 양쪽 비용이 함께 오르기 때문에 차이는 크지 않습니다.</p>
+<p><strong>보유기간</strong> — 얼마나 오래 살지입니다.</p>
+<div class="table-wrap"><table class="tbl"><thead><tr><th scope="col">보유기간</th><th scope="col">손익분기 상승률</th></tr></thead><tbody><tr><th scope="row">2년</th><td>2.34%</td></tr><tr><th scope="row">5년</th><td>1.79%</td></tr><tr><th scope="row">10년</th><td>1.57%</td></tr></tbody></table></div>
+<p>이쪽이 더 크게 움직입니다. 취득세와 중개보수는 한 번 내는 돈이라 오래 살수록 해마다 나눠지는 몫이 줄어듭니다. 2년만 살 집이면 집값이 연 2.34%는 올라야 비용이 같아지고, 10년이면 1.57%면 됩니다.</p>
+<h2>이 계산에 없는 것</h2>
+<ul><li><strong>원금 상환</strong> — 대출이자는 원금을 갚지 않고 이자만 내는 기준입니다. 원리금을 갚아가면 실제 이자는 이보다 적습니다. <a href='loan.html'>대출이자 계산기</a>로 상환 방식별 이자를 볼 수 있습니다</li><li><strong>대출 한도</strong> — 원하는 만큼 빌릴 수 있는지는 소득에 따라 다릅니다. <a href='dsr.html'>DSR·LTV 계산기</a> 참고</li><li><strong>팔 때의 양도세</strong> — 1세대 1주택 비과세 요건을 채우면 없지만, 못 채우면 오른 만큼 세금이 붙습니다. <a href='guide-cgt-exemption.html'>비과세 2년 안내</a> 참고</li><li><strong>전세금을 돌려받지 못할 위험</strong> — 전세 쪽 비용에 들어 있지 않습니다. <a href='jeonse-fraud-check.html'>전세 사기 위험 체크</a>와 <a href='guide-moving-14days.html'>이사 후 14일 안내</a> 참고</li><li><strong>전세금 인상</strong> — 2년마다 갱신할 때 전세금이 오르면 추가 대출이나 목돈이 필요합니다. 갱신 요구권을 쓰면 인상은 5% 이내입니다</li><li><strong>이사 비용·수리비</strong> — 양쪽 모두 넣지 않았습니다</li></ul>
+<p>숫자로 옮기기 어려운 것도 있습니다. 매매는 이사 걱정 없이 원하는 대로 고쳐 살 수 있는 대신 목돈과 대출이 한 집에 묶이고, 전세는 옮기기 쉬운 대신 2~4년마다 계약과 이사가 따라옵니다. 어느 쪽에 무게를 둘지는 계산이 정해주지 않습니다.</p>
+<p>경계 상승률과 비교해 볼 과거 흐름은 한국부동산원 부동산통계정보와 KB부동산 시세에서 지역별로 볼 수 있습니다. 지난 상승률이 앞으로도 이어진다는 보장은 없습니다.</p>
+<h2>정리</h2>
+<ul><li>비교할 것은 원금이 아니라 <strong>이자·기회비용·세금·중개보수</strong>처럼 사라지는 돈입니다</li><li>이 예시에서 집값이 그대로면 5년간 매매 1억 2,090만원, 전세 6,520만원입니다</li><li>두 비용이 같아지는 연 집값 상승률은 <strong>1.79%</strong>입니다</li><li>오래 살수록 경계는 내려갑니다. 2년 2.34%, 10년 1.57%</li><li>그 경계보다 집값이 더 오를지는 이 계산이 답하지 않습니다</li></ul>
+<p>이 글과 계산기는 입력한 가정에 따른 참고용 계산이며 투자 자문이 아닙니다. 특정 지역이나 매물을 권하지 않습니다.</p>
+        </div>
+        <div class="cta-box"><p>내 조건을 넣고 손익분기 상승률을 확인해 보세요.</p><a class="btn btn-primary" href="buy-vs-rent.html">매매 vs 전세 계산기 열기</a></div>
+      </section>
+      <section class="card related" aria-labelledby="rel-title">
+        <h2 id="rel-title">이 글과 함께 쓰는 계산기</h2>
+        <div class="tool-grid"><a class="tool-card" href="loan.html"><p class="t">대출이자</p><p class="d">상환 방식별 월 상환액과 회차별 상환표</p></a><a class="tool-card" href="dsr.html"><p class="t">DSR·LTV 한도</p><p class="d">연소득과 담보로 보는 대출 가능 금액</p></a><a class="tool-card" href="acquisition-tax.html"><p class="t">취득세</p><p class="d">취득세·지방교육세·농특세 참고용 추정</p></a><a class="tool-card" href="buy-vs-rent.html"><p class="t">매매 vs 전세</p><p class="d">보유기간 총비용과 손익분기 집값 상승률</p></a></div>
+      </section>
+      <p class="hint" style="margin-top:14px"><a href="guides.html">← 안내 글 목록</a></p>
+    </article>
+  </main>
+  <aside class="rail" aria-hidden="true"></aside>
+</div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="menu-groups" style="margin-bottom:14px"><div class="menu-group"><h3>임대</h3><ul><li><a href="rent.html">월세 실부담</a></li><li><a href="conversion.html">전월세 전환율</a></li><li><a href="rent-tax-credit.html">월세 세액공제</a></li><li><a href="fee.html">중개보수</a></li><li><a href="renewal.html">계약 갱신 청구권</a></li><li><a href="jeonse-insurance.html">전세보증보험 자가진단</a></li><li><a href="jeonse-fraud-check.html">전세 사기 위험 체크</a></li><li><a href="moving.html">이사 체크리스트</a></li></ul></div><div class="menu-group"><h3>대출</h3><ul><li><a href="loan.html">대출이자</a></li><li><a href="dsr.html">DSR·LTV 한도</a></li><li><a href="prepayment.html">중도상환수수료</a></li><li><a href="rate-compare.html">고정 vs 변동금리</a></li></ul></div><div class="menu-group"><h3>매매·투자</h3><ul><li><a href="acquisition-tax.html">취득세</a></li><li><a href="capital-gains-tax.html">양도소득세</a></li><li><a href="yield.html">상가 수익률</a></li><li><a href="subscription.html">청약 가점</a></li><li><a href="area.html">평수 변환</a></li><li><a href="buy-vs-rent.html">매매 vs 전세</a></li><li><a href="tax-calendar.html">세금 달력</a></li></ul></div><div class="menu-group"><h3>생활</h3><ul><li><a href="salary.html">연봉 실수령액</a></li><li><a href="severance.html">퇴직금</a></li></ul></div></div>
+      <ul class="footer-links footer-extra"><li><a href="glossary.html">용어 사전</a></li><li><a href="guides.html">안내 글</a></li><li><a href="checklist.html">체크리스트</a></li><li><a href="policy.html">세제·정책</a></li><li><a href="table-acquisition-tax.html">취득세율표</a></li><li><a href="table-capital-gains-tax.html">양도세율표</a></li><li><a href="table-brokerage-fee.html">중개보수 요율표</a></li><li><a href="table-subscription-points.html">청약 가점표</a></li><li><a href="base-rate-history.html">기준금리 변동 이력</a></li><li><a href="form-rent-receipt.html">월세 영수증 양식</a></li><li><a href="form-notice.html">통지문 예시</a></li><li><a href="form-special-terms.html">특약 문구 모음</a></li></ul>
+      <ul class="footer-links"><li><a href="about.html">사이트 소개</a></li><li><a href="privacy.html">개인정보처리방침</a></li><li><a href="terms.html">이용약관</a></li></ul>
+      <p class="disclaimer">본 계산기는 참고용이며 금융·세무·법률 자문이 아닙니다.</p>
+      <p class="privacy">입력값은 서버로 전송되거나 저장되지 않습니다. 최근 계산 기억 기능을 켜면 이 기기 브라우저에만 저장됩니다.</p>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="js/common.js"></script>
+  <script src="js/analytics.js"></script>
+</body>
+</html>
