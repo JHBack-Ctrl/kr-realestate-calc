@@ -122,7 +122,7 @@ HUBS = [
     ("forms.html", "서식·용어", "서식·용어 — 월세 영수증, 통지문 예시, 특약 문구, 부동산 용어 사전",
      "계약할 때 바로 쓰는 서식과 용어 설명. 월세 영수증 양식, 갱신 요구·종료 통지·보증금 반환 요청 문구, 계약서 특약 문구 모음, 대항력·확정일자·근저당 등 부동산 용어 사전."),
     ("refs.html", "참고 자료", "참고 자료 — 양도·취득 체크리스트, 세제·정책 확인처, 안내 글",
-     "계약과 세금 전에 확인할 것을 모은 참고 자료. 양도·취득 체크리스트, 세제·정책 공식 확인처, 부동산 숫자를 읽는 안내 글 16편."),
+     "계약과 세금 전에 확인할 것을 모은 참고 자료. 양도·취득 체크리스트, 세제·정책 공식 확인처, 부동산 숫자를 읽는 안내 글 모음."),
 ]
 GUIDES = [
     ("guide-repayment.html", "원리금균등과 원금균등, 무엇이 다른가", "원리금균등과 원금균등 차이 — 어떤 상환 방식을 골라야 하나",
@@ -351,7 +351,20 @@ def footer(disclaimer="본 계산기는 참고용이며 금융·세무·법률 �
     </div>
   </footer>'''
 
+# ---------------- 검색 제외 (noindex) ----------------
+# 본문이 짧은 쪽은 구글 검색과 애드센스 심사의 품질 평가에서 뺀다. 2026-10 애드센스가 "가치가 별로 없는
+# 콘텐츠"로 거절했을 때, 105쪽 중 39쪽이 400~700자짜리 용어 쪽이었다.
+# 쪽과 주소는 그대로이고 방문자는 메뉴·링크로 계속 볼 수 있다. noindex 쪽은 사이트맵에서도 빠진다.
+# 용어 쪽은 본문을 1,000자 이상으로 늘리면 그 slug를 TERMS_INDEXED에 넣어 검색에 되돌린다.
+NOINDEX_PAGES = {"tables.html", "forms.html", "refs.html", "404.html"}   # 카드 목록만 있는 허브와 404
+TERMS_INDEXED = set()   # 검색에 넣을 용어 slug (예: "daehangryeok")
+
+def is_noindex(path):
+    if path in NOINDEX_PAGES: return True
+    return path.startswith("term-") and path[5:-5] not in TERMS_INDEXED
+
 def head(title, desc, path, extra="", noindex=False, og_type="website"):
+    noindex = noindex or is_noindex(path)
     url = BASE + ("" if path == "index.html" else path)
     return f'''<!DOCTYPE html>
 <html lang="ko">

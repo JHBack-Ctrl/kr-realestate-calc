@@ -51,6 +51,9 @@ if (shots) fs.mkdirSync(shots, { recursive: true });
 
 const BASE = pathToFileURL(ROOT).href + '/';
 const PAGES = fs.readdirSync(ROOT).filter(f => f.endsWith('.html')).sort();
+// 사이트맵에 있는 쪽 = 검색에 넣는 쪽. 나머지는 noindex여야 한다 (site_core.is_noindex 한 곳에서 정함)
+const SITEMAP = new Set((fs.readFileSync(path.join(ROOT, 'sitemap.xml'), 'utf8').match(/<loc>[^<]+<\/loc>/g) || [])
+  .map(l => l.replace(/<\/?loc>/g, '').replace(/^https?:\/\/[^/]+\//, '') || 'index.html'));
 
 // 기대값을 만든 날. 브라우저의 "오늘"이 이 날로 고정된다.
 const REF_DATE = new Date(2026, 8, 21);                       // 2026-09-21
@@ -96,9 +99,13 @@ function near(label, got, want, tol) {
       const links = [...document.querySelectorAll('a[href]')].map(a => a.getAttribute('href')).filter(h => h && !/^(https?:|#|mailto:)/.test(h));
       const ids = [...document.querySelectorAll('[id]')].map(e => e.id); const dup = ids.filter((x, i) => ids.indexOf(x) !== i);
       if (dup.length) bad.push('dup-id:' + [...new Set(dup)].join(','));
-      return { bad, links, sw: document.documentElement.scrollWidth, text: document.body.innerText.length };
+      const robots = document.querySelector('meta[name=robots]');
+      return { bad, links, noindex: !!(robots && /noindex/.test(robots.content)), sw: document.documentElement.scrollWidth, text: document.body.innerText.length };
     });
     if (r.sw > 391) r.bad.push('overflow390=' + r.sw);
+    // 사이트맵과 noindex가 엇갈리면 안 된다. 안내 글과 홈은 반드시 검색에 들어가야 한다.
+    if (SITEMAP.has(f) === r.noindex) r.bad.push(r.noindex ? 'noindex인데 사이트맵에 있음' : '사이트맵에 없는데 noindex 아님');
+    if ((f.startsWith('guide-') || f === 'index.html') && r.noindex) r.bad.push('안내 글·홈이 noindex');
     for (const l of new Set(r.links)) {
       const target = l.split('#')[0].split('?')[0];
       if (target !== '' && !fs.existsSync(path.join(ROOT, target))) r.bad.push('link:' + l);
@@ -114,7 +121,7 @@ function near(label, got, want, tol) {
     if (sw > 321) { fails++; console.log(`FAIL ${f.padEnd(34)} overflow320=${sw}`); }
   }
   await page.setViewportSize({ width: 390, height: 844 });
-  console.log('  구조 검사 끝 (390px·320px)');
+  console.log(`  구조 검사 끝 (390px·320px) — 검색 대상 ${SITEMAP.size}쪽, 검색 제외 ${PAGES.length - SITEMAP.size}쪽`);
 
   // ------------------------------------------------------------ 계산기 값
   console.log('--- 계산기 ---');
@@ -165,6 +172,50 @@ function near(label, got, want, tol) {
   expect('보증금 A 4.5%', await get('ab-a-total'), '837,500'); expect('보증금 B 4.5%', await get('ab-b-total'), '837,500');
   await page.fill('#rate', '3');
   expect('보증금 A 3%', await get('ab-a-total'), '825,000'); expect('보증금 B 3%', await get('ab-b-total'), '775,000'); expect('보증금 2년 차이', await get('ab-d-cum'), '1,200,000');
+
+  // guide-jeonse-vs-monthly.html 본문 표 — 전세 2억 vs 보증금 2천/월세 60만, 관리비 10만. 4%에서 같아짐
+  await fresh('rent.html');
+  await type('rent', '600000'); await type('maint', '100000'); await type('deposit', '20000000'); await type('jeonse', '200000000');
+  for (const [r, j, m] of [['2', '433,333', '733,333'], ['3', '600,000', '750,000'], ['4', '766,667', '766,667'], ['5', '933,333', '783,333']]) {
+    await page.fill('#rate', r); await page.fill('#jeonseRate', r);
+    expect(`전세vs월세 ${r}% 전세`, await get('cv-jeonse-total'), j); expect(`전세vs월세 ${r}% 월세`, await get('cv-rent-total'), m);
+  }
+  await page.fill('#rate', '3'); await page.fill('#jeonseRate', '3'); expect('같아지는 전세금 3%', await get('cv-needed-jeonse'), '260,000,000');
+  await page.fill('#jeonseRate', '3.75'); expect('혼합 금리 전세', await get('cv-jeonse-total'), '725,000');
+  await type('rent', '498000'); await page.fill('#rate', '3.32'); await page.fill('#jeonseRate', '3.32');
+  expect('세액공제 반영 갈림길 3.32% 전세', await get('cv-jeonse-total'), '653,333'); expect('세액공제 반영 갈림길 3.32% 월세', await get('cv-rent-total'), '653,333');
+
+  // guide-conversion.html 본문 표 — 전세 3억 → 보증금 1억, 기준금리별 법정 상한
+  await fresh('conversion.html');
+  await type('jeonse', '300000000'); await type('deposit', '100000000'); await page.fill('#marketRate', '6');
+  for (const [br, want] of [['2.5', '750,000'], ['3', '833,333'], ['3.5', '916,667']]) { await page.fill('#baseRate', br); expect(`전환 기준 ${br}% 법정`, await get('out-big'), want); }
+  await page.fill('#baseRate', '3'); expect('전환 시장 6%', (await get('out-market')).replace(/\s/g, ''), '1,000,000원/월');
+  await page.check('input[name="mode"][value="m2j"]', { force: true }); await type('rent', '900000');
+  expect('역전환 5%', await get('out-big'), '316,000,000');
+
+  // guide-brokerage.html 본문 — 구간 경계, 70배 환산, 오피스텔
+  await fresh('fee.html');
+  for (const [v, want] of [['600000000', '2,400,000'], ['890000000', '3,560,000'], ['900000000', '4,500,000'], ['1200000000', '7,200,000'], ['1500000000', '10,500,000']]) { await type('price', v); expect(`복비 매매 ${v}`, await get('out-fee'), want); }
+  await page.check('input[name="deal"][value="jeonse"]', { force: true });
+  for (const [v, want] of [['400000000', '1,200,000'], ['600000000', '2,400,000']]) { await type('price', v); expect(`복비 전세 ${v}`, await get('out-fee'), want); }
+  await page.check('input[name="deal"][value="monthly"]', { force: true }); await type('deposit', '5000000'); await type('rent', '400000');
+  expect('복비 월세 70배', await get('out-fee'), '165,000');
+  await page.check('input[name="kind"][value="officetel"]', { force: true }); await page.check('input[name="deal"][value="sale"]', { force: true }); await type('price', '300000000');
+  expect('복비 오피스텔 3억', await get('out-fee'), '1,500,000');
+
+  // guide-repayment.html 본문 — 30년 3억, 거치 1년
+  await fresh('loan.html');
+  await type('principal', '300000000'); await page.fill('#rate', '4'); await page.fill('#months', '360'); await page.fill('#grace', '0');
+  expect('30년 원리금 첫달', await get('c-an-first'), '1,432,246'); expect('30년 원금 첫달', await get('c-pr-first'), '1,833,333'); expect('30년 원금 총이자', await get('c-pr-int'), '180,500,000');
+  await type('principal', '100000000'); await page.fill('#rate', '4.5'); await page.fill('#months', '120'); await page.fill('#grace', '12');
+  expect('거치 후 원리금', await get('c-an-last'), '1,127,759'); expect('거치 총이자', await get('c-an-int'), '26,298,000');
+
+  // guide-area-84.html 본문 — 같은 단지 59㎡·84㎡ 평당가, 오피스텔 전용 42㎡
+  await fresh('area.html');
+  await page.check('input[name="priceUnit"][value="sqm"]', { force: true });
+  await type('price', '600000000'); await page.fill('#area', '59'); near('59㎡ 6억 평당', await get('out-per-pyeong'), 33618153, 1);
+  await type('price', '800000000'); await page.fill('#area', '84'); near('84㎡ 8억 평당', await get('out-per-pyeong'), 31483667, 1);
+  await page.fill('#sqm', '42'); expect('42㎡ 평', await get('out-pyeong'), '12.71');
 
   // guide-subscription-notice-date.html 본문 숫자 — 공고일만 바꿔 점수 변화
   await fresh('subscription.html');
