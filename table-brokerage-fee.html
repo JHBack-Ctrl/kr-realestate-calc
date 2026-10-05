@@ -112,8 +112,31 @@
     </section>
     <section class="card">
       <h2>오피스텔 · 그 외</h2>
-      <div class="table-wrap"><table class="tbl nowrap-head"><thead><tr><th scope="col">구분</th><th scope="col">매매</th><th scope="col">임대차</th></tr></thead><tbody><tr><th scope="row">주거용 오피스텔 (85㎡ 이하, 부엌·화장실 구비)</th><td>0.5% 이내</td><td>0.4% 이내</td></tr><tr><th scope="row">그 외 오피스텔 · 상가 · 토지</th><td>0.9% 이내 협의</td><td>0.9% 이내 협의</td></tr></tbody></table></div>
-      <p class="result-note">요율은 상한이며 협의로 정합니다. 부가세 10%는 별도 청구 가능(일반과세자). 시·도 조례로 다를 수 있으니 계약 시점 기준 확인. 2021년 10월 19일 개정 기준, <code>js/fee.js</code> 상수와 같습니다.</p>
+      <div class="table-wrap"><table class="tbl nowrap-head"><thead><tr><th scope="col">구분</th><th scope="col">매매</th><th scope="col">임대차</th></tr></thead><tbody><tr><th scope="row">주거용 오피스텔</th><td>0.5% 이내</td><td>0.4% 이내</td></tr><tr><th scope="row">그 외 오피스텔</th><td>0.9% 이내</td><td>0.9% 이내</td></tr><tr><th scope="row">상가 · 토지 등</th><td>0.9% 이내</td><td>0.9% 이내</td></tr></tbody></table></div>
+      <p class="result-note">주거용 오피스텔 요율은 전용 85㎡ 이하이면서 전용 입식 부엌, 수세식 화장실, 목욕 시설을 갖춘 경우에만 적용합니다. 이 조건을 못 갖추면 그 외 오피스텔로 0.9% 이내에서 협의합니다. 같은 3억원이라도 주거용 오피스텔 매매는 0.5%로 150만원, 아파트 매매는 0.4%로 120만원입니다. 요율은 상한이며 협의로 정합니다. 부가세 10%는 별도 청구 가능(일반과세자). 시·도 조례로 다를 수 있으니 계약 시점 기준 확인. 2021년 10월 19일 개정 기준, <code>js/fee.js</code> 상수와 같습니다.</p>
+    </section>
+    <section class="card">
+      <h2>표 읽는 법</h2>
+      <ul class="ref-list">
+        <li><p class="t">요율은 상한입니다</p><p class="d">'이 이상 받을 수 없다'는 선이지 정가가 아닙니다. 상한 안에서 중개사무소와 협의해 정하고, 금액을 계약서에 적어 두면 뒤탈이 없습니다.</p></li>
+        <li><p class="t">요율은 거래금액 전체에 곱합니다</p><p class="d">구간을 넘친 부분에만 붙는 방식이 아니라서 경계에서 상한이 뜁니다. 매매 8억 9,000만원은 0.4%로 356만원, 9억원은 0.5%로 450만원입니다.</p></li>
+        <li><p class="t">한도액이 있는 구간</p><p class="d">요율로 계산한 값과 한도액 중 작은 쪽이 상한입니다. 소액 거래에서는 한도액이 먼저 걸리는 일이 많습니다.</p></li>
+        <li><p class="t">양쪽이 각자 냅니다</p><p class="d">매수인과 매도인, 임차인과 임대인이 각각 이 상한까지 냅니다. 한쪽이 두 배를 내는 것이 아닙니다.</p></li>
+      </ul>
+    </section>
+    <section class="card">
+      <h2>계산 예시</h2>
+      <div class="table-wrap"><table class="tbl"><thead><tr><th scope="col">거래</th><th scope="col">요율</th><th scope="col">상한</th></tr></thead><tbody><tr><th scope="row">매매 4,500만원</th><td>0.6%</td><td>25만원 (한도)</td></tr><tr><th scope="row">매매 1억 5,000만원</th><td>0.5%</td><td>75만원</td></tr><tr><th scope="row">매매 6억원</th><td>0.4%</td><td>240만원</td></tr><tr><th scope="row">매매 9억원</th><td>0.5%</td><td>450만원</td></tr><tr><th scope="row">전세 8,000만원</th><td>0.4%</td><td>30만원 (한도)</td></tr><tr><th scope="row">전세 4억원</th><td>0.3%</td><td>120만원</td></tr><tr><th scope="row">월세 1,000만 / 70만</th><td>0.4%</td><td>30만원 (한도)</td></tr><tr><th scope="row">월세 500만 / 40만</th><td>0.5%</td><td>16만 5,000원</td></tr></tbody></table></div>
+      <p class="result-note"><a href="fee.html">중개보수 계산기</a>에 넣은 결과이며 부가세는 별도입니다. 매매 4,500만원은 0.6%로 27만원이지만 한도 25만원이 상한입니다. 월세 1,000만/70만은 1,000만 + 70만 × 100 = 8,000만원으로 환산합니다. 월세 500만/40만은 100배로 하면 4,500만원으로 5천만원 미만이라, 70배로 다시 계산해 3,300만원이 됩니다.</p>
+    </section>
+    <section class="card">
+      <h2>계약 전에 확인할 것</h2>
+      <ul class="ref-list">
+        <li><p class="t">보수 금액과 지급 시기</p><p class="d">계약서에 금액을 적고, 잔금 때 낸다는 식으로 지급 시기도 정해 둡니다.</p></li>
+        <li><p class="t">부가세</p><p class="d">일반과세자인 중개사무소는 10%를 더 청구할 수 있습니다. 6억원 매매 상한 240만원이면 264만원까지입니다. 간이과세자는 다르니 사업자 유형을 물어보세요.</p></li>
+        <li><p class="t">현금영수증</p><p class="d">요청하면 발급받을 수 있습니다. 매수인은 나중에 양도소득세 필요경비로 쓸 수 있으니 보관하세요.</p></li>
+        <li><p class="t">지역 조례</p><p class="d">요율은 시·도 조례로 정합니다. 대부분 이 표와 같지만 계약 시점에 해당 지역 기준을 확인하세요. 협의 요령은 <a href="guide-brokerage.html">복비 안내 글</a>에 있습니다.</p></li>
+      </ul>
     </section>
     <section class="card related" aria-labelledby="rel-title">
       <h2 id="rel-title">이 표를 쓰는 계산기</h2>
