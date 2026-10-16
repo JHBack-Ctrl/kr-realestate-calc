@@ -360,7 +360,8 @@ def footer(disclaimer="본 계산기는 참고용이며 금융·세무·법률 �
 # 용어 쪽은 본문을 1,000자 이상으로 늘리면 그 slug를 TERMS_INDEXED에 넣어 검색에 되돌린다.
 NOINDEX_PAGES = {"tables.html", "forms.html", "refs.html", "404.html"}   # 카드 목록만 있는 허브와 404
 TERMS_INDEXED = {"daehangryeok", "hwakjeongilja", "jeonsegayul", "dsr", "ltv",
-                 "gaesinyogugwon", "jeonwolse-jeonhwanyul", "junggaebosu", "jungdosanghwan", "chwideukse"}   # 1,000자 이상으로 늘려 검색에 되돌린 용어 (2026-10)
+                 "gaesinyogugwon", "jeonwolse-jeonhwanyul", "junggaebosu", "jungdosanghwan", "chwideukse",
+                 "kkangtongjeonse", "geunjeodanggwon", "jangteukgongje", "stress-dsr", "wonrigeum-gyundeung"}   # 1,000자 이상으로 늘려 검색에 되돌린 용어 (2026-10)
 
 def is_noindex(path):
     if path in NOINDEX_PAGES: return True
