@@ -299,6 +299,28 @@ function near(label, got, want, tol) {
   await type('income', '100000000'); await type('senior', '50000000'); expect('선순위 5천', await get('out-limit'), '370,000,000');
   await type('senior', '0'); await page.fill('#ltv', '50'); expect('LTV 50%', await get('out-limit'), '300,000,000');
 
+  // guide-cgt-heavy.html 본문 숫자 — 2016-06-01 취득 5억, 2026-11-02 양도. 중과 가산·유예 종료일이 바뀌면 여기와 글을 같이 고칠 것
+  const cgt = async (label, { homes, adj, salePrice = '900000000', acq = '2016-06-01' }, want) => {
+    await fresh('capital-gains-tax.html');
+    await page.selectOption('#kind', 'house'); await page.selectOption('#dealType', 'sale'); await page.selectOption('#acqCause', 'buy');
+    await page.fill('#acqDate', acq); await type('acqPrice', '500000000'); await page.fill('#saleDate', '2026-11-02'); await type('salePrice', salePrice);
+    await page.selectOption('#homes', homes);
+    if ((await page.isChecked('#adjArea')) !== adj) await page.evaluate(() => { const e = document.getElementById('adjArea'); e.checked = !e.checked; e.dispatchEvent(new Event('change', { bubbles: true })); });
+    expect(label, await get('out-total'), want);
+  };
+  await cgt('양도세 비조정 2주택 차익4억', { homes: '2', adj: false }, '111,166,000');
+  await cgt('양도세 조정 2주택 중과', { homes: '2', adj: true }, '233,816,000');
+  await cgt('양도세 조정 3주택 중과', { homes: '3', adj: true }, '277,541,000');
+  await cgt('양도세 1주택 비과세', { homes: '1', adj: false }, '0');
+  await cgt('양도세 차익1억 비조정', { homes: '2', adj: false, salePrice: '600000000' }, '14,124,000');
+  await cgt('양도세 차익1억 중과', { homes: '2', adj: true, salePrice: '600000000' }, '42,003,500');
+  await cgt('양도세 차익1억 3주택', { homes: '3', adj: true, salePrice: '600000000' }, '52,728,500');
+  await cgt('양도세 차익2억 비조정', { homes: '2', adj: false, salePrice: '700000000' }, '43,901,000');
+  await cgt('양도세 차익2억 중과', { homes: '2', adj: true, salePrice: '700000000' }, '104,071,000');
+  await cgt('양도세 차익2억 3주택', { homes: '3', adj: true, salePrice: '700000000' }, '125,796,000');
+  await cgt('양도세 5년 보유 비조정', { homes: '2', adj: false, acq: '2021-06-01' }, '128,766,000');
+  await cgt('양도세 5년 보유 중과', { homes: '2', adj: true, acq: '2021-06-01' }, '233,816,000');
+
   // 요율 의존 — 1월에 요율을 바꾸면 아래 기대값도 바꿀 것
   await fresh('salary.html');
   await type('salary', '50000000');
