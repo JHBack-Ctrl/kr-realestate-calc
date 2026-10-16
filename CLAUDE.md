@@ -28,10 +28,12 @@ python3 tools/build/build.py
 
 ### 검색 제외 (noindex)
 
-105쪽 중 43쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
-검색 대상은 62쪽입니다. 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
+105쪽 중 38쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
+검색 대상은 67쪽입니다(2026-10-16). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
 
-- 용어 39쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
+- 용어 34쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
+- 용어 39쪽 중 대항력·확정일자·전세가율·DSR·LTV 5쪽은 1,000자 이상으로 늘려 검색에 되돌렸습니다.
+  늘린 용어의 계산 예시 숫자는 `tools/verify.js`가 계산기와 대조합니다
 - 애드센스가 "가치가 별로 없는 콘텐츠"로 거절했을 때(2026-10-05) 짧은 쪽을 품질 평가에서 빼려고 넣었습니다
 - 쪽과 주소는 그대로이고, 방문자는 메뉴·링크로 계속 볼 수 있습니다
 - **용어 쪽을 검색에 되돌리려면** 본문을 1,000자 이상으로 늘린 뒤 slug를 `TERMS_INDEXED`에 넣습니다.

@@ -357,7 +357,7 @@ def footer(disclaimer="본 계산기는 참고용이며 금융·세무·법률 �
 # 쪽과 주소는 그대로이고 방문자는 메뉴·링크로 계속 볼 수 있다. noindex 쪽은 사이트맵에서도 빠진다.
 # 용어 쪽은 본문을 1,000자 이상으로 늘리면 그 slug를 TERMS_INDEXED에 넣어 검색에 되돌린다.
 NOINDEX_PAGES = {"tables.html", "forms.html", "refs.html", "404.html"}   # 카드 목록만 있는 허브와 404
-TERMS_INDEXED = set()   # 검색에 넣을 용어 slug (예: "daehangryeok")
+TERMS_INDEXED = {"daehangryeok", "hwakjeongilja", "jeonsegayul", "dsr", "ltv"}   # 1,000자 이상으로 늘려 검색에 되돌린 용어 (2026-10)
 
 def is_noindex(path):
     if path in NOINDEX_PAGES: return True

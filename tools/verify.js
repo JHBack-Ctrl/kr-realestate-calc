@@ -272,6 +272,26 @@ function near(label, got, want, tol) {
   await fresh('jeonse-fraud-check.html');
   await page.click('.chip[data-preset="risky"]'); expect('위험 전세가율', await get('out-ratio'), '100.00'); await toggle('r1'); expect('위험 점수', await get('out-score'), '60'); expect('위험 등급', await get('out-big'), '높음');
 
+  // term-jeonsegayul.html 계산 예시
+  await fresh('jeonse-fraud-check.html');
+  await type('price', '300000000'); await type('deposit', '240000000'); await type('senior', '0'); expect('전세가율 80', await get('out-ratio'), '80.00');
+  await type('senior', '30000000'); expect('전세가율 선순위 포함', await get('out-ratio'), '90.00');
+  await type('senior', '0'); await type('price', '270000000'); expect('전세가율 집값 하락', await get('out-ratio'), '88.89');
+
+  // term-dsr.html · term-ltv.html 숫자 — 연소득 5천, 시세 6억, LTV 70%, 4.5%, 30년, DSR 40%
+  await fresh('dsr.html');
+  await type('income', '50000000'); await type('value', '600000000'); await page.fill('#ltv', '70'); await type('senior', '0'); await type('existing', '0');
+  await page.fill('#rate', '4.5'); await page.fill('#years', '30'); await page.fill('#dsr', '40');
+  await page.fill('#stress', '0'); expect('DSR 스트레스 0', await get('out-dsr'), '328,935,265');
+  await page.fill('#stress', '1.5'); expect('DSR 스트레스 1.5', await get('out-dsr'), '277,986,024'); expect('DSR 월 상환', await get('out-monthly'), '1,408,514');
+  await page.fill('#years', '40'); expect('DSR 40년', await get('out-dsr'), '302,912,640'); await page.fill('#years', '30');
+  await type('existing', '6000000'); expect('DSR 기존 대출', await get('out-dsr'), '194,590,217'); await type('existing', '0');
+  await type('value', '397000000'); expect('경계 아래 LTV', (await get('out-binding')).startsWith('LTV'), true);
+  await type('value', '398000000'); expect('경계 위 DSR', (await get('out-binding')).startsWith('DSR'), true);
+  await type('value', '600000000'); await type('income', '80000000'); expect('연8천 한도', await get('out-limit'), '420,000,000'); expect('연8천 DSR', await get('out-dsr'), '444,777,638');
+  await type('income', '100000000'); await type('senior', '50000000'); expect('선순위 5천', await get('out-limit'), '370,000,000');
+  await type('senior', '0'); await page.fill('#ltv', '50'); expect('LTV 50%', await get('out-limit'), '300,000,000');
+
   // 요율 의존 — 1월에 요율을 바꾸면 아래 기대값도 바꿀 것
   await fresh('salary.html');
   await type('salary', '50000000');
