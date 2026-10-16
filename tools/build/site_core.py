@@ -177,6 +177,8 @@ GUIDES = [
      "청약 가점의 무주택기간·통장 가입기간·부양가족 요건은 모두 입주자모집공고일 기준으로 셉니다. 공고일이 보름 달라져 17점이 20점이 되는 예시, 내 점수가 오르는 날을 찾는 법, 항목별 만점에 닿는 날짜, 30세 전 혼인신고가 점수를 바꾸는 폭을 계산기로 확인합니다."),
     ("guide-cgt-heavy.html", "2주택 양도세 중과, 같은 차익에 세금이 두 배", "다주택 양도세 중과 2026 — 조정대상지역 2주택 +20%p, 장기보유특별공제 배제 계산 예시",
      "2026년 5월 10일 양도분부터 조정대상지역 다주택 중과가 다시 적용됩니다. 차익 4억원짜리 집을 팔 때 비조정지역 2주택 1억 1,117만원, 조정대상지역 2주택 2억 3,382만원, 3주택 2억 7,754만원으로 달라지는 이유와 차익·보유기간별 차이, 중과 여부를 확인할 항목을 양도세 계산기로 정리했습니다."),
+    ("guide-severance-tax.html", "퇴직금 세금, 같은 금액이라도 근속연수가 정한다", "퇴직소득세 계산 — 근속연수공제·환산급여공제, 근속 5·10·20·30년 세금 비교",
+     "퇴직소득세는 퇴직금 액수보다 근속연수에 크게 좌우됩니다. 월 350만원으로 10년 일한 퇴직금 3,426만원의 세금은 33만원, 같은 금액을 5년 만에 받으면 113만원입니다. 계산 다섯 단계와 근속연수공제표, 근속별 세금, IRP로 받을 때 달라지는 점을 퇴직금 계산기로 정리했습니다."),
 ]
 DOCS = [
     ("about.html", "사이트 소개"), ("privacy.html", "개인정보처리방침"), ("terms.html", "이용약관"),
@@ -361,7 +363,8 @@ def footer(disclaimer="본 계산기는 참고용이며 금융·세무·법률 �
 NOINDEX_PAGES = {"tables.html", "forms.html", "refs.html", "404.html"}   # 카드 목록만 있는 허브와 404
 TERMS_INDEXED = {"daehangryeok", "hwakjeongilja", "jeonsegayul", "dsr", "ltv",
                  "gaesinyogugwon", "jeonwolse-jeonhwanyul", "junggaebosu", "jungdosanghwan", "chwideukse",
-                 "kkangtongjeonse", "geunjeodanggwon", "jangteukgongje", "stress-dsr", "wonrigeum-gyundeung"}   # 1,000자 이상으로 늘려 검색에 되돌린 용어 (2026-10)
+                 "kkangtongjeonse", "geunjeodanggwon", "jangteukgongje", "stress-dsr", "wonrigeum-gyundeung",
+                 "ilsegae-iljutaek", "ilsijeok-2jutaek", "cheongyak-gajeom", "jeonyongmyeonjeok", "geochigigan"}   # 1,000자 이상으로 늘려 검색에 되돌린 용어 (2026-10)
 
 def is_noindex(path):
     if path in NOINDEX_PAGES: return True
