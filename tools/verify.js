@@ -133,6 +133,8 @@ function near(label, got, want, tol) {
   expect('갱신 시작', await get('out-wstart'), '2026-09-01'); expect('갱신 마감', await get('out-wend'), '2026-12-31');
   expect('갱신 D-day', await get('out-big'), dday(2026, 12, 31));
   expect('보증금 5%', await get('out-dep-cap'), '52,500,000'); expect('월세 5%', await get('out-rent-cap'), '630,000'); expect('환산 상한', await get('out-equiv-cap'), '203,700,000');
+  expect('환산 보증금', await get('out-equiv'), '194,000,000');   // term-gaesinyogugwon.html
+  await type('deposit', '300000000'); await type('rent', '0'); expect('전세 3억 갱신 상한', await get('out-dep-cap'), '315,000,000');
 
   await fresh('tax-calendar.html');
   await page.fill('#acqDate', '2026-08-15'); await page.fill('#saleDate', '2026-08-15');
@@ -194,6 +196,7 @@ function near(label, got, want, tol) {
   await page.fill('#baseRate', '3'); expect('전환 시장 6%', (await get('out-market')).replace(/\s/g, ''), '1,000,000원/월');
   await radio('mode', 'm2j'); await type('rent', '900000');
   expect('역전환 5%', await get('out-big'), '316,000,000');
+  await page.fill('#marketRate', '6'); expect('역전환 시장 6%', (await get('out-market')).replace(/[^\d,]/g, ''), '280,000,000');
 
   // guide-brokerage.html 본문 — 구간 경계, 70배 환산, 오피스텔
   await fresh('fee.html');
@@ -264,6 +267,10 @@ function near(label, got, want, tol) {
   await type('amount', '100000000'); await page.fill('#feeRate', '1.2'); await page.fill('#period', '36');
   await page.fill('#start', '2025-09-21'); await page.fill('#pay', '2026-09-21');
   expect('중도상환 1년 비율', await get('out-ratio'), '66.70'); expect('중도상환 1년 수수료', await get('out-fee'), '800,365');
+  // term-jungdosanghwan.html 계산 예시 — 3억, 0.6%, 3년, 2025-03-01 실행
+  await type('amount', '300000000'); await page.fill('#feeRate', '0.6'); await page.fill('#start', '2025-03-01');
+  for (const [d, want] of [['2025-09-01', '1,497,810'], ['2026-03-01', '1,200,547'], ['2027-03-01', '601,095'], ['2028-02-01', '47,628'], ['2028-03-01', '0']]) { await page.fill('#pay', d); expect(`중도상환 3억 ${d}`, await get('out-fee'), want); }
+  await page.fill('#feeRate', '1.2'); await page.fill('#pay', '2026-03-01'); expect('중도상환 3억 1.2% 1년', await get('out-fee'), '2,401,095');
 
   await fresh('jeonse-insurance.html');
   await page.click('.chip[data-preset="ok"]'); expect('보증 ok', await get('out-big'), '가입 가능성 높음'); expect('보증 상한', await get('out-max'), '450,000,000');
