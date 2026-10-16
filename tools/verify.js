@@ -81,6 +81,8 @@ function near(label, got, want, tol) {
   const get = async id => (await page.textContent('#' + id)).trim();
   const type = async (id, v) => { await page.fill('#' + id, ''); await page.type('#' + id, v); };
   const toggle = async id => page.click(`#${id} ~ .knob`);
+  // 라디오는 숨겨진 input이라 page.check({force})가 가끔 다른 요소를 눌러 실패한다(#40에서 한 번 겪음). 값을 직접 바꾸고 change를 보낸다.
+  const radio = async (name, value) => page.evaluate(([n, v]) => { const r = document.querySelector(`input[name="${n}"][value="${v}"]`); r.checked = true; r.dispatchEvent(new Event('change', { bubbles: true })); }, [name, value]);
   const fresh = async p => { await page.goto(BASE + p); await page.evaluate(() => localStorage.clear()); await page.goto(BASE + p); };
 
   console.log(`검사 대상: ${ROOT}`);
@@ -168,7 +170,7 @@ function near(label, got, want, tol) {
   await type('rent', '700000'); await type('maint', '100000'); await type('deposit', '10000000');
   await type('b-rent', '550000'); await type('b-maint', '100000'); await type('b-deposit', '50000000');
   await page.fill('#months', '24');
-  await page.check('input[name="mode"][value="loan"]', { force: true }); await page.fill('#rate', '4.5');
+  await radio('mode', 'loan'); await page.fill('#rate', '4.5');
   expect('보증금 A 4.5%', await get('ab-a-total'), '837,500'); expect('보증금 B 4.5%', await get('ab-b-total'), '837,500');
   await page.fill('#rate', '3');
   expect('보증금 A 3%', await get('ab-a-total'), '825,000'); expect('보증금 B 3%', await get('ab-b-total'), '775,000'); expect('보증금 2년 차이', await get('ab-d-cum'), '1,200,000');
@@ -190,18 +192,38 @@ function near(label, got, want, tol) {
   await type('jeonse', '300000000'); await type('deposit', '100000000'); await page.fill('#marketRate', '6');
   for (const [br, want] of [['2.5', '750,000'], ['3', '833,333'], ['3.5', '916,667']]) { await page.fill('#baseRate', br); expect(`전환 기준 ${br}% 법정`, await get('out-big'), want); }
   await page.fill('#baseRate', '3'); expect('전환 시장 6%', (await get('out-market')).replace(/\s/g, ''), '1,000,000원/월');
-  await page.check('input[name="mode"][value="m2j"]', { force: true }); await type('rent', '900000');
+  await radio('mode', 'm2j'); await type('rent', '900000');
   expect('역전환 5%', await get('out-big'), '316,000,000');
 
   // guide-brokerage.html 본문 — 구간 경계, 70배 환산, 오피스텔
   await fresh('fee.html');
   for (const [v, want] of [['600000000', '2,400,000'], ['890000000', '3,560,000'], ['900000000', '4,500,000'], ['1200000000', '7,200,000'], ['1500000000', '10,500,000']]) { await type('price', v); expect(`복비 매매 ${v}`, await get('out-fee'), want); }
-  await page.check('input[name="deal"][value="jeonse"]', { force: true });
+  await radio('deal', 'jeonse');
   for (const [v, want] of [['400000000', '1,200,000'], ['600000000', '2,400,000']]) { await type('price', v); expect(`복비 전세 ${v}`, await get('out-fee'), want); }
-  await page.check('input[name="deal"][value="monthly"]', { force: true }); await type('deposit', '5000000'); await type('rent', '400000');
+  await radio('deal', 'monthly'); await type('deposit', '5000000'); await type('rent', '400000');
   expect('복비 월세 70배', await get('out-fee'), '165,000');
-  await page.check('input[name="kind"][value="officetel"]', { force: true }); await page.check('input[name="deal"][value="sale"]', { force: true }); await type('price', '300000000');
+  await radio('kind', 'officetel'); await radio('deal', 'sale'); await type('price', '300000000');
   expect('복비 오피스텔 3억', await get('out-fee'), '1,500,000');
+  // table-brokerage-fee.html 계산 예시 중 한도액 행
+  await radio('kind', 'house'); await type('price', '45000000'); expect('복비 매매 4,500만 한도', await get('out-fee'), '250,000');
+  await type('price', '150000000'); expect('복비 매매 1.5억', await get('out-fee'), '750,000');
+  await radio('deal', 'jeonse'); await type('price', '80000000'); expect('복비 전세 8천 한도', await get('out-fee'), '300,000');
+
+  // table-acquisition-tax.html 계산 예시 — 6~9억 구간은 반올림이 필요 없는 7.5억만 쓴다
+  await fresh('acquisition-tax.html');
+  const acq = async (label, price, sit, large, first, want) => {
+    await page.selectOption('#situation', sit);
+    if ((await page.isChecked('#large')) !== large) await toggle('large');
+    if ((await page.isChecked('#firstHome')) !== first) await toggle('firstHome');
+    await type('price', price); expect(label, await get('out-total'), want);
+  };
+  await acq('취득세 6억', '600000000', 'one', false, false, '6,600,000');
+  await acq('취득세 7.5억', '750000000', 'one', false, false, '16,500,000');
+  await acq('취득세 9억', '900000000', 'one', false, false, '29,700,000');
+  await acq('취득세 10억 85초과', '1000000000', 'one', true, false, '35,000,000');
+  await acq('취득세 8억 조정2', '800000000', 'adj2', false, false, '67,200,000');
+  await acq('취득세 8억 조정3', '800000000', 'adj3', false, false, '99,200,000');
+  await acq('취득세 3억 생애최초', '300000000', 'one', false, true, '1,300,000');
 
   // guide-repayment.html 본문 — 30년 3억, 거치 1년
   await fresh('loan.html');
@@ -212,7 +234,7 @@ function near(label, got, want, tol) {
 
   // guide-area-84.html 본문 — 같은 단지 59㎡·84㎡ 평당가, 오피스텔 전용 42㎡
   await fresh('area.html');
-  await page.check('input[name="priceUnit"][value="sqm"]', { force: true });
+  await radio('priceUnit', 'sqm');
   await type('price', '600000000'); await page.fill('#area', '59'); near('59㎡ 6억 평당', await get('out-per-pyeong'), 33618153, 1);
   await type('price', '800000000'); await page.fill('#area', '84'); near('84㎡ 8억 평당', await get('out-per-pyeong'), 31483667, 1);
   await page.fill('#sqm', '42'); expect('42㎡ 평', await get('out-pyeong'), '12.71');
@@ -227,6 +249,10 @@ function near(label, got, want, tol) {
   if (!(await page.isChecked('#married'))) await toggle('married');
   await page.fill('#marriage', '2022-11-15'); await page.fill('#dependents', '1'); await page.fill('#notice', '2026-11-20');
   expect('청약 28세 혼인 무주택', await get('out-homeless'), '10'); expect('청약 28세 혼인 총점', await get('out-total'), '29');
+  // table-subscription-points.html 계산 예시 — 30세 전 혼인, 부양가족 3명
+  await page.fill('#birth', '1986-03-10'); await page.fill('#marriage', '2014-05-20'); await page.fill('#dependents', '3'); await page.fill('#account', '2014-06-01');
+  await page.fill('#notice', '2026-11-20'); expect('가점표 예시 무주택', await get('out-homeless'), '26'); expect('가점표 예시 통장', await get('out-account'), '14'); expect('가점표 예시 총점', await get('out-total'), '60');
+  await page.fill('#notice', '2027-06-01'); expect('가점표 예시 반년 뒤', await get('out-total'), '63');
 
   // guide-yield-vacancy.html 본문의 '반영 후' 값 — 계산기 PRESETS.small
   await fresh('yield.html');

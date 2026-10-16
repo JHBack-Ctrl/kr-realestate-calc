@@ -120,6 +120,20 @@
       </ul>
       <p class="result-note">2026년 1월 기준 지방세법·지방세특례제한법. 세율은 <code>js/acquisition-tax.js</code> 상수와 같습니다.</p>
     </section>
+    <section class="card">
+      <h2>표 읽는 법</h2>
+      <ul class="ref-list">
+        <li><p class="t">합계 칸의 두 숫자</p><p class="d">앞은 전용 85㎡ 이하, 뒤는 85㎡ 초과입니다. 85㎡를 넘으면 농어촌특별세 0.2%가 더 붙습니다.</p></li>
+        <li><p class="t">세율은 가격 전체에 붙습니다</p><p class="d">6억원을 넘는 부분에만 높은 세율이 붙는 방식이 아닙니다. 7억원짜리 집은 7억원 전체에 그 구간 세율을 곱합니다.</p></li>
+        <li><p class="t">6억~9억 구간은 가격에 따라 이어서 오릅니다</p><p class="d">6억원에서 1%로 시작해 9억원에서 3%가 됩니다. 7억 5,000만원이면 (7.5 × 2/3 − 3) = 2%이고, 지방교육세는 그 10분의 1인 0.2%입니다.</p></li>
+        <li><p class="t">주택 수는 이번에 사는 집을 포함해 셉니다</p><p class="d">세대 전체가 가진 주택에 이번 집을 더한 수입니다. 조정대상지역인지는 이번에 사는 집의 소재지로 봅니다.</p></li>
+      </ul>
+    </section>
+    <section class="card">
+      <h2>계산 예시</h2>
+      <div class="table-wrap"><table class="tbl"><thead><tr><th scope="col">조건</th><th scope="col">합계 세율</th><th scope="col">세금 합계</th></tr></thead><tbody><tr><th scope="row">6억 · 1주택 · 85㎡ 이하</th><td>1.1%</td><td>660만원</td></tr><tr><th scope="row">7억 5천 · 1주택 · 85㎡ 이하</th><td>2.2%</td><td>1,650만원</td></tr><tr><th scope="row">9억 · 1주택 · 85㎡ 이하</th><td>3.3%</td><td>2,970만원</td></tr><tr><th scope="row">10억 · 1주택 · 85㎡ 초과</th><td>3.5%</td><td>3,500만원</td></tr><tr><th scope="row">8억 · 조정 2주택</th><td>8.4%</td><td>6,720만원</td></tr><tr><th scope="row">8억 · 조정 3주택</th><td>12.4%</td><td>9,920만원</td></tr><tr><th scope="row">3억 · 생애최초</th><td>0.43%</td><td>130만원</td></tr></tbody></table></div>
+      <p class="result-note"><a href="acquisition-tax.html">취득세 계산기</a>에 넣은 결과입니다(취득세 + 지방교육세 + 농특세). 같은 8억원이라도 조정대상지역 2주택과 3주택은 3,200만원 차이입니다. 생애최초 감면은 취득세에서 200만원까지 빠지고 지방교육세는 그대로라, 3억원이면 취득세 300만원 − 200만원 + 지방교육세 30만원 = 130만원입니다. 감면 요건과 사후 추징 조건은 <a href="guide-acquisition-tax.html">취득세 안내 글</a>에 정리했습니다.</p>
+    </section>
     <section class="card related" aria-labelledby="rel-title">
       <h2 id="rel-title">이 표를 쓰는 계산기</h2>
       <div class="tool-grid"><a class="tool-card" href="acquisition-tax.html"><p class="t">취득세</p><p class="d">취득세·지방교육세·농특세 참고용 추정</p></a><a class="tool-card" href="capital-gains-tax.html"><p class="t">양도소득세</p><p class="d">비과세·장특공제·중과까지 반영한 참고용 추정</p></a><a class="tool-card" href="buy-vs-rent.html"><p class="t">매매 vs 전세</p><p class="d">보유기간 총비용과 손익분기 집값 상승률</p></a><a class="tool-card" href="tax-calendar.html"><p class="t">세금 달력</p><p class="d">취득·양도·보유 세금 기한을 D-day로</p></a></div>
