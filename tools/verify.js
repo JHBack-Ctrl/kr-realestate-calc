@@ -133,6 +133,8 @@ function near(label, got, want, tol) {
   expect('갱신 시작', await get('out-wstart'), '2026-09-01'); expect('갱신 마감', await get('out-wend'), '2026-12-31');
   expect('갱신 D-day', await get('out-big'), dday(2026, 12, 31));
   expect('보증금 5%', await get('out-dep-cap'), '52,500,000'); expect('월세 5%', await get('out-rent-cap'), '630,000'); expect('환산 상한', await get('out-equiv-cap'), '203,700,000');
+  expect('환산 보증금', await get('out-equiv'), '194,000,000');   // term-gaesinyogugwon.html
+  await type('deposit', '300000000'); await type('rent', '0'); expect('전세 3억 갱신 상한', await get('out-dep-cap'), '315,000,000');
 
   await fresh('tax-calendar.html');
   await page.fill('#acqDate', '2026-08-15'); await page.fill('#saleDate', '2026-08-15');
@@ -194,6 +196,7 @@ function near(label, got, want, tol) {
   await page.fill('#baseRate', '3'); expect('전환 시장 6%', (await get('out-market')).replace(/\s/g, ''), '1,000,000원/월');
   await radio('mode', 'm2j'); await type('rent', '900000');
   expect('역전환 5%', await get('out-big'), '316,000,000');
+  await page.fill('#marketRate', '6'); expect('역전환 시장 6%', (await get('out-market')).replace(/[^\d,]/g, ''), '280,000,000');
 
   // guide-brokerage.html 본문 — 구간 경계, 70배 환산, 오피스텔
   await fresh('fee.html');
@@ -264,6 +267,10 @@ function near(label, got, want, tol) {
   await type('amount', '100000000'); await page.fill('#feeRate', '1.2'); await page.fill('#period', '36');
   await page.fill('#start', '2025-09-21'); await page.fill('#pay', '2026-09-21');
   expect('중도상환 1년 비율', await get('out-ratio'), '66.70'); expect('중도상환 1년 수수료', await get('out-fee'), '800,365');
+  // term-jungdosanghwan.html 계산 예시 — 3억, 0.6%, 3년, 2025-03-01 실행
+  await type('amount', '300000000'); await page.fill('#feeRate', '0.6'); await page.fill('#start', '2025-03-01');
+  for (const [d, want] of [['2025-09-01', '1,497,810'], ['2026-03-01', '1,200,547'], ['2027-03-01', '601,095'], ['2028-02-01', '47,628'], ['2028-03-01', '0']]) { await page.fill('#pay', d); expect(`중도상환 3억 ${d}`, await get('out-fee'), want); }
+  await page.fill('#feeRate', '1.2'); await page.fill('#pay', '2026-03-01'); expect('중도상환 3억 1.2% 1년', await get('out-fee'), '2,401,095');
 
   await fresh('jeonse-insurance.html');
   await page.click('.chip[data-preset="ok"]'); expect('보증 ok', await get('out-big'), '가입 가능성 높음'); expect('보증 상한', await get('out-max'), '450,000,000');
@@ -291,6 +298,28 @@ function near(label, got, want, tol) {
   await type('value', '600000000'); await type('income', '80000000'); expect('연8천 한도', await get('out-limit'), '420,000,000'); expect('연8천 DSR', await get('out-dsr'), '444,777,638');
   await type('income', '100000000'); await type('senior', '50000000'); expect('선순위 5천', await get('out-limit'), '370,000,000');
   await type('senior', '0'); await page.fill('#ltv', '50'); expect('LTV 50%', await get('out-limit'), '300,000,000');
+
+  // guide-cgt-heavy.html 본문 숫자 — 2016-06-01 취득 5억, 2026-11-02 양도. 중과 가산·유예 종료일이 바뀌면 여기와 글을 같이 고칠 것
+  const cgt = async (label, { homes, adj, salePrice = '900000000', acq = '2016-06-01' }, want) => {
+    await fresh('capital-gains-tax.html');
+    await page.selectOption('#kind', 'house'); await page.selectOption('#dealType', 'sale'); await page.selectOption('#acqCause', 'buy');
+    await page.fill('#acqDate', acq); await type('acqPrice', '500000000'); await page.fill('#saleDate', '2026-11-02'); await type('salePrice', salePrice);
+    await page.selectOption('#homes', homes);
+    if ((await page.isChecked('#adjArea')) !== adj) await page.evaluate(() => { const e = document.getElementById('adjArea'); e.checked = !e.checked; e.dispatchEvent(new Event('change', { bubbles: true })); });
+    expect(label, await get('out-total'), want);
+  };
+  await cgt('양도세 비조정 2주택 차익4억', { homes: '2', adj: false }, '111,166,000');
+  await cgt('양도세 조정 2주택 중과', { homes: '2', adj: true }, '233,816,000');
+  await cgt('양도세 조정 3주택 중과', { homes: '3', adj: true }, '277,541,000');
+  await cgt('양도세 1주택 비과세', { homes: '1', adj: false }, '0');
+  await cgt('양도세 차익1억 비조정', { homes: '2', adj: false, salePrice: '600000000' }, '14,124,000');
+  await cgt('양도세 차익1억 중과', { homes: '2', adj: true, salePrice: '600000000' }, '42,003,500');
+  await cgt('양도세 차익1억 3주택', { homes: '3', adj: true, salePrice: '600000000' }, '52,728,500');
+  await cgt('양도세 차익2억 비조정', { homes: '2', adj: false, salePrice: '700000000' }, '43,901,000');
+  await cgt('양도세 차익2억 중과', { homes: '2', adj: true, salePrice: '700000000' }, '104,071,000');
+  await cgt('양도세 차익2억 3주택', { homes: '3', adj: true, salePrice: '700000000' }, '125,796,000');
+  await cgt('양도세 5년 보유 비조정', { homes: '2', adj: false, acq: '2021-06-01' }, '128,766,000');
+  await cgt('양도세 5년 보유 중과', { homes: '2', adj: true, acq: '2021-06-01' }, '233,816,000');
 
   // 요율 의존 — 1월에 요율을 바꾸면 아래 기대값도 바꿀 것
   await fresh('salary.html');

@@ -175,6 +175,8 @@ GUIDES = [
      "보증금을 더 내고 월세를 줄이는 조건은 집주인에게 일정한 금리로 돈을 맡기는 것과 같습니다. 보증금 4,000만원에 월세 15만원을 깎는 예시로 그 금리(연 4.5%)를 구하고, 예금이자·대출이자에 따라 어느 쪽 월 실부담이 작은지, 월세 세액공제가 경계를 어떻게 바꾸는지 계산기로 확인합니다."),
     ("guide-subscription-notice-date.html", "청약 가점, 공고일 보름 차이로 3점이 갈린다", "청약 가점 기준일 — 입주자모집공고일과 점수가 오르는 날",
      "청약 가점의 무주택기간·통장 가입기간·부양가족 요건은 모두 입주자모집공고일 기준으로 셉니다. 공고일이 보름 달라져 17점이 20점이 되는 예시, 내 점수가 오르는 날을 찾는 법, 항목별 만점에 닿는 날짜, 30세 전 혼인신고가 점수를 바꾸는 폭을 계산기로 확인합니다."),
+    ("guide-cgt-heavy.html", "2주택 양도세 중과, 같은 차익에 세금이 두 배", "다주택 양도세 중과 2026 — 조정대상지역 2주택 +20%p, 장기보유특별공제 배제 계산 예시",
+     "2026년 5월 10일 양도분부터 조정대상지역 다주택 중과가 다시 적용됩니다. 차익 4억원짜리 집을 팔 때 비조정지역 2주택 1억 1,117만원, 조정대상지역 2주택 2억 3,382만원, 3주택 2억 7,754만원으로 달라지는 이유와 차익·보유기간별 차이, 중과 여부를 확인할 항목을 양도세 계산기로 정리했습니다."),
 ]
 DOCS = [
     ("about.html", "사이트 소개"), ("privacy.html", "개인정보처리방침"), ("terms.html", "이용약관"),
@@ -357,7 +359,8 @@ def footer(disclaimer="본 계산기는 참고용이며 금융·세무·법률 �
 # 쪽과 주소는 그대로이고 방문자는 메뉴·링크로 계속 볼 수 있다. noindex 쪽은 사이트맵에서도 빠진다.
 # 용어 쪽은 본문을 1,000자 이상으로 늘리면 그 slug를 TERMS_INDEXED에 넣어 검색에 되돌린다.
 NOINDEX_PAGES = {"tables.html", "forms.html", "refs.html", "404.html"}   # 카드 목록만 있는 허브와 404
-TERMS_INDEXED = {"daehangryeok", "hwakjeongilja", "jeonsegayul", "dsr", "ltv"}   # 1,000자 이상으로 늘려 검색에 되돌린 용어 (2026-10)
+TERMS_INDEXED = {"daehangryeok", "hwakjeongilja", "jeonsegayul", "dsr", "ltv",
+                 "gaesinyogugwon", "jeonwolse-jeonhwanyul", "junggaebosu", "jungdosanghwan", "chwideukse"}   # 1,000자 이상으로 늘려 검색에 되돌린 용어 (2026-10)
 
 def is_noindex(path):
     if path in NOINDEX_PAGES: return True
