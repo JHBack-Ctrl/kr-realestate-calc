@@ -420,6 +420,57 @@ function near(label, got, want, tol) {
   await cgt2('분양권 10개월', { kind: 'right_sale', acq: '2026-01-10', acqPrice: '500000000', salePrice: '600000000' }, '75,075,000');
   await cgt2('분양권 1년10개월', { kind: 'right_sale', acq: '2025-01-10', acqPrice: '500000000', salePrice: '600000000' }, '64,350,000');
 
+  // guide-mortgage-limit.html — 연봉별 DSR 한도 (4.5%, 30년, DSR 40%, LTV에 안 걸리게 시세 30억)
+  await fresh('dsr.html');
+  await type('value', '3000000000'); await page.fill('#ltv', '70'); await type('senior', '0'); await type('existing', '0'); await page.fill('#rate', '4.5'); await page.fill('#years', '30'); await page.fill('#dsr', '40');
+  for (const [inc, s0, s15, mon] of [['40000000', '263,148,212', '222,388,819', '1,126,811'], ['50000000', '328,935,265', '277,986,024', '1,408,514'], ['60000000', '394,722,318', '333,583,229', '1,690,217'],
+                                     ['80000000', '526,296,424', '444,777,638', '2,253,623'], ['100000000', '657,870,530', '555,972,048', '2,817,029']]) {
+    await type('income', inc); await page.fill('#stress', '0'); expect(`연봉 ${inc} 가산0`, await get('out-dsr'), s0);
+    await page.fill('#stress', '1.5'); expect(`연봉 ${inc} 가산1.5`, await get('out-dsr'), s15); expect(`연봉 ${inc} 월상환`, await get('out-monthly'), mon);
+  }
+  await type('income', '50000000'); await page.fill('#rate', '4'); expect('5천 금리4%', await get('out-dsr'), '293,536,272'); await page.fill('#rate', '4.5');
+  await page.fill('#dsr', '50'); expect('5천 DSR50%', await get('out-dsr'), '347,482,530'); await page.fill('#dsr', '40');
+  // guide-base-rate-change.html — 금리 ±0.25%p의 DSR 한도
+  await page.fill('#rate', '4.25'); expect('5천 금리4.25 한도', await get('out-dsr'), '285,597,016');
+  await page.fill('#rate', '4.75'); expect('5천 금리4.75 한도', await get('out-dsr'), '270,687,040');
+
+  // guide-base-rate-change.html — 30년 원리금균등 월 상환과 총이자, 만기일시 이자
+  await fresh('loan.html');
+  await radio('method', 'annuity'); await page.fill('#months', '360'); await page.fill('#grace', '0');
+  for (const [pr, rows] of [['100000000', [['3.75', '463,116'], ['4', '477,415'], ['4.25', '491,940']]], ['300000000', [['3.75', '1,389,347'], ['4', '1,432,246'], ['4.25', '1,475,820']]], ['500000000', [['3.75', '2,315,578'], ['4', '2,387,076'], ['4.25', '2,459,699']]]]) {
+    await type('principal', pr); for (const [rt, want] of rows) { await page.fill('#rate', rt); expect(`대출 ${pr} ${rt}% 월`, await get('c-an-first'), want); }
+  }
+  await type('principal', '300000000'); await page.fill('#rate', '4.25'); expect('3억 4.25% 총이자', await get('c-an-int'), '231,295,082');
+  for (const [rt, want] of [['3.75', '937,500'], ['4', '1,000,000'], ['4.25', '1,062,500']]) { await page.fill('#rate', rt); expect(`만기일시 3억 ${rt}%`, await get('c-bu-first'), want); }
+
+  // guide-base-rate-change.html — 기준금리별 전환 월세 상한
+  await fresh('conversion.html');
+  await type('jeonse', '300000000'); await type('deposit', '100000000');
+  for (const [br, want] of [['2.75', '791,667'], ['3.25', '875,000']]) { await page.fill('#baseRate', br); expect(`전환 기준 ${br}%`, await get('out-big'), want); }
+
+  // guide-cgt-high-price.html — 1주택 고가 양도, 거주 기간별
+  const cgt3 = async (label, { sale, res, acq = '2016-06-01', acqPrice = '500000000', adj = false }, want) => {
+    await fresh('capital-gains-tax.html');
+    await page.selectOption('#kind', 'house'); await page.selectOption('#acqCause', 'buy');
+    await page.fill('#acqDate', acq); await type('acqPrice', acqPrice); await page.fill('#saleDate', '2026-11-02'); await type('salePrice', sale);
+    await page.selectOption('#homes', '1'); await page.fill('#resMonths', res);
+    for (const id of ['adjArea', 'adjAcquired']) if ((await page.isChecked('#' + id)) !== adj) await page.evaluate(i => { const e = document.getElementById(i); e.checked = !e.checked; e.dispatchEvent(new Event('change', { bubbles: true })); }, id);
+    expect(label, await get('out-total'), want);
+  };
+  for (const [sale, rows] of [['1500000000', [['0', '43,901,000'], ['24', '22,093,500'], ['60', '14,124,000'], ['120', '4,801,500']]], ['2000000000', [['0', '181,566,000'], ['24', '107,646,000'], ['60', '77,341,000'], ['120', '28,253,500']]]]) {
+    for (const [res, want] of rows) await cgt3(`고가 ${sale} 거주${res}`, { sale, res }, want);
+  }
+  await cgt3('고가 2021취득 5년', { sale: '1500000000', res: '60', acq: '2021-06-01', acqPrice: '1000000000' }, '8,844,000');
+  await cgt3('고가 12억1천', { sale: '1210000000', res: '120' }, '0');
+  await cgt3('고가 조정취득 거주0', { sale: '1500000000', res: '0', acq: '2018-06-01', adj: true }, '347,391,000');
+  await cgt3('고가 조정취득 거주2년', { sale: '1500000000', res: '24', acq: '2018-06-01', adj: true }, '28,253,500');
+
+  // guide-deposit-return.html — 날짜
+  await fresh('renewal.html');
+  await page.fill('#start', '2024-11-15'); await page.fill('#months', '24'); await type('deposit', '200000000'); await type('rent', '0');
+  expect('만기 지난 계약 상태', await get('out-status'), '지남'); expect('묵시적 갱신 해지일', await get('out-terminate'), '2026-12-21');
+  await fresh('moving.html'); await page.fill('#moveDate', '2027-03-01'); expect('2027-03-01 이사 전입기한', await get('out-report'), '2027-03-15');
+
   // 요율 의존 — 1월에 요율을 바꾸면 아래 기대값도 바꿀 것
   await fresh('salary.html');
   await type('salary', '50000000');

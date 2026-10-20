@@ -12,14 +12,14 @@
 python3 tools/build/build.py
 ```
 
-등록부에서 108쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
+등록부에서 112쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
 같은 소스로 두 번 돌리면 결과가 같아야 합니다(멱등). 달라지면 버그입니다.
 
 - `site_core.py` — 등록부(TOOLS, TABLES, FORMS, REFS, GUIDES, HUBS, RATE_HISTORY)와 공통 틀.
   메뉴·사이트맵·홈 타일이 전부 여기서 나옵니다
 - `pages_new.py` / `pages_cgt.py` / `pages_tools2.py` — 계산기 본문
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽, 안내 글 4편
-- `pages_guides2.py` — 안내 글 24편
+- `pages_guides2.py` — 안내 글 28편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
 - `build.py` — 위를 모아 쓰고 `manifest.json`, `sw.js`, `sitemap.xml`, `js/analytics.js`를 생성
 
@@ -28,8 +28,8 @@ python3 tools/build/build.py
 
 ### 검색 제외 (noindex)
 
-108쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
-검색 대상은 95쪽입니다(2026-10-20). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
+112쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
+검색 대상은 99쪽입니다(2026-10-20). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
 
 - 용어 9쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
 - 용어 39쪽 중 30쪽은 1,000자 이상으로 늘려 검색에 되돌렸습니다: 대항력·확정일자·전세가율·DSR·LTV,
@@ -143,7 +143,8 @@ https://전국부동산계산기.com/guide-prepayment.html
 3. 빌드 → 검증 → 커밋
 
 `BASE_RATE`는 `RATE_HISTORY`의 마지막 값에서 나오고, 전환율·갱신 계산기 기본값과
-`js/conversion.js`·`js/renewal.js` 상수는 빌드가 주입합니다. 한 곳만 고치면 됩니다.
+`js/conversion.js`·`js/renewal.js` 상수, 안내 글 `guide-conversion.html`·`guide-base-rate-change.html`의
+"지금 기준금리" 문장은 빌드가 주입합니다. 한 곳만 고치면 됩니다.
 
 법정 전환율 = 기준금리 + 2%p (상한 10%)라서, 금리가 바뀌면 전월세 전환 상한도 바뀝니다.
 이게 세입자에게 실질적인 뉴스라 스레드·블로그에 올릴 거리가 됩니다.
@@ -154,7 +155,8 @@ https://전국부동산계산기.com/guide-prepayment.html
   2026-05-09로 유예 종료됨. 정부안에 2027년 +5/+10%p, 2028년 +10/+15%p 완화가 있으나
   **국회 통과 전이라 미반영**. 통과되면 양도 연도별로 바꿔야 함.
   안내 글 `guide-cgt-heavy.html`(2주택 양도세 중과)도 숫자와 「앞으로 바뀔 수 있는 것」 절을 고치고,
-  `tools/verify.js`의 양도세 기대값을 새로 뽑을 것
+  `tools/verify.js`의 양도세 기대값을 새로 뽑을 것.
+  비과세 한도(12억)나 장기보유특별공제가 바뀌면 `guide-cgt-high-price.html`도 다시 뽑을 것
 - 취득세: `js/acquisition-tax.js`. 바뀌면 `js/buy-vs-rent.js`의 `PRESET_ACQ_RATE`(8억 예시 버튼의
   취득세율, 현재 2.57%)도 취득세 계산기에 8억·1주택을 넣어 다시 뽑은 실효세율로 바꿀 것
 - 표: `tools/build/pages_tables.py`
