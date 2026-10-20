@@ -18,7 +18,8 @@
   var RENTAL_STATUS = [2, 10];       // 주택임대 사업장현황신고
   var INCOME_TAX = [5, 1, 5, 31];    // 종합소득세
 
-  function eom(d) { return new Date(d.getFullYear(), d.getMonth() + 1, 0); }
+  // 'N월 말일부터 M개월' 기한 = M개월 뒤 달의 말일. 말일에 addMonths를 하면 30일·31일이 엇갈려 하루 당겨지거나 다음 달로 넘어간다
+  function eomPlus(d, months) { return new Date(d.getFullYear(), d.getMonth() + months + 1, 0); }
   function addDays(d, n) { return new Date(d.getTime() + n * 86400000); }
   function mk(y, m, d) { return new Date(y, m - 1, d); }
   function dday(from, to) { var d = S.daysBetween(from, to); return d === 0 ? '오늘' : (d > 0 ? 'D-' + d : d + '일 지남'); }
@@ -34,14 +35,14 @@
     var today = S.today(), ev = [];
     if (i.acqDate) {
       var d;
-      if (i.acqCause === 'inherit') d = S.addMonths(eom(i.acqDate), ACQ_DEADLINE.inherit.eomMonths);
-      else if (i.acqCause === 'gift') d = S.addMonths(eom(i.acqDate), ACQ_DEADLINE.gift.eomMonths);
+      if (i.acqCause === 'inherit') d = eomPlus(i.acqDate, ACQ_DEADLINE.inherit.eomMonths);
+      else if (i.acqCause === 'gift') d = eomPlus(i.acqDate, ACQ_DEADLINE.gift.eomMonths);
       else d = addDays(i.acqDate, ACQ_DEADLINE.sale.days);
       ev.push({ date: d, name: '취득세 신고·납부 마감', desc: i.acqCause === 'inherit' ? '상속개시일이 속한 달의 말일부터 6개월' : (i.acqCause === 'gift' ? '취득일이 속한 달의 말일부터 3개월' : '취득일(잔금일)부터 60일'), where: '위택스·구청 세무과', key: 'acq' });
       if (i.acqCause !== 'inherit') ev.push({ date: addDays(i.acqDate, REGISTER_DAYS), name: '소유권이전등기 신청 기한', desc: '잔금일부터 60일 (부동산등기특별조치법)', where: '등기소·법무사', key: 'reg' });
     }
     if (i.saleDate) {
-      var p = S.addMonths(eom(i.saleDate), CGT_PRELIM_EOM_MONTHS);
+      var p = eomPlus(i.saleDate, CGT_PRELIM_EOM_MONTHS);
       ev.push({ date: p, name: '양도소득세 예정신고·납부 마감', desc: '양도일이 속한 달의 말일부터 2개월. 지방소득세도 같이 신고', where: '홈택스', key: 'cgt' });
       ev.push({ date: mk(i.saleDate.getFullYear() + 1, CGT_FINAL[2], CGT_FINAL[3]), name: '양도소득세 확정신고 마감', desc: '다음 해 5월 31일. 같은 해 2건 이상 양도 등 합산이 필요할 때', where: '홈택스', key: 'cgtf' });
     }

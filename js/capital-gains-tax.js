@@ -38,7 +38,8 @@
   // =================== 유틸 ===================
   function yearsBetween(a, b) { return S.monthsBetween(a, b) / 12; }
   function addYears(d, y) { var x = new Date(d.getTime()); x.setFullYear(x.getFullYear() + y); return x; }
-  function endOfMonth(d) { return new Date(d.getFullYear(), d.getMonth() + 1, 0); }
+  // 'N월 말일부터 M개월' 기한 = M개월 뒤 달의 말일. 말일에 addMonths를 하면 30일·31일이 엇갈려 하루 당겨지거나 다음 달로 넘어간다
+  function endOfMonthPlus(d, months) { return new Date(d.getFullYear(), d.getMonth() + months + 1, 0); }
   function progressive(base, addPct) {
     if (base <= 0) return { tax: 0, rate: 0, deduct: 0 };
     for (var i = 0; i < BRACKETS.length; i++) if (base <= BRACKETS[i][0]) {
@@ -209,8 +210,7 @@
     var total = determined + local + rural;
 
     // ---- 신고기한 ----
-    var due = i.dealType === 'gift_debt' ? new Date(endOfMonth(i.saleDate).getTime()) : endOfMonth(i.saleDate);
-    due = S.addMonths(due, i.dealType === 'gift_debt' ? 3 : 2);
+    var due = endOfMonthPlus(i.saleDate, i.dealType === 'gift_debt' ? 3 : 2);
 
     out.ok = true; out.rateLabel = chosen.label; out.rate = chosen.rate; out.computed = computed; out.redPct = redPct; out.reduction = reduction;
     out.rural = rural; out.determined = determined; out.local = local; out.total = total; out.due = due;
