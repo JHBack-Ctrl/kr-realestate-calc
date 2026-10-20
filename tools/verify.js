@@ -137,6 +137,16 @@ function near(label, got, want, tol) {
   expect('묵시적 갱신 해지 효력일', await get('out-terminate'), '2026-12-21');   // term-muksijeokgaesin.html (시계 9/21 + 3개월)
   await type('deposit', '10000000'); await type('rent', '500000'); expect('갱신 월세 50만 상한', await get('out-rent-cap'), '525,000');   // term-gwallibi.html
   await type('deposit', '300000000'); await type('rent', '0'); expect('전세 3억 갱신 상한', await get('out-dep-cap'), '315,000,000');
+  // guide-renewal-rent-increase.html — 기준금리 3%(전환율 5%)에서 보증금·월세를 섞어 바꿀 때의 환산 보증금
+  await page.fill('#baseRate', '3');
+  await type('rent', '62500'); expect('전세3억+월6.25만 환산', await get('out-equiv'), '315,000,000');
+  await type('rent', '100000'); expect('전세3억+월10만 환산', await get('out-equiv'), '324,000,000');
+  await type('deposit', '200000000'); await type('rent', '500000'); expect('2억/50만 환산', await get('out-equiv'), '320,000,000'); expect('2억/50만 환산 상한', await get('out-equiv-cap'), '336,000,000');
+  for (const [d, r, want] of [['210000000', '525000', '336,000,000'], ['200000000', '566666', '335,999,840'], ['200000000', '570000', '336,800,000'], ['100000000', '983333', '335,999,920'], ['100000000', '1000000', '340,000,000']]) {
+    await type('deposit', d); await type('rent', r); expect(`갱신 제안 ${d}/${r}`, await get('out-equiv'), want);
+  }
+  await type('deposit', '200000000'); await type('rent', '500000');
+  for (const [br, eq, cap] of [['2.75', '326,315,789', '342,631,579'], ['3.25', '314,285,714', '330,000,000']]) { await page.fill('#baseRate', br); expect(`갱신 기준 ${br} 환산`, await get('out-equiv'), eq); expect(`갱신 기준 ${br} 상한`, await get('out-equiv-cap'), cap); }
 
   await fresh('tax-calendar.html');
   await page.fill('#acqDate', '2026-08-15'); await page.fill('#saleDate', '2026-08-15');
@@ -161,11 +171,11 @@ function near(label, got, want, tol) {
   expect('고정 월상환', await get('out-fixed-pay'), '1,060,655'); expect('변동 첫달', await get('out-var-first'), '1,060,655'); expect('총이자 차이 0', await get('out-big'), '0');
   await page.fill('#varChange', '1'); expect('상승 시 고정 유리', (await get('out-kicker')).startsWith('고정'), true);
 
-  // 8억 예시 버튼 — 취득세율을 8억 1주택 실효세율(2.57%)로 채워야 한다. 지우기는 기본값 1.1%로 되돌린다.
+  // 8억 예시 버튼 — 취득세율을 8억 1주택 실효세율(2.56%)로 채워야 한다. 지우기는 기본값 1.1%로 되돌린다.
   await fresh('buy-vs-rent.html');
   await page.click('.chip[data-preset="flat"]');
-  expect('8억 예시 취득세율', await page.inputValue('#acqRate'), '2.57');
-  expect('매매 총비용', await get('out-buy-total'), '172,960,000'); expect('전세 총비용', await get('out-j-total'), '81,500,000'); expect('차이', await get('out-big'), '91,460,000'); expect('손익분기', await get('out-be'), '2.19%');
+  expect('8억 예시 취득세율', await page.inputValue('#acqRate'), '2.56');
+  expect('매매 총비용', await get('out-buy-total'), '172,880,000'); expect('전세 총비용', await get('out-j-total'), '81,500,000'); expect('차이', await get('out-big'), '91,380,000'); expect('손익분기', await get('out-be'), '2.19%');
   await page.click('.chip[data-preset="clear"]');
   expect('지우기 후 취득세율', await page.inputValue('#acqRate'), '1.1');
 
@@ -224,7 +234,7 @@ function near(label, got, want, tol) {
   await type('price', '150000000'); expect('복비 매매 1.5억', await get('out-fee'), '750,000');
   await radio('deal', 'jeonse'); await type('price', '80000000'); expect('복비 전세 8천 한도', await get('out-fee'), '300,000');
 
-  // table-acquisition-tax.html 계산 예시 — 6~9억 구간은 반올림이 필요 없는 7.5억만 쓴다
+  // table-acquisition-tax.html 계산 예시
   await fresh('acquisition-tax.html');
   const acq = async (label, price, sit, large, first, want) => {
     await page.selectOption('#situation', sit);
@@ -247,8 +257,16 @@ function near(label, got, want, tol) {
   await acq('취득세 6억 생애최초', '600000000', 'one', false, true, '4,600,000');
   await acq('취득세 4억 생애최초', '400000000', 'one', false, true, '2,400,000');
   // term-jeonyongmyeonjeok.html — 85㎡ 초과 농특세 0.2% (8억이면 160만원 차이)
-  await acq('취득세 8억 85이하', '800000000', 'one', false, false, '20,533,333'); const small = Number((await get('out-total')).replace(/,/g, ''));
-  await acq('취득세 8억 85초과', '800000000', 'one', true, false, '22,133,333'); expect('85㎡ 농특세 차이', Number((await get('out-total')).replace(/,/g, '')) - small, 1600000);
+  await acq('취득세 8억 85이하', '800000000', 'one', false, false, '20,504,000'); const small = Number((await get('out-total')).replace(/,/g, ''));
+  await acq('취득세 8억 85초과', '800000000', 'one', true, false, '22,104,000'); expect('85㎡ 농특세 차이', Number((await get('out-total')).replace(/,/g, '')) - small, 1600000);
+  // guide-acquisition-6-9.html — 6~9억 세율은 %로 소수점 둘째 자리까지 반올림(지방세법 제11조 제1항 제8호 나목).
+  // 반올림 없이 2.333…%를 곱하던 것(2026-10 수정) 회귀 방지. 6.7575억은 1.505% → 1.51%가 되는 경계
+  for (const [v, want] of [['610000000', '7,179,700'], ['650000000', '9,509,500'], ['700000000', '12,859,000'], ['850000000', '24,964,500'], ['890000000', '28,684,700'], ['910000000', '30,030,000']]) await acq(`취득세 ${v}`, v, 'one', false, false, want);
+  await acq('취득세 8억 세율', '800000000', 'one', false, false, '20,504,000'); expect('8억 취득세율', await get('out-tax-rate'), '2.33');
+  await type('price', '675750000'); expect('6.7575억 취득세율', await get('out-tax-rate'), '1.51');
+  await acq('취득세 7억 85초과', '700000000', 'one', true, false, '14,259,000');
+  await acq('취득세 7억 생애최초', '700000000', 'one', false, true, '10,859,000');
+  await acq('취득세 8억 생애최초', '800000000', 'one', false, true, '18,504,000');
 
   // guide-repayment.html 본문 — 30년 3억, 거치 1년
   await fresh('loan.html');
@@ -293,6 +311,12 @@ function near(label, got, want, tol) {
   await type('income', '50000000'); await page.fill('#months', '12');
   await type('rent', '600000'); expect('세액공제 월세 60만', await get('out-credit'), '1,224,000');
   await type('rent', '500000'); expect('세액공제 월세 50만', await get('out-credit'), '1,020,000');
+  // guide-rent-credit-refund.html — 총급여·월세별 1년 공제액, 한도 1,000만원, 8천 초과, 7개월, 전입 안 함
+  for (const [inc, r, want] of [['50000000', '400000', '816,000'], ['50000000', '900000', '1,700,000'], ['70000000', '600000', '1,080,000'], ['70000000', '900000', '1,500,000'], ['81000000', '600000', '0']]) {
+    await type('income', inc); await type('rent', r); expect(`세액공제 ${inc}/${r}`, await get('out-credit'), want);
+  }
+  await type('income', '50000000'); await type('rent', '600000'); await page.fill('#months', '7'); expect('세액공제 7개월', await get('out-credit'), '714,000');
+  await page.fill('#months', '12'); await toggle('moved'); expect('세액공제 전입 안 함', await get('out-credit'), '0');
 
   // guide-subscription-notice-date.html 본문 숫자 — 공고일만 바꿔 점수 변화
   await fresh('subscription.html');
@@ -477,6 +501,13 @@ function near(label, got, want, tol) {
   expect('연봉 국민연금', await get('out-pension'), '178,500'); expect('연봉 건강', await get('out-health'), '142,600'); expect('연봉 장기요양', await get('out-ltc'), '18,460'); expect('연봉 고용', await get('out-employ'), '35,700');
   expect('연봉 소득세', await get('out-tax'), '197,500'); expect('연봉 실수령', await get('out-net'), '3,574,157');
   expect('연봉 표 행수', await page.$$eval('#table-body tr', r => r.length), 14);
+  // guide-salary-raise.html — 기본값(비과세 20만, 본인 1명)에서 연봉별 월 실수령과 인상분
+  for (const [s, want] of [['40000000', '2,931,073'], ['43000000', '3,124,053'], ['45000000', '3,252,720'], ['53000000', '3,765,237'], ['55000000', '3,892,603'], ['60000000', '4,211,040'], ['63000000', '4,402,110'], ['65000000', '4,529,487'],
+                           ['70000000', '4,847,923'], ['71000000', '4,911,607'], ['75000000', '5,158,150'], ['76000000', '5,214,313'], ['80000000', '5,442,207'], ['83000000', '5,619,007'], ['85000000', '5,736,873'],
+                           ['100000000', '6,620,853'], ['103000000', '6,797,263'], ['105000000', '6,914,080']]) { await type('salary', s); expect(`실수령 ${s}`, await get('out-net'), want); }
+  await type('salary', '53000000'); expect('5,300만 국민연금', await get('out-pension'), '189,750'); expect('5,300만 건강', await get('out-health'), '151,580'); expect('5,300만 소득세', await get('out-tax'), '229,580');
+  await type('salary', '80000000'); expect('8,000만 국민연금 상한', await get('out-pension'), '286,650'); expect('8,000만 소득세', await get('out-tax'), '560,950');
+  await type('salary', '83000000'); expect('8,300만 국민연금 상한', await get('out-pension'), '286,650'); expect('8,300만 소득세', await get('out-tax'), '616,220');
 
   await fresh('severance.html');
   await page.fill('#join', '2016-09-17'); await page.fill('#leave', '2026-09-17'); await type('monthly', '3500000');

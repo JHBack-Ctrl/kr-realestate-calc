@@ -5,9 +5,9 @@
   var DEFAULT_YEARS = 5, DEFAULT_OPP = 3.0, DEFAULT_ACQ_RATE = 1.1, DEFAULT_BUY_FEE = 0.4, DEFAULT_JEONSE_FEE = 0.3, DEFAULT_PROP_TAX = 0.15; // % 단위 기본값
   var JEONSE_TERM_YEARS = 2; // 전세 계약 단위 (갱신 시 중개보수 재발생 가정 안 함)
   // 예시 버튼(8억)의 취득세율. acquisition-tax.html에 8억·1주택·85㎡ 이하를 넣은 실효세율
-  // (취득세 2.33% + 지방교육세). 기본값 1.1%는 6억 이하 세율이라 8억 예시에는 맞지 않는다.
-  // 취득세율이 바뀌면 이 값도 취득세 계산기로 다시 뽑을 것. 기준 2026-09.
-  var PRESET_ACQ_RATE = 2.57;
+  // (취득세 2.33% + 지방교육세 0.233% = 2,050만 4,000원 ÷ 8억). 기본값 1.1%는 6억 이하 세율이라 8억 예시에는 맞지 않는다.
+  // 취득세율이 바뀌면 이 값도 취득세 계산기로 다시 뽑을 것. 기준 2026-10(6~9억 세율 반올림 반영).
+  var PRESET_ACQ_RATE = 2.56;
 
   function pct(id) { return S.parseNonNegative($(id).value); }
   function readInput() {
