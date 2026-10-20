@@ -12,14 +12,14 @@
 python3 tools/build/build.py
 ```
 
-등록부에서 107쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
+등록부에서 108쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
 같은 소스로 두 번 돌리면 결과가 같아야 합니다(멱등). 달라지면 버그입니다.
 
 - `site_core.py` — 등록부(TOOLS, TABLES, FORMS, REFS, GUIDES, HUBS, RATE_HISTORY)와 공통 틀.
   메뉴·사이트맵·홈 타일이 전부 여기서 나옵니다
 - `pages_new.py` / `pages_cgt.py` / `pages_tools2.py` — 계산기 본문
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽, 안내 글 4편
-- `pages_guides2.py` — 안내 글 23편
+- `pages_guides2.py` — 안내 글 24편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
 - `build.py` — 위를 모아 쓰고 `manifest.json`, `sw.js`, `sitemap.xml`, `js/analytics.js`를 생성
 
@@ -28,15 +28,16 @@ python3 tools/build/build.py
 
 ### 검색 제외 (noindex)
 
-107쪽 중 18쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
-검색 대상은 89쪽입니다(2026-10-20). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
+108쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
+검색 대상은 95쪽입니다(2026-10-20). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
 
-- 용어 14쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
-- 용어 39쪽 중 25쪽은 1,000자 이상으로 늘려 검색에 되돌렸습니다: 대항력·확정일자·전세가율·DSR·LTV,
+- 용어 9쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
+- 용어 39쪽 중 30쪽은 1,000자 이상으로 늘려 검색에 되돌렸습니다: 대항력·확정일자·전세가율·DSR·LTV,
   계약갱신요구권·전월세 전환율·중개보수·중도상환수수료·취득세,
   깡통전세·근저당권·장기보유특별공제·스트레스 DSR·원리금균등,
   1세대 1주택 비과세·일시적 2주택·청약 가점제·전용면적·거치기간,
-  양도소득세·조정대상지역·우선변제권·묵시적 갱신·관리비
+  양도소득세·조정대상지역·우선변제권·묵시적 갱신·관리비,
+  재산세 과세기준일·계약금·중도금·잔금·부담부증여·이월과세·입주권·분양권
   늘린 용어의 계산 예시 숫자는 `tools/verify.js`가 계산기와 대조합니다
 - 애드센스가 "가치가 별로 없는 콘텐츠"로 거절했을 때(2026-10-05) 짧은 쪽을 품질 평가에서 빼려고 넣었습니다
 - 쪽과 주소는 그대로이고, 방문자는 메뉴·링크로 계속 볼 수 있습니다
