@@ -15,6 +15,15 @@
   function progressive(base) { if (base <= 0) return 0; for (var i = 0; i < BRACKETS.length; i++) if (base <= BRACKETS[i][0]) return base * BRACKETS[i][1] / 100 - BRACKETS[i][2]; }
   function serviceDeduction(n) { for (var i = 0; i < SERVICE_DEDUCTION.length; i++) { var r = SERVICE_DEDUCTION[i]; if (n <= r[0]) return r[2] + (n - r[3]) * r[1]; } }
   function convertedDeduction(x) { for (var i = 0; i < CONVERTED_DEDUCTION.length; i++) { var r = CONVERTED_DEDUCTION[i]; if (x <= r[0]) return r[2] + (x - r[3]) * r[1] / 100; } }
+  // 근속연수: 달력으로 꽉 찬 해를 세고, 1년 미만 끝수가 있으면 1년을 더한다(소득세법).
+  // 일수 ÷ 365를 올림하면 윤일 때문에 정확히 10년 근무(퇴직일 = 입사 기념일)가 11년이 된다.
+  function serviceYears(join, leave) {
+    if (!join || !leave || leave <= join) return 1;
+    var y = leave.getFullYear() - join.getFullYear();
+    if (S.addMonths(join, 12 * y) > leave) y--;
+    if (S.addMonths(join, 12 * y) < leave) y++;
+    return Math.max(1, y);
+  }
 
   function readInput() {
     return { join: S.parseDate($('join').value), leave: S.parseDate($('leave').value), monthly: S.parseMoney($('monthly').value), bonus: S.parseMoney($('bonus').value), leavePay: S.parseMoney($('leavePay').value), ordinary: S.parseMoney($('ordinary').value) };
@@ -31,7 +40,7 @@
     var eligible = days >= MIN_DAYS;
     var severance = eligible ? usedDaily * 30 * days / 365 : 0;
     // 퇴직소득세
-    var years = Math.max(1, Math.ceil(days / 365));
+    var years = serviceYears(i.join, i.leave);
     var sd = Math.min(severance, serviceDeduction(years));
     var converted = years > 0 ? (severance - sd) * 12 / years : 0;
     var cd = Math.min(converted, convertedDeduction(converted));
