@@ -297,7 +297,9 @@ def home():
                    "guide-subscription-notice-date.html": "청약 가점과 공고일",
                    "guide-cgt-heavy.html": "2주택 양도세 중과",
                    "guide-severance-tax.html": "퇴직금 세금과 근속연수",
-                   "guide-buying-costs.html": "집 살 때 드는 돈"}
+                   "guide-buying-costs.html": "집 살 때 드는 돈",
+                   "guide-mortgage-limit.html": "연봉별 대출 한도", "guide-cgt-high-price.html": "12억 넘는 집 양도세",
+                   "guide-base-rate-change.html": "기준금리와 내 대출", "guide-deposit-return.html": "보증금 못 받을 때"}
     ref = ("".join(f'<a class="tile" href="{f}" data-k="{n}">{tile_icon(f)}<span class="t">{GUIDE_SHORT.get(f, n)}</span></a>'
                    for (f, n, _t, _d) in GUIDES)
            + "".join(tile(f, n, "") for (f, n, _t, _d, _c, _s) in REFS if f != "guides.html"))
