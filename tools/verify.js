@@ -134,6 +134,8 @@ function near(label, got, want, tol) {
   expect('갱신 D-day', await get('out-big'), dday(2026, 12, 31));
   expect('보증금 5%', await get('out-dep-cap'), '52,500,000'); expect('월세 5%', await get('out-rent-cap'), '630,000'); expect('환산 상한', await get('out-equiv-cap'), '203,700,000');
   expect('환산 보증금', await get('out-equiv'), '194,000,000');   // term-gaesinyogugwon.html
+  expect('묵시적 갱신 해지 효력일', await get('out-terminate'), '2026-12-21');   // term-muksijeokgaesin.html (시계 9/21 + 3개월)
+  await type('deposit', '10000000'); await type('rent', '500000'); expect('갱신 월세 50만 상한', await get('out-rent-cap'), '525,000');   // term-gwallibi.html
   await type('deposit', '300000000'); await type('rent', '0'); expect('전세 3억 갱신 상한', await get('out-dep-cap'), '315,000,000');
 
   await fresh('tax-calendar.html');
@@ -141,6 +143,13 @@ function near(label, got, want, tol) {
   expect('세금달력 다음', await get('out-next-name'), '취득세 신고·납부 마감'); expect('세금달력 날짜', await get('out-next-date'), '2026-10-14');
   expect('세금달력 D', await get('out-big'), dday(2026, 10, 14)); expect('세금달력 건수', await get('out-count'), '4');
   const rows = await page.$$eval('#event-body tr th', ths => ths.map(t => t.textContent)); expect('양도세 예정신고', rows.includes('2026-10-31'), true);
+  // '말일부터 N개월'은 N개월 뒤 달의 말일. 말일에 월을 더하면 30·31일이 엇갈려 틀리던 것(2026-10 수정) 회귀 방지
+  const evDates = async () => page.$$eval('#event-body tr th', ths => ths.map(t => t.textContent));
+  await page.fill('#saleDate', '2026-06-15'); expect('예정신고 6월 양도 → 8/31', (await evDates()).includes('2026-08-31'), true);
+  await page.fill('#saleDate', '2026-11-02'); expect('예정신고 11월 양도 → 1/31', (await evDates()).includes('2027-01-31'), true);
+  await page.fill('#saleDate', '2026-12-10'); expect('예정신고 12월 양도 → 2/28', (await evDates()).includes('2027-02-28'), true);
+  await page.selectOption('#acqCause', 'gift'); await page.fill('#acqDate', '2026-08-15'); expect('증여 취득세 8월 → 11/30', (await evDates()).includes('2026-11-30'), true);
+  await page.selectOption('#acqCause', 'inherit'); await page.fill('#acqDate', '2026-08-15'); expect('상속 취득세 8월 → 2/28', (await evDates()).includes('2027-02-28'), true);
 
   await fresh('moving.html');
   await page.fill('#moveDate', '2026-10-01');
@@ -227,6 +236,9 @@ function near(label, got, want, tol) {
   await acq('취득세 8억 조정2', '800000000', 'adj2', false, false, '67,200,000');
   await acq('취득세 8억 조정3', '800000000', 'adj3', false, false, '99,200,000');
   await acq('취득세 3억 생애최초', '300000000', 'one', false, true, '1,300,000');
+  // term-jojeongdaesangjiyeok.html — 6억 두 번째 집
+  await acq('취득세 6억 비조정 2주택', '600000000', 'nonadj2', false, false, '6,600,000');
+  await acq('취득세 6억 조정 2주택', '600000000', 'adj2', false, false, '50,400,000');
   // term-jeonyongmyeonjeok.html — 85㎡ 초과 농특세 0.2% (8억이면 160만원 차이)
   await acq('취득세 8억 85이하', '800000000', 'one', false, false, '20,533,333'); const small = Number((await get('out-total')).replace(/,/g, ''));
   await acq('취득세 8억 85초과', '800000000', 'one', true, false, '22,133,333'); expect('85㎡ 농특세 차이', Number((await get('out-total')).replace(/,/g, '')) - small, 1600000);
@@ -257,6 +269,15 @@ function near(label, got, want, tol) {
   // term-jeonyongmyeonjeok.html
   for (const [m2, py] of [['59', '17.85'], ['84', '25.41'], ['114', '34.49']]) { await page.fill('#sqm', m2); expect(`${m2}㎡ 평`, await get('out-pyeong'), py); }
   await radio('priceUnit', 'pyeong'); await type('price', '800000000'); await page.fill('#area', '34'); near('8억 공급34평 평당', await get('out-per-pyeong'), 23529412, 1);
+
+  // term-gwallibi.html — 월세·관리비 나누기: 실부담은 같고 세액공제는 다름
+  await fresh('rent.html');
+  for (const [r, m] of [['600000', '100000'], ['500000', '200000']]) { await type('rent', r); await type('maint', m); await type('deposit', '10000000'); await page.fill('#rate', '3'); expect(`실부담 ${r}+${m}`, await get('out-monthly'), '725,000'); }
+  await fresh('rent-tax-credit.html');
+  for (const id of ['homeless', 'housing', 'moved']) if (!(await page.isChecked('#' + id))) await page.evaluate(i => { const e = document.getElementById(i); e.checked = true; e.dispatchEvent(new Event('change', { bubbles: true })); }, id);
+  await type('income', '50000000'); await page.fill('#months', '12');
+  await type('rent', '600000'); expect('세액공제 월세 60만', await get('out-credit'), '1,224,000');
+  await type('rent', '500000'); expect('세액공제 월세 50만', await get('out-credit'), '1,020,000');
 
   // guide-subscription-notice-date.html 본문 숫자 — 공고일만 바꿔 점수 변화
   await fresh('subscription.html');
@@ -341,6 +362,7 @@ function near(label, got, want, tol) {
     expect(label, await get('out-total'), want);
   };
   await cgt('양도세 비조정 2주택 차익4억', { homes: '2', adj: false }, '111,166,000');
+  expect('양도세 예정신고 기한 11/2 양도', (await page.textContent('#judge-list')).includes('2027-01-31'), true);
   await cgt('양도세 조정 2주택 중과', { homes: '2', adj: true }, '233,816,000');
   await cgt('양도세 조정 3주택 중과', { homes: '3', adj: true }, '277,541,000');
   await cgt('양도세 1주택 비과세', { homes: '1', adj: false }, '0');

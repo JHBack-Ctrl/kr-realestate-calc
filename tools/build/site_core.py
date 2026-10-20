@@ -364,7 +364,8 @@ NOINDEX_PAGES = {"tables.html", "forms.html", "refs.html", "404.html"}   # 카�
 TERMS_INDEXED = {"daehangryeok", "hwakjeongilja", "jeonsegayul", "dsr", "ltv",
                  "gaesinyogugwon", "jeonwolse-jeonhwanyul", "junggaebosu", "jungdosanghwan", "chwideukse",
                  "kkangtongjeonse", "geunjeodanggwon", "jangteukgongje", "stress-dsr", "wonrigeum-gyundeung",
-                 "ilsegae-iljutaek", "ilsijeok-2jutaek", "cheongyak-gajeom", "jeonyongmyeonjeok", "geochigigan"}   # 1,000자 이상으로 늘려 검색에 되돌린 용어 (2026-10)
+                 "ilsegae-iljutaek", "ilsijeok-2jutaek", "cheongyak-gajeom", "jeonyongmyeonjeok", "geochigigan",
+                 "yangdose", "jojeongdaesangjiyeok", "useonbyeonjegwon", "muksijeokgaesin", "gwallibi"}   # 1,000자 이상으로 늘려 검색에 되돌린 용어 (2026-10)
 
 def is_noindex(path):
     if path in NOINDEX_PAGES: return True
