@@ -21,8 +21,10 @@
   function stdRate(price) {
     if (price <= STD_LOW_CAP) return STD_LOW;
     if (price > STD_HIGH_FLOOR) return STD_HIGH;
-    // 6억 초과 9억 이하: (취득가액 × 2/3억 − 3) / 100 → %로 표현
-    return price / 100000000 * 2 / 3 - 3;
+    // 6억 초과 9억 이하: (취득가액 × 2/3억 − 3) / 100. 지방세법 제11조 제1항 제8호 나목에 따라
+    // 소수점 이하 다섯째 자리에서 반올림해 넷째 자리까지 → %로는 둘째 자리(8억 = 2.33%).
+    // %×100 = 취득가액 ÷ 150만 − 300 으로 계산해 .5 경계에서 부동소수 오차로 내림되지 않게 한다.
+    return Math.round(price / 1500000 - 300 + 1e-9) / 100;
   }
   function calc(i) {
     var out = { taxRate: 0, eduRate: 0, ruralRate: 0, kind: '' };
