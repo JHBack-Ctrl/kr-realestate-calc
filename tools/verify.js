@@ -216,6 +216,9 @@ function near(label, got, want, tol) {
   expect('복비 월세 70배', await get('out-fee'), '165,000');
   await radio('kind', 'officetel'); await radio('deal', 'sale'); await type('price', '300000000');
   expect('복비 오피스텔 3억', await get('out-fee'), '1,500,000');
+  // guide-buying-costs.html — 주택 매매 상한과 부가세
+  await radio('kind', 'house'); await radio('deal', 'sale');
+  for (const [v, fee, vat] of [['600000000', '2,400,000', '240,000'], ['750000000', '3,000,000', '300,000'], ['900000000', '4,500,000', '450,000']]) { await type('price', v); expect(`복비 ${v}`, await get('out-fee'), fee); expect(`복비 부가세 ${v}`, await get('out-vat'), vat); }
   // table-brokerage-fee.html 계산 예시 중 한도액 행
   await radio('kind', 'house'); await type('price', '45000000'); expect('복비 매매 4,500만 한도', await get('out-fee'), '250,000');
   await type('price', '150000000'); expect('복비 매매 1.5억', await get('out-fee'), '750,000');
@@ -239,6 +242,10 @@ function near(label, got, want, tol) {
   // term-jojeongdaesangjiyeok.html — 6억 두 번째 집
   await acq('취득세 6억 비조정 2주택', '600000000', 'nonadj2', false, false, '6,600,000');
   await acq('취득세 6억 조정 2주택', '600000000', 'adj2', false, false, '50,400,000');
+  // guide-buying-costs.html
+  await acq('취득세 9억 85초과', '900000000', 'one', true, false, '31,500,000');
+  await acq('취득세 6억 생애최초', '600000000', 'one', false, true, '4,600,000');
+  await acq('취득세 4억 생애최초', '400000000', 'one', false, true, '2,400,000');
   // term-jeonyongmyeonjeok.html — 85㎡ 초과 농특세 0.2% (8억이면 160만원 차이)
   await acq('취득세 8억 85이하', '800000000', 'one', false, false, '20,533,333'); const small = Number((await get('out-total')).replace(/,/g, ''));
   await acq('취득세 8억 85초과', '800000000', 'one', true, false, '22,133,333'); expect('85㎡ 농특세 차이', Number((await get('out-total')).replace(/,/g, '')) - small, 1600000);
@@ -252,6 +259,14 @@ function near(label, got, want, tol) {
   await radio('method', 'annuity'); expect('원리금 60회 잔액', (await sched(60))[4], '271,342,539'); expect('원리금 120회 잔액', (await sched(120))[4], '236,351,878'); expect('원리금 120회 이자', (await sched(120))[3], '789,980');
   await radio('method', 'principal'); expect('원금 60회 잔액', (await sched(60))[4], '250,000,000'); expect('원금 120회 납입', (await sched(120))[1], '1,502,778');
   expect('만기일시 총이자', await get('c-bu-int'), '360,000,000');
+  // guide-buying-costs.html — 상환 스케줄 1~12회 합계
+  const year1 = async () => page.$$eval('#schedule tr', rs => { let i = 0, pay = 0; for (const r of rs) { const c = r.children; const k = parseInt(c[0] && c[0].textContent); if (k >= 1 && k <= 12) { i += Number(c[3].textContent.replace(/,/g, '')); pay += Number(c[1].textContent.replace(/,/g, '')); } } return i + '/' + pay; });
+  await radio('method', 'annuity'); expect('첫해 원리금균등 이자/납입', await year1(), '11903842/17186952');
+  await radio('method', 'principal'); expect('첫해 원금균등 이자/납입', await year1(), '11816666/21816667');
+  await radio('method', 'bullet'); expect('첫해 만기일시', await year1(), '12000000/12000000');
+  await radio('method', 'annuity');
+  await type('principal', '420000000'); expect('4.2억 월 상환', await get('c-an-first'), '2,005,144'); expect('4.2억 첫해 이자', (await year1()).split('/')[0], '16665378');
+  await type('principal', '300000000');
   // term-geochigigan.html — 3억 4% 30년 거치 1년·3년
   await page.fill('#grace', '12'); expect('거치1년 후 상환', await get('c-an-last'), '1,457,920'); expect('거치1년 총이자', await get('c-an-int'), '219,356,298');
   await page.fill('#grace', '36'); expect('거치3년 후 상환', await get('c-an-last'), '1,515,625'); expect('거치3년 총이자', await get('c-an-int'), '227,062,355');
@@ -386,6 +401,24 @@ function near(label, got, want, tol) {
   await cgt('일시적2 3년 안', { homes: '2', adj: false, special: 'temp2', newHome: '2024-06-01' }, '0');
   await cgt('일시적2 3년 넘음', { homes: '2', adj: false, special: 'temp2', newHome: '2023-06-01' }, '111,166,000');
   await cgt('일시적2 1년 안 지나 취득', { homes: '2', adj: false, acq: '2024-01-01', special: 'temp2', newHome: '2024-06-01' }, '146,366,000');
+
+  // term-budambujeungyeo · term-iwolgwase · term-ipjugwon-bunyanggwon — 부담부증여·증여 취득·분양권
+  const cgt2 = async (label, o, want) => {
+    await fresh('capital-gains-tax.html');
+    await page.selectOption('#kind', o.kind || 'house'); await page.selectOption('#dealType', o.deal || 'sale'); await page.selectOption('#acqCause', o.cause || 'buy');
+    await page.fill('#acqDate', o.acq); await type('acqPrice', o.acqPrice); await page.fill('#saleDate', '2026-11-02'); await type('salePrice', o.salePrice);
+    if (o.deal === 'gift_debt') { await type('giftValue', o.giftValue); await type('debt', o.debt); }
+    if (o.cause === 'gift') { await page.selectOption('#donorRel', o.rel); await page.fill('#donorDate', o.donorDate); await type('donorPrice', o.donorPrice); }
+    if (!o.kind) await page.selectOption('#homes', '2');
+    expect(label, await get('out-total'), want);
+  };
+  await cgt2('일반 매매 10억', { acq: '2016-06-01', acqPrice: '500000000', salePrice: '1000000000' }, '146,366,000');
+  await cgt2('부담부증여 채무 4억', { deal: 'gift_debt', acq: '2016-06-01', acqPrice: '500000000', salePrice: '1000000000', giftValue: '1000000000', debt: '400000000' }, '43,901,000');
+  expect('부담부증여 신고기한 3개월', (await page.textContent('#judge-list')).includes('2027-02-28'), true);
+  await cgt2('이월과세 배우자', { cause: 'gift', acq: '2024-06-01', acqPrice: '600000000', salePrice: '900000000', rel: 'spouse_lineal', donorDate: '2018-06-01', donorPrice: '300000000' }, '192,159,000');
+  await cgt2('이월과세 아님', { cause: 'gift', acq: '2024-06-01', acqPrice: '600000000', salePrice: '900000000', rel: 'other', donorDate: '2018-06-01', donorPrice: '300000000' }, '102,421,000');
+  await cgt2('분양권 10개월', { kind: 'right_sale', acq: '2026-01-10', acqPrice: '500000000', salePrice: '600000000' }, '75,075,000');
+  await cgt2('분양권 1년10개월', { kind: 'right_sale', acq: '2025-01-10', acqPrice: '500000000', salePrice: '600000000' }, '64,350,000');
 
   // 요율 의존 — 1월에 요율을 바꾸면 아래 기대값도 바꿀 것
   await fresh('salary.html');

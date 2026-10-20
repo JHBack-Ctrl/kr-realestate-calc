@@ -179,6 +179,8 @@ GUIDES = [
      "2026년 5월 10일 양도분부터 조정대상지역 다주택 중과가 다시 적용됩니다. 차익 4억원짜리 집을 팔 때 비조정지역 2주택 1억 1,117만원, 조정대상지역 2주택 2억 3,382만원, 3주택 2억 7,754만원으로 달라지는 이유와 차익·보유기간별 차이, 중과 여부를 확인할 항목을 양도세 계산기로 정리했습니다."),
     ("guide-severance-tax.html", "퇴직금 세금, 같은 금액이라도 근속연수가 정한다", "퇴직소득세 계산 — 근속연수공제·환산급여공제, 근속 5·10·20·30년 세금 비교",
      "퇴직소득세는 퇴직금 액수보다 근속연수에 크게 좌우됩니다. 월 350만원으로 10년 일한 퇴직금 3,426만원의 세금은 33만원, 같은 금액을 5년 만에 받으면 113만원입니다. 계산 다섯 단계와 근속연수공제표, 근속별 세금, IRP로 받을 때 달라지는 점을 퇴직금 계산기로 정리했습니다."),
+    ("guide-buying-costs.html", "집 살 때 집값 말고 드는 돈", "아파트 살 때 부대비용 — 6억·7억 5천·9억 취득세, 중개보수, 대출이자 첫해",
+     "아파트를 살 때 집값 외에 드는 돈을 취득세·중개보수·대출이자로 나눠 계산했습니다. 6억원이면 924만원, 7억 5천만원이면 1,980만원, 9억원이면 3,465만원으로 집값보다 훨씬 빠르게 늘어나는 이유와 생애최초 감면, 85㎡ 초과, 계산기에 없는 비용, 내는 시점을 정리했습니다."),
 ]
 DOCS = [
     ("about.html", "사이트 소개"), ("privacy.html", "개인정보처리방침"), ("terms.html", "이용약관"),
@@ -365,7 +367,8 @@ TERMS_INDEXED = {"daehangryeok", "hwakjeongilja", "jeonsegayul", "dsr", "ltv",
                  "gaesinyogugwon", "jeonwolse-jeonhwanyul", "junggaebosu", "jungdosanghwan", "chwideukse",
                  "kkangtongjeonse", "geunjeodanggwon", "jangteukgongje", "stress-dsr", "wonrigeum-gyundeung",
                  "ilsegae-iljutaek", "ilsijeok-2jutaek", "cheongyak-gajeom", "jeonyongmyeonjeok", "geochigigan",
-                 "yangdose", "jojeongdaesangjiyeok", "useonbyeonjegwon", "muksijeokgaesin", "gwallibi"}   # 1,000자 이상으로 늘려 검색에 되돌린 용어 (2026-10)
+                 "yangdose", "jojeongdaesangjiyeok", "useonbyeonjegwon", "muksijeokgaesin", "gwallibi",
+                 "jaesanse", "jangam-jungdogeum", "budambujeungyeo", "iwolgwase", "ipjugwon-bunyanggwon"}   # 1,000자 이상으로 늘려 검색에 되돌린 용어 (2026-10)
 
 def is_noindex(path):
     if path in NOINDEX_PAGES: return True
