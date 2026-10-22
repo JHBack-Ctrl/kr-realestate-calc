@@ -301,7 +301,9 @@ def home():
                    "guide-mortgage-limit.html": "연봉별 대출 한도", "guide-cgt-high-price.html": "12억 넘는 집 양도세",
                    "guide-base-rate-change.html": "기준금리와 내 대출", "guide-deposit-return.html": "보증금 못 받을 때",
                    "guide-renewal-rent-increase.html": "갱신 5% 상한 계산", "guide-rent-credit-refund.html": "월세 공제 돌려받기",
-                   "guide-acquisition-6-9.html": "6억~9억 취득세", "guide-salary-raise.html": "연봉 인상과 실수령"}
+                   "guide-acquisition-6-9.html": "6억~9억 취득세", "guide-salary-raise.html": "연봉 인상과 실수령",
+                   "guide-refinance.html": "대출 갈아타기 손익분기", "guide-temporary-two-homes.html": "일시적 2주택 3년",
+                   "guide-jeonse-ratio.html": "전세가율과 집값 하락", "guide-cgt-filing.html": "양도세 신고 기한"}
     ref = ("".join(f'<a class="tile" href="{f}" data-k="{n}">{tile_icon(f)}<span class="t">{GUIDE_SHORT.get(f, n)}</span></a>'
                    for (f, n, _t, _d) in GUIDES)
            + "".join(tile(f, n, "") for (f, n, _t, _d, _c, _s) in REFS if f != "guides.html"))
