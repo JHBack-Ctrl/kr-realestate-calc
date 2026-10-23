@@ -12,14 +12,14 @@
 python3 tools/build/build.py
 ```
 
-등록부에서 116쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
+등록부에서 120쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
 같은 소스로 두 번 돌리면 결과가 같아야 합니다(멱등). 달라지면 버그입니다.
 
 - `site_core.py` — 등록부(TOOLS, TABLES, FORMS, REFS, GUIDES, HUBS, RATE_HISTORY)와 공통 틀.
   메뉴·사이트맵·홈 타일이 전부 여기서 나옵니다
 - `pages_new.py` / `pages_cgt.py` / `pages_tools2.py` — 계산기 본문
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽, 안내 글 4편
-- `pages_guides2.py` — 안내 글 32편
+- `pages_guides2.py` — 안내 글 36편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
 - `build.py` — 위를 모아 쓰고 `manifest.json`, `sw.js`, `sitemap.xml`, `js/analytics.js`를 생성
 
@@ -28,8 +28,8 @@ python3 tools/build/build.py
 
 ### 검색 제외 (noindex)
 
-116쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
-검색 대상은 103쪽입니다(2026-10-20). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
+120쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
+검색 대상은 107쪽입니다(2026-10-22). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
 
 - 용어 9쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
 - 용어 39쪽 중 30쪽은 1,000자 이상으로 늘려 검색에 되돌렸습니다: 대항력·확정일자·전세가율·DSR·LTV,
@@ -157,7 +157,8 @@ https://전국부동산계산기.com/guide-prepayment.html
   **국회 통과 전이라 미반영**. 통과되면 양도 연도별로 바꿔야 함.
   안내 글 `guide-cgt-heavy.html`(2주택 양도세 중과)도 숫자와 「앞으로 바뀔 수 있는 것」 절을 고치고,
   `tools/verify.js`의 양도세 기대값을 새로 뽑을 것.
-  비과세 한도(12억)나 장기보유특별공제가 바뀌면 `guide-cgt-high-price.html`도 다시 뽑을 것
+  비과세 한도(12억)나 장기보유특별공제가 바뀌면 `guide-cgt-high-price.html`도 다시 뽑을 것.
+  중과·일시적 2주택 기한(`TEMP_TWO_YEARS`)이 바뀌면 `guide-temporary-two-homes.html`의 조정지역 숫자도 다시 뽑을 것
 - 취득세: `js/acquisition-tax.js`. 바뀌면 `js/buy-vs-rent.js`의 `PRESET_ACQ_RATE`(8억 예시 버튼의
   취득세율, 현재 2.56%)도 취득세 계산기에 8억·1주택을 넣어 다시 뽑은 실효세율로 바꿀 것.
   안내 글 `guide-acquisition-tax.html`·`guide-acquisition-6-9.html`·`guide-buying-costs.html`의 숫자도 다시 뽑을 것
@@ -183,7 +184,8 @@ https://전국부동산계산기.com/guide-prepayment.html
 
 - 조정대상지역 지정·해제 → 취득세·양도세 계산기는 사용자가 직접 고르므로 코드 수정은 불필요.
   다만 안내 글에 예시로 적힌 지역이 있으면 확인
-- HUG 전세보증보험 요건 → `js/jeonse-insurance.js`의 `DEPOSIT_CAP`, `LTV_CAP`, `SENIOR_CAP`
+- HUG 전세보증보험 요건 → `js/jeonse-insurance.js`의 `DEPOSIT_CAP`, `LTV_CAP`, `SENIOR_CAP`.
+  바뀌면 `guide-jeonse-ratio.html`·`guide-jeonse-insurance-fail.html`의 상한 숫자도 다시 뽑을 것
 - 중개보수 요율 → 거의 안 바뀜
 
 ## 원칙
