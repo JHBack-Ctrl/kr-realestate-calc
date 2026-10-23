@@ -102,9 +102,11 @@ function near(label, got, want, tol) {
       const ids = [...document.querySelectorAll('[id]')].map(e => e.id); const dup = ids.filter((x, i) => ids.indexOf(x) !== i);
       if (dup.length) bad.push('dup-id:' + [...new Set(dup)].join(','));
       const robots = document.querySelector('meta[name=robots]');
-      return { bad, links, noindex: !!(robots && /noindex/.test(robots.content)), sw: document.documentElement.scrollWidth, text: document.body.innerText.length };
+      const desc = document.querySelector('meta[name=description]');
+      return { bad, links, noindex: !!(robots && /noindex/.test(robots.content)), sw: document.documentElement.scrollWidth, text: document.body.innerText.length, desc: desc ? desc.content.length : 0 };
     });
     if (r.sw > 391) r.bad.push('overflow390=' + r.sw);
+    if (r.desc > 160) r.bad.push('description=' + r.desc + '자');   // 검색 결과에서 잘리지 않게 160자 이내
     // 사이트맵과 noindex가 엇갈리면 안 된다. 안내 글과 홈은 반드시 검색에 들어가야 한다.
     if (SITEMAP.has(f) === r.noindex) r.bad.push(r.noindex ? 'noindex인데 사이트맵에 있음' : '사이트맵에 없는데 noindex 아님');
     if ((f.startsWith('guide-') || f === 'index.html') && r.noindex) r.bad.push('안내 글·홈이 noindex');
@@ -500,6 +502,36 @@ function near(label, got, want, tol) {
   await page.fill('#rate', '4.25'); expect('5천 금리4.25 한도', await get('out-dsr'), '285,597,016');
   await page.fill('#rate', '4.75'); expect('5천 금리4.75 한도', await get('out-dsr'), '270,687,040');
 
+  // 2025-10-15 대책 이후 가산: 지방 0.75%p, 수도권·규제지역 3.0%p. guide-mortgage-limit·guide-dsr-ltv·guide-base-rate-change·guide-refinance,
+  // term-dsr·term-ltv·term-stress-dsr 본문 숫자. 1.5%p를 '현재'로 쓰던 것(2026-10 수정) 회귀 방지
+  await page.fill('#rate', '4.5'); await page.fill('#years', '30'); await page.fill('#dsr', '40'); await type('existing', '0');
+  for (const [inc, s075, s3, mon3] of [['40000000', '241,456,790', '190,690,170', '966,199'], ['50000000', '301,820,987', '238,362,712', '1,207,749'], ['60000000', '362,185,185', '286,035,255', '1,449,299'],
+                                       ['80000000', '482,913,580', '381,380,340', '1,932,398'], ['100000000', '603,641,975', '476,725,424', '2,415,498']]) {
+    await type('income', inc); await page.fill('#stress', '0.75'); expect(`연봉 ${inc} 지방`, await get('out-dsr'), s075);
+    await page.fill('#stress', '3'); expect(`연봉 ${inc} 수도권`, await get('out-dsr'), s3); expect(`연봉 ${inc} 수도권 월상환`, await get('out-monthly'), mon3);
+  }
+  await type('income', '50000000');
+  await page.fill('#years', '40'); expect('5천 수도권 40년', await get('out-dsr'), '253,265,583'); await page.fill('#years', '30');
+  for (const [rt, want] of [['4', '250,512,613'], ['4.25', '244,316,127'], ['4.75', '232,640,728']]) { await page.fill('#rate', rt); expect(`5천 수도권 ${rt}%`, await get('out-dsr'), want); }
+  await page.fill('#stress', '0.75'); await page.fill('#rate', '4'); expect('5천 지방 4%', await get('out-dsr'), '319,500,657'); await page.fill('#rate', '4.5'); await page.fill('#stress', '3');
+  await page.fill('#dsr', '50'); expect('5천 수도권 DSR50', await get('out-dsr'), '297,953,390'); await page.fill('#dsr', '40');
+  await type('existing', '6000000'); expect('5천 수도권 기존 600만', await get('out-dsr'), '166,853,899'); await type('existing', '0');
+  // LTV가 먼저 걸리는 경우와 규제지역 LTV 40%
+  await type('value', '600000000');
+  await type('income', '100000000'); expect('6억 1억 수도권 → LTV', await get('out-limit'), '420,000,000'); expect('6억 1억 수도권 기준', (await get('out-binding')).startsWith('LTV'), true);
+  await type('income', '80000000'); expect('6억 8천 수도권 → DSR', (await get('out-binding')).startsWith('DSR'), true);
+  await page.fill('#stress', '0.75'); expect('6억 8천 지방 → LTV', (await get('out-binding')).startsWith('LTV'), true); await page.fill('#stress', '3');
+  await page.fill('#ltv', '40'); expect('6억 규제지역 8천', await get('out-limit'), '240,000,000');
+  await type('income', '60000000'); await type('value', '800000000'); expect('8억 규제지역 LTV', await get('out-ltv'), '320,000,000'); expect('8억 6천 수도권 DSR', await get('out-dsr'), '286,035,255');
+  // 금액 상한 칸: 연봉 2억, 시가 20억, 상한 4억이면 상한이 한도
+  await type('income', '200000000'); await type('value', '2000000000'); await type('cap', '400000000');
+  expect('금액 상한 한도', await get('out-limit'), '400,000,000'); expect('금액 상한 기준', (await get('out-binding')).startsWith('금액 상한'), true); expect('연봉 2억 수도권 DSR', await get('out-dsr'), '953,450,849');
+  await page.fill('#cap', ''); await page.fill('#ltv', '70');
+  // 기본값과 예시 버튼
+  await fresh('dsr.html'); expect('스트레스 기본값', await page.inputValue('#stress'), '3.0');
+  await page.click('.chip[data-preset="local"]'); expect('지방 예시 가산', await page.inputValue('#stress'), '0.75'); expect('지방 예시 한도', await get('out-limit'), '316,912,037');
+  await page.click('.chip[data-preset="reg"]'); expect('규제지역 예시 LTV', await page.inputValue('#ltv'), '40'); expect('규제지역 예시 상한', await page.inputValue('#cap'), '600,000,000'); expect('규제지역 예시 한도', await get('out-limit'), '381,380,340');
+
   // guide-base-rate-change.html — 30년 원리금균등 월 상환과 총이자, 만기일시 이자
   await fresh('loan.html');
   await radio('method', 'annuity'); await page.fill('#months', '360'); await page.fill('#grace', '0');
@@ -550,16 +582,18 @@ function near(label, got, want, tol) {
   // 요율 의존 — 1월에 요율을 바꾸면 아래 기대값도 바꿀 것
   await fresh('salary.html');
   await type('salary', '50000000');
-  expect('연봉 국민연금', await get('out-pension'), '178,500'); expect('연봉 건강', await get('out-health'), '142,600'); expect('연봉 장기요양', await get('out-ltc'), '18,460'); expect('연봉 고용', await get('out-employ'), '35,700');
-  expect('연봉 소득세', await get('out-tax'), '197,500'); expect('연봉 실수령', await get('out-net'), '3,574,157');
+  // 2026년: 국민연금 4.75%(상·하한 659만·41만, 2026.7~), 장기요양 건보료의 13.14%. 4.5%·12.95%로 계산하던 것(2026-10 수정) 회귀 방지
+  expect('연봉 국민연금', await get('out-pension'), '188,410'); expect('연봉 건강', await get('out-health'), '142,600'); expect('연봉 장기요양', await get('out-ltc'), '18,730'); expect('연봉 고용', await get('out-employ'), '35,700');
+  expect('연봉 소득세', await get('out-tax'), '195,970'); expect('연봉 실수령', await get('out-net'), '3,565,667');   // guide-salary-net.html
   expect('연봉 표 행수', await page.$$eval('#table-body tr', r => r.length), 14);
   // guide-salary-raise.html — 기본값(비과세 20만, 본인 1명)에서 연봉별 월 실수령과 인상분
-  for (const [s, want] of [['40000000', '2,931,073'], ['43000000', '3,124,053'], ['45000000', '3,252,720'], ['53000000', '3,765,237'], ['55000000', '3,892,603'], ['60000000', '4,211,040'], ['63000000', '4,402,110'], ['65000000', '4,529,487'],
-                           ['70000000', '4,847,923'], ['71000000', '4,911,607'], ['75000000', '5,158,150'], ['76000000', '5,214,313'], ['80000000', '5,442,207'], ['83000000', '5,619,007'], ['85000000', '5,736,873'],
-                           ['100000000', '6,620,853'], ['103000000', '6,797,263'], ['105000000', '6,914,080']]) { await type('salary', s); expect(`실수령 ${s}`, await get('out-net'), want); }
-  await type('salary', '53000000'); expect('5,300만 국민연금', await get('out-pension'), '189,750'); expect('5,300만 건강', await get('out-health'), '151,580'); expect('5,300만 소득세', await get('out-tax'), '229,580');
-  await type('salary', '80000000'); expect('8,000만 국민연금 상한', await get('out-pension'), '286,650'); expect('8,000만 소득세', await get('out-tax'), '560,950');
-  await type('salary', '83000000'); expect('8,300만 국민연금 상한', await get('out-pension'), '286,650'); expect('8,300만 소득세', await get('out-tax'), '616,220');
+  for (const [s, want] of [['40000000', '2,924,343'], ['43000000', '3,116,803'], ['45000000', '3,245,110'], ['53000000', '3,756,197'], ['55000000', '3,883,213'], ['60000000', '4,200,750'], ['63000000', '4,391,280'], ['65000000', '4,518,297'],
+                           ['70000000', '4,835,853'], ['71000000', '4,899,347'], ['75000000', '5,146,720'], ['76000000', '5,202,723'], ['80000000', '5,426,787'], ['83000000', '5,599,267'], ['85000000', '5,717,113'],
+                           ['100000000', '6,601,043'], ['103000000', '6,777,423'], ['105000000', '6,894,240'], ['110000000', '7,187,877']]) { await type('salary', s); expect(`실수령 ${s}`, await get('out-net'), want); }
+  await type('salary', '53000000'); expect('5,300만 국민연금', await get('out-pension'), '200,290'); expect('5,300만 건강', await get('out-health'), '151,580'); expect('5,300만 소득세', await get('out-tax'), '227,950');
+  await type('salary', '80000000'); expect('8,000만 국민연금', await get('out-pension'), '307,160'); expect('8,000만 소득세', await get('out-tax'), '555,920');
+  await type('salary', '83000000'); expect('8,300만 국민연금 상한', await get('out-pension'), '313,020'); expect('8,300만 소득세', await get('out-tax'), '609,780');
+  await page.fill('#family', '4'); await type('salary', '50000000'); expect('5천 가족 4명 소득세', await get('out-tax'), '139,720'); await page.fill('#family', '1');   // guide-salary-net.html 「약 6만원」
 
   await fresh('severance.html');
   await page.fill('#join', '2016-09-17'); await page.fill('#leave', '2026-09-17'); await type('monthly', '3500000');

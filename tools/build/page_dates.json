@@ -1,0 +1,602 @@
+{
+ "404.html": {
+  "hash": "b282e8541295",
+  "modified": "2026-09-17",
+  "published": "2026-09-17"
+ },
+ "about.html": {
+  "hash": "f8cfc75dc191",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "acquisition-tax.html": {
+  "hash": "7370a649c217",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "area.html": {
+  "hash": "af21f087c1ce",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "base-rate-history.html": {
+  "hash": "5c1a18296aef",
+  "modified": "2026-10-23",
+  "published": "2026-09-17"
+ },
+ "buy-vs-rent.html": {
+  "hash": "615d199bca2c",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "capital-gains-tax.html": {
+  "hash": "7df63b8dd3f5",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "checklist.html": {
+  "hash": "3501973e8c6b",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "conversion.html": {
+  "hash": "5f6c03babc8b",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "dsr.html": {
+  "hash": "1afe9622e129",
+  "modified": "2026-10-23",
+  "published": "2026-09-17"
+ },
+ "fee.html": {
+  "hash": "f69bc90107f6",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "form-notice.html": {
+  "hash": "f45c8c9a05bb",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "form-rent-receipt.html": {
+  "hash": "a15fff107be6",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "form-special-terms.html": {
+  "hash": "f0c3d9cfb978",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "forms.html": {
+  "hash": "84a06a8cf2fa",
+  "modified": "2026-09-20",
+  "published": "2026-09-20"
+ },
+ "glossary.html": {
+  "hash": "3bc81674fbe2",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "guide-acquisition-6-9.html": {
+  "hash": "005003e803ba",
+  "modified": "2026-10-21",
+  "published": "2026-10-21"
+ },
+ "guide-acquisition-tax.html": {
+  "hash": "3e599ed4a194",
+  "modified": "2026-10-23",
+  "published": "2026-09-20"
+ },
+ "guide-area-84.html": {
+  "hash": "00097b72e7ca",
+  "modified": "2026-10-06",
+  "published": "2026-09-20"
+ },
+ "guide-base-rate-change.html": {
+  "hash": "447b2a42b1aa",
+  "modified": "2026-10-23",
+  "published": "2026-10-21"
+ },
+ "guide-brokerage.html": {
+  "hash": "ff26b01f740c",
+  "modified": "2026-10-06",
+  "published": "2026-09-17"
+ },
+ "guide-buy-vs-rent.html": {
+  "hash": "500cbd81985f",
+  "modified": "2026-09-30",
+  "published": "2026-09-30"
+ },
+ "guide-buying-costs.html": {
+  "hash": "9b5782222d22",
+  "modified": "2026-10-21",
+  "published": "2026-10-21"
+ },
+ "guide-cgt-exemption.html": {
+  "hash": "e7dd326bf2ec",
+  "modified": "2026-09-20",
+  "published": "2026-09-20"
+ },
+ "guide-cgt-filing.html": {
+  "hash": "62eb802e66f3",
+  "modified": "2026-10-23",
+  "published": "2026-10-23"
+ },
+ "guide-cgt-heavy.html": {
+  "hash": "ab2c01ef2c8a",
+  "modified": "2026-10-16",
+  "published": "2026-10-16"
+ },
+ "guide-cgt-high-price.html": {
+  "hash": "c427d59fca5b",
+  "modified": "2026-10-21",
+  "published": "2026-10-21"
+ },
+ "guide-conversion.html": {
+  "hash": "a48536da6acb",
+  "modified": "2026-10-06",
+  "published": "2026-09-17"
+ },
+ "guide-deposit-return.html": {
+  "hash": "49d34de3ddd9",
+  "modified": "2026-10-21",
+  "published": "2026-10-21"
+ },
+ "guide-deposit-vs-rent.html": {
+  "hash": "74451f9c706d",
+  "modified": "2026-09-30",
+  "published": "2026-09-30"
+ },
+ "guide-dsr-ltv.html": {
+  "hash": "7a1d2d923b63",
+  "modified": "2026-10-23",
+  "published": "2026-09-20"
+ },
+ "guide-fixed-vs-variable.html": {
+  "hash": "1af828497d94",
+  "modified": "2026-09-20",
+  "published": "2026-09-20"
+ },
+ "guide-jeonse-insurance-fail.html": {
+  "hash": "53b0fbfe820d",
+  "modified": "2026-09-20",
+  "published": "2026-09-20"
+ },
+ "guide-jeonse-ratio.html": {
+  "hash": "501051285a11",
+  "modified": "2026-10-23",
+  "published": "2026-10-23"
+ },
+ "guide-jeonse-registry.html": {
+  "hash": "b637fc6341a2",
+  "modified": "2026-09-20",
+  "published": "2026-09-20"
+ },
+ "guide-jeonse-vs-monthly.html": {
+  "hash": "68b82c15c490",
+  "modified": "2026-10-06",
+  "published": "2026-09-17"
+ },
+ "guide-loan-rate-structure.html": {
+  "hash": "af5c3ccbaa42",
+  "modified": "2026-09-21",
+  "published": "2026-09-21"
+ },
+ "guide-mortgage-limit.html": {
+  "hash": "aec22cc2d0f9",
+  "modified": "2026-10-23",
+  "published": "2026-10-21"
+ },
+ "guide-moving-14days.html": {
+  "hash": "2ddaca06e26b",
+  "modified": "2026-09-22",
+  "published": "2026-09-22"
+ },
+ "guide-officetel.html": {
+  "hash": "d01a7a72c6df",
+  "modified": "2026-09-21",
+  "published": "2026-09-21"
+ },
+ "guide-prepayment.html": {
+  "hash": "869fdd3702fe",
+  "modified": "2026-09-21",
+  "published": "2026-09-21"
+ },
+ "guide-property-tax.html": {
+  "hash": "25ce52a30439",
+  "modified": "2026-09-21",
+  "published": "2026-09-21"
+ },
+ "guide-refinance.html": {
+  "hash": "85b5be3ddea6",
+  "modified": "2026-10-23",
+  "published": "2026-10-23"
+ },
+ "guide-renewal-refusal.html": {
+  "hash": "51e7e93616fc",
+  "modified": "2026-09-20",
+  "published": "2026-09-20"
+ },
+ "guide-renewal-rent-increase.html": {
+  "hash": "2240fcc29a31",
+  "modified": "2026-10-21",
+  "published": "2026-10-21"
+ },
+ "guide-rent-credit-refund.html": {
+  "hash": "57abb66f3885",
+  "modified": "2026-10-21",
+  "published": "2026-10-21"
+ },
+ "guide-rent-tax-credit-who.html": {
+  "hash": "c85dccdd9cb0",
+  "modified": "2026-09-20",
+  "published": "2026-09-20"
+ },
+ "guide-repayment.html": {
+  "hash": "c8176ff56a3c",
+  "modified": "2026-10-06",
+  "published": "2026-09-17"
+ },
+ "guide-salary-net.html": {
+  "hash": "049a2e463780",
+  "modified": "2026-10-23",
+  "published": "2026-09-20"
+ },
+ "guide-salary-raise.html": {
+  "hash": "8c9c62f82634",
+  "modified": "2026-10-23",
+  "published": "2026-10-21"
+ },
+ "guide-severance-tax.html": {
+  "hash": "8e7a2ebdcba1",
+  "modified": "2026-10-20",
+  "published": "2026-10-20"
+ },
+ "guide-severance.html": {
+  "hash": "4d5360c0df02",
+  "modified": "2026-10-20",
+  "published": "2026-09-20"
+ },
+ "guide-subscription-notice-date.html": {
+  "hash": "175d2a96f2b0",
+  "modified": "2026-10-01",
+  "published": "2026-10-01"
+ },
+ "guide-subscription-points.html": {
+  "hash": "d175d1f79840",
+  "modified": "2026-09-20",
+  "published": "2026-09-20"
+ },
+ "guide-temporary-two-homes.html": {
+  "hash": "96c425513167",
+  "modified": "2026-10-23",
+  "published": "2026-10-23"
+ },
+ "guide-yield-vacancy.html": {
+  "hash": "cf9cd89c2310",
+  "modified": "2026-09-27",
+  "published": "2026-09-27"
+ },
+ "guides.html": {
+  "hash": "c721e0a034e9",
+  "modified": "2026-10-23",
+  "published": "2026-09-17"
+ },
+ "index.html": {
+  "hash": "18d7b9f5a226",
+  "modified": "2026-10-23",
+  "published": "2026-09-17"
+ },
+ "jeonse-fraud-check.html": {
+  "hash": "557df9172369",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "jeonse-insurance.html": {
+  "hash": "be037b0bd7f6",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "loan.html": {
+  "hash": "fec5ea56b2ef",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "moving.html": {
+  "hash": "fc7ab65945d6",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "policy.html": {
+  "hash": "e6a8c4f70ab3",
+  "modified": "2026-09-21",
+  "published": "2026-09-17"
+ },
+ "prepayment.html": {
+  "hash": "f2d47696b797",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "privacy.html": {
+  "hash": "ed5a2e0e3533",
+  "modified": "2026-09-17",
+  "published": "2026-09-17"
+ },
+ "rate-compare.html": {
+  "hash": "ce9238c980eb",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "refs.html": {
+  "hash": "8ef8f7e77cda",
+  "modified": "2026-10-23",
+  "published": "2026-09-20"
+ },
+ "renewal.html": {
+  "hash": "3e5db8956a6b",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "rent-tax-credit.html": {
+  "hash": "da5587f55b65",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "rent.html": {
+  "hash": "5c741eb918d4",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "salary.html": {
+  "hash": "be3f7fe3bd91",
+  "modified": "2026-10-23",
+  "published": "2026-09-17"
+ },
+ "severance.html": {
+  "hash": "97a78d20684a",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "subscription.html": {
+  "hash": "90b0112651d1",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "table-acquisition-tax.html": {
+  "hash": "8b0978b9af51",
+  "modified": "2026-10-16",
+  "published": "2026-09-17"
+ },
+ "table-brokerage-fee.html": {
+  "hash": "1ebfe01098ae",
+  "modified": "2026-10-16",
+  "published": "2026-09-17"
+ },
+ "table-capital-gains-tax.html": {
+  "hash": "a559bd8fdf9b",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "table-subscription-points.html": {
+  "hash": "6d15c7c5dadb",
+  "modified": "2026-10-16",
+  "published": "2026-09-17"
+ },
+ "tables.html": {
+  "hash": "5afa93ae91c5",
+  "modified": "2026-09-20",
+  "published": "2026-09-20"
+ },
+ "tax-calendar.html": {
+  "hash": "80a35908e762",
+  "modified": "2026-10-23",
+  "published": "2026-09-17"
+ },
+ "term-budambujeungyeo.html": {
+  "hash": "856dcfea6839",
+  "modified": "2026-10-21",
+  "published": "2026-09-17"
+ },
+ "term-cheongyak-gajeom.html": {
+  "hash": "f6b2c7cbe929",
+  "modified": "2026-10-20",
+  "published": "2026-09-17"
+ },
+ "term-choeuseonbyeonje.html": {
+  "hash": "ae2c68dbb751",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "term-chwideukse.html": {
+  "hash": "11d1b42998ab",
+  "modified": "2026-10-16",
+  "published": "2026-09-17"
+ },
+ "term-daehangryeok.html": {
+  "hash": "c5409d8a2498",
+  "modified": "2026-10-16",
+  "published": "2026-09-17"
+ },
+ "term-deunggibu.html": {
+  "hash": "32ce154bc90c",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "term-dsr.html": {
+  "hash": "5bd61d6176e0",
+  "modified": "2026-10-23",
+  "published": "2026-09-17"
+ },
+ "term-dti.html": {
+  "hash": "5e6656577b9e",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "term-gaapryu.html": {
+  "hash": "9d788a846d1e",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "term-gaesinyogugwon.html": {
+  "hash": "89f1851f22a5",
+  "modified": "2026-10-16",
+  "published": "2026-09-17"
+ },
+ "term-geochigigan.html": {
+  "hash": "7cee36727235",
+  "modified": "2026-10-20",
+  "published": "2026-09-17"
+ },
+ "term-geunjeodanggwon.html": {
+  "hash": "3454c1bba25b",
+  "modified": "2026-10-16",
+  "published": "2026-09-17"
+ },
+ "term-gwallibi.html": {
+  "hash": "15c2b39f0a3d",
+  "modified": "2026-10-21",
+  "published": "2026-09-17"
+ },
+ "term-hwakjeongilja.html": {
+  "hash": "3a0c40c0accf",
+  "modified": "2026-10-16",
+  "published": "2026-09-17"
+ },
+ "term-ilsegae-iljutaek.html": {
+  "hash": "51c839ee0b41",
+  "modified": "2026-10-20",
+  "published": "2026-09-17"
+ },
+ "term-ilsijeok-2jutaek.html": {
+  "hash": "fe6e5932eb00",
+  "modified": "2026-10-20",
+  "published": "2026-09-17"
+ },
+ "term-imchagwondeunggi.html": {
+  "hash": "f63fe7f3a3d1",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "term-ipjugwon-bunyanggwon.html": {
+  "hash": "24614cdc970b",
+  "modified": "2026-10-21",
+  "published": "2026-09-17"
+ },
+ "term-iwolgwase.html": {
+  "hash": "00213efbed7c",
+  "modified": "2026-10-21",
+  "published": "2026-09-17"
+ },
+ "term-jaesanse.html": {
+  "hash": "33e7959b579d",
+  "modified": "2026-10-21",
+  "published": "2026-09-17"
+ },
+ "term-jangam-jungdogeum.html": {
+  "hash": "e92ab3086ba6",
+  "modified": "2026-10-21",
+  "published": "2026-09-17"
+ },
+ "term-jangteukgongje.html": {
+  "hash": "3a355e2551f0",
+  "modified": "2026-10-16",
+  "published": "2026-09-17"
+ },
+ "term-jeonsegayul.html": {
+  "hash": "f37d61ee3f96",
+  "modified": "2026-10-16",
+  "published": "2026-09-17"
+ },
+ "term-jeonsegwon.html": {
+  "hash": "216c6f61ad4a",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "term-jeonwolse-jeonhwanyul.html": {
+  "hash": "9c90d7fb32fe",
+  "modified": "2026-10-16",
+  "published": "2026-09-17"
+ },
+ "term-jeonyongmyeonjeok.html": {
+  "hash": "656f10ea1a39",
+  "modified": "2026-10-20",
+  "published": "2026-09-17"
+ },
+ "term-jojeongdaesangjiyeok.html": {
+  "hash": "ded947974f49",
+  "modified": "2026-10-21",
+  "published": "2026-09-17"
+ },
+ "term-jongbuse.html": {
+  "hash": "fcab0bca6fb3",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "term-jungdosanghwan.html": {
+  "hash": "d5be98973ac7",
+  "modified": "2026-10-16",
+  "published": "2026-09-17"
+ },
+ "term-junggaebosu.html": {
+  "hash": "8f02416127d1",
+  "modified": "2026-10-16",
+  "published": "2026-09-17"
+ },
+ "term-kkangtongjeonse.html": {
+  "hash": "ac36dab9e3e2",
+  "modified": "2026-10-16",
+  "published": "2026-09-17"
+ },
+ "term-ltv.html": {
+  "hash": "978e5167dd4e",
+  "modified": "2026-10-23",
+  "published": "2026-09-17"
+ },
+ "term-muksijeokgaesin.html": {
+  "hash": "81f87f8a1720",
+  "modified": "2026-10-21",
+  "published": "2026-09-17"
+ },
+ "term-sintak.html": {
+  "hash": "42df64b5959a",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "term-stress-dsr.html": {
+  "hash": "440655bf8cbd",
+  "modified": "2026-10-23",
+  "published": "2026-09-17"
+ },
+ "term-teugyak.html": {
+  "hash": "ab42325c868f",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ },
+ "term-useonbyeonjegwon.html": {
+  "hash": "0af4badfb2a3",
+  "modified": "2026-10-21",
+  "published": "2026-09-17"
+ },
+ "term-wonrigeum-gyundeung.html": {
+  "hash": "efb0b5e4152a",
+  "modified": "2026-10-16",
+  "published": "2026-09-17"
+ },
+ "term-yangdose.html": {
+  "hash": "764df0f0cee9",
+  "modified": "2026-10-21",
+  "published": "2026-09-17"
+ },
+ "terms.html": {
+  "hash": "92e68afa0460",
+  "modified": "2026-09-17",
+  "published": "2026-09-17"
+ },
+ "yield.html": {
+  "hash": "2456bff4de6d",
+  "modified": "2026-09-20",
+  "published": "2026-09-17"
+ }
+}
