@@ -69,7 +69,7 @@
       "name": "스트레스 금리가 뭔가요?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "DSR을 계산할 때 실제 금리에 가산 금리를 더해 상환액을 크게 잡는 제도입니다. 금리가 오를 때를 대비해 한도를 보수적으로 잡습니다. 실제로 내는 이자에는 붙지 않습니다. 가산폭은 단계적으로 커져 왔고 지역과 대출 종류에 따라 다릅니다. 기본값 1.5%p는 예시이며 은행 안내 값을 넣으세요."
+        "text": "DSR을 계산할 때 실제 금리에 가산 금리를 더해 상환액을 크게 잡는 제도입니다. 금리가 오를 때를 대비해 한도를 보수적으로 잡습니다. 실제로 내는 이자에는 붙지 않습니다. 가산폭은 단계적으로 커져 왔고 지역과 대출 종류에 따라 다릅니다. 2025년 10월 15일부터 수도권·규제지역 주택담보대출은 3.0%p, 지방은 1.5%p의 절반인 0.75%p가 붙습니다(변동금리 기준, 2026년 하반기). 고정금리 기간이 긴 상품은 더 낮게 붙습니다. 기본값 3.0%p는 수도권 변동금리 기준이니 은행 안내 값을 넣으세요."
       }
     },
     {
@@ -85,7 +85,7 @@
       "name": "LTV 비율은 몇 퍼센트를 넣어야 하나요?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "규제지역 여부, 주택 가격, 무주택·생애최초 여부에 따라 다릅니다. 시점마다 바뀌므로 이 계산기는 값을 정해주지 않고 직접 넣게 했습니다. 은행 상담이나 금융위원회 발표 자료에서 본인 조건의 LTV를 확인해 입력하세요. 예시 버튼의 값은 대략적인 감을 잡기 위한 것입니다."
+        "text": "규제지역 여부, 주택 가격, 무주택·생애최초 여부에 따라 다릅니다. 2025년 10월 15일부터 서울 전역과 경기 12곳이 규제지역이 되어 LTV가 40%이고, 생애최초 구입은 70%입니다. 그 밖의 지역은 대체로 70%입니다. 수도권·규제지역은 시가 15억원 이하 6억원, 25억원 이하 4억원, 25억원 초과 2억원의 금액 상한도 붙습니다. 은행 상담이나 금융위원회 발표 자료에서 본인 조건의 LTV를 확인해 입력하세요. 예시 버튼의 값은 대략적인 감을 잡기 위한 것입니다."
       }
     }
   ]
@@ -154,7 +154,7 @@
             <h2 id="calc-title">입력</h2>
             <span class="muted" style="font-size:13px">입력 즉시 재계산</span>
           </div>
-          <div class="chips" role="group" aria-label="예시 값 채우기"><button type="button" class="chip" data-preset="nonreg">비규제지역 예시</button><button type="button" class="chip" data-preset="reg">규제지역 예시</button><button type="button" class="chip" data-preset="clear">비우기</button></div>
+          <div class="chips" role="group" aria-label="예시 값 채우기"><button type="button" class="chip" data-preset="local">지방 예시</button><button type="button" class="chip" data-preset="reg">서울·규제지역 예시</button><button type="button" class="chip" data-preset="clear">비우기</button></div>
           <form id="calc-form" novalidate>
             <fieldset>
               <legend>소득과 담보</legend>
@@ -168,7 +168,7 @@
               <div class="field">
                 <label for="ltv">적용 LTV</label>
                 <div class="input-wrap"><input id="ltv" type="number" inputmode="decimal" step="1" min="0" max="100" value="70"><span class="suffix">%</span></div>
-                <p class="field-help">규제지역·가격·무주택 여부에 따라 다름</p>
+                <p class="field-help">규제지역 40%(생애최초 70%), 그 밖은 대체로 70%</p>
               </div>              <div class="field">
                 <label for="senior">선순위 채권</label>
                 <div class="input-wrap"><input id="senior" type="text" inputmode="numeric" autocomplete="off" placeholder="0" value="0" data-money><span class="suffix">원</span></div>
@@ -181,6 +181,10 @@
                 <label for="existing">기존 대출 연간 원리금 상환액</label>
                 <div class="input-wrap"><input id="existing" type="text" inputmode="numeric" autocomplete="off" placeholder="0" value="0" data-money><span class="suffix">원</span></div>
                 <p class="field-help">신용대출·할부 등 모든 대출의 1년치 원리금 합계</p>
+              </div>              <div class="field">
+                <label for="cap">주담대 금액 상한 (해당 시)</label>
+                <div class="input-wrap"><input id="cap" type="text" inputmode="numeric" autocomplete="off" placeholder="비우면 미적용" data-money><span class="suffix">원</span></div>
+                <p class="field-help">수도권·규제지역: 시가 15억 이하 6억, 25억 이하 4억, 초과 2억</p>
               </div>              <div class="grid-2">
               <div class="field">
                 <label for="rate">신규 대출 금리</label>
@@ -190,8 +194,8 @@
                 <div class="input-wrap"><input id="years" type="number" inputmode="decimal" step="1" min="0" max="50" value="30"><span class="suffix">년</span></div>
               </div>              <div class="field">
                 <label for="stress">스트레스 가산</label>
-                <div class="input-wrap"><input id="stress" type="number" inputmode="decimal" step="0.1" min="0" value="1.5"><span class="suffix">%p</span></div>
-                <p class="field-help">DSR 계산에만 더하는 금리</p>
+                <div class="input-wrap"><input id="stress" type="number" inputmode="decimal" step="0.05" min="0" value="3.0"><span class="suffix">%p</span></div>
+                <p class="field-help">수도권·규제지역 3.0%p, 지방 0.75%p (변동금리)</p>
               </div>              <div class="field">
                 <label for="dsr">DSR 한도</label>
                 <div class="input-wrap"><input id="dsr" type="number" inputmode="decimal" step="1" min="0" max="100" value="40"><span class="suffix">%</span></div>
@@ -225,6 +229,7 @@
           <ul class="ref-list">
             <li><p class="t">LTV 한도</p><p class="d" id="bd-ltv-formula"></p></li>
             <li><p class="t">DSR 한도</p><p class="d" id="bd-dsr-formula"></p></li>
+            <li><p class="t">금액 상한</p><p class="d" id="bd-cap"></p></li>
             <li><p class="t">상환액 가정</p><p class="d" id="bd-stress"></p></li>
           </ul>
         </section>
@@ -238,9 +243,11 @@
 <h3>DSR, 소득 기준</h3>
 <p>총부채원리금상환비율입니다. 모든 대출의 연간 원리금 상환액을 연소득으로 나눈 비율이 한도(은행 40%, 제2금융권 50%)를 넘지 않아야 합니다. 연소득 6,000만원이면 연 상환액 2,400만원까지입니다. 기존 대출 상환액을 빼고 남은 여력으로 신규 대출 원리금을 역산하면 소득 기준 한도가 나옵니다.</p>
 <h3>스트레스 DSR</h3>
-<p>DSR 계산 때만 금리에 가산폭을 더합니다. 4.5% 대출에 1.5%p를 더하면 6%로 상환액을 계산해 한도가 줄어듭니다. 실제 이자는 4.5%로 냅니다. 이 계산기는 한도는 스트레스 금리로, 월 상환액은 실제 금리로 각각 보여줍니다.</p>
+<p>DSR 계산 때만 금리에 가산폭을 더합니다. 4.5% 대출에 3.0%p를 더하면 7.5%로 상환액을 계산해 한도가 줄어듭니다. 실제 이자는 4.5%로 냅니다. 이 계산기는 한도는 스트레스 금리로, 월 상환액은 실제 금리로 각각 보여줍니다.</p>
+<h3>금액 상한</h3>
+<p>수도권과 규제지역 주택담보대출은 LTV·DSR과 별도로 금액 상한이 있습니다. 시가 15억원 이하 6억원, 15억원 초과 25억원 이하 4억원, 25억원 초과 2억원입니다(2025년 10월 15일부터). 해당하면 금액 상한 칸에 넣으세요. 세 한도 중 가장 낮은 금액이 예상 한도입니다.</p>
 <h3>이 계산기가 반영하지 않는 것</h3>
-<ul><li>신용등급에 따른 한도 조정과 금리 차등</li><li>전세대출·중도금대출 등 상품별 별도 규정</li><li>DTI, 총량 규제, 은행별 내규</li><li>소득 인정 방식(증빙소득·인정소득·신고소득) 차이</li></ul>
+<ul><li>신용등급에 따른 한도 조정과 금리 차등</li><li>전세대출·중도금대출 등 상품별 별도 규정(수도권·규제지역 1주택자의 전세대출 이자는 DSR에 들어갑니다)</li><li>DTI, 총량 규제, 은행별 내규</li><li>소득 인정 방식(증빙소득·인정소득·신고소득) 차이</li></ul>
 <p>규제는 자주 바뀝니다. 비율과 가산폭은 모두 화면에서 고칠 수 있게 두었으니 은행 안내 값을 넣고 참고하세요. 최종 한도는 은행 심사로 정해집니다.</p>
       </div>
     </section>
@@ -259,7 +266,7 @@
           <summary>스트레스 금리가 뭔가요?</summary>
           <div class="a">
           <p>DSR을 계산할 때 실제 금리에 가산 금리를 더해 상환액을 크게 잡는 제도입니다. 금리가 오를 때를 대비해 한도를 보수적으로 잡습니다. 실제로 내는 이자에는 붙지 않습니다.</p>
-          <p>가산폭은 단계적으로 커져 왔고 지역과 대출 종류에 따라 다릅니다. 기본값 1.5%p는 예시이며 은행 안내 값을 넣으세요.</p>
+          <p>가산폭은 단계적으로 커져 왔고 지역과 대출 종류에 따라 다릅니다. 2025년 10월 15일부터 수도권·규제지역 주택담보대출은 3.0%p, 지방은 1.5%p의 절반인 0.75%p가 붙습니다(변동금리 기준, 2026년 하반기). 고정금리 기간이 긴 상품은 더 낮게 붙습니다. 기본값 3.0%p는 수도권 변동금리 기준이니 은행 안내 값을 넣으세요.</p>
           </div>
         </details>
         <details>
@@ -272,7 +279,7 @@
         <details>
           <summary>LTV 비율은 몇 퍼센트를 넣어야 하나요?</summary>
           <div class="a">
-          <p>규제지역 여부, 주택 가격, 무주택·생애최초 여부에 따라 다릅니다. 시점마다 바뀌므로 이 계산기는 값을 정해주지 않고 직접 넣게 했습니다.</p>
+          <p>규제지역 여부, 주택 가격, 무주택·생애최초 여부에 따라 다릅니다. 2025년 10월 15일부터 서울 전역과 경기 12곳이 규제지역이 되어 LTV가 40%이고, 생애최초 구입은 70%입니다. 그 밖의 지역은 대체로 70%입니다. 수도권·규제지역은 시가 15억원 이하 6억원, 25억원 이하 4억원, 25억원 초과 2억원의 금액 상한도 붙습니다.</p>
           <p>은행 상담이나 금융위원회 발표 자료에서 본인 조건의 LTV를 확인해 입력하세요. 예시 버튼의 값은 대략적인 감을 잡기 위한 것입니다.</p>
           </div>
         </details>

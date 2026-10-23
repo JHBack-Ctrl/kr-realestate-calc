@@ -158,7 +158,7 @@ write("sw.js", sw)
 # sitemap
 def url(f, freq, pri):
     if is_noindex(f): return ""   # 검색 제외 쪽은 사이트맵에도 넣지 않는다 (site_core.is_noindex)
-    return f"  <url>\n    <loc>{BASE + ('' if f == 'index.html' else f)}</loc>\n    <lastmod>{TODAY}</lastmod>\n    <changefreq>{freq}</changefreq>\n    <priority>{pri}</priority>\n  </url>\n"
+    return f"  <url>\n    <loc>{BASE + ('' if f == 'index.html' else f)}</loc>\n    <lastmod>{PAGE_DATES[f]['modified']}</lastmod>\n    <changefreq>{freq}</changefreq>\n    <priority>{pri}</priority>\n  </url>\n"
 sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
 sm += url("index.html", "weekly", "1.0")
 for t in TOOLS: sm += url(t[0], "monthly", "0.9")
@@ -172,4 +172,5 @@ for f in TERM_HTML: sm += url(f, "monthly", "0.6")
 for d in DOCS: sm += url(d[0], "yearly", "0.3")
 sm += "</urlset>\n"
 write("sitemap.xml", sm)
+save_page_dates()
 print("완료")

@@ -11,7 +11,7 @@ def article(path, h1, lead, blocks, cta, related_tools):
         <p class="eyebrow">Guide</p>
         <h1>{h1}</h1>
         <p class="lead">{lead}</p>
-        <p class="meta">전국부동산계산기 · {TODAY.replace("-", ".")} · 참고용 설명이며 금융·세무·법률 자문이 아닙니다</p>
+        <p class="meta">전국부동산계산기 · {DATE_LINE} · 참고용 설명이며 금융·세무·법률 자문이 아닙니다</p>
       </section>
       <section class="card">
         <div class="prose">

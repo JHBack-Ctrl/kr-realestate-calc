@@ -14,7 +14,7 @@ def table_page(idx, eyebrow, sub, body_sections, related_paths):
       <h2 id="rel-title">이 표를 쓰는 계산기</h2>
       <div class="tool-grid">{rel}</div>
     </section>'''
-    ld = jsonld({"@context": "https://schema.org", "@type": "Dataset", "name": name, "description": desc, "url": BASE + f, "inLanguage": "ko-KR", "dateModified": TODAY,
+    ld = jsonld({"@context": "https://schema.org", "@type": "Dataset", "name": name, "description": desc, "url": BASE + f, "inLanguage": "ko-KR", "dateModified": DATE_MOD,
                  "creator": {"@type": "Organization", "name": "전국부동산계산기", "url": BASE}, "isAccessibleForFree": True})
     return page(title, desc, f, main, extra_head=ld + breadcrumb_ld(name, f), disclaimer="본 표는 참고용이며 법령 개정에 따라 바뀔 수 있습니다. 금융·세무·법률 자문이 아닙니다.")
 

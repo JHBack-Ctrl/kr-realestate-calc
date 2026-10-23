@@ -63,6 +63,7 @@ def tax_calendar_page():
         "<h3>거래할 때 한 번</h3><p>살 때 취득세(60일), 팔 때 양도소득세 예정신고(양도 달 말일부터 2개월). 이 둘은 날짜가 거래일에 따라 정해지므로 위에 잔금일을 넣어 확인하세요.</p>",
         "<h3>가지고 있는 동안 매년</h3><p>6월 1일 기준으로 재산세(7월·9월)와 종합부동산세(12월)가 나옵니다. 재산세는 지자체, 종부세는 국세청이 고지합니다. 고지서가 오므로 신고는 필요 없지만 납부 기한을 넘기면 3% 가산금이 붙습니다.</p>",
         "<h3>임대 소득이 있으면</h3><p>2월 10일까지 사업장현황신고, 5월에 종합소득세 신고를 합니다. 연 임대수입 2,000만원 이하는 분리과세(14%)를 고를 수 있습니다.</p>",
+        "<h3>기한이 주말·공휴일이면</h3><p>법에 정한 기한이 토요일·일요일·공휴일이면 그다음 날까지입니다. 이 달력은 법에 적힌 날짜를 그대로 보여 주므로 실제 마감일은 달력에서 한 번 더 확인하세요. 예를 들어 2027년 2월 28일은 일요일이고 3월 1일이 삼일절이라 3월 2일까지입니다(<a href='guide-cgt-filing.html'>양도세 신고 기한</a>).</p>",
         "<p>세액이 얼마인지는 <a href='acquisition-tax.html'>취득세 계산기</a>와 <a href='capital-gains-tax.html'>양도소득세 계산기</a>에서 참고용으로 볼 수 있습니다.</p>",
     ])
     left = form_open([("buy", "지난달 매수"), ("sell", "지난달 매도"), ("clear", "지우기")]) + \
@@ -289,7 +290,7 @@ def jeonse_fraud_check_page():
 def salary_page():
     faq = [
         ("실수령액이 회사 급여명세서와 다른데요?", ["회사는 매달 '간이세액표'로 소득세를 떼고 연말정산에서 정산합니다. 이 계산기는 연 단위 결정세액을 12로 나눈 값이라 매달 원천징수액과 조금 다를 수 있습니다. 연말정산 후 1년 합계는 비슷해집니다.", "비과세 항목(식대, 자가운전보조금, 육아수당 등)과 부양가족 수에 따라서도 달라집니다."]),
-        ("4대보험은 얼마나 떼나요?", ["국민연금 4.5%(기준소득월액 상한 있음), 건강보험 3.595%, 장기요양보험은 건강보험료의 12.95%, 고용보험 0.9%입니다. 회사가 같은 금액을 더 부담합니다. 요율은 매년 바뀌므로 기준일을 확인하세요."]),
+        ("4대보험은 얼마나 떼나요?", ["2026년 기준 국민연금 4.75%(기준소득월액 상한 월 659만원), 건강보험 3.595%, 장기요양보험은 건강보험료의 13.14%, 고용보험 0.9%입니다. 회사가 같은 금액을 더 부담합니다. 요율은 매년 바뀌므로 기준일을 확인하세요."]),
         ("퇴직금 포함 연봉이면?", ["'퇴직금 포함'을 켜면 연봉의 13분의 1을 퇴직금으로 보고 12분의 13만큼만 급여로 계산합니다. 퇴직금 자체는 <a href='severance.html'>퇴직금 계산기</a>에서 확인하세요."]),
         ("부양가족 수는 어떻게 세나요?", ["본인을 포함해 기본공제 대상자 수입니다. 배우자와 부모는 연 소득 100만원 이하, 자녀는 만 20세 이하 등 요건이 있습니다. 8세 이상 20세 이하 자녀는 자녀세액공제도 별도로 받습니다."]),
     ]
@@ -302,9 +303,9 @@ def salary_page():
           <h2>공제 내역</h2>
           <div class="table-wrap"><table class="tbl nowrap-head"><thead><tr><th scope="col">항목</th><th scope="col">월</th><th scope="col">연</th></tr></thead><tbody>
             <tr><th scope="row">월 세전 급여</th><td><span id="out-gross-month">0</span>원</td><td class="muted">—</td></tr>
-            <tr><th scope="row">국민연금 (4.5%)</th><td><span id="out-pension">0</span>원</td><td><span id="out-pension-y">0</span>원</td></tr>
+            <tr><th scope="row">국민연금 (4.75%)</th><td><span id="out-pension">0</span>원</td><td><span id="out-pension-y">0</span>원</td></tr>
             <tr><th scope="row">건강보험 (3.595%)</th><td><span id="out-health">0</span>원</td><td><span id="out-health-y">0</span>원</td></tr>
-            <tr><th scope="row">장기요양 (건보료의 12.95%)</th><td><span id="out-ltc">0</span>원</td><td><span id="out-ltc-y">0</span>원</td></tr>
+            <tr><th scope="row">장기요양 (건보료의 13.14%)</th><td><span id="out-ltc">0</span>원</td><td><span id="out-ltc-y">0</span>원</td></tr>
             <tr><th scope="row">고용보험 (0.9%)</th><td><span id="out-employ">0</span>원</td><td><span id="out-employ-y">0</span>원</td></tr>
             <tr><th scope="row">소득세</th><td><span id="out-tax">0</span>원</td><td><span id="out-tax-y">0</span>원</td></tr>
             <tr><th scope="row">지방소득세 (소득세의 10%)</th><td><span id="out-local">0</span>원</td><td><span id="out-local-y">0</span>원</td></tr>

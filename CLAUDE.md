@@ -26,6 +26,17 @@ python3 tools/build/build.py
 `sw.js`의 VERSION은 캐시 대상 파일 내용 해시로 자동 생성됩니다. 손으로 올리지 마세요.
 이 값이 안 바뀌면 방문자 브라우저가 옛 파일을 계속 씁니다(실제로 한 번 겪음).
 
+### 쪽 날짜 (작성일·수정일)
+
+안내 글·용어의 날짜 줄, JSON-LD의 `datePublished`/`dateModified`, 사이트맵 `lastmod`는
+`tools/build/page_dates.json`에서 나옵니다. 빌드가 쪽마다 `<main>` 내용 해시를 저장해 두고,
+해시가 바뀐 쪽만 수정일을 빌드한 날(한국 시간)로 바꿉니다. 새 쪽은 작성일·수정일이 빌드한 날입니다.
+
+- 이 파일은 빌드가 고치는 파일이라 **같이 커밋**하세요. 빠뜨리면 다음 빌드에서 날짜가 또 바뀝니다
+- 메뉴·푸터만 바뀐 쪽(새 글을 넣어 메뉴가 늘어난 경우 등)은 수정으로 치지 않습니다
+- 손으로 고칠 일은 거의 없습니다. 날짜를 되돌려야 하면 그 쪽의 `modified`만 고치면 됩니다
+- 2026-10 이전에는 모든 쪽이 2026-09-21로 고정돼 있었습니다. 초기값은 git 기록에서 뽑았습니다
+
 ### 검색 제외 (noindex)
 
 120쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
@@ -93,6 +104,7 @@ node tools/verify.js
 - 모든 쪽: 중복 id, 깨진 내부 링크, `h1` 하나, canonical, JSON-LD 파싱
 - 모든 쪽: 사이트맵에 있는 쪽은 noindex가 아니고, 없는 쪽은 noindex인지. 안내 글·홈은 반드시 검색 대상
 - 모든 쪽: 가로 넘침 — 390px과 320px 두 폭에서. 표는 자기 상자 안에서만 밀리면 통과
+- 모든 쪽: 검색 설명(meta description) 160자 이내
 - 주요 계산기에 값을 넣고 결과가 기대값과 맞는지 (안내 글 본문 숫자 일부 포함)
 - 콘솔 JS 오류
 
@@ -136,7 +148,10 @@ https://전국부동산계산기.com/guide-prepayment.html
 2026년 남은 일정: **10월 22일, 11월 26일**
 (2026년은 1/15, 2/26, 4/10, 5/28, 7/16, 8/27, 10/22, 11/26. 2027년 일정은 매년 10월말 발표)
 
-금리가 **바뀌었을 때만** 할 일 — 동결이면 아무것도 안 함:
+동결이면 `tools/build/site_core.py`의 `RATE_HISTORY_CHECKED`만 그 달로 고치고 빌드합니다
+(기준금리 이력 쪽에 "N월 확인 기준"으로 나옵니다).
+
+금리가 **바뀌었을 때** 할 일:
 
 1. `tools/build/site_core.py`의 `RATE_HISTORY` 맨 뒤에 `("2026-10-22", 3.25),` 추가
 2. `RATE_HISTORY_CHECKED`를 그 달로 수정
@@ -176,9 +191,18 @@ https://전국부동산계산기.com/guide-prepayment.html
 - `js/rent-tax-credit.js` — `INCOME_CAP`, `RATE_HIGH/LOW`, `RENT_CAP`, `TAX_YEAR_LABEL`.
   바뀌면 `guide-rent-credit-refund.html`의 「몇 년 전 것까지」 설명(어느 해부터 같은 요건인지)도 확인할 것
 
+국민연금 보험료율은 2026년 9.5%(근로자 4.75%)부터 2033년 13%까지 해마다 0.5%p씩 오릅니다.
+2027년 1월에는 `PENSION_RATE`를 5.0으로 바꿔야 합니다. 2026년 1월분을 놓쳐 10월에야 고쳤습니다.
+
 요율을 바꾸면 `tools/verify.js`의 연봉·퇴직금 기대값이 실패합니다. 사이트가 고장 난 게
 아니라 기대값이 옛 요율로 적혀 있어서입니다. 새 요율로 계산기를 돌려 나온 값으로 기대값을
 바꾸고, 그 값이 맞는지는 국세청·공단 모의계산으로 한 번 대조하세요.
+
+### 7월 — 국민연금 기준소득월액 상·하한
+
+매년 7월 1일에 바뀝니다(2026.7~2027.6: 하한 41만원, 상한 659만원). `js/salary.js`의
+`PENSION_BASE_MIN/MAX`, `RULES_DATE`와 안내 글 `guide-salary-net.html`·`guide-salary-raise.html`의
+상한 숫자(연봉 약 8,148만원부터 월 31만 3,020원)를 고치고 verify 기대값을 다시 뽑습니다.
 
 ### 수시
 
@@ -186,6 +210,12 @@ https://전국부동산계산기.com/guide-prepayment.html
   다만 안내 글에 예시로 적힌 지역이 있으면 확인
 - HUG 전세보증보험 요건 → `js/jeonse-insurance.js`의 `DEPOSIT_CAP`, `LTV_CAP`, `SENIOR_CAP`.
   바뀌면 `guide-jeonse-ratio.html`·`guide-jeonse-insurance-fail.html`의 상한 숫자도 다시 뽑을 것
+- HUG가 담보인정비율을 90%에서 80%로 낮추겠다고 밝힘(2026-10 국감, 시점 미정). 시행되면 위 `LTV_CAP`과 글 2편을 고칠 것
+- 대출 규제(LTV·스트레스 DSR·금액 상한) → `js/dsr.js`의 `DEFAULT_STRESS`, `PRESETS`, 계산기 안내 문구(`pages_new.dsr_page`).
+  2025-10-15 대책 이후 수도권·규제지역 LTV 40%(생애최초 70%), 스트레스 3.0%p, 금액 상한 6억·4억·2억.
+  지방은 1.5%p의 50%(0.75%p)를 2026년 12월까지 운영 — **2027년 1월에 지방 기준을 확인할 것**.
+  바뀌면 안내 글 `guide-mortgage-limit`·`guide-dsr-ltv`·`guide-base-rate-change`·`guide-refinance`,
+  용어 `term-dsr`·`term-ltv`·`term-stress-dsr`의 숫자를 다시 뽑을 것
 - 중개보수 요율 → 거의 안 바뀜
 
 ## 원칙

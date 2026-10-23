@@ -4,7 +4,7 @@
   var S = window.Site, $ = S.$;
 
   // ---- 세율표 (상수. 지방세법 개정 시 이 블록만 수정) ----
-  var RATE_DATE = '2025년 지방세법 기준 (유상 취득, 개인)';
+  var RATE_DATE = '2026년 지방세법 기준 (유상 취득, 개인)';
   var STD_LOW = 1.0, STD_HIGH = 3.0;              // 주택 표준세율: 6억 이하 1%, 9억 초과 3%, 6~9억은 비례
   var STD_LOW_CAP = 600000000, STD_HIGH_FLOOR = 900000000;
   var HEAVY8 = 8.0, HEAVY12 = 12.0;              // 중과세율
