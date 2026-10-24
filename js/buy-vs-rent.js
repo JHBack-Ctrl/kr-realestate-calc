@@ -45,7 +45,7 @@
     }
     S.setText('out-big', ok ? S.fmtWon(Math.abs(diff)) : '0');
     S.setText('out-kicker', !ok ? i.years + '년 총비용 차이' : (diff >= 0 ? i.years + '년 기준 매매가 이만큼 덜 듭니다' : i.years + '년 기준 전세가 이만큼 덜 듭니다'));
-    S.setText('sticky-monthly', (diff >= 0 ? '매매 유리 ' : '전세 유리 ') + S.fmtWon(Math.abs(diff)) + '원');
+    S.setText('sticky-monthly', ok ? (diff >= 0 ? '매매 유리 ' : '전세 유리 ') + S.fmtWon(Math.abs(diff)) + '원' : '—');
     S.setText('out-buy-total', S.fmtWon(r ? r.buyTotal : 0)); S.setText('out-j-total', S.fmtWon(r ? r.jTotal : 0));
     S.setText('out-buy-month', S.fmtWon(r ? r.buyTotal / (i.years * 12) : 0)); S.setText('out-j-month', S.fmtWon(r ? r.jTotal / (i.years * 12) : 0));
     var rows = r ? [['대출이자', r.buyInterest, r.jInterest], ['자기자본 기회비용', r.buyOpp, r.jOpp], ['취득세 등', r.acq, 0], ['중개보수', r.fees, r.jFee], ['재산세 등 보유세', r.prop, 0], ['가격 변동 (이익은 −)', -r.gain, 0]] : [];

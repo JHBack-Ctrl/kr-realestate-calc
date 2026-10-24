@@ -71,6 +71,38 @@
     });
   }
   function setMoney(id, n) { var el = $(id); if (el) el.value = n ? Number(n).toLocaleString('ko-KR') : (n === 0 ? '0' : ''); }
+  // 금액 칸 아래에 「3억 2,000만원」처럼 읽기 쉬운 단위를 붙인다. 계산기 폼 안의 금액 칸만, 1만원 이상일 때만
+  function updateMoneyHints() {
+    $$('#calc-form input[data-money]').forEach(function (el) {
+      var hint = el._hint;
+      if (!hint) {
+        var wrap = el.closest('.input-wrap') || el;
+        hint = document.createElement('p'); hint.className = 'money-hint'; hint.setAttribute('aria-hidden', 'true');
+        wrap.parentNode.insertBefore(hint, wrap.nextSibling); el._hint = hint;
+      }
+      var n = parseMoney(el.value);
+      hint.textContent = n >= 10000 ? fmtKorean(n) : '';
+    });
+  }
+
+  // ---- 즐겨찾기: 계산기 제목 아래 ☆ 버튼. 이 기기 브라우저에만 저장하고 홈 맨 위에 모아 보여 준다(home.js) ----
+  var FAV_KEY = STORAGE_PREFIX + 'favs', FAV_MAX = 24;
+  function getFavs() { try { var v = JSON.parse(lsGet(FAV_KEY) || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; } }
+  function pageFile() { return location.pathname.split('/').pop() || 'index.html'; }
+  function initFavButton() {
+    var h1 = document.querySelector('main h1');
+    if (!$('calc-form') || !h1) return;
+    var f = pageFile(), btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'fav-btn';
+    function paint() { var on = getFavs().indexOf(f) !== -1; btn.setAttribute('aria-pressed', on ? 'true' : 'false'); btn.textContent = on ? '★ 즐겨찾기됨' : '☆ 즐겨찾기'; }
+    btn.addEventListener('click', function () {
+      var a = getFavs(), i = a.indexOf(f);
+      if (i === -1) a.unshift(f); else a.splice(i, 1);
+      lsSet(FAV_KEY, JSON.stringify(a.slice(0, FAV_MAX))); paint();
+      toast(i === -1 ? '홈 맨 위 「즐겨찾기」에 넣었습니다' : '즐겨찾기에서 뺐습니다');
+    });
+    paint(); h1.parentNode.insertBefore(btn, h1.nextSibling);
+  }
 
   // ---- 토스트 ----
   var toastTimer = null;
@@ -462,7 +494,7 @@
   function wireCalc(o) {
     var form = $('calc-form');
     var mem = remember({ key: o.key, get: function () { return formState(form); }, set: function (st) { applyState(form, st); if (o.onApply) o.onApply(); } });
-    function recalc() { o.recalc(); mem.save(); }
+    function recalc() { o.recalc(); updateMoneyHints(); mem.save(); }
     bindMoneyInputs(document, recalc);
     $$('input[type="number"], input[type="date"], input[type="text"]:not([data-money]), select', form).forEach(function (el) { el.addEventListener('input', recalc); el.addEventListener('change', recalc); });
     $$('input[type="radio"], input[type="checkbox"]', form).forEach(function (el) { if (el.id !== 'remember-toggle') el.addEventListener('change', recalc); });
@@ -511,10 +543,10 @@
     remember: remember, bindStickySummary: bindStickySummary, ready: ready,
     formState: formState, applyState: applyState, wireCalc: wireCalc,
     parseDate: parseDate, today: today, monthsBetween: monthsBetween, daysBetween: daysBetween, addMonths: addMonths, fmtDate: fmtDate,
-    lsGet: lsGet, lsSet: lsSet
+    lsGet: lsGet, lsSet: lsSet, getFavs: getFavs
   };
 
   // 테마는 화면 깜빡임을 줄이기 위해 즉시 적용
   applyTheme(lsGet(THEME_KEY));
-  ready(function () { initTheme(); initMenu(); markCurrentNav(); initNavScroll(); initSoonLinks(); initServiceWorker(); initInstallPrompt(); });
+  ready(function () { initTheme(); initMenu(); markCurrentNav(); initNavScroll(); initSoonLinks(); initServiceWorker(); initInstallPrompt(); initFavButton(); });
 })(window);

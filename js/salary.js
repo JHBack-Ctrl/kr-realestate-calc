@@ -40,7 +40,8 @@
     var annualPay = includeSeverance ? salary * 12 / 13 : salary;  // 퇴직금 포함 연봉이면 13분의 1은 퇴직금
     var gross = Math.max(0, annualPay - exempt * 12);              // 과세 급여
     var monthlyTaxable = gross / 12;
-    var pensionBase = Math.min(PENSION_BASE_MAX, Math.max(PENSION_BASE_MIN, monthlyTaxable));
+    // 하한은 소득이 있을 때만. 연봉을 비워 둔 상태에서 하한 보험료가 빠져 실수령액이 음수로 보이던 것(2026-10 수정)
+    var pensionBase = monthlyTaxable > 0 ? Math.min(PENSION_BASE_MAX, Math.max(PENSION_BASE_MIN, monthlyTaxable)) : 0;
     var pension = Math.floor(pensionBase * PENSION_RATE / 100 / 10) * 10;
     var health = Math.floor(monthlyTaxable * HEALTH_RATE / 100 / 10) * 10;
     var ltc = Math.floor(health * LTC_RATE / 100 / 10) * 10;
