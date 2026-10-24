@@ -49,7 +49,7 @@
     }
     S.setText('out-big', ok ? S.fmtWon(Math.abs(diff)) : '0');
     S.setText('out-kicker', !ok ? '총 이자 차이' : (diff >= 0 ? '변동금리가 총 이자를 이만큼 아낍니다' : '고정금리가 총 이자를 이만큼 아낍니다'));
-    S.setText('sticky-monthly', (diff >= 0 ? '변동 유리 ' : '고정 유리 ') + S.fmtWon(Math.abs(diff)) + '원');
+    S.setText('sticky-monthly', ok ? (diff >= 0 ? '변동 유리 ' : '고정 유리 ') + S.fmtWon(Math.abs(diff)) + '원' : '—');
     S.setText('out-fixed-int', S.fmtWon(fx.interest)); S.setText('out-var-int', S.fmtWon(vr.interest));
     S.setText('out-fixed-pay', S.fmtWon(fx.pay)); S.setText('out-var-first', S.fmtWon(vr.first));
     S.setText('out-var-max', S.fmtWon(vr.max)); S.setText('out-var-min', S.fmtWon(ok ? vr.min : 0));

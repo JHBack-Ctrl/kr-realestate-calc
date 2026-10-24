@@ -39,6 +39,11 @@
   "modified": "2026-09-20",
   "published": "2026-09-17"
  },
+ "comprehensive-property-tax.html": {
+  "hash": "599ea65d6e07",
+  "modified": "2026-10-24",
+  "published": "2026-10-24"
+ },
  "conversion.html": {
   "hash": "5f6c03babc8b",
   "modified": "2026-09-20",
@@ -73,6 +78,11 @@
   "hash": "84a06a8cf2fa",
   "modified": "2026-09-20",
   "published": "2026-09-20"
+ },
+ "gift-tax.html": {
+  "hash": "1a9cd3b189b3",
+  "modified": "2026-10-24",
+  "published": "2026-10-24"
  },
  "glossary.html": {
   "hash": "3bc81674fbe2",
@@ -205,8 +215,8 @@
   "published": "2026-09-21"
  },
  "guide-property-tax.html": {
-  "hash": "25ce52a30439",
-  "modified": "2026-09-21",
+  "hash": "da159214e3f3",
+  "modified": "2026-10-24",
   "published": "2026-09-21"
  },
  "guide-refinance.html": {
@@ -285,8 +295,8 @@
   "published": "2026-09-17"
  },
  "index.html": {
-  "hash": "18d7b9f5a226",
-  "modified": "2026-10-23",
+  "hash": "c0ecd8edd5f7",
+  "modified": "2026-10-24",
   "published": "2026-09-17"
  },
  "jeonse-fraud-check.html": {
@@ -320,9 +330,14 @@
   "published": "2026-09-17"
  },
  "privacy.html": {
-  "hash": "ed5a2e0e3533",
-  "modified": "2026-09-17",
+  "hash": "82ea6d8a2b89",
+  "modified": "2026-10-24",
   "published": "2026-09-17"
+ },
+ "property-tax.html": {
+  "hash": "8552bcbb4912",
+  "modified": "2026-10-24",
+  "published": "2026-10-24"
  },
  "rate-compare.html": {
   "hash": "ce9238c980eb",
@@ -490,8 +505,8 @@
   "published": "2026-09-17"
  },
  "term-jaesanse.html": {
-  "hash": "33e7959b579d",
-  "modified": "2026-10-21",
+  "hash": "f7fff1b1aca8",
+  "modified": "2026-10-24",
   "published": "2026-09-17"
  },
  "term-jangam-jungdogeum.html": {
@@ -530,8 +545,8 @@
   "published": "2026-09-17"
  },
  "term-jongbuse.html": {
-  "hash": "fcab0bca6fb3",
-  "modified": "2026-09-20",
+  "hash": "3793624f7bc9",
+  "modified": "2026-10-24",
   "published": "2026-09-17"
  },
  "term-jungdosanghwan.html": {

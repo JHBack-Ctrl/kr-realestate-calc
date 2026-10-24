@@ -51,6 +51,7 @@ if (shots) fs.mkdirSync(shots, { recursive: true });
 
 const BASE = pathToFileURL(ROOT).href + '/';
 const PAGES = fs.readdirSync(ROOT).filter(f => f.endsWith('.html')).sort();
+const TOOL_PAGES = PAGES.filter(f => fs.readFileSync(path.join(ROOT, f), 'utf8').includes('id="sticky-monthly"'));   // 하단 결과 막대가 있는 계산기
 // 사이트맵에 있는 쪽 = 검색에 넣는 쪽. 나머지는 noindex여야 한다 (site_core.is_noindex 한 곳에서 정함)
 const SITEMAP = new Set((fs.readFileSync(path.join(ROOT, 'sitemap.xml'), 'utf8').match(/<loc>[^<]+<\/loc>/g) || [])
   .map(l => l.replace(/<\/?loc>/g, '').replace(/^https?:\/\/[^/]+\//, '') || 'index.html'));
@@ -606,6 +607,51 @@ function near(label, got, want, tol) {
   await page.fill('#leave', '2026-09-18'); await page.fill('#join', '2016-09-17'); expect('10년 하루 더 → 11년', await get('out-service-years'), '11년');
   await type('monthly', '3500000');
   await page.fill('#join', '2026-03-01'); expect('1년 미만', await get('out-sev'), '0');
+
+  // ------------------------------------------------------------ 보유·증여 세금 (2026-10 추가)
+  const setChk = async (id, on) => page.evaluate(([i, v]) => { const e = document.getElementById(i); if (e.checked !== v) { e.checked = v; e.dispatchEvent(new Event('change', { bubbles: true })); } }, [id, on]);
+  // 재산세: 공정시장가액비율 43~45%(1주택)·60%, 특례세율(공시 9억 이하), 도시지역분 0.14%, 지방교육세 20%
+  await fresh('property-tax.html');
+  expect('재산세 빈 화면', await get('sticky-monthly'), '—'); expect('재산세 기본 1주택', await page.isChecked('#oneHome'), true);
+  for (const [pr, one, urban, total] of [['300000000', true, true, '299,400'], ['500000000', true, true, '620,000'], ['600000000', true, true, '787,200'], ['900000000', true, true, '1,512,000'],
+                                         ['1000000000', true, true, '2,034,000'], ['600000000', false, true, '1,476,000'], ['300000000', true, false, '118,800']]) {
+    await setChk('oneHome', one); await setChk('urban', urban); await type('price', pr); expect(`재산세 ${pr} ${one ? '1주택' : '일반'}${urban ? '' : ' 비도시'}`, await get('out-total'), total);
+  }
+  await setChk('oneHome', true); await setChk('urban', true); await type('price', '300000000');
+  expect('재산세 3억 7월 일괄', await get('out-july'), '299,400'); expect('재산세 3억 9월', await get('out-sept'), '0'); expect('재산세 3억 과표', await get('out-base'), '129,000,000');
+  await type('price', '600000000'); expect('재산세 6억 7월', await get('out-july'), '393,600');
+  // 종부세: 공제 12억·9억, 60%, 2주택 이하 0.5~2.7%, 3주택 이상 12억 초과 2.0~5.0%, 재산세 공제(약식), 1주택 세액공제 최대 80%, 농특세 20%
+  await fresh('comprehensive-property-tax.html');
+  expect('종부세 빈 화면', await get('sticky-monthly'), '—');
+  for (const [pr, kind, age, hold, total] of [['1500000000', 'one', 'a0', 'h0', '691,200'], ['1500000000', 'two', 'a0', 'h0', '1,267,200'], ['3000000000', 'three', 'a0', 'h0', '9,331,200'], ['3000000000', 'two', 'a0', 'h0', '8,827,200'],
+                                              ['2000000000', 'one', 'a65', 'h10', '682,560'], ['2000000000', 'one', 'a70', 'h15', '455,040'], ['1200000000', 'one', 'a0', 'h0', '0'], ['1000000000', 'two', 'a0', 'h0', '187,200']]) {
+    await page.selectOption('#kind', kind); if (kind === 'one') { await page.selectOption('#age', age); await page.selectOption('#hold', hold); }
+    await type('price', pr); expect(`종부세 ${pr} ${kind} ${age} ${hold}`, await get('out-total'), total);
+  }
+  await page.selectOption('#kind', 'two'); await type('price', '1500000000'); expect('종부세 2주택 15억 산출(부동소수 오차 없음)', await get('out-computed'), '1,920,000'); expect('1주택 칸 숨김', await page.isHidden('#one-fields'), true);
+  // 증여세: 공제(배우자 6억, 성년 5천만, 미성년 2천만), 혼인·출산 1억, 10년 합산, 세대생략 30%, 신고세액공제 3%
+  await fresh('gift-tax.html');
+  expect('증여세 빈 화면', await get('sticky-monthly'), '—'); expect('증여세 기본 신고공제', await page.isChecked('#filing'), true);
+  for (const [amt, rel, prior, marriage, skip, filing, want] of [['100000000', 'adult', '', false, false, true, '4,850,000'], ['100000000', 'minor', '', false, false, true, '7,760,000'], ['300000000', 'adult', '', false, false, true, '38,800,000'],
+                                                                 ['700000000', 'spouse', '', false, false, true, '9,700,000'], ['100000000', 'adult', '', true, false, true, '0'], ['200000000', 'adult', '', true, false, true, '4,850,000'],
+                                                                 ['100000000', 'adult', '', false, true, true, '6,305,000'], ['100000000', 'adult', '50000000', false, false, true, '9,700,000'], ['100000000', 'adult', '', false, false, false, '5,000,000'],
+                                                                 ['30000000', 'adult', '', false, false, true, '0'], ['100000000', 'other', '', false, false, true, '9,700,000']]) {
+    await page.selectOption('#rel', rel); await page.fill('#prior', ''); if (prior) await type('prior', prior); await setChk('marriage', marriage); await setChk('skip', skip); await setChk('filing', filing);
+    await type('amount', amt); expect(`증여세 ${amt} ${rel}${prior ? ' 합산' + prior : ''}${marriage ? ' 혼인' : ''}${skip ? ' 세대생략' : ''}${filing ? '' : ' 무신고'}`, await get('out-tax'), want);
+  }
+
+  // ------------------------------------------------------------ 빈 입력 상태·즐겨찾기·금액 읽기 (2026-10)
+  // 처음 열었을 때 음수 금액이나 '유리'·'가입 어려움' 같은 판정이 보이면 안 된다
+  for (const t of TOOL_PAGES) {
+    await fresh(t); const s = await get('sticky-monthly');
+    if (/^[-−]/.test(s) || /유리|어려움/.test(s)) { fails++; console.log(`FAIL 빈 화면 ${t}: ${s}`); }
+  }
+  await fresh('salary.html'); expect('연봉 빈 화면 0원', await get('sticky-monthly'), '0원');
+  await type('salary', '350000000'); expect('금액 읽기 도움말', await page.$eval('.money-hint', e => e.textContent), '3억 5,000만원');
+  await page.click('.fav-btn'); expect('즐겨찾기 버튼', await page.getAttribute('.fav-btn', 'aria-pressed'), 'true');
+  await page.goto(BASE + 'index.html'); expect('홈 즐겨찾기 타일', await page.$$eval('#fav-tiles .tile', t => t.map(x => x.getAttribute('href')).join(',')), 'salary.html');
+  expect('홈 즐겨찾기 안내 숨김', await page.isHidden('#fav-empty'), true);
+  await page.evaluate(() => localStorage.clear());
 
   // ------------------------------------------------------------ 서식·이미지
   console.log('--- 서식·이미지 ---');

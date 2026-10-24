@@ -34,7 +34,8 @@
     add(i.broker ? true : false, '공인중개사가 날인한 계약서', i.broker ? '충족' : '직거래 계약은 가입이 제한될 수 있습니다');
     add(i.seizure ? false : true, '등기부에 압류·가압류·가처분·경매 없음', i.seizure ? '권리침해가 있으면 가입할 수 없습니다' : '을구·갑구 확인 완료');
     add(i.owner ? false : true, '임대인이 보증 사고 이력·신용 제한 대상 아님', i.owner ? 'HUG 보증금지 임대인이면 가입 불가. 안심전세앱에서 조회' : '안심전세앱·HUG에서 임대인 조회 권장');
-    var verdict = fail > 0 ? '가입 어려움' : (warn > 0 ? '확인 필요' : '가입 가능성 높음');
+    // 주택가격·보증금을 넣기 전에는 판정하지 않는다(빈 화면에 '가입 어려움'이 뜨던 것)
+    var verdict = !(i.price > 0 && i.deposit > 0) ? '—' : fail > 0 ? '가입 어려움' : (warn > 0 ? '확인 필요' : '가입 가능성 높음');
     S.setText('out-big', verdict); S.setText('sticky-monthly', verdict);
     S.setText('out-max', S.fmtWon(maxDeposit)); S.setText('out-fail', String(fail)); S.setText('out-warn', String(warn));
     var ul = $('judge-list'); ul.innerHTML = '';

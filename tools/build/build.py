@@ -5,7 +5,8 @@ from site_core import *
 from pages_new import NEW_PAGES
 from pages_cgt import CGT_PAGES
 from pages_tools2 import TOOLS2_PAGES
-NEW_PAGES.update(CGT_PAGES); NEW_PAGES.update(TOOLS2_PAGES)
+from pages_tax import TAX_PAGES
+NEW_PAGES.update(CGT_PAGES); NEW_PAGES.update(TOOLS2_PAGES); NEW_PAGES.update(TAX_PAGES)
 from pages_guides import guide_repayment, guide_brokerage, guide_conversion, guide_jeonse_vs_monthly, guides_index, home, tables_index, forms_index, refs_index
 from pages_guides2 import GUIDES2
 from pages_tables import TABLE_PAGES
@@ -87,7 +88,8 @@ TERM_HTML = [term_path(t[0]) for t in TERMS]
 ALL_HTML = [t[0] for t in TOOLS] + [r[0] for r in REFS] + [h[0] for h in HUBS] + [g[0] for g in GUIDES] + [d[0] for d in DOCS] + [x[0] for x in TABLES] + [x[0] for x in FORMS] + ["glossary.html", "index.html", "404.html"]
 assets = ["css/site.css", "js/common.js", "js/analytics.js", "js/forms.js", "js/home.js", "favicon.svg", "apple-touch-icon.png", "icon-192.png", "icon-512.png", "manifest.json"] + \
          [f"js/{n}.js" for n in ["rent", "loan", "yield", "fee", "area", "conversion", "subscription", "rent-tax-credit", "dsr", "prepayment", "acquisition-tax", "capital-gains-tax",
-                                 "renewal", "tax-calendar", "moving", "rate-compare", "buy-vs-rent", "jeonse-insurance", "jeonse-fraud-check", "salary", "severance"]]
+                                 "renewal", "tax-calendar", "moving", "rate-compare", "buy-vs-rent", "jeonse-insurance", "jeonse-fraud-check", "salary", "severance",
+                                 "property-tax", "comprehensive-property-tax", "gift-tax"]]
 
 analytics = """/* 방문 통계 — ID를 비우면 그 도구는 아무것도 로드하지 않는다.
    GA4: analytics.google.com 의 측정 ID (G-로 시작)

@@ -5,6 +5,24 @@
   var empty = document.getElementById('tile-empty');
   if (!q) return;
 
+  // NEW: 처음 게시한 지 30일 안 된 쪽(data-pub는 빌드가 page_dates.json에서 넣는다)
+  var now = new Date();
+  [].forEach.call(document.querySelectorAll('.tile[data-pub]'), function (t) {
+    var age = (now - new Date(t.getAttribute('data-pub') + 'T00:00:00')) / 86400000;
+    if (age >= 0 && age <= 30) { var b = document.createElement('span'); b.className = 'badge-new'; b.textContent = 'NEW'; t.appendChild(b); }
+  });
+
+  // 즐겨찾기: 계산기 화면에서 ☆를 누른 것. 아래 묶음의 타일을 복사해 맨 위에 둔다
+  var favSec = document.getElementById('fav-sec'), favTiles = document.getElementById('fav-tiles');
+  if (favSec && favTiles && window.Site) {
+    var added = 0;
+    Site.getFavs().forEach(function (f) {
+      var src = document.querySelector('[data-group] .tile[href="' + f + '"]');
+      if (src) { favTiles.appendChild(src.cloneNode(true)); added++; }
+    });
+    document.getElementById('fav-empty').hidden = added > 0;
+  }
+
   var groups = [].slice.call(document.querySelectorAll('[data-group]')).map(function (g) {
     return {
       sec: g.closest('.sec'),
@@ -29,6 +47,7 @@
       if (shown) any = true;
     }
     if (empty) empty.hidden = any;
+    if (favSec) favSec.hidden = !!v;   // 검색 중에는 즐겨찾기 묶음을 숨겨 결과만 보이게
   }
 
   q.addEventListener('input', apply);

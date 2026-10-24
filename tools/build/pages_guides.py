@@ -249,7 +249,8 @@ def home():
     def tile(f, name, desc, extra_cls=""):
         k = TILE_KEYS.get(f, "")
         d = f'<span class="d">{desc}</span>' if desc else ""
-        return (f'<a class="tile{extra_cls}" href="{f}" data-k="{name} {k}">'
+        pub = PAGE_DATES.get(f, {}).get("published", "")
+        return (f'<a class="tile{extra_cls}" href="{f}" data-k="{name} {k}" data-pub="{pub}">'
                 f'{tile_icon(f)}<span class="t">{name}</span>{d}</a>')
 
     POPULAR = ["rent.html", "loan.html", "acquisition-tax.html", "capital-gains-tax.html", "salary.html", "subscription.html"]
@@ -304,7 +305,7 @@ def home():
                    "guide-acquisition-6-9.html": "6억~9억 취득세", "guide-salary-raise.html": "연봉 인상과 실수령",
                    "guide-refinance.html": "대출 갈아타기 손익분기", "guide-temporary-two-homes.html": "일시적 2주택 3년",
                    "guide-jeonse-ratio.html": "전세가율과 집값 하락", "guide-cgt-filing.html": "양도세 신고 기한"}
-    ref = ("".join(f'<a class="tile" href="{f}" data-k="{n}">{tile_icon(f)}<span class="t">{GUIDE_SHORT.get(f, n)}</span></a>'
+    ref = ("".join(f'<a class="tile" href="{f}" data-k="{n}" data-pub="{PAGE_DATES.get(f, {}).get("published", "")}">{tile_icon(f)}<span class="t">{GUIDE_SHORT.get(f, n)}</span></a>'
                    for (f, n, _t, _d) in GUIDES)
            + "".join(tile(f, n, "") for (f, n, _t, _d, _c, _s) in REFS if f != "guides.html"))
     ref_sec = section("안내 글 · 참고", ref, len(GUIDES) + len(REFS) - 1, cls=" mini")
@@ -319,7 +320,12 @@ def home():
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
       <label class="sr-only" for="q">계산기 검색</label>
       <input class="tool-search" id="q" type="search" placeholder="무엇을 계산하시나요?  예: 취득세, 연봉, 전세" autocomplete="off">
-    </div>{section("많이 찾는 계산기", pop, 0, cls=" hot")}{cats_html}{mini_sec}{ref_sec}
+    </div>
+    <section class="sec fav-sec" id="fav-sec">
+      <div class="sec-head"><h2>즐겨찾기</h2></div>
+      <div class="tiles" id="fav-tiles"></div>
+      <p class="fav-empty" id="fav-empty">계산기 제목 아래 ☆ 즐겨찾기를 누르면 여기에 모입니다. 이 기기 브라우저에만 저장됩니다.</p>
+    </section>{section("많이 찾는 계산기", pop, 0, cls=" hot")}{cats_html}{mini_sec}{ref_sec}
     <p class="tile-empty" id="tile-empty" hidden>찾는 계산기가 없습니다. 다른 말로 검색해 보세요.</p>
     <section class="card" style="margin-top:28px">
       <h2>이 사이트의 원칙</h2>

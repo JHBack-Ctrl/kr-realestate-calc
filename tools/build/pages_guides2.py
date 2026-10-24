@@ -553,7 +553,7 @@ def guide_property_tax():
     ]
     return _page(g, "6월 1일 소유자에게 1년치가 부과됩니다. 잔금일 하루 차이로 부담자가 바뀌는 이유와 7월·9월·12월 일정, 세액이 나오는 구조를 정리합니다.", blocks,
                  ("잔금일을 넣고 보유세 일정을 D-day로 확인해 보세요.", "tax-calendar.html", "세금 달력 열기"),
-                 ["tax-calendar.html", "acquisition-tax.html", "capital-gains-tax.html", "yield.html"])
+                 ["property-tax.html", "comprehensive-property-tax.html", "tax-calendar.html", "acquisition-tax.html"])
 
 
 # ---------------------------------------------------------------- 중도상환수수료
