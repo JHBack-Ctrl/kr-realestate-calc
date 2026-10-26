@@ -591,11 +591,11 @@ function near(label, got, want, tol) {
   expect('연봉 표 행수', await page.$$eval('#table-body tr', r => r.length), 14);
   // guide-salary-raise.html — 기본값(비과세 20만, 본인 1명)에서 연봉별 월 실수령과 인상분
   for (const [s, want] of [['40000000', '2,924,343'], ['43000000', '3,116,803'], ['45000000', '3,245,110'], ['53000000', '3,756,197'], ['55000000', '3,883,213'], ['60000000', '4,200,750'], ['63000000', '4,391,280'], ['65000000', '4,518,297'],
-                           ['70000000', '4,835,853'], ['71000000', '4,899,347'], ['75000000', '5,146,720'], ['76000000', '5,202,723'], ['80000000', '5,426,787'], ['83000000', '5,599,267'], ['85000000', '5,717,113'],
-                           ['100000000', '6,601,043'], ['103000000', '6,777,423'], ['105000000', '6,894,240'], ['110000000', '7,187,877']]) { await type('salary', s); expect(`실수령 ${s}`, await get('out-net'), want); }
+                           ['70000000', '4,835,853'], ['71000000', '4,899,347'], ['75000000', '5,133,240'], ['76000000', '5,189,703'], ['80000000', '5,415,607'], ['83000000', '5,589,447'], ['85000000', '5,708,223'],
+                           ['100000000', '6,599,013'], ['103000000', '6,776,783'], ['105000000', '6,894,240'], ['110000000', '7,187,877']]) { await type('salary', s); expect(`실수령 ${s}`, await get('out-net'), want); }
   await type('salary', '53000000'); expect('5,300만 국민연금', await get('out-pension'), '200,290'); expect('5,300만 건강', await get('out-health'), '151,580'); expect('5,300만 소득세', await get('out-tax'), '227,950');
-  await type('salary', '80000000'); expect('8,000만 국민연금', await get('out-pension'), '307,160'); expect('8,000만 소득세', await get('out-tax'), '555,920');
-  await type('salary', '83000000'); expect('8,300만 국민연금 상한', await get('out-pension'), '313,020'); expect('8,300만 소득세', await get('out-tax'), '609,780');
+  await type('salary', '80000000'); expect('8,000만 국민연금', await get('out-pension'), '307,160'); expect('8,000만 소득세', await get('out-tax'), '566,090');   // 근로소득세액공제 한도 '× 1/2'(0.005로 잘못 넣었던 것 2026-10 수정)
+  await type('salary', '83000000'); expect('8,300만 국민연금 상한', await get('out-pension'), '313,020'); expect('8,300만 소득세', await get('out-tax'), '618,700');
   await page.fill('#family', '4'); await type('salary', '50000000'); expect('5천 가족 4명 소득세', await get('out-tax'), '139,720'); await page.fill('#family', '1');   // guide-salary-net.html 「약 6만원」
 
   await fresh('severance.html');
@@ -684,6 +684,49 @@ function near(label, got, want, tol) {
   for (const [d, n, want] of [['5', '4', '1,073,280'], ['7', '2', '629,520'], ['3', '5', '804,960'], ['9', '5', '2,497,440']]) {
     await type('daily', d); await type('days', n); expect(`시급 10,320 ${d}시간×${n}일`, await get('out-monthly'), want);
   }
+
+  // ------------------------------------------------------------ 연말정산·등기비용·연금계좌·육아휴직·연차·임대소득세 (2026-10 추가). 본문 예시 포함
+  const openGroups = async () => page.evaluate(() => document.querySelectorAll('#calc-form details').forEach(d => { d.open = true; }));
+  // 연말정산: 근로소득공제·기본공제·4대보험, 카드 25% 초과(15·30·40%, 한도 300만+자녀), 근로소득세액공제 한도 '× 1/2', 연금계좌 12·15%, 표준 13만 vs 항목별 중 작은 세금
+  await fresh('year-end-tax.html');
+  expect('연말정산 빈 화면', await get('sticky-monthly'), '—');
+  await type('salary', '50000000'); expect('연말정산 5천 결정세액', await get('out-tax'), '2,658,716'); expect('연말정산 5천 환급 0', await get('out-total'), '0');
+  await openGroups(); await type('credit', '15000000'); await type('debit', '5000000'); expect('연말정산 카드 공제', await get('out-card'), '1,875,000'); expect('연말정산 카드 환급', await get('out-total'), '309,370');
+  await type('saving', '6000000'); expect('연말정산 연금저축 환급', await get('out-total'), '1,299,370');
+  await type('withheld', '500000'); expect('연말정산 추가 납부', await get('sticky-monthly'), '추가 납부 1,075,200원');
+  await page.click('[data-preset="family"]'); expect('연말정산 6천 4인 결정세액', await get('out-tax'), '1,035,452'); expect('연말정산 의료비(3% 초과)', await get('out-c-medical'), '180,000');
+  await page.click('[data-preset="high"]'); expect('연말정산 8천 근로소득세액공제 한도', await get('out-c-earned'), '500,000'); expect('연말정산 8천 표준세액공제', await get('out-c-standard'), '130,000');
+  // 등기비용: 국민주택채권(공시가격 × 1,000분의 13~31) × 할인율, 인지세 1억~10억 15만, 수수료 2025-08 인상분
+  await fresh('registration-cost.html');
+  expect('등기비용 빈 화면', await get('sticky-monthly'), '—');
+  for (const [pr, total, bond] of [['s6', '1,182,000', '10,920,000'], ['s9', '2,043,000', '19,530,000'], ['l3', '468,000', '3,780,000']]) {
+    await page.click(`[data-preset="${pr}"]`); expect(`등기비용 ${pr}`, await get('out-total'), total); expect(`채권 매입 ${pr}`, await get('out-bond'), bond);
+  }
+  // 연금저축·IRP: 600만·900만, 16.5%·13.2%
+  await fresh('pension-tax-credit.html');
+  expect('연금계좌 빈 화면', await get('sticky-monthly'), '—');
+  for (const [pr, want] of [['s6', '990,000'], ['s9', '1,485,000'], ['h9', '1,188,000']]) { await page.click(`[data-preset="${pr}"]`); expect(`연금계좌 ${pr}`, await get('out-total'), want); }
+  await page.click('[data-preset="s6"]'); expect('연금계좌 남은 한도 공제', await get('out-room-credit'), '495,000');
+  // 육아휴직: 250·200·160만(80%), 하한 70만, 6+6 250·250·300·350·400·450
+  await fresh('parental-leave.html');
+  expect('육아휴직 빈 화면', await get('sticky-monthly'), '—');
+  await page.click('[data-preset="w300"]'); expect('육아휴직 300만 1년', await get('out-total'), '23,100,000');
+  await page.click('[data-preset="s66"]'); expect('육아휴직 6+6 500만', await get('out-total'), '20,000,000');
+  await setChk('sixsix', false); await type('months', '12'); await type('wage', '1800000'); expect('육아휴직 180만 1년', await get('out-total'), '19,440,000');
+  // 연차: 1년 미만 월 1일(최대 11), 15일 + 2년마다 1일(최대 25), 수당 = 월 통상임금 ÷ 209 × 8
+  await fresh('annual-leave.html');
+  expect('연차 빈 화면', await get('sticky-monthly'), '—');
+  await page.fill('#join', '2023-09-21'); await page.fill('#base', '2026-09-21'); await type('wage', '3000000'); await type('unused', '5');
+  expect('연차 3년', await get('out-now'), '16'); expect('연차수당 5일', await get('out-pay'), '574,160'); expect('연차 다음 발생', await get('out-next'), '2027-09-21 · 16일');
+  await page.fill('#join', '2026-03-21'); expect('연차 6개월', await get('out-now'), '6');
+  await page.fill('#join', '2005-01-01'); expect('연차 최대 25일', await get('out-now'), '25');
+  // 주택임대소득세: 1주택 비과세, 분리과세 (수입 − 50·60% − 200·400만) × 14% + 1.4%, 간주임대료 (보증금 − 3억) × 60% × 3.1%
+  await fresh('rental-income-tax.html');
+  expect('임대소득세 빈 화면', await get('sticky-monthly'), '—');
+  await page.click('[data-preset="two"]'); expect('임대소득세 2주택 미등록', await get('out-total'), '616,000');
+  await page.click('[data-preset="tworeg"]'); expect('임대소득세 2주택 등록', await get('out-total'), '123,200');
+  await page.click('[data-preset="three"]'); expect('간주임대료 8억', await get('out-deemed'), '9,300,000'); expect('3주택 종합과세', await get('sticky-monthly'), '종합과세 대상');
+  await page.selectOption('#homes', '1'); expect('1주택 비과세', await get('out-kind'), '비과세');
 
   // ------------------------------------------------------------ 빈 입력 상태·즐겨찾기·금액 읽기 (2026-10)
   // 처음 열었을 때 음수 금액이나 '유리'·'가입 어려움' 같은 판정이 보이면 안 된다

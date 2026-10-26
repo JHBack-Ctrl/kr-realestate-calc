@@ -7,7 +7,8 @@ from pages_cgt import CGT_PAGES
 from pages_tools2 import TOOLS2_PAGES
 from pages_tax import TAX_PAGES
 from pages_tools3 import TOOLS3_PAGES
-NEW_PAGES.update(CGT_PAGES); NEW_PAGES.update(TOOLS2_PAGES); NEW_PAGES.update(TAX_PAGES); NEW_PAGES.update(TOOLS3_PAGES)
+from pages_tools4 import TOOLS4_PAGES
+NEW_PAGES.update(CGT_PAGES); NEW_PAGES.update(TOOLS2_PAGES); NEW_PAGES.update(TAX_PAGES); NEW_PAGES.update(TOOLS3_PAGES); NEW_PAGES.update(TOOLS4_PAGES)
 from pages_guides import guide_repayment, guide_brokerage, guide_conversion, guide_jeonse_vs_monthly, guides_index, home, tables_index, forms_index, refs_index
 from pages_guides2 import GUIDES2
 from pages_tables import TABLE_PAGES
@@ -126,7 +127,8 @@ assets = ["css/site.css", "js/common.js", "js/analytics.js", "js/forms.js", "js/
          [f"js/{n}.js" for n in ["rent", "loan", "yield", "fee", "area", "conversion", "subscription", "rent-tax-credit", "dsr", "prepayment", "acquisition-tax", "capital-gains-tax",
                                  "renewal", "tax-calendar", "moving", "rate-compare", "buy-vs-rent", "jeonse-insurance", "jeonse-fraud-check", "salary", "severance",
                                  "property-tax", "comprehensive-property-tax", "gift-tax",
-                                 "inheritance-tax", "jeonse-loan", "savings", "unemployment-benefit", "hourly-wage"]]
+                                 "inheritance-tax", "jeonse-loan", "savings", "unemployment-benefit", "hourly-wage",
+                                 "year-end-tax", "registration-cost", "pension-tax-credit", "parental-leave", "annual-leave", "rental-income-tax"]]
 
 
 

@@ -14,6 +14,11 @@
   "modified": "2026-09-20",
   "published": "2026-09-17"
  },
+ "annual-leave.html": {
+  "hash": "7362fa9f788a",
+  "modified": "2026-10-27",
+  "published": "2026-10-27"
+ },
  "area.html": {
   "hash": "af21f087c1ce",
   "modified": "2026-09-20",
@@ -255,8 +260,8 @@
   "published": "2026-09-20"
  },
  "guide-salary-raise.html": {
-  "hash": "8c9c62f82634",
-  "modified": "2026-10-23",
+  "hash": "91a935599863",
+  "modified": "2026-10-27",
   "published": "2026-10-21"
  },
  "guide-severance-tax.html": {
@@ -290,8 +295,8 @@
   "published": "2026-09-27"
  },
  "guides.html": {
-  "hash": "c721e0a034e9",
-  "modified": "2026-10-23",
+  "hash": "fbed937c842e",
+  "modified": "2026-10-27",
   "published": "2026-09-17"
  },
  "hourly-wage.html": {
@@ -300,8 +305,8 @@
   "published": "2026-10-26"
  },
  "index.html": {
-  "hash": "bacd03c2ab55",
-  "modified": "2026-10-26",
+  "hash": "09dc7b3be5e4",
+  "modified": "2026-10-27",
   "published": "2026-09-17"
  },
  "inheritance-tax.html": {
@@ -334,6 +339,16 @@
   "modified": "2026-09-20",
   "published": "2026-09-17"
  },
+ "parental-leave.html": {
+  "hash": "194164d1ab55",
+  "modified": "2026-10-27",
+  "published": "2026-10-27"
+ },
+ "pension-tax-credit.html": {
+  "hash": "39f4ee117bb3",
+  "modified": "2026-10-27",
+  "published": "2026-10-27"
+ },
  "policy.html": {
   "hash": "e6a8c4f70ab3",
   "modified": "2026-09-21",
@@ -364,6 +379,11 @@
   "modified": "2026-10-23",
   "published": "2026-09-20"
  },
+ "registration-cost.html": {
+  "hash": "9f0424d03c7f",
+  "modified": "2026-10-27",
+  "published": "2026-10-27"
+ },
  "renewal.html": {
   "hash": "3e5db8956a6b",
   "modified": "2026-09-20",
@@ -378,6 +398,11 @@
   "hash": "50e91991cb45",
   "modified": "2026-10-27",
   "published": "2026-09-17"
+ },
+ "rental-income-tax.html": {
+  "hash": "8e2d8346a9d3",
+  "modified": "2026-10-27",
+  "published": "2026-10-27"
  },
  "salary.html": {
   "hash": "647cbf34c6b4",
@@ -633,6 +658,11 @@
   "hash": "f6f33e1c6b51",
   "modified": "2026-10-26",
   "published": "2026-10-26"
+ },
+ "year-end-tax.html": {
+  "hash": "ec8cfa821e65",
+  "modified": "2026-10-27",
+  "published": "2026-10-27"
  },
  "yield.html": {
   "hash": "2456bff4de6d",
