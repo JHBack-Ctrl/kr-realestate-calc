@@ -50,8 +50,8 @@
   "published": "2026-09-17"
  },
  "dsr.html": {
-  "hash": "1afe9622e129",
-  "modified": "2026-10-23",
+  "hash": "89d42c67f849",
+  "modified": "2026-10-26",
   "published": "2026-09-17"
  },
  "fee.html": {
@@ -294,10 +294,20 @@
   "modified": "2026-10-23",
   "published": "2026-09-17"
  },
+ "hourly-wage.html": {
+  "hash": "f842018199c1",
+  "modified": "2026-10-26",
+  "published": "2026-10-26"
+ },
  "index.html": {
-  "hash": "c0ecd8edd5f7",
-  "modified": "2026-10-24",
+  "hash": "bacd03c2ab55",
+  "modified": "2026-10-26",
   "published": "2026-09-17"
+ },
+ "inheritance-tax.html": {
+  "hash": "ba32a004cbcf",
+  "modified": "2026-10-26",
+  "published": "2026-10-26"
  },
  "jeonse-fraud-check.html": {
   "hash": "557df9172369",
@@ -308,6 +318,11 @@
   "hash": "be037b0bd7f6",
   "modified": "2026-09-20",
   "published": "2026-09-17"
+ },
+ "jeonse-loan.html": {
+  "hash": "930868391919",
+  "modified": "2026-10-26",
+  "published": "2026-10-26"
  },
  "loan.html": {
   "hash": "fec5ea56b2ef",
@@ -325,8 +340,8 @@
   "published": "2026-09-17"
  },
  "prepayment.html": {
-  "hash": "f2d47696b797",
-  "modified": "2026-09-20",
+  "hash": "57c618677646",
+  "modified": "2026-10-26",
   "published": "2026-09-17"
  },
  "privacy.html": {
@@ -340,8 +355,8 @@
   "published": "2026-10-24"
  },
  "rate-compare.html": {
-  "hash": "ce9238c980eb",
-  "modified": "2026-09-20",
+  "hash": "3f57aab70151",
+  "modified": "2026-10-26",
   "published": "2026-09-17"
  },
  "refs.html": {
@@ -365,13 +380,18 @@
   "published": "2026-09-17"
  },
  "salary.html": {
-  "hash": "be3f7fe3bd91",
-  "modified": "2026-10-23",
+  "hash": "647cbf34c6b4",
+  "modified": "2026-10-26",
   "published": "2026-09-17"
  },
+ "savings.html": {
+  "hash": "aa1a8c3d9a83",
+  "modified": "2026-10-26",
+  "published": "2026-10-26"
+ },
  "severance.html": {
-  "hash": "97a78d20684a",
-  "modified": "2026-09-20",
+  "hash": "c8ced3333a9a",
+  "modified": "2026-10-26",
   "published": "2026-09-17"
  },
  "subscription.html": {
@@ -608,6 +628,11 @@
   "hash": "92e68afa0460",
   "modified": "2026-09-17",
   "published": "2026-09-17"
+ },
+ "unemployment-benefit.html": {
+  "hash": "f6f33e1c6b51",
+  "modified": "2026-10-26",
+  "published": "2026-10-26"
  },
  "yield.html": {
   "hash": "2456bff4de6d",
