@@ -24,7 +24,7 @@ DNS는 가비아에서 관리하며 A 레코드 4개(185.199.108~111.153)가 ape
 
 ## 페이지
 
-**계산기 29개**
+**계산기 35개**
 
 | 파일 | 내용 |
 | --- | --- |
@@ -57,6 +57,12 @@ DNS는 가비아에서 관리하며 A 레코드 4개(185.199.108~111.153)가 ape
 | `savings.html` | 예금·적금 이자 — 단리·월복리, 이자소득세 15.4%, 세후 만기 수령액, 적금 원금 대비 수익률 |
 | `unemployment-benefit.html` | 실업급여 — 평균임금 60%, 2026 상·하한, 나이·가입기간별 소정급여일수 |
 | `hourly-wage.html` | 시급·주휴수당 — 주휴시간, 월 환산(209시간), 연장 1.5배, 최저임금 비교, 3.3% |
+| `year-end-tax.html` | 연말정산 환급액 — 카드·주택자금·보험·의료·교육·기부·월세·연금계좌, 표준 vs 항목별, 기납부세액 추정 (참고용) |
+| `registration-cost.html` | 등기비용 — 국민주택채권 매입률·할인 부담, 인지세, 등기신청수수료, 취득세·법무사 보수 합산 |
+| `pension-tax-credit.html` | 연금저축·IRP 세액공제 — 600·900만원 한도, 16.5·13.2%, ISA 이전, 남은 한도 |
+| `parental-leave.html` | 육아휴직 급여 — 250·200·160만원 상한, 하한 70만원, 6+6 부모육아휴직제, 달마다 표 |
+| `annual-leave.html` | 연차휴가 — 입사일 기준 연차 개수, 다음 발생일, 근속별 표, 연차수당 |
+| `rental-income-tax.html` | 주택임대소득세 — 비과세 판정, 간주임대료, 2천만원 이하 분리과세 (참고용) |
 
 **표·자료** `table-acquisition-tax.html`, `table-capital-gains-tax.html`, `table-brokerage-fee.html`, `table-subscription-points.html`, `base-rate-history.html` — 세율표·요율표·가점표·기준금리 이력. 값이 바뀌면 `tools/build/pages_tables.py`와 해당 js 상수를 함께 고친다.
 

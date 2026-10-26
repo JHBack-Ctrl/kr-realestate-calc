@@ -20,8 +20,8 @@
   var EARNED_CREDIT_CAP = function (gross) {    // 세액공제 한도
     if (gross <= 33000000) return 740000;
     if (gross <= 70000000) return Math.max(660000, 740000 - (gross - 33000000) * 0.008);
-    if (gross <= 120000000) return Math.max(500000, 660000 - (gross - 70000000) * 0.005);
-    return Math.max(200000, 500000 - (gross - 120000000) * 0.005);
+    if (gross <= 120000000) return Math.max(500000, 660000 - (gross - 70000000) / 2);   // 법 조문이 '× 1/2'. 0.005로 잘못 넣어 7천만 초과 세금이 적게 나오던 것(2026-10 수정)
+    return Math.max(200000, 500000 - (gross - 120000000) / 2);
   };
   var CHILD_CREDIT = [0, 250000, 550000];       // 자녀세액공제 1명, 2명
   var CHILD_CREDIT_EXTRA = 400000;              // 3명째부터 1인당
