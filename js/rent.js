@@ -104,7 +104,7 @@
     var ticks = months <= 12 ? [0, Math.round(months / 2), months] : [0, 12, 24, 36].filter(function (t) { return t <= months; });
     if (ticks[ticks.length - 1] !== months) ticks.push(months);
     ticks.forEach(function (t) { parts.push('<text class="label" x="' + x(t) + '" y="' + (H - 8) + '" text-anchor="' + (t === 0 ? 'start' : 'middle') + '">' + t + '개월</text>'); });
-    svg.innerHTML = '<title id="chart-desc">월별 누적 실부담 그래프</title>' + parts.join('');
+    svg.innerHTML = parts.join('');   // 그래프 이름은 <svg aria-label>에. <title>을 넣으면 네이버가 쪽 제목이 둘이라고 본다
     S.setText('chart-hint', monthlyB != null ? 'A(실선)와 B(점선)의 월별 누적 실부담. 계약기간 ' + months + '개월 기준.' : '월 실부담이 계약기간 ' + months + '개월 동안 쌓이는 모습입니다.');
   }
   function shortWon(n) {

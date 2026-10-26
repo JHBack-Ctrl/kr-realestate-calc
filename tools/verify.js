@@ -97,6 +97,8 @@ function near(label, got, want, tol) {
       const bad = [];
       document.querySelectorAll('script[type="application/ld+json"]').forEach(s => { try { JSON.parse(s.textContent); } catch (e) { bad.push('JSON-LD'); } });
       if (document.querySelectorAll('h1').length !== 1) bad.push('h1=' + document.querySelectorAll('h1').length);
+      // SVG 안의 <title>도 센다. 네이버 진단이 "<title> 요소가 2개 이상"으로 잡는다(rent.html 그래프, 2026-10)
+      if (document.querySelectorAll('title').length !== 1) bad.push('title=' + document.querySelectorAll('title').length);
       if (!document.querySelector('#theme-toggle')) bad.push('theme-btn');
       if (!document.querySelector('link[rel=canonical]')) bad.push('canonical');
       const links = [...document.querySelectorAll('a[href]')].map(a => a.getAttribute('href')).filter(h => h && !/^(https?:|#|mailto:)/.test(h));
