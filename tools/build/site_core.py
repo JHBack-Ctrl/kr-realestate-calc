@@ -435,7 +435,7 @@ def head(title, desc, path, extra="", noindex=False, og_type="website"):
   <meta name="google-adsense-account" content="{ADSENSE_PUB}">
 {'  <meta name="robots" content="noindex, follow">' + chr(10) if noindex else ''}  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="{asset('css/site.css')}">
   <link rel="canonical" href="{url}">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -459,7 +459,7 @@ def head(title, desc, path, extra="", noindex=False, og_type="website"):
 '''
 
 def page(title, desc, path, main_html, extra_head="", scripts=(), noindex=False, sticky=None, with_rails=True, disclaimer=None, og_type="website"):
-    sc = "".join(f'\n  <script src="{s}"></script>' for s in scripts)
+    sc = "".join(f'\n  <script src="{asset(s)}"></script>' for s in scripts)
     sticky_html = f'''
   <div id="sticky-summary" class="sticky-summary" aria-hidden="true">
     <div><p class="k">{sticky}</p><p class="v"><span id="sticky-monthly">0</span></p></div>
@@ -470,7 +470,15 @@ def page(title, desc, path, main_html, extra_head="", scripts=(), noindex=False,
     foot = footer(disclaimer) if disclaimer else footer()
     return (head(title, desc, path, extra_head, noindex, og_type) + "\n" + header() + "\n\n" + shell_open
             + '  <main id="main" class="container">\n' + main_html + '\n  </main>' + shell_close + "\n\n" + foot + sticky_html
-            + '\n\n  <div id="toast" class="toast" role="status" aria-live="polite"></div>\n  <script src="js/common.js"></script>\n  <script src="js/analytics.js"></script>' + sc + '\n</body>\n</html>\n')
+            + '\n\n  <div id="toast" class="toast" role="status" aria-live="polite"></div>\n  <script src="' + asset('js/common.js') + '"></script>\n  <script src="' + asset('js/analytics.js') + '"></script>' + sc + '\n</body>\n</html>\n')
+
+# css·js 주소 뒤에 내용 해시를 붙인다(js/common.js?v=1a2b3c4d). 서비스 워커가 css·js를 캐시에서 먼저 꺼내므로
+# 주소가 같으면 배포 뒤 첫 방문에 새 HTML과 옛 css·js가 섞여 새 기능이 안 보였다(2026-10 실제로 겪음).
+# 내용이 바뀌면 주소가 바뀌어 캐시를 거치지 않고 새로 받는다.
+def asset(path):
+    if not path.endswith((".css", ".js")): return path
+    fp = os.path.join(ROOT, path)
+    return path + "?v=" + hashlib.sha1(open(fp, "rb").read()).hexdigest()[:8] if os.path.exists(fp) else path
 
 def jsonld(data):
     return '  <script type="application/ld+json">\n' + json.dumps(data, ensure_ascii=False, indent=2) + "\n  </script>\n"
