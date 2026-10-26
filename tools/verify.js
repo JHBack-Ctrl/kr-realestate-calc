@@ -640,6 +640,49 @@ function near(label, got, want, tol) {
     await type('amount', amt); expect(`증여세 ${amt} ${rel}${prior ? ' 합산' + prior : ''}${marriage ? ' 혼인' : ''}${skip ? ' 세대생략' : ''}${filing ? '' : ' 무신고'}`, await get('out-tax'), want);
   }
 
+  // ------------------------------------------------------------ 상속·전세대출·저축·실업급여·시급 (2026-10 추가). 계산기 본문 예시 숫자 포함
+  // 상속세: 일괄 5억, 배우자 5억~30억(법정상속분 한도), 금융재산 20%, 장례비 500만 기본, 사전증여 합산, 신고세액공제 3%
+  await fresh('inheritance-tax.html');
+  expect('상속세 빈 화면', await get('sticky-monthly'), '—'); expect('상속세 기본 배우자', await page.isChecked('#spouse'), true);
+  for (const [est, spouse, kids, fin, want] of [['1000000000', true, '2', '', '0'], ['1000000000', false, '2', '', '86,330,000'], ['2000000000', true, '2', '', '128,040,000'],
+                                                 ['3000000000', true, '2', '500000000', '276,034,286'], ['1000000000', true, '0', '', '0']]) {
+    await setChk('spouse', spouse); await type('kids', kids); await page.fill('#fin', ''); if (fin) await type('fin', fin);
+    await type('estate', est); expect(`상속세 ${est} ${spouse ? '배우자+' : ''}자녀${kids}${fin ? ' 금융' + fin : ''}`, await get('out-tax'), want);
+  }
+  await setChk('spouse', true); await type('kids', '2'); await page.fill('#fin', ''); await type('estate', '2000000000');
+  expect('상속세 20억 배우자공제(법정상속분, 1원 밀림 없음)', await get('out-spouse'), '855,000,000'); expect('상속세 20억 과표', await get('out-base'), '640,000,000');
+  await setChk('spouse', false); await type('estate', '1000000000'); await type('prior', '300000000'); await type('priorTax', '38800000');
+  expect('상속세 사전증여 3억 합산', await get('out-tax'), '135,509,000'); expect('사전증여 과세가액', await get('out-taxable'), '1,295,000,000');
+  // 전세자금대출: 보증금 × 비율(상한), 만기일시 월 이자, 기회비용, 소득공제 40%(최대 400만)
+  await fresh('jeonse-loan.html');
+  expect('전세대출 빈 화면', await get('sticky-monthly'), '—');
+  await type('deposit', '300000000'); expect('전세대출 3억 월 이자', await get('out-monthly'), '800,000'); expect('전세대출 2년 이자', await get('out-total'), '19,200,000');
+  expect('전세대출 월 주거비', await get('out-housing'), '950,000'); expect('전세대출 소득공제 대상', await get('out-deduct'), '3,840,000');
+  await type('cap', '200000000'); expect('전세대출 상한 2억 월 이자', await get('out-monthly'), '666,666'); expect('상한 2억 월 주거비', await get('out-housing'), '916,666');
+  await page.fill('#cap', ''); await type('rate', '4.5'); expect('전세대출 4.5%', await get('out-monthly'), '900,000');
+  // 예금·적금: 적금 단리 n(n+1)/2, 월복리, 이자소득세 14% + 지방 1.4%(10원 미만 버림)
+  await fresh('savings.html');
+  expect('예적금 빈 화면', await get('sticky-monthly'), '—');
+  await type('amount', '1000000'); expect('적금 100만 1년 3% 만기', await get('out-maturity'), '12,164,970'); expect('적금 세금', await get('out-tax'), '30,030'); expect('적금 원금 대비', await get('out-gross-yield'), '1.63');
+  await type('months', '36'); await type('rate', '3.5'); await type('amount', '500000'); expect('적금 50만 3년 3.5% 세후 이자', await get('out-net'), '821,690');
+  await radio('kind', 'deposit'); await type('months', '12'); await type('rate', '3'); await type('amount', '10000000'); expect('예금 1천만 1년 세후 이자', await get('out-net'), '253,800');
+  await radio('method', 'compound'); expect('예금 월복리 이자', await get('out-interest'), '304,159');
+  // 실업급여: 평균임금 60%, 2026 상한 68,100·하한 66,048(8시간), 나이·가입기간별 120~270일
+  await fresh('unemployment-benefit.html');
+  expect('실업급여 빈 화면', await get('sticky-monthly'), '—');
+  for (const [w, age, yrs, want] of [['2500000', 'under50', '1', '9,907,200'], ['3000000', 'under50', '2', '11,888,640'], ['4000000', 'over50', '4', '18,387,000']]) {
+    await radio('age', age); await page.selectOption('#years', yrs); await type('wage', w); expect(`실업급여 월${Number(w) / 1e4}만 ${age} ${yrs}`, await get('out-total'), want);
+  }
+  await type('wage', '3400000'); expect('실업급여 상·하한 사이', await get('out-daily'), '67,252');
+  await page.fill('#leave', '2026-05-31'); expect('실업급여 3개월 일수(5/31)', await get('out-d3'), '92'); await page.fill('#leave', '');
+  // 시급·주휴수당: 주휴 = 주 시간 ÷ 40 × 8(15시간 이상), 월 = (주 + 주휴) × 365/7/12 반올림
+  await fresh('hourly-wage.html');
+  expect('시급 빈 화면', await get('sticky-monthly'), '—');
+  await type('wage', '10320'); expect('최저임금 주 40시간 월급', await get('out-monthly'), '2,156,880'); expect('최저임금 주휴수당', await get('out-holiday'), '82,560');
+  for (const [d, n, want] of [['5', '4', '1,073,280'], ['7', '2', '629,520'], ['3', '5', '804,960'], ['9', '5', '2,497,440']]) {
+    await type('daily', d); await type('days', n); expect(`시급 10,320 ${d}시간×${n}일`, await get('out-monthly'), want);
+  }
+
   // ------------------------------------------------------------ 빈 입력 상태·즐겨찾기·금액 읽기 (2026-10)
   // 처음 열었을 때 음수 금액이나 '유리'·'가입 어려움' 같은 판정이 보이면 안 된다
   for (const t of TOOL_PAGES) {

@@ -24,7 +24,7 @@ DNS는 가비아에서 관리하며 A 레코드 4개(185.199.108~111.153)가 ape
 
 ## 페이지
 
-**계산기 21개**
+**계산기 29개**
 
 | 파일 | 내용 |
 | --- | --- |
@@ -49,6 +49,14 @@ DNS는 가비아에서 관리하며 A 레코드 4개(185.199.108~111.153)가 ape
 | `tax-calendar.html` | 세금 달력 — 취득세 60일, 등기 60일, 양도세 예정신고, 재산세·종부세·임대소득세 D-day |
 | `salary.html` | 연봉 실수령액 — 4대보험·소득세·지방소득세 공제, 연봉별 표 |
 | `severance.html` | 퇴직금 — 평균임금 기준 법정 퇴직금, 근속연수공제·환산급여공제 반영 퇴직소득세 |
+| `property-tax.html` | 재산세 — 공정시장가액비율 43~60%, 1세대 1주택 특례세율, 도시지역분·지방교육세, 7월·9월 금액 (참고용) |
+| `comprehensive-property-tax.html` | 종합부동산세 — 공제 12억·9억, 누진세율, 재산세 공제(약식), 고령자·장기보유 세액공제 (참고용) |
+| `gift-tax.html` | 증여세 — 관계별 증여재산공제, 혼인·출산 1억, 10년 합산, 세대생략 할증 (참고용) |
+| `inheritance-tax.html` | 상속세 — 일괄·배우자·금융재산 공제, 사전증여 합산과 공제 한도, 신고세액공제 (참고용) |
+| `jeonse-loan.html` | 전세자금대출 이자 — 보증금 × 비율(상한), 만기일시 월 이자, 기회비용 포함 월 주거비, 소득공제 대상 |
+| `savings.html` | 예금·적금 이자 — 단리·월복리, 이자소득세 15.4%, 세후 만기 수령액, 적금 원금 대비 수익률 |
+| `unemployment-benefit.html` | 실업급여 — 평균임금 60%, 2026 상·하한, 나이·가입기간별 소정급여일수 |
+| `hourly-wage.html` | 시급·주휴수당 — 주휴시간, 월 환산(209시간), 연장 1.5배, 최저임금 비교, 3.3% |
 
 **표·자료** `table-acquisition-tax.html`, `table-capital-gains-tax.html`, `table-brokerage-fee.html`, `table-subscription-points.html`, `base-rate-history.html` — 세율표·요율표·가점표·기준금리 이력. 값이 바뀌면 `tools/build/pages_tables.py`와 해당 js 상수를 함께 고친다.
 

@@ -12,12 +12,13 @@
 python3 tools/build/build.py
 ```
 
-등록부에서 123쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
+등록부에서 128쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
 같은 소스로 두 번 돌리면 결과가 같아야 합니다(멱등). 달라지면 버그입니다.
 
 - `site_core.py` — 등록부(TOOLS, TABLES, FORMS, REFS, GUIDES, HUBS, RATE_HISTORY)와 공통 틀.
   메뉴·사이트맵·홈 타일이 전부 여기서 나옵니다
-- `pages_new.py` / `pages_cgt.py` / `pages_tools2.py` / `pages_tax.py` — 계산기 본문 (`pages_tax.py`는 재산세·종부세·증여세)
+- `pages_new.py` / `pages_cgt.py` / `pages_tools2.py` / `pages_tax.py` / `pages_tools3.py` — 계산기 본문
+  (`pages_tax.py`는 재산세·종부세·증여세, `pages_tools3.py`는 상속세·전세대출·예적금·실업급여·시급)
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽, 안내 글 4편
 - `pages_guides2.py` — 안내 글 36편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
@@ -39,8 +40,8 @@ python3 tools/build/build.py
 
 ### 검색 제외 (noindex)
 
-123쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
-검색 대상은 110쪽입니다(2026-10-24). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
+128쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
+검색 대상은 115쪽입니다(2026-10-26). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
 
 - 용어 9쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
 - 용어 39쪽 중 30쪽은 1,000자 이상으로 늘려 검색에 되돌렸습니다: 대항력·확정일자·전세가율·DSR·LTV,
@@ -180,6 +181,8 @@ https://전국부동산계산기.com/guide-prepayment.html
 - 종합부동산세: `js/comprehensive-property-tax.js`. 2026년 8월 세제개편안(공정시장가액비율 70~80%, 실거주 1주택 공제,
   세액공제 금액 한도, 세부담상한 200%)은 **국회 통과 전이라 미반영**. 통과되면 상수와 계산기 안내 문구(`pages_tax.py`)를 고칠 것
 - 증여세: `js/gift-tax.js`의 `RATES`, `DEDUCT`, `MARRIAGE_BIRTH`. 상속·증여세 개편(유산취득세 등)이 통과되면 확인
+- 상속세: `js/inheritance-tax.js`의 `LUMP`, `CHILD`, `SPOUSE_MIN/MAX`, `RATES`. 자녀공제 5억 상향·유산취득세 전환이
+  **국회 통과 전이라 미반영**(2026-10). 통과되면 상수와 계산기 FAQ 「앞으로 바뀔 수 있나요?」(`pages_tools3.py`), verify 기대값을 고칠 것
 - 표: `tools/build/pages_tables.py`
 
 ### 1월 — 4대보험 요율·소득세
@@ -193,6 +196,13 @@ https://전국부동산계산기.com/guide-prepayment.html
   바뀌면 안내 글 `guide-severance-tax.html`·`guide-severance.html`의 세금 숫자도 다시 뽑을 것
 - `js/rent-tax-credit.js` — `INCOME_CAP`, `RATE_HIGH/LOW`, `RENT_CAP`, `TAX_YEAR_LABEL`.
   바뀌면 `guide-rent-credit-refund.html`의 「몇 년 전 것까지」 설명(어느 해부터 같은 요건인지)도 확인할 것
+
+- `js/hourly-wage.js` — `MIN_WAGE`(올해 최저임금)와 `NEXT_MIN_WAGE`(고시된 내년 값). 1월에 2027년 10,700원을 `MIN_WAGE`로
+  옮기고, 8월 고시 뒤 `NEXT_MIN_WAGE`를 그다음 해 값으로. 계산기 본문 예시(`pages_tools3.hourly_wage_page`)와 verify 기대값도 다시 뽑을 것
+- `js/unemployment-benefit.js` — `MIN_WAGE`, `DAILY_MAX`(하루 상한 68,100원), `RULES_DATE`. **2027년 1월 주의**:
+  최저임금 10,700원이면 하한이 68,480원으로 지금 상한을 넘으므로 상한이 또 오를 가능성이 큼. 고용노동부 발표로 확인할 것.
+  계산기 본문의 「334만원 이하면 하한, 344만원 이상이면 상한」 문장과 예시 숫자도 다시 뽑을 것
+- `js/savings.js`(이자소득세 15.4%)와 `js/jeonse-loan.js`(주택임차차입금 소득공제 40%·400만원)는 거의 안 바뀜
 
 국민연금 보험료율은 2026년 9.5%(근로자 4.75%)부터 2033년 13%까지 해마다 0.5%p씩 오릅니다.
 2027년 1월에는 `PENSION_RATE`를 5.0으로 바꿔야 합니다. 2026년 1월분을 놓쳐 10월에야 고쳤습니다.
@@ -225,6 +235,8 @@ https://전국부동산계산기.com/guide-prepayment.html
   지방은 1.5%p의 50%(0.75%p)를 2026년 12월까지 운영 — **2027년 1월에 지방 기준을 확인할 것**.
   바뀌면 안내 글 `guide-mortgage-limit`·`guide-dsr-ltv`·`guide-base-rate-change`·`guide-refinance`,
   용어 `term-dsr`·`term-ltv`·`term-stress-dsr`의 숫자를 다시 뽑을 것
+- 전세대출 규제(1주택자 수도권·규제지역 2억원 한도는 2025-09 대책, 이자 DSR 반영은 2025-10-29부터) →
+  계산기에는 상수가 없고 `pages_tools3.jeonse_loan_page`의 FAQ·본문 문장에만 있음. 바뀌면 그 문장을 고칠 것
 - 중개보수 요율 → 거의 안 바뀜
 
 ## 화면 기능 (2026-10 추가)
