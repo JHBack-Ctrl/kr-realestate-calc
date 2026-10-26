@@ -15,6 +15,41 @@ from pages_glossary import TERMS, term_page, term_path, glossary_index
 
 os.chdir(ROOT)
 
+# ---------- 0) 페이지보다 먼저 써야 하는 js ----------
+# 페이지가 css·js 주소에 내용 해시(?v=…)를 붙이므로(site_core.asset), 빌드가 고쳐 쓰는 js는 페이지보다 먼저 확정한다.
+# 나중에 쓰면 첫 빌드의 해시가 옛 내용 기준이 되어 두 번째 빌드에서 결과가 달라진다(멱등 깨짐).
+analytics = """/* 방문 통계 — ID를 비우면 그 도구는 아무것도 로드하지 않는다.
+   GA4: analytics.google.com 의 측정 ID (G-로 시작)
+   네이버 애널리틱스: analytics.naver.com 사이트정보의 발급ID
+   ID를 바꾸거나 도구를 더하면 privacy.html 6-1 항목도 함께 갱신할 것. */
+(function () {
+  var GA_ID = 'G-H6LHC9GYQH';
+  var NAVER_ID = '1c5c9c6d95dc2d0';
+  if (location.protocol === 'file:') return;   // 로컬에서 열었을 때는 집계하지 않는다
+  if (GA_ID) {
+    var s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID; document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } window.gtag = gtag;
+    gtag('js', new Date()); gtag('config', GA_ID, { anonymize_ip: true });
+  }
+  if (NAVER_ID) {
+    // 네이버가 발급한 스니펫과 같은 형태 (wcs.pstatic.net, wcs_add.wa 설정 후 wcs_do)
+    window.wcs_add = window.wcs_add || {};
+    window.wcs_add.wa = NAVER_ID;
+    var n = document.createElement('script'); n.async = true; n.src = 'https://wcs.pstatic.net/wcslog.js';
+    n.onload = function () { if (window.wcs_do) window.wcs_do(); };
+    document.head.appendChild(n);
+  }
+})();
+"""
+write("js/analytics.js", analytics)
+
+# 기준금리 상수는 site_core.RATE_HISTORY 마지막 값을 js에 주입한다. 손으로 고치지 말 것.
+for jsf in ["js/conversion.js", "js/renewal.js"]:
+    js = read(jsf)
+    js = re.sub(r"var BASE_RATE_DEFAULT = [\d.]+", f"var BASE_RATE_DEFAULT = {BASE_RATE:.2f}", js, count=1)
+    js = re.sub(r"var BASE_RATE_DATE = '[^']*'", f"var BASE_RATE_DATE = '{BASE_RATE_LABEL}'", js, count=1)
+    write(jsf, js)
+
 # ---------- 1) 기존 계산기 4개: 본문 추출 → 새 틀로 재포장 ----------
 OLD_CALC = {  # 파일: (스크립트, 하단 요약 라벨) — 등록부는 파일명으로 찾는다(번호로 찾으면 TOOLS 순서가 바뀔 때 어긋남)
     "rent.html": ("js/rent.js", "월 실부담"),
@@ -91,37 +126,6 @@ assets = ["css/site.css", "js/common.js", "js/analytics.js", "js/forms.js", "js/
                                  "renewal", "tax-calendar", "moving", "rate-compare", "buy-vs-rent", "jeonse-insurance", "jeonse-fraud-check", "salary", "severance",
                                  "property-tax", "comprehensive-property-tax", "gift-tax"]]
 
-analytics = """/* 방문 통계 — ID를 비우면 그 도구는 아무것도 로드하지 않는다.
-   GA4: analytics.google.com 의 측정 ID (G-로 시작)
-   네이버 애널리틱스: analytics.naver.com 사이트정보의 발급ID
-   ID를 바꾸거나 도구를 더하면 privacy.html 6-1 항목도 함께 갱신할 것. */
-(function () {
-  var GA_ID = 'G-H6LHC9GYQH';
-  var NAVER_ID = '1c5c9c6d95dc2d0';
-  if (location.protocol === 'file:') return;   // 로컬에서 열었을 때는 집계하지 않는다
-  if (GA_ID) {
-    var s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID; document.head.appendChild(s);
-    window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } window.gtag = gtag;
-    gtag('js', new Date()); gtag('config', GA_ID, { anonymize_ip: true });
-  }
-  if (NAVER_ID) {
-    // 네이버가 발급한 스니펫과 같은 형태 (wcs.pstatic.net, wcs_add.wa 설정 후 wcs_do)
-    window.wcs_add = window.wcs_add || {};
-    window.wcs_add.wa = NAVER_ID;
-    var n = document.createElement('script'); n.async = true; n.src = 'https://wcs.pstatic.net/wcslog.js';
-    n.onload = function () { if (window.wcs_do) window.wcs_do(); };
-    document.head.appendChild(n);
-  }
-})();
-"""
-write("js/analytics.js", analytics)
-
-# 기준금리 상수는 site_core.RATE_HISTORY 마지막 값을 js에 주입한다. 손으로 고치지 말 것.
-for jsf in ["js/conversion.js", "js/renewal.js"]:
-    js = read(jsf)
-    js = re.sub(r"var BASE_RATE_DEFAULT = [\d.]+", f"var BASE_RATE_DEFAULT = {BASE_RATE:.2f}", js, count=1)
-    js = re.sub(r"var BASE_RATE_DATE = '[^']*'", f"var BASE_RATE_DATE = '{BASE_RATE_LABEL}'", js, count=1)
-    write(jsf, js)
 
 
 # 서비스 워커 버전은 캐시 대상 파일 내용의 해시로 만든다. 어떤 파일이든 바뀌면 버전이 바뀌어
@@ -154,7 +158,7 @@ self.addEventListener('fetch', function (e) {
     e.respondWith(caches.match(req).then(function (r) { return r || fetch(req).then(function (res) { var copy = res.clone(); caches.open(VERSION).then(function (c) { c.put(req, copy); }); return res; }); }));
   }
 });
-""" % (sw_version(), json.dumps(assets + ALL_HTML, ensure_ascii=False))
+""" % (sw_version(), json.dumps([asset(a) for a in assets] + ALL_HTML, ensure_ascii=False))
 write("sw.js", sw)
 
 # sitemap
