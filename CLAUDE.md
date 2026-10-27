@@ -12,7 +12,7 @@
 python3 tools/build/build.py
 ```
 
-등록부에서 134쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
+등록부에서 138쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
 같은 소스로 두 번 돌리면 결과가 같아야 합니다(멱등). 달라지면 버그입니다.
 
 - `site_core.py` — 등록부(TOOLS, TABLES, FORMS, REFS, GUIDES, HUBS, RATE_HISTORY)와 공통 틀.
@@ -21,7 +21,7 @@ python3 tools/build/build.py
   (`pages_tax.py`는 재산세·종부세·증여세, `pages_tools3.py`는 상속세·전세대출·예적금·실업급여·시급,
   `pages_tools4.py`는 연말정산·등기비용·연금저축IRP·육아휴직·연차·주택임대소득세)
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽, 안내 글 4편
-- `pages_guides2.py` — 안내 글 36편
+- `pages_guides2.py` — 안내 글 40편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
 - `build.py` — 위를 모아 쓰고 `manifest.json`, `sw.js`, `sitemap.xml`, `js/analytics.js`를 생성
 
@@ -41,8 +41,8 @@ python3 tools/build/build.py
 
 ### 검색 제외 (noindex)
 
-134쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
-검색 대상은 121쪽입니다(2026-10-27). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
+138쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
+검색 대상은 125쪽입니다(2026-10-27). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
 
 - 용어 9쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
 - 용어 39쪽 중 30쪽은 1,000자 이상으로 늘려 검색에 되돌렸습니다: 대항력·확정일자·전세가율·DSR·LTV,
@@ -180,12 +180,15 @@ https://전국부동산계산기.com/guide-prepayment.html
   취득세율, 현재 2.56%)도 취득세 계산기에 8억·1주택을 넣어 다시 뽑은 실효세율로 바꿀 것.
   안내 글 `guide-acquisition-tax.html`·`guide-acquisition-6-9.html`·`guide-buying-costs.html`의 숫자도 다시 뽑을 것
 - 종합부동산세: `js/comprehensive-property-tax.js`. 2026년 8월 세제개편안(공정시장가액비율 70~80%, 실거주 1주택 공제,
-  세액공제 금액 한도, 세부담상한 200%)은 **국회 통과 전이라 미반영**. 통과되면 상수와 계산기 안내 문구(`pages_tax.py`)를 고칠 것
+  세액공제 금액 한도, 세부담상한 200%)은 **국회 통과 전이라 미반영**. 통과되면 상수와 계산기 안내 문구(`pages_tax.py`)를 고칠 것.
+  안내 글 `guide-jongbuse-threshold.html`의 공시가격별 표와 공동명의 예시도 다시 뽑을 것
 - 증여세: `js/gift-tax.js`의 `RATES`, `DEDUCT`, `MARRIAGE_BIRTH`. 상속·증여세 개편(유산취득세 등)이 통과되면 확인
 - 상속세: `js/inheritance-tax.js`의 `LUMP`, `CHILD`, `SPOUSE_MIN/MAX`, `RATES`. 자녀공제 5억 상향·유산취득세 전환이
-  **국회 통과 전이라 미반영**(2026-10). 통과되면 상수와 계산기 FAQ 「앞으로 바뀔 수 있나요?」(`pages_tools3.py`), verify 기대값을 고칠 것
+  **국회 통과 전이라 미반영**(2026-10). 통과되면 상수와 계산기 FAQ 「앞으로 바뀔 수 있나요?」(`pages_tools3.py`), verify 기대값,
+  안내 글 `guide-gift-vs-inheritance.html`의 비교표를 고칠 것
 - 연말정산: `js/year-end-tax.js` 상수 블록(카드 한도·공제율, 월세, 연금계좌, 혼인세액공제 2026년까지). 2026년 8월 개편안의
-  월세 한도 1,200만원·청년 17%, 자녀세액공제 나이 기준은 **2027년 귀속, 국회 통과 전이라 미반영**. 통과되면 `js/rent-tax-credit.js`도 같이
+  월세 한도 1,200만원·청년 17%, 자녀세액공제 나이 기준은 **2027년 귀속, 국회 통과 전이라 미반영**. 통과되면 `js/rent-tax-credit.js`도 같이.
+  혼인세액공제는 2026년 혼인신고분까지라 연장 여부를 확인하고, 안내 글 `guide-year-end-december.html`(카드·연금·혼인 숫자)도 다시 뽑을 것
 - 주택임대소득세: `js/rental-income-tax.js`의 `DEEMED_RATE`(간주임대료 이자율, 매년 3월 시행규칙. 2026년 귀속 3.1%)와 소형주택 주택 수 제외(2026년까지)
 - 표: `tools/build/pages_tables.py`
 

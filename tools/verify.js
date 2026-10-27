@@ -728,6 +728,41 @@ function near(label, got, want, tol) {
   await page.click('[data-preset="three"]'); expect('간주임대료 8억', await get('out-deemed'), '9,300,000'); expect('3주택 종합과세', await get('sticky-monthly'), '종합과세 대상');
   await page.selectOption('#homes', '1'); expect('1주택 비과세', await get('out-kind'), '비과세');
 
+  // ------------------------------------------------------------ 안내 글 4편 (2026-10) 본문 숫자
+  // guide-jongbuse-threshold.html — 1주택 공시가격별, 세액공제, 2·3주택, 공동명의(각 9억), 같은 집 재산세
+  await fresh('comprehensive-property-tax.html');
+  for (const [kind, age, hold, pr, want] of [['one', 'a0', 'h0', '1300000000', '230,400'], ['one', 'a0', 'h0', '1800000000', '1,526,400'], ['one', 'a0', 'h0', '2000000000', '2,275,200'], ['one', 'a0', 'h0', '2500000000', '4,795,200'],
+                                             ['one', 'a0', 'h0', '3000000000', '7,747,200'], ['one', 'a60', 'h5', '2000000000', '1,365,120'], ['one', 'a65', 'h10', '1800000000', '457,920'],
+                                             ['two', 'a0', 'h0', '2000000000', '3,139,200'], ['three', 'a0', 'h0', '2000000000', '3,139,200'], ['two', 'a0', 'h0', '900000000', '0']]) {
+    await page.selectOption('#kind', kind); if (kind === 'one') { await page.selectOption('#age', age); await page.selectOption('#hold', hold); }
+    await type('price', pr); expect(`종부세 글 ${kind} ${age} ${hold} ${pr}`, await get('out-total'), want);
+  }
+  await fresh('property-tax.html'); await type('price', '1500000000'); expect('재산세 1주택 15억', await get('out-total'), '3,429,000');
+  // guide-year-end-december.html — 총급여 5천·본인 1명, 기납부세액 추정
+  await fresh('year-end-tax.html'); await openGroups(); await type('salary', '50000000');
+  for (const [credit, debit, want] of [['20000000', '', '185,620'], ['', '20000000', '371,250'], ['12500000', '7500000', '371,250']]) {
+    await page.fill('#credit', ''); await page.fill('#debit', ''); if (credit) await type('credit', credit); if (debit) await type('debit', debit);
+    expect(`연말정산 글 카드 ${credit}/${debit}`, await get('out-total'), want);
+  }
+  await page.fill('#debit', ''); await type('credit', '15000000'); await type('debit', '5000000'); await type('saving', '6000000'); await type('irp', '3000000'); expect('연말정산 글 연금 900만', await get('out-total'), '1,794,370');
+  await page.fill('#saving', ''); await page.fill('#irp', ''); await setChk('marriage', true); expect('연말정산 글 혼인', await get('out-total'), '859,370'); await setChk('marriage', false);
+  await page.fill('#credit', ''); await page.fill('#debit', ''); await type('salary', '30000000'); expect('연말정산 글 3천 결정세액', await get('out-tax'), '371,860');
+  await type('saving', '3000000'); expect('연말정산 글 3천 연금 300만', await get('out-total'), '409,040'); await type('saving', '6000000'); await type('irp', '3000000'); expect('연말정산 글 3천 연금 900만', await get('out-total'), '409,040');
+  // guide-gift-vs-inheritance.html
+  await fresh('gift-tax.html'); await type('amount', '1000000000'); expect('증여 글 10억 성년', await get('out-tax'), '218,250,000');
+  await fresh('inheritance-tax.html');
+  for (const [est, spouse, kids, prior, priorTax, want] of [['1300000000', false, '2', '', '', '173,145,000'], ['1000000000', false, '2', '300000000', '38800000', '135,509,000'], ['1000000000', false, '1', '', '', '86,330,000'], ['1300000000', true, '2', '', '', '36,860,000']]) {
+    await setChk('spouse', spouse); await type('kids', kids); await page.fill('#prior', ''); await page.fill('#priorTax', ''); if (prior) { await type('prior', prior); await type('priorTax', priorTax); }
+    await type('estate', est); expect(`상속 글 ${est} ${spouse ? '배우자' : ''} 자녀${kids}${prior ? ' 증여' + prior : ''}`, await get('out-tax'), want);
+  }
+  // guide-savings-real-rate.html — 단리, 15.4%
+  await fresh('savings.html');
+  for (const [kind, amt, m, r, method, id, want] of [['deposit', '12000000', '12', '3', 'simple', 'out-net', '304,560'], ['deposit', '6500000', '12', '3', 'simple', 'out-interest', '195,000'], ['installment', '100000', '12', '10', 'simple', 'out-net', '54,990'],
+                                                     ['installment', '300000', '12', '7', 'simple', 'out-net', '115,480'], ['installment', '1000000', '24', '3', 'simple', 'out-interest', '750,000'], ['installment', '1000000', '36', '3', 'simple', 'out-interest', '1,665,000'],
+                                                     ['installment', '1000000', '12', '3', 'compound', 'out-interest', '196,798'], ['deposit', '100000000', '12', '3', 'simple', 'out-net', '2,538,000']]) {
+    await radio('kind', kind); await radio('method', method); await type('months', m); await type('rate', r); await type('amount', amt); expect(`적금 글 ${kind} ${amt} ${m}개월 ${r}% ${method}`, await get(id), want);
+  }
+
   // ------------------------------------------------------------ 빈 입력 상태·즐겨찾기·금액 읽기 (2026-10)
   // 처음 열었을 때 음수 금액이나 '유리'·'가입 어려움' 같은 판정이 보이면 안 된다
   for (const t of TOOL_PAGES) {
