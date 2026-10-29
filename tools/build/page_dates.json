@@ -104,6 +104,11 @@
   "modified": "2026-10-23",
   "published": "2026-09-20"
  },
+ "guide-annual-leave-pay.html": {
+  "hash": "c05ea988197b",
+  "modified": "2026-10-30",
+  "published": "2026-10-30"
+ },
  "guide-area-84.html": {
   "hash": "00097b72e7ca",
   "modified": "2026-10-06",
@@ -184,6 +189,11 @@
   "modified": "2026-09-20",
   "published": "2026-09-20"
  },
+ "guide-jeonse-loan-vs-rent.html": {
+  "hash": "ea81d70636ae",
+  "modified": "2026-10-30",
+  "published": "2026-10-30"
+ },
  "guide-jeonse-ratio.html": {
   "hash": "501051285a11",
   "modified": "2026-10-23",
@@ -209,6 +219,11 @@
   "modified": "2026-09-21",
   "published": "2026-09-21"
  },
+ "guide-minimum-wage-2027.html": {
+  "hash": "ef38734c9a70",
+  "modified": "2026-10-30",
+  "published": "2026-10-30"
+ },
  "guide-mortgage-limit.html": {
   "hash": "aec22cc2d0f9",
   "modified": "2026-10-23",
@@ -223,6 +238,11 @@
   "hash": "d01a7a72c6df",
   "modified": "2026-09-21",
   "published": "2026-09-21"
+ },
+ "guide-parental-leave-pay.html": {
+  "hash": "1db142f61a04",
+  "modified": "2026-10-30",
+  "published": "2026-10-30"
  },
  "guide-prepayment.html": {
   "hash": "869fdd3702fe",
@@ -259,6 +279,11 @@
   "modified": "2026-09-20",
   "published": "2026-09-20"
  },
+ "guide-rental-income-two-homes.html": {
+  "hash": "6a27daf6ff65",
+  "modified": "2026-10-30",
+  "published": "2026-10-30"
+ },
  "guide-repayment.html": {
   "hash": "c8176ff56a3c",
   "modified": "2026-10-06",
@@ -278,6 +303,11 @@
   "hash": "75af8c95f9e8",
   "modified": "2026-10-27",
   "published": "2026-10-27"
+ },
+ "guide-self-registration.html": {
+  "hash": "2ffbef6edf24",
+  "modified": "2026-10-30",
+  "published": "2026-10-30"
  },
  "guide-severance-tax.html": {
   "hash": "8e7a2ebdcba1",
@@ -304,6 +334,11 @@
   "modified": "2026-10-23",
   "published": "2026-10-23"
  },
+ "guide-unemployment-floor.html": {
+  "hash": "3baa60e4ba98",
+  "modified": "2026-10-30",
+  "published": "2026-10-30"
+ },
  "guide-year-end-december.html": {
   "hash": "23fba9d5100d",
   "modified": "2026-10-27",
@@ -315,8 +350,8 @@
   "published": "2026-09-27"
  },
  "guides.html": {
-  "hash": "decbdb56ab12",
-  "modified": "2026-10-27",
+  "hash": "e78ccfd9db10",
+  "modified": "2026-10-30",
   "published": "2026-09-17"
  },
  "hourly-wage.html": {
@@ -325,8 +360,8 @@
   "published": "2026-10-26"
  },
  "index.html": {
-  "hash": "60d0fa5bfdcd",
-  "modified": "2026-10-27",
+  "hash": "bef10123ce70",
+  "modified": "2026-10-30",
   "published": "2026-09-17"
  },
  "inheritance-tax.html": {
@@ -395,8 +430,8 @@
   "published": "2026-09-17"
  },
  "refs.html": {
-  "hash": "5e0ed863b6bd",
-  "modified": "2026-10-27",
+  "hash": "e706173a1202",
+  "modified": "2026-10-30",
   "published": "2026-09-20"
  },
  "registration-cost.html": {
