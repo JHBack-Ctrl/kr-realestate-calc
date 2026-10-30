@@ -12,7 +12,7 @@
 python3 tools/build/build.py
 ```
 
-등록부에서 145쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
+등록부에서 147쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
 같은 소스로 두 번 돌리면 결과가 같아야 합니다(멱등). 달라지면 버그입니다.
 
 - `site_core.py` — 등록부(TOOLS, TABLES, FORMS, REFS, GUIDES, HUBS, RATE_HISTORY)와 공통 틀.
@@ -21,7 +21,7 @@ python3 tools/build/build.py
   (`pages_tax.py`는 재산세·종부세·증여세, `pages_tools3.py`는 상속세·전세대출·예적금·실업급여·시급,
   `pages_tools4.py`는 연말정산·등기비용·연금저축IRP·육아휴직·연차·주택임대소득세)
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽, 안내 글 4편
-- `pages_guides2.py` — 안내 글 47편
+- `pages_guides2.py` — 안내 글 49편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
 - `build.py` — 위를 모아 쓰고 `manifest.json`, `sw.js`, `sitemap.xml`, `js/analytics.js`를 생성
 
@@ -41,8 +41,8 @@ python3 tools/build/build.py
 
 ### 검색 제외 (noindex)
 
-145쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
-검색 대상은 132쪽입니다(2026-10-29). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
+147쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
+검색 대상은 134쪽입니다(2026-10-30). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
 
 - 용어 9쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
 - 용어 39쪽 중 30쪽은 1,000자 이상으로 늘려 검색에 되돌렸습니다: 대항력·확정일자·전세가율·DSR·LTV,
@@ -178,7 +178,7 @@ https://전국부동산계산기.com/guide-prepayment.html
   중과·일시적 2주택 기한(`TEMP_TWO_YEARS`)이 바뀌면 `guide-temporary-two-homes.html`의 조정지역 숫자도 다시 뽑을 것
 - 취득세: `js/acquisition-tax.js`. 바뀌면 `js/buy-vs-rent.js`의 `PRESET_ACQ_RATE`(8억 예시 버튼의
   취득세율, 현재 2.56%)도 취득세 계산기에 8억·1주택을 넣어 다시 뽑은 실효세율로 바꿀 것.
-  안내 글 `guide-acquisition-tax.html`·`guide-acquisition-6-9.html`·`guide-buying-costs.html`의 숫자도 다시 뽑을 것
+  안내 글 `guide-acquisition-tax.html`·`guide-acquisition-6-9.html`·`guide-buying-costs.html`·`guide-mixed-use-acquisition.html`(상가주택)의 숫자도 다시 뽑을 것
 - 종합부동산세: `js/comprehensive-property-tax.js`. 2026년 8월 세제개편안(공정시장가액비율 70~80%, 실거주 1주택 공제,
   세액공제 금액 한도, 세부담상한 200%)은 **국회 통과 전이라 미반영**. 통과되면 상수와 계산기 안내 문구(`pages_tax.py`)를 고칠 것.
   안내 글 `guide-jongbuse-threshold.html`의 공시가격별 표와 공동명의 예시도 다시 뽑을 것
@@ -241,6 +241,7 @@ https://전국부동산계산기.com/guide-prepayment.html
 
 - 조정대상지역 지정·해제 → 취득세·양도세 계산기는 사용자가 직접 고르므로 코드 수정은 불필요.
   다만 안내 글에 예시로 적힌 지역이 있으면 확인
+- 오피스텔 주택 수 특례(소형 신축, 시가표준액 1억 이하 제외) → 계산기 상수는 없고 `guide-officetel.html`의 「주택 수에서 빠지는 오피스텔」 절만 고치면 됨
 - HUG 전세보증보험 요건 → `js/jeonse-insurance.js`의 `DEPOSIT_CAP`, `LTV_CAP`, `SENIOR_CAP`.
   바뀌면 `guide-jeonse-ratio.html`·`guide-jeonse-insurance-fail.html`의 상한 숫자도 다시 뽑을 것
 - HUG가 담보인정비율을 90%에서 80%로 낮추겠다고 밝힘(2026-10 국감, 시점 미정). 시행되면 위 `LTV_CAP`과 글 2편을 고칠 것
@@ -263,6 +264,12 @@ https://전국부동산계산기.com/guide-prepayment.html
   빌드 날짜에 따라 결과가 달라지지 않게 판단은 브라우저에서 합니다
 - **금액 읽기**: 계산기 금액 칸 아래에 「3억 5,000만원」처럼 붙습니다(`updateMoneyHints`)
 - 계산기를 처음 열었을 때 음수나 '유리'·'가입 어려움' 같은 판정이 보이면 안 됩니다. verify가 모든 계산기를 확인합니다
+- **함께 읽는 안내 글**: 계산기 입력·결과 바로 아래에 관련 안내 글 1~3편 카드가 붙습니다(`site_core.TOOL_GUIDES`, `with_related_guides`).
+  2026-10 네이버 애널리틱스에서 평균 체류 39초·방문당 1.63쪽이라 계산 뒤 다음 쪽으로 이어지게 넣었습니다.
+  **새 안내 글을 쓰면 관련 계산기 줄에 파일 이름을 더하세요.** 없는 글을 적으면 빌드가 멈추고, 카드가 빠진 계산기는 verify가 잡습니다
+- **상가주택 취득세**: 취득세 계산기의 물건 종류 「상가주택」은 주택 부분 비율로 취득가액을 나눠 주택 부분은 주택 세율(주택 부분 가액으로 1~3% 구간),
+  상가 부분은 4.6%로 따로 계산합니다. 주택 부분 가액으로 구간을 정하는 것은 지방세법 시행령(한꺼번에 취득한 부동산은 시가표준액 비율로 안분)에 따른
+  해석이고, 화면과 글에 「지자체 확인」을 적어 두었습니다. 행안부 해석이 다르게 나오면 `js/acquisition-tax.js`의 `calc`와 글을 고칠 것
 
 ## 원칙
 

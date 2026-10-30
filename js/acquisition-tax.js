@@ -26,40 +26,61 @@
     // %×100 = 취득가액 ÷ 150만 − 300 으로 계산해 .5 경계에서 부동소수 오차로 내림되지 않게 한다.
     return Math.round(price / 1500000 - 300 + 1e-9) / 100;
   }
+  function won(n) { return Math.floor(n + 1e-6); }
+  // 주택 부분 세율. 상가주택(겸용)은 주택 부분 가액으로 1~3% 구간을 정한다(지자체 해석에 따라 다를 수 있어 화면에 적음).
+  function houseRates(price, i) {
+    var cat = SITUATION[i.situation] || 'std';
+    if (cat === 'std') { var t = stdRate(price); return { taxRate: t, eduRate: t * EDU_STD_FACTOR, ruralRate: i.large ? RURAL_STD : 0 }; }
+    if (cat === 'heavy8') return { taxRate: HEAVY8, eduRate: EDU_HEAVY, ruralRate: i.large ? RURAL_HEAVY8 : 0 };
+    return { taxRate: HEAVY12, eduRate: EDU_HEAVY, ruralRate: i.large ? RURAL_HEAVY12 : 0 };
+  }
+  function part(price, r) { return { price: price, taxRate: r.taxRate, eduRate: r.eduRate, ruralRate: r.ruralRate, tax: price * r.taxRate / 100, edu: price * r.eduRate / 100, rural: price * r.ruralRate / 100 }; }
   function calc(i) {
-    var out = { taxRate: 0, eduRate: 0, ruralRate: 0, kind: '' };
-    if (i.kind === 'nonhouse') { out.taxRate = NONHOUSE.tax; out.eduRate = NONHOUSE.edu; out.ruralRate = NONHOUSE.rural; out.kind = '주택 외 (토지·상가·업무용 오피스텔)'; }
-    else {
-      var cat = SITUATION[i.situation] || 'std';
-      if (cat === 'std') { out.taxRate = stdRate(i.price); out.eduRate = out.taxRate * EDU_STD_FACTOR; out.ruralRate = i.large ? RURAL_STD : 0; }
-      else if (cat === 'heavy8') { out.taxRate = HEAVY8; out.eduRate = EDU_HEAVY; out.ruralRate = i.large ? RURAL_HEAVY8 : 0; }
-      else { out.taxRate = HEAVY12; out.eduRate = EDU_HEAVY; out.ruralRate = i.large ? RURAL_HEAVY12 : 0; }
-      out.kind = '주택 · ' + SITUATION_LABEL[i.situation];
-    }
-    out.tax = i.price * out.taxRate / 100; out.edu = i.price * out.eduRate / 100; out.rural = i.price * out.ruralRate / 100;
+    // 상가주택은 취득가액을 주택 부분과 상가 부분으로 나눠 주택은 주택 세율, 상가는 주택 외 4%(+0.4%+0.2%)로 따로 계산해 더한다
+    var housePrice = i.kind === 'house' ? i.price : i.kind === 'mixed' ? won(i.price * Math.min(100, Math.max(0, i.share)) / 100) : 0;
+    var h = part(housePrice, houseRates(housePrice, i));
+    var n = part(i.price - housePrice, { taxRate: NONHOUSE.tax, eduRate: NONHOUSE.edu, ruralRate: NONHOUSE.rural });
+    var out = { house: h, shop: n, tax: h.tax + n.tax, edu: h.edu + n.edu, rural: h.rural + n.rural };
+    out.taxRate = i.kind === 'nonhouse' ? n.taxRate : h.taxRate; out.eduRate = i.kind === 'nonhouse' ? n.eduRate : h.eduRate; out.ruralRate = i.kind === 'nonhouse' ? n.ruralRate : h.ruralRate;
+    if (i.kind === 'nonhouse') out.kind = '주택 외 (토지·상가·업무용 오피스텔)';
+    else if (i.kind === 'mixed') out.kind = '상가주택 · 주택 부분 ' + SITUATION_LABEL[i.situation];
+    else out.kind = '주택 · ' + SITUATION_LABEL[i.situation];
     out.reduction = 0;
-    if (i.kind === 'house' && i.firstHome && i.price <= FIRST_HOME_PRICE_CAP && SITUATION[i.situation] === 'std') out.reduction = Math.min(out.tax, FIRST_HOME_CAP);
+    if (i.kind !== 'nonhouse' && i.firstHome && housePrice > 0 && housePrice <= FIRST_HOME_PRICE_CAP && SITUATION[i.situation] === 'std') out.reduction = Math.min(h.tax, FIRST_HOME_CAP);
     out.total = out.tax - out.reduction + out.edu + out.rural;
     out.effective = i.price > 0 ? out.total / i.price * 100 : 0;
     return out;
   }
   function readInput() {
     var k = document.querySelector('input[name="kind"]:checked');
-    return { kind: k ? k.value : 'house', price: S.parseMoney($('price').value), large: $('large').checked, situation: $('situation').value, firstHome: $('firstHome').checked };
+    var sh = parseFloat($('houseShare').value);
+    return { kind: k ? k.value : 'house', price: S.parseMoney($('price').value), share: isNaN(sh) ? 0 : sh, large: $('large').checked, situation: $('situation').value, firstHome: $('firstHome').checked };
   }
   var last = null;
+  function rateText(i, r, key) {
+    // 상가주택은 주택 부분과 상가 부분 세율을 나란히 적는다 (예: 1.8 / 4)
+    return i.kind === 'mixed' ? S.fmtRate(r.house[key]) + ' / ' + S.fmtRate(r.shop[key]) : S.fmtRate(r[key]);
+  }
   function render(i) {
-    var r = calc(i);
-    $('house-fields').hidden = i.kind !== 'house';
+    var r = calc(i), mixed = i.kind === 'mixed';
+    $('house-fields').hidden = i.kind === 'nonhouse';
+    $('mixed-fields').hidden = !mixed; $('mixed-card').hidden = !mixed;
     S.setText('out-total', S.fmtWon(r.total)); S.setText('sticky-monthly', S.fmtWon(r.total) + '원');
-    S.setText('out-tax', S.fmtWon(r.tax)); S.setText('out-tax-rate', S.fmtRate(r.taxRate)); S.setText('out-edu', S.fmtWon(r.edu)); S.setText('out-edu-rate', S.fmtRate(r.eduRate));
-    S.setText('out-rural', S.fmtWon(r.rural)); S.setText('out-rural-rate', S.fmtRate(r.ruralRate));
+    S.setText('out-tax', S.fmtWon(r.tax)); S.setText('out-tax-rate', rateText(i, r, 'taxRate')); S.setText('out-edu', S.fmtWon(r.edu)); S.setText('out-edu-rate', rateText(i, r, 'eduRate'));
+    S.setText('out-rural', S.fmtWon(r.rural)); S.setText('out-rural-rate', rateText(i, r, 'ruralRate'));
     S.setText('out-tax-d', S.fmtWon(r.tax)); S.setText('out-edu-d', S.fmtWon(r.edu)); S.setText('out-rural-d', S.fmtWon(r.rural)); S.setText('out-reduction', S.fmtWon(r.reduction)); S.setText('out-effective', S.fmtPct(r.effective));
     $('reduction-row').hidden = r.reduction <= 0;
     S.setText('out-kind', r.kind); S.setText('rate-date', RATE_DATE);
-    var note = i.price > 0 ? '취득가액 ' + S.fmtKorean(i.price) + ', ' + r.kind + ' 기준 취득세율 ' + S.fmtRate(r.taxRate) + '%. 합계 실효세율 ' + S.fmtPct(r.effective) + '%.' : '취득가액을 입력하면 바로 계산됩니다.';
-    if (i.kind === 'house' && i.firstHome && (i.price > FIRST_HOME_PRICE_CAP || SITUATION[i.situation] !== 'std')) note += ' 생애최초 감면은 12억 이하 주택을 표준세율로 취득할 때만 적용해 여기서는 반영하지 않았습니다.';
-    if (i.kind === 'house' && !i.large) note += ' 전용 85㎡ 이하라 농어촌특별세는 비과세입니다.';
+    [['house', r.house], ['shop', r.shop]].forEach(function (p) {
+      var x = p[1];
+      S.setText('out-' + p[0] + '-price', S.fmtWon(x.price)); S.setText('out-' + p[0] + '-rate', S.fmtRate(x.taxRate + x.eduRate + x.ruralRate)); S.setText('out-' + p[0] + '-sum', S.fmtWon(x.tax + x.edu + x.rural));
+    });
+    var note;
+    if (!(i.price > 0)) note = '취득가액을 입력하면 바로 계산됩니다.';
+    else if (mixed) note = '취득가액 ' + S.fmtKorean(i.price) + '을 주택 부분 ' + S.fmtKorean(r.house.price) + '(' + S.fmtRate(Math.min(100, Math.max(0, i.share))) + '%)과 상가 부분 ' + S.fmtKorean(r.shop.price) + '으로 나눴습니다. 주택 부분 취득세율 ' + S.fmtRate(r.house.taxRate) + '%는 주택 부분 가액으로 정했고, 상가 부분은 주택 수와 관계없이 4%입니다. 합계 실효세율 ' + S.fmtPct(r.effective) + '%.';
+    else note = '취득가액 ' + S.fmtKorean(i.price) + ', ' + r.kind + ' 기준 취득세율 ' + S.fmtRate(r.taxRate) + '%. 합계 실효세율 ' + S.fmtPct(r.effective) + '%.';
+    if (i.kind !== 'nonhouse' && i.firstHome && (r.house.price > FIRST_HOME_PRICE_CAP || SITUATION[i.situation] !== 'std')) note += ' 생애최초 감면은 12억 이하 주택을 표준세율로 취득할 때만 적용해 여기서는 반영하지 않았습니다.';
+    if (i.kind !== 'nonhouse' && !i.large) note += mixed ? ' 주택 부분이 전용 85㎡ 이하라 주택분 농어촌특별세는 비과세입니다.' : ' 전용 85㎡ 이하라 농어촌특별세는 비과세입니다.';
     note += ' 참고용 추정이며 실제 세액은 위택스 신고 화면과 세무사 확인이 기준입니다.';
     S.setText('out-note', note);
     last = { i: i, r: r };
@@ -68,10 +89,18 @@
     S.wireCalc({
       key: 'acquisition-tax',
       recalc: function () { render(readInput()); },
-      share: function () { return { title: '취득세 계산 결과', text: '[취득세 추정] ' + S.fmtKorean(last.i.price) + ' · ' + last.r.kind + '\n취득세 ' + S.fmtWon(last.r.tax) + '원 + 지방교육세 ' + S.fmtWon(last.r.edu) + '원 + 농특세 ' + S.fmtWon(last.r.rural) + '원' + (last.r.reduction ? ' − 감면 ' + S.fmtWon(last.r.reduction) + '원' : '') + ' = ' + S.fmtWon(last.r.total) + '원 (참고용)' }; },
+      preset: function (name) {
+        if (name === 'clear') { $('price').value = ''; return; }
+        var p = { house7: ['house', 700000000, 50], mixed12: ['mixed', 1200000000, 60] }[name]; if (!p) return;
+        var radio = document.querySelector('input[name="kind"][value="' + p[0] + '"]'); if (radio) radio.checked = true;
+        S.setMoney('price', p[1]); $('houseShare').value = p[2]; $('situation').value = 'one'; $('large').checked = false; $('firstHome').checked = false;
+      },
+      share: function () { return { title: '취득세 계산 결과', text: '[취득세 추정] ' + S.fmtKorean(last.i.price) + ' · ' + last.r.kind + (last.i.kind === 'mixed' ? ' (주택 ' + S.fmtKorean(last.r.house.price) + ' · 상가 ' + S.fmtKorean(last.r.shop.price) + ')' : '') + '\n취득세 ' + S.fmtWon(last.r.tax) + '원 + 지방교육세 ' + S.fmtWon(last.r.edu) + '원 + 농특세 ' + S.fmtWon(last.r.rural) + '원' + (last.r.reduction ? ' − 감면 ' + S.fmtWon(last.r.reduction) + '원' : '') + ' = ' + S.fmtWon(last.r.total) + '원 (참고용)' }; },
       card: function () {
         var r = last.r;
-        var rows = [['취득세 (' + S.fmtRate(r.taxRate) + '%)', S.fmtWon(r.tax) + '원'], ['지방교육세 (' + S.fmtRate(r.eduRate) + '%)', S.fmtWon(r.edu) + '원'], ['농어촌특별세 (' + S.fmtRate(r.ruralRate) + '%)', S.fmtWon(r.rural) + '원']];
+        var i = last.i;
+        var rows = [['취득세 (' + rateText(i, r, 'taxRate') + '%)', S.fmtWon(r.tax) + '원'], ['지방교육세 (' + rateText(i, r, 'eduRate') + '%)', S.fmtWon(r.edu) + '원'], ['농어촌특별세 (' + rateText(i, r, 'ruralRate') + '%)', S.fmtWon(r.rural) + '원']];
+        if (i.kind === 'mixed') rows.unshift(['주택 부분 / 상가 부분', S.fmtKorean(r.house.price) + ' / ' + S.fmtKorean(r.shop.price)]);
         if (r.reduction) rows.push(['생애최초 감면', '−' + S.fmtWon(r.reduction) + '원']);
         rows.push(['실효세율', S.fmtPct(r.effective) + '%']);
         return { file: 'acquisition-tax-result', title: '취득세 계산기', kicker: '예상 취득 관련 세금 합계 · ' + r.kind, big: S.fmtWon(r.total), unit: '원', rows: rows, note: RATE_DATE + '. 참고용 추정이며 실제 세액은 신고 화면과 세무사 확인이 기준입니다.' };
