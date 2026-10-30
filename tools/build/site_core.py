@@ -47,8 +47,8 @@ TOOLS = [
     ("prepayment.html", "중도상환수수료", "중도상환수수료 계산기 — 잔여일수 기준",
      "중도상환수수료 계산기. 상환금액, 수수료율, 대출 실행일과 상환일을 넣으면 잔여일수 비율로 중도상환수수료와 면제일을 계산합니다.",
      "대출", "잔여일수 비율로 계산한 수수료와 면제일"),
-    ("acquisition-tax.html", "취득세", "취득세 계산기 — 주택·상가 취득세와 지방교육세·농특세",
-     "취득세 계산기. 취득가액, 주택 수와 조정대상지역 여부, 전용면적을 넣으면 취득세와 지방교육세, 농어촌특별세를 합한 예상 세금을 참고용으로 추정합니다.",
+    ("acquisition-tax.html", "취득세", "취득세 계산기 — 주택·상가·상가주택 취득세와 지방교육세·농특세",
+     "취득세 계산기. 취득가액, 주택 수와 조정대상지역 여부, 전용면적을 넣으면 취득세와 지방교육세, 농어촌특별세를 합한 예상 세금을 참고용으로 추정합니다. 상가주택은 주택·상가 부분을 나눠 계산합니다.",
      "매매·투자", "취득세·지방교육세·농특세 참고용 추정"),
     ("capital-gains-tax.html", "양도소득세", "양도소득세 계산기 — 1세대 1주택 비과세·장기보유특별공제·다주택 중과",
      "양도소득세 계산기. 주택·입주권·분양권·토지·상가·국외 부동산의 양도차익에 1세대 1주택 비과세, 고가주택 안분, 장기보유특별공제, 단기·다주택 중과, 이월과세, 부담부증여, 감면까지 반영해 양도세와 지방소득세를 참고용으로 추정합니다.",
@@ -210,8 +210,8 @@ GUIDES = [
      "고정금리와 변동금리 중 무엇을 고를지 총 이자로 비교합니다. 변동금리가 매년 몇 %p 올라야 고정이 유리해지는지 손익분기점을 예시 숫자로 보여주고, 대출 기간이 길수록 고정이 유리해지는 이유와 중도상환·대환이라는 탈출구를 정리합니다."),
     ("guide-loan-rate-structure.html", "대출금리는 어떻게 정해지나", "대출금리 구조 — 코픽스·금융채 지표금리, 가산금리, 우대금리",
      "같은 은행에서 같은 날 대출을 받아도 사람마다 금리가 다른 이유를 구조로 설명합니다. 지표금리(코픽스·금융채·한국은행 기준금리), 가산금리, 우대금리가 각각 무엇으로 정해지는지, 0.3%p 차이가 총 이자에 얼마가 되는지, 지금 금리는 어디서 확인하는지 정리합니다."),
-    ("guide-officetel.html", "오피스텔은 주택인가", "오피스텔 주택 수 포함 여부 — 취득세·양도세·종부세·청약에서 갈리는 판정",
-     "오피스텔이 주택으로 취급되는지는 세금마다 다릅니다. 취득세는 주택 외 4%인데 주택 수에는 들어가고, 양도세와 종부세는 주거용이면 주택으로 봅니다. 청약 무주택 판정, 중개보수 요율, 전용면적이 작게 나오는 이유까지 항목별로 정리합니다."),
+    ("guide-officetel.html", "오피스텔은 주택인가", "오피스텔 1가구 2주택 되나 — 주택 수 포함 여부, 취득세·양도세·종부세·청약 판정",
+     "아파트 한 채에 주거용 오피스텔 한 채면 세금에서는 대개 1가구 2주택입니다. 취득세는 주택 외 4%인데 주택 수에는 들어가고, 양도세·종부세는 주거용이면 주택입니다. 주택 수에서 빠지는 오피스텔과 청약 판정까지 정리합니다."),
     ("guide-property-tax.html", "재산세·종부세, 6월 1일이 가르는 것", "재산세·종합부동산세 납부 시기와 계산 구조 — 과세기준일 6월 1일",
      "재산세와 종합부동산세는 6월 1일 소유자에게 1년치가 부과됩니다. 잔금일 하루 차이로 부담자가 바뀌는 이유, 재산세 7월·9월 분납과 종부세 12월 납부 일정, 공시가격에서 세액이 나오는 구조, 1세대 1주택 공제와 확인처를 정리합니다."),
     ("guide-prepayment.html", "중도상환수수료, 3년이 기준인 이유", "중도상환수수료 계산법과 면제 시점 — 슬라이딩 방식과 3년 상한",
@@ -278,7 +278,52 @@ GUIDES = [
      "통상임금 200만원이면 육아휴직 1년에 2,160만원, 250만원을 넘으면 모두 2,310만원입니다. 6+6 부모육아휴직제로 첫 6개월에 더 받는 금액과 1년 6개월 연장, 신청 조건을 계산기로 정리했습니다."),
     ("guide-unemployment-floor.html", "실업급여, 월급이 달라도 하루 6만 6천원인 이유", "실업급여 하한액 상한액 2026 — 하루 66,048원·68,100원, 월급별 하루 금액, 받는 날수",
      "2026년 실업급여 하한 66,048원과 상한 68,100원의 차이는 2,052원뿐이라 월급 200만원과 300만원의 하루 금액이 같습니다. 총액을 정하는 날수와 2027년에 바뀔 점을 계산기로 정리했습니다."),
+    # 2026-10 네이버 유입 검색어(상가주택 취득세, 갱신 거절 가족 범위)에 맞춰 추가
+    ("guide-mixed-use-acquisition.html", "상가주택 취득세, 주택 부분과 상가 부분을 나눠 내는 법", "상가주택 취득세 계산 — 주택 부분 1~3%·상가 부분 4.6%, 12억 상가주택 주택 비율별 세금과 중과",
+     "상가주택(겸용주택) 취득세는 취득가액을 주택 부분과 상가 부분으로 나눠 따로 계산합니다. 12억원 상가주택에서 주택이 60%면 3,633만 6,000원. 주택 비율별 세금, 다주택 중과, 비율 나누는 법을 계산기로 정리했습니다."),
+    ("guide-renewal-family.html", "실거주 갱신 거절, 누가 들어와야 인정되나", "실거주 갱신 거절 가족 범위 — 집주인 부모·자녀는 되고 배우자 혼자·형제는? 거절 기한과 손해배상",
+     "계약갱신 거절 사유인 실거주는 집주인 본인과 부모·자녀 같은 직계존속·직계비속까지입니다. 배우자 혼자, 장인·장모, 형제자매는 조문에 없습니다. 거절 기한, 집이 팔린 경우, 거짓 실거주의 손해배상액을 정리했습니다."),
 ]
+# 계산기 쪽 결과 바로 아래에 붙는 「함께 읽는 안내 글」. 계산기마다 1~3편, 가장 가까운 글부터.
+# 2026-10 네이버 애널리틱스에서 평균 체류 39초, 방문당 1.63쪽이라 계산 뒤 다음 쪽으로 이어지게 넣었다.
+# 새 안내 글을 쓰면 관련 계산기 줄에 더할 것. 없는 글을 적으면 빌드가 멈춘다(related_guides).
+TOOL_GUIDES = {
+    "rent.html": ["guide-jeonse-vs-monthly.html", "guide-deposit-vs-rent.html", "guide-jeonse-loan-vs-rent.html"],
+    "conversion.html": ["guide-conversion.html", "guide-renewal-rent-increase.html", "guide-deposit-vs-rent.html"],
+    "rent-tax-credit.html": ["guide-rent-tax-credit-who.html", "guide-rent-credit-refund.html", "guide-year-end-december.html"],
+    "fee.html": ["guide-brokerage.html", "guide-buying-costs.html", "guide-jeonse-registry.html"],
+    "loan.html": ["guide-repayment.html", "guide-base-rate-change.html", "guide-prepayment.html"],
+    "dsr.html": ["guide-dsr-ltv.html", "guide-mortgage-limit.html", "guide-loan-rate-structure.html"],
+    "prepayment.html": ["guide-prepayment.html", "guide-refinance.html", "guide-repayment.html"],
+    "acquisition-tax.html": ["guide-acquisition-tax.html", "guide-acquisition-6-9.html", "guide-mixed-use-acquisition.html"],
+    "capital-gains-tax.html": ["guide-cgt-exemption.html", "guide-cgt-heavy.html", "guide-cgt-high-price.html"],
+    "yield.html": ["guide-yield-vacancy.html", "guide-mixed-use-acquisition.html", "guide-rental-income-two-homes.html"],
+    "subscription.html": ["guide-subscription-points.html", "guide-subscription-notice-date.html"],
+    "area.html": ["guide-area-84.html", "guide-officetel.html"],
+    "renewal.html": ["guide-renewal-refusal.html", "guide-renewal-family.html", "guide-renewal-rent-increase.html"],
+    "jeonse-insurance.html": ["guide-jeonse-insurance-fail.html", "guide-jeonse-ratio.html", "guide-deposit-return.html"],
+    "jeonse-fraud-check.html": ["guide-jeonse-registry.html", "guide-jeonse-ratio.html", "guide-deposit-return.html"],
+    "moving.html": ["guide-moving-14days.html", "guide-jeonse-registry.html", "guide-deposit-return.html"],
+    "rate-compare.html": ["guide-fixed-vs-variable.html", "guide-loan-rate-structure.html", "guide-base-rate-change.html"],
+    "buy-vs-rent.html": ["guide-buy-vs-rent.html", "guide-buying-costs.html", "guide-jeonse-vs-monthly.html"],
+    "tax-calendar.html": ["guide-property-tax.html", "guide-cgt-filing.html", "guide-year-end-december.html"],
+    "property-tax.html": ["guide-property-tax.html", "guide-jongbuse-threshold.html"],
+    "comprehensive-property-tax.html": ["guide-jongbuse-threshold.html", "guide-property-tax.html"],
+    "gift-tax.html": ["guide-gift-vs-inheritance.html"],
+    "salary.html": ["guide-salary-net.html", "guide-salary-raise.html", "guide-minimum-wage-2027.html"],
+    "severance.html": ["guide-severance.html", "guide-severance-tax.html"],
+    "inheritance-tax.html": ["guide-gift-vs-inheritance.html"],
+    "jeonse-loan.html": ["guide-jeonse-loan-vs-rent.html", "guide-base-rate-change.html", "guide-loan-rate-structure.html"],
+    "savings.html": ["guide-savings-real-rate.html"],
+    "unemployment-benefit.html": ["guide-unemployment-floor.html", "guide-severance.html", "guide-minimum-wage-2027.html"],
+    "hourly-wage.html": ["guide-minimum-wage-2027.html", "guide-salary-net.html"],
+    "year-end-tax.html": ["guide-year-end-december.html", "guide-rent-tax-credit-who.html", "guide-rent-credit-refund.html"],
+    "registration-cost.html": ["guide-self-registration.html", "guide-buying-costs.html", "guide-acquisition-tax.html"],
+    "pension-tax-credit.html": ["guide-year-end-december.html"],
+    "parental-leave.html": ["guide-parental-leave-pay.html"],
+    "annual-leave.html": ["guide-annual-leave-pay.html", "guide-minimum-wage-2027.html"],
+    "rental-income-tax.html": ["guide-rental-income-two-homes.html", "guide-officetel.html"],
+}
 DOCS = [
     ("about.html", "사이트 소개"), ("privacy.html", "개인정보처리방침"), ("terms.html", "이용약관"),
 ]
@@ -395,7 +440,7 @@ TILE_KEYS = {
     "dsr.html": "DSR LTV 대출한도 주택담보대출 가능금액 스트레스",
     "prepayment.html": "중도상환수수료 조기상환 면제",
     "rate-compare.html": "고정금리 변동금리 비교 금리",
-    "acquisition-tax.html": "취득세 지방교육세 농특세 등록세 생애최초",
+    "acquisition-tax.html": "취득세 지방교육세 농특세 등록세 생애최초 상가주택 겸용주택",
     "capital-gains-tax.html": "양도소득세 양도세 비과세 장기보유특별공제 중과",
     "yield.html": "상가 수익률 임대수익률 월세수익률 공실 레버리지",
     "subscription.html": "청약 가점 무주택 부양가족 청약통장 아파트",
@@ -633,6 +678,29 @@ def related(cur):
       <h2 id="rel-title">함께 쓰는 계산기</h2>
       <div class="tool-grid">{cards}</div>
     </section>'''
+
+def related_guides(cur):
+    gmap = {g[0]: g for g in GUIDES}
+    files = TOOL_GUIDES.get(cur, [])
+    missing = [f for f in files if f not in gmap]
+    assert not missing, cur + ": TOOL_GUIDES에 없는 안내 글 " + ", ".join(missing)
+    if not files: return ""
+    cards = "".join(f'<a class="tool-card" href="{f}"><p class="t">{gmap[f][1]}</p><p class="d">{gmap[f][3]}</p></a>' for f in files)
+    return f'''
+    <section class="card related related-guides" aria-labelledby="rel-guides-title">
+      <h2 id="rel-guides-title">이 계산기와 함께 읽는 안내 글</h2>
+      <div class="tool-grid">{cards}</div>
+    </section>'''
+
+def with_related_guides(cur, main):
+    """계산기 입력·결과 바로 아래(<div class="layout"> 다음)에 안내 글 카드를 넣는다.
+    기존 계산기 4개는 쪽 본문이 곧 원본이라 이미 들어 있는 카드를 먼저 빼고 다시 넣는다(여러 번 빌드해도 하나만)."""
+    main = re.sub(r'\n    <section class="card related related-guides".*?</section>', '', main, flags=re.S)
+    i = main.find('<div class="layout">')
+    j = main.find('\n    </div>', i)
+    assert i >= 0 and j >= 0, cur + ": 계산기 layout을 찾지 못했습니다"
+    j += len('\n    </div>')
+    return main[:j] + related_guides(cur) + main[j:]
 
 def read(path): return open(os.path.join(ROOT, path), encoding="utf-8").read()
 def today_kst():

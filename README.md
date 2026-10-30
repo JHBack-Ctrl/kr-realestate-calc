@@ -75,7 +75,7 @@ DNS는 가비아에서 관리하며 A 레코드 4개(185.199.108~111.153)가 ape
 | 파일 | 내용 |
 | --- | --- |
 | `index.html` | 홈. 카테고리별 계산기 목록과 안내 글. 옛 공유 링크(`?rent=…`)는 `rent.html`로 넘김 |
-| `guides.html`, `guide-*.html` | 안내 글 4편 (상환 방식, 복비, 전월세 전환율, 전세 vs 월세) |
+| `guides.html`, `guide-*.html` | 안내 글 53편 — `tools/build/pages_guides.py`(4편)와 `pages_guides2.py`(49편). 계산기 쪽에는 관련 글 카드가 붙음(`site_core.TOOL_GUIDES`) |
 | `checklist.html`, `policy.html` | 양도·취득 체크리스트, 세제·정책 참고 (세액 계산 없음) |
 | `about.html`, `privacy.html`, `terms.html`, `404.html` | 소개, 개인정보처리방침, 이용약관, 404 |
 

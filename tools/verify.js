@@ -106,8 +106,11 @@ function near(label, got, want, tol) {
       if (dup.length) bad.push('dup-id:' + [...new Set(dup)].join(','));
       const robots = document.querySelector('meta[name=robots]');
       const desc = document.querySelector('meta[name=description]');
-      return { bad, links, noindex: !!(robots && /noindex/.test(robots.content)), sw: document.documentElement.scrollWidth, text: document.body.innerText.length, desc: desc ? desc.content.length : 0 };
+      return { bad, links, noindex: !!(robots && /noindex/.test(robots.content)), sw: document.documentElement.scrollWidth, text: document.body.innerText.length, desc: desc ? desc.content.length : 0,
+               relGuides: document.querySelectorAll('.related-guides .tool-card').length };
     });
+    // 계산기 쪽마다 결과 아래 「함께 읽는 안내 글」이 있어야 한다(site_core.TOOL_GUIDES, 2026-10)
+    if (TOOL_PAGES.includes(f) && !r.relGuides) r.bad.push('관련 안내 글 없음');
     if (r.sw > 391) r.bad.push('overflow390=' + r.sw);
     if (r.desc > 160) r.bad.push('description=' + r.desc + '자');   // 검색 결과에서 잘리지 않게 160자 이내
     // 사이트맵과 noindex가 엇갈리면 안 된다. 안내 글과 홈은 반드시 검색에 들어가야 한다.
@@ -279,6 +282,19 @@ function near(label, got, want, tol) {
   await acq('취득세 7억 85초과', '700000000', 'one', true, false, '14,259,000');
   await acq('취득세 7억 생애최초', '700000000', 'one', false, true, '10,859,000');
   await acq('취득세 8억 생애최초', '800000000', 'one', false, true, '18,504,000');
+  // guide-mixed-use-acquisition.html — 상가주택 12억(1주택, 주택 부분 85㎡ 이하) 주택 비율별, 주택 부분만 중과
+  await fresh('acquisition-tax.html'); await radio('kind', 'mixed');
+  for (const [sh, want] of [['30', '42,600,000'], ['50', '34,200,000'], ['60', '36,336,000'], ['70', '40,584,000'], ['90', '41,160,000'], ['100', '39,600,000']]) {
+    await type('houseShare', sh); await acq(`상가주택 12억 주택 ${sh}%`, '1200000000', 'one', false, false, want);
+  }
+  await type('houseShare', '60'); await type('price', '1200000000');
+  expect('상가주택 주택분', await get('out-house-sum'), '14,256,000'); expect('상가주택 상가분', await get('out-shop-sum'), '22,080,000');
+  expect('상가주택 세율 표시', await get('out-tax-rate'), '1.8 / 4'); expect('상가주택 실효세율', await get('out-effective'), '3.03');
+  await acq('상가주택 조정 2주택', '1200000000', 'adj2', false, false, '82,560,000'); expect('상가주택 조정2 주택분', await get('out-house-sum'), '60,480,000');
+  await acq('상가주택 조정 3주택', '1200000000', 'adj3', false, false, '111,360,000'); expect('상가주택 조정3 주택분', await get('out-house-sum'), '89,280,000');
+  await radio('kind', 'house'); await acq('주택 12억', '1200000000', 'one', false, false, '39,600,000');
+  await radio('kind', 'nonhouse'); await type('price', '1200000000'); expect('상가 12억', await get('out-total'), '55,200,000');
+  await page.click('.chip[data-preset="mixed12"]'); expect('상가주택 예시 버튼', await get('out-total'), '36,336,000');
 
   // guide-repayment.html 본문 — 30년 3억, 거치 1년
   await fresh('loan.html');
@@ -581,6 +597,12 @@ function near(label, got, want, tol) {
   await page.fill('#start', '2024-11-15'); await page.fill('#months', '24'); await type('deposit', '200000000'); await type('rent', '0');
   expect('만기 지난 계약 상태', await get('out-status'), '지남'); expect('묵시적 갱신 해지일', await get('out-terminate'), '2026-12-21');
   await fresh('moving.html'); await page.fill('#moveDate', '2027-03-01'); expect('2027-03-01 이사 전입기한', await get('out-report'), '2027-03-15');
+  // guide-renewal-family.html — 2025-05-20 시작 2년의 거절 기간, 손해배상 예시(기준금리 3% → 전환율 5%), 전세 2.4억 중개보수
+  await fresh('renewal.html'); await page.fill('#start', '2025-05-20'); await page.fill('#months', '24');
+  expect('실거주 거절 만기', await get('out-end'), '2027-05-20'); expect('실거주 거절 시작', await get('out-wstart'), '2026-11-20'); expect('실거주 거절 마감', await get('out-wend'), '2027-03-19');
+  await fresh('conversion.html'); await page.fill('#baseRate', '3'); await type('deposit', '0');
+  for (const [j, want] of [['240000000', '1,000,000'], ['300000000', '1,250,000']]) { await type('jeonse', j); expect(`환산월차임 전세 ${j}`, await get('out-big'), want); }
+  await fresh('fee.html'); await radio('deal', 'jeonse'); await type('price', '240000000'); expect('복비 전세 2.4억', await get('out-fee'), '720,000');
 
   // 요율 의존 — 1월에 요율을 바꾸면 아래 기대값도 바꿀 것
   await fresh('salary.html');

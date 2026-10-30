@@ -67,7 +67,7 @@ for src, (script, sticky) in OLD_CALC.items():
     main = extract_main(html)
     ld = extract_ld(html)
     assert 'id="calc-form"' in main, src + ": 계산기 본문이 아닙니다"
-    main = patch_calc_main(main)
+    main = with_related_guides(f, patch_calc_main(main))
     if 'id="rel-title"' not in main: main += related(f)
     if 'BreadcrumbList' not in ld: ld += breadcrumb_ld(name, f)
     write(f, page(title, desc, f, main, extra_head=ld, scripts=[script], sticky=sticky))
@@ -91,7 +91,7 @@ write("404.html", page("페이지를 찾을 수 없습니다 — 전국부동산
 for f, (fn, script, sticky) in NEW_PAGES.items():
     main, extra = fn()
     t = [x for x in TOOLS if x[0] == f][0]
-    write(f, page(t[2], t[3], f, main, extra_head=extra, scripts=[script], sticky=sticky))
+    write(f, page(t[2], t[3], f, with_related_guides(f, main), extra_head=extra, scripts=[script], sticky=sticky))
 
 # ---------- 4) 안내 글, 목록, 홈 ----------
 write("guide-repayment.html", guide_repayment())
