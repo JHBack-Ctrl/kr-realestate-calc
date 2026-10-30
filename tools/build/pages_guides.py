@@ -306,7 +306,11 @@ def home():
                    "guide-refinance.html": "대출 갈아타기 손익분기", "guide-temporary-two-homes.html": "일시적 2주택 3년",
                    "guide-jeonse-ratio.html": "전세가율과 집값 하락", "guide-cgt-filing.html": "양도세 신고 기한",
                    "guide-jongbuse-threshold.html": "종부세 얼마부터", "guide-year-end-december.html": "12월 연말정산 준비",
-                   "guide-gift-vs-inheritance.html": "증여 vs 상속 세금", "guide-savings-real-rate.html": "적금 실제 이자"}
+                   "guide-gift-vs-inheritance.html": "증여 vs 상속 세금", "guide-savings-real-rate.html": "적금 실제 이자",
+                   "guide-jeonse-loan-vs-rent.html": "전세대출 vs 월세 비용", "guide-self-registration.html": "셀프등기 비용",
+                   "guide-annual-leave-pay.html": "연말 연차수당", "guide-minimum-wage-2027.html": "2027 최저임금 월급",
+                   "guide-rental-income-two-homes.html": "2주택 월세 세금", "guide-parental-leave-pay.html": "육아휴직 급여 합계",
+                   "guide-unemployment-floor.html": "실업급여 하한 구조"}
     ref = ("".join(f'<a class="tile" href="{f}" data-k="{n}" data-pub="{PAGE_DATES.get(f, {}).get("published", "")}">{tile_icon(f)}<span class="t">{GUIDE_SHORT.get(f, n)}</span></a>'
                    for (f, n, _t, _d) in GUIDES)
            + "".join(tile(f, n, "") for (f, n, _t, _d, _c, _s) in REFS if f != "guides.html"))

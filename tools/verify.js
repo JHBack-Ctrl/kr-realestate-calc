@@ -763,6 +763,60 @@ function near(label, got, want, tol) {
     await radio('kind', kind); await radio('method', method); await type('months', m); await type('rate', r); await type('amount', amt); expect(`적금 글 ${kind} ${amt} ${m}개월 ${r}% ${method}`, await get(id), want);
   }
 
+  // ------------------------------------------------------------ 안내 글 7편 (2026-10 2차) 본문 숫자
+  // guide-jeonse-loan-vs-rent.html — 전세 3억·80%·24개월·기회비용 3%, 월세 보증금 5천·100만, 연말정산 총급여 5천
+  await fresh('jeonse-loan.html'); await type('deposit', '300000000');
+  for (const [rate, want] of [['3.5', '850,000'], ['4.875', '1,125,000'], ['4', '950,000']]) { await type('rate', rate); expect(`전세대출 글 ${rate}%`, await get('out-housing'), want); }
+  await fresh('rent.html'); await type('rent', '1000000'); await page.fill('#maint', ''); await type('deposit', '50000000'); await type('rate', '3');
+  expect('전세대출 글 월세 월 실부담', await get('out-monthly'), '1,125,000'); expect('전세대출 글 월세 1년', await get('out-yearly'), '13,500,000');
+  await fresh('year-end-tax.html'); await openGroups(); await type('salary', '50000000');
+  await type('rent', '12000000'); expect('전세대출 글 월세 세액공제 환급', await get('out-total'), '1,727,000'); await page.fill('#rent', '');
+  await type('lease', '9600000'); expect('전세대출 글 전세대출 소득공제 환급', await get('out-total'), '490,600');
+  // guide-self-registration.html — 할인율·지역·집값별, 취득세 포함 합계
+  await fresh('registration-cost.html'); await page.click('[data-preset="s6"]');
+  for (const [d, want] of [['8', '873,600'], ['12', '1,310,400']]) { await type('discount', d); expect(`셀프등기 글 할인율 ${d}%`, await get('out-bond-cost'), want); }
+  await type('discount', '10'); await type('acq', '6600000'); expect('셀프등기 글 6억 + 취득세', await get('out-total'), '7,782,000');
+  await page.selectOption('#region', 'other'); await page.fill('#acq', ''); expect('셀프등기 글 그 밖 지역 4.2억', await get('out-bond-cost'), '882,000');
+  await page.click('[data-preset="l3"]'); await type('acq', '3300000'); expect('셀프등기 글 지방 3억 + 취득세', await get('out-total'), '3,768,000');
+  await page.selectOption('#region', 'metro'); await page.fill('#acq', ''); expect('셀프등기 글 광역시 2.1억', await get('out-bond-cost'), '483,000');
+  await page.click('[data-preset="s9"]'); await type('acq', '29700000'); expect('셀프등기 글 9억 + 취득세', await get('out-total'), '31,743,000');
+  await fresh('acquisition-tax.html'); await page.selectOption('#situation', 'one'); await type('price', '300000000'); expect('셀프등기 글 취득세 3억', await get('out-total'), '3,300,000');
+  // guide-annual-leave-pay.html — 입사일 기준
+  await fresh('annual-leave.html');
+  for (const [join, base, wage, unused, now, pay] of [['2025-03-02', '2026-03-02', '2500000', '10', '15', '956,930'], ['2021-01-04', '2026-12-31', '4000000', '3', '17', '459,330'],
+                                                      ['2016-01-04', '2026-12-31', '5000000', '7', '19', '1,339,709'], ['2026-03-02', '2026-12-31', '2500000', '0', '9', '0']]) {
+    await page.fill('#join', join); await page.fill('#base', base); await type('wage', wage); await type('unused', unused);
+    expect(`연차 글 ${join} 연차`, await get('out-now'), now); expect(`연차 글 ${join} 수당`, await get('out-pay'), pay);
+  }
+  // guide-minimum-wage-2027.html — 시급 칸에 10,700원·9,630원
+  await fresh('hourly-wage.html');
+  for (const [w, d, n, want] of [['10700', '8', '5', '2,236,300'], ['10700', '6', '5', '1,669,200'], ['10700', '5', '4', '1,112,800'], ['10700', '3', '5', '834,600'], ['10700', '7', '2', '652,700'], ['10700', '4', '3', '556,400'], ['9630', '8', '5', '2,012,670']]) {
+    await type('wage', w); await type('daily', d); await type('days', n); expect(`최저임금 글 ${w} ${d}×${n}`, await get('out-monthly'), want);
+  }
+  await type('wage', '10700'); await type('daily', '8'); await type('days', '5'); await setChk('biz', true); expect('최저임금 글 3.3%', await get('out-net'), '2,162,520');
+  // guide-rental-income-two-homes.html
+  await fresh('rental-income-tax.html');
+  for (const [homes, high, rent, dep, reg, other, want] of [['2', false, '500000', '', false, true, '154,000'], ['2', false, '500000', '', true, true, '0'], ['2', false, '1500000', '', false, true, '1,078,000'], ['2', false, '1500000', '', true, true, '492,800'],
+                                                           ['2', false, '1660000', '', false, true, '1,225,840'], ['2', false, '1000000', '', false, false, '924,000'], ['2', true, '', '1300000000', false, true, '1,124,200'], ['1', true, '1000000', '', false, true, '616,000']]) {
+    await page.selectOption('#homes', homes); await setChk('high', high); await page.fill('#rent', ''); await page.fill('#deposit', ''); if (rent) await type('rent', rent); if (dep) await type('deposit', dep); await setChk('reg', reg); await setChk('otherLow', other);
+    expect(`임대소득 글 ${homes}주택${high ? ' 고가' : ''} ${rent || dep}${reg ? ' 등록' : ''}${other ? '' : ' 기본공제X'}`, await get('out-total'), want);
+  }
+  await page.selectOption('#homes', '2'); await setChk('high', false); await setChk('reg', false); await type('rent', '1700000'); expect('임대소득 글 월 170만 종합과세', await get('out-kind'), '종합과세');
+  await page.fill('#rent', ''); await setChk('high', true); await type('deposit', '1500000000'); expect('임대소득 글 고가 2주택 15억 종합과세', await get('out-kind'), '종합과세');
+  await type('deposit', '1200000000'); expect('임대소득 글 고가 2주택 12억 비과세', await get('out-kind'), '비과세');
+  // guide-parental-leave-pay.html
+  await fresh('parental-leave.html');
+  for (const [w, m, six, want] of [['800000', '12', false, '9,000,000'], ['1500000', '12', false, '16,200,000'], ['2000000', '12', false, '21,600,000'], ['2500000', '12', false, '23,100,000'], ['5000000', '12', false, '23,100,000'],
+                                   ['3000000', '6', false, '13,500,000'], ['3000000', '6', true, '17,000,000'], ['2000000', '6', true, '12,000,000'], ['3000000', '18', false, '32,700,000'], ['3000000', '12', true, '26,600,000'], ['3000000', '18', true, '36,200,000']]) {
+    await setChk('sixsix', six); await type('months', m); await type('wage', w); expect(`육아휴직 글 ${w} ${m}개월${six ? ' 6+6' : ''}`, await get('out-total'), want);
+  }
+  // guide-unemployment-floor.html — 퇴직일 비움(91일), 8시간
+  await fresh('unemployment-benefit.html');
+  for (const [w, age, yrs, hours, want] of [['2000000', 'under50', '1', '8', '9,907,200'], ['3400000', 'under50', '2', '8', '12,105,360'], ['3500000', 'under50', '2', '8', '12,258,000'],
+                                            ['3000000', 'under50', '4', '8', '15,851,520'], ['3000000', 'over50', '4', '8', '17,832,960'], ['1500000', 'under50', '0', '4', '3,962,880']]) {
+    await radio('age', age); await page.selectOption('#years', yrs); await type('hours', hours); await type('wage', w); expect(`실업급여 글 ${w} ${age} ${yrs} ${hours}h`, await get('out-total'), want);
+  }
+
   // ------------------------------------------------------------ 빈 입력 상태·즐겨찾기·금액 읽기 (2026-10)
   // 처음 열었을 때 음수 금액이나 '유리'·'가입 어려움' 같은 판정이 보이면 안 된다
   for (const t of TOOL_PAGES) {

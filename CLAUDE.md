@@ -12,7 +12,7 @@
 python3 tools/build/build.py
 ```
 
-등록부에서 138쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
+등록부에서 145쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
 같은 소스로 두 번 돌리면 결과가 같아야 합니다(멱등). 달라지면 버그입니다.
 
 - `site_core.py` — 등록부(TOOLS, TABLES, FORMS, REFS, GUIDES, HUBS, RATE_HISTORY)와 공통 틀.
@@ -21,7 +21,7 @@ python3 tools/build/build.py
   (`pages_tax.py`는 재산세·종부세·증여세, `pages_tools3.py`는 상속세·전세대출·예적금·실업급여·시급,
   `pages_tools4.py`는 연말정산·등기비용·연금저축IRP·육아휴직·연차·주택임대소득세)
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽, 안내 글 4편
-- `pages_guides2.py` — 안내 글 40편
+- `pages_guides2.py` — 안내 글 47편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
 - `build.py` — 위를 모아 쓰고 `manifest.json`, `sw.js`, `sitemap.xml`, `js/analytics.js`를 생성
 
@@ -41,8 +41,8 @@ python3 tools/build/build.py
 
 ### 검색 제외 (noindex)
 
-138쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
-검색 대상은 125쪽입니다(2026-10-27). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
+145쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
+검색 대상은 132쪽입니다(2026-10-29). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
 
 - 용어 9쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
 - 용어 39쪽 중 30쪽은 1,000자 이상으로 늘려 검색에 되돌렸습니다: 대항력·확정일자·전세가율·DSR·LTV,
@@ -189,7 +189,8 @@ https://전국부동산계산기.com/guide-prepayment.html
 - 연말정산: `js/year-end-tax.js` 상수 블록(카드 한도·공제율, 월세, 연금계좌, 혼인세액공제 2026년까지). 2026년 8월 개편안의
   월세 한도 1,200만원·청년 17%, 자녀세액공제 나이 기준은 **2027년 귀속, 국회 통과 전이라 미반영**. 통과되면 `js/rent-tax-credit.js`도 같이.
   혼인세액공제는 2026년 혼인신고분까지라 연장 여부를 확인하고, 안내 글 `guide-year-end-december.html`(카드·연금·혼인 숫자)도 다시 뽑을 것
-- 주택임대소득세: `js/rental-income-tax.js`의 `DEEMED_RATE`(간주임대료 이자율, 매년 3월 시행규칙. 2026년 귀속 3.1%)와 소형주택 주택 수 제외(2026년까지)
+- 주택임대소득세: `js/rental-income-tax.js`의 `DEEMED_RATE`(간주임대료 이자율, 매년 3월 시행규칙. 2026년 귀속 3.1%)와 소형주택 주택 수 제외(2026년까지).
+  바뀌면 안내 글 `guide-rental-income-two-homes.html`의 간주임대료 숫자도 다시 뽑을 것
 - 표: `tools/build/pages_tables.py`
 
 ### 1월 — 4대보험 요율·소득세
@@ -207,12 +208,14 @@ https://전국부동산계산기.com/guide-prepayment.html
   바뀌면 `guide-rent-credit-refund.html`의 「몇 년 전 것까지」 설명(어느 해부터 같은 요건인지)도 확인할 것
 
 - `js/hourly-wage.js` — `MIN_WAGE`(올해 최저임금)와 `NEXT_MIN_WAGE`(고시된 내년 값). 1월에 2027년 10,700원을 `MIN_WAGE`로
-  옮기고, 8월 고시 뒤 `NEXT_MIN_WAGE`를 그다음 해 값으로. 계산기 본문 예시(`pages_tools3.hourly_wage_page`)와 verify 기대값도 다시 뽑을 것
+  옮기고, 8월 고시 뒤 `NEXT_MIN_WAGE`를 그다음 해 값으로. 계산기 본문 예시(`pages_tools3.hourly_wage_page`)와 verify 기대값도 다시 뽑을 것.
+  안내 글 `guide-minimum-wage-2027.html`은 「계산기는 2026년 10,320원과 비교」 문장과 2026·2027 비교표를 손볼 것
 - `js/unemployment-benefit.js` — `MIN_WAGE`, `DAILY_MAX`(하루 상한 68,100원), `RULES_DATE`. **2027년 1월 주의**:
   최저임금 10,700원이면 하한이 68,480원으로 지금 상한을 넘으므로 상한이 또 오를 가능성이 큼. 고용노동부 발표로 확인할 것.
-  계산기 본문의 「334만원 이하면 하한, 344만원 이상이면 상한」 문장과 예시 숫자도 다시 뽑을 것
+  계산기 본문의 「334만원 이하면 하한, 344만원 이상이면 상한」 문장과 예시 숫자, 안내 글 `guide-unemployment-floor.html`(표·날수별 총액·
+  조기재취업수당 예시·「2027년에 바뀔 것」 절)도 다시 뽑을 것
 - `js/savings.js`(이자소득세 15.4%)와 `js/jeonse-loan.js`(주택임차차입금 소득공제 40%·400만원)는 거의 안 바뀜
-- `js/parental-leave.js` — 육아휴직 급여 상한(250·200·160만원, 6+6 단계별 상한). 고용보험법 시행령이 바뀌면
+- `js/parental-leave.js` — 육아휴직 급여 상한(250·200·160만원, 6+6 단계별 상한). 고용보험법 시행령이 바뀌면 안내 글 `guide-parental-leave-pay.html`도
 - `js/pension-tax-credit.js`(600·900만원, 15·12%), `js/annual-leave.js`(근로기준법 60조)는 거의 안 바뀜
 
 국민연금 보험료율은 2026년 9.5%(근로자 4.75%)부터 2033년 13%까지 해마다 0.5%p씩 오릅니다.
@@ -247,9 +250,9 @@ https://전국부동산계산기.com/guide-prepayment.html
   바뀌면 안내 글 `guide-mortgage-limit`·`guide-dsr-ltv`·`guide-base-rate-change`·`guide-refinance`,
   용어 `term-dsr`·`term-ltv`·`term-stress-dsr`의 숫자를 다시 뽑을 것
 - 전세대출 규제(1주택자 수도권·규제지역 2억원 한도는 2025-09 대책, 이자 DSR 반영은 2025-10-29부터) →
-  계산기에는 상수가 없고 `pages_tools3.jeonse_loan_page`의 FAQ·본문 문장에만 있음. 바뀌면 그 문장을 고칠 것
+  계산기에는 상수가 없고 `pages_tools3.jeonse_loan_page`의 FAQ·본문 문장과 안내 글 `guide-jeonse-loan-vs-rent.html`(1주택자 2억 한도 절)에만 있음. 바뀌면 그 문장을 고칠 것
 - 등기신청수수료·국민주택채권 매입률 → `js/registration-cost.js`의 `FEE`, `BOND`. 수수료는 2025-08-01에 올랐음(서면 18,000·
-  전자표준양식 15,000·전자 10,000). 채권 할인율은 매일 바뀌어 입력값으로 둠(기본 10%는 예시)
+  전자표준양식 15,000·전자 10,000). 채권 할인율은 매일 바뀌어 입력값으로 둠(기본 10%는 예시). 바뀌면 안내 글 `guide-self-registration.html`도
 - 중개보수 요율 → 거의 안 바뀜
 
 ## 화면 기능 (2026-10 추가)
