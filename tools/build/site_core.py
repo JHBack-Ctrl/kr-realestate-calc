@@ -135,6 +135,10 @@ TOOLS = [
     ("rental-income-tax.html", "주택임대소득세", "주택임대소득세 계산기 2026 — 월세 비과세 기준, 간주임대료, 2천만원 이하 분리과세",
      "주택임대소득세 계산기. 보유 주택 수와 월세·보증금, 임대사업자 등록 여부를 넣으면 비과세 여부와 간주임대료, 총수입 2천만원 이하 분리과세 세액을 계산합니다. 2026년 고가주택 2주택 기준 반영.",
      "임대", "월세·보증금으로 보는 임대소득세"),
+    # ---- 6차 추가 (2026-10): 종합소득세 ----
+    ("income-tax.html", "종합소득세", "종합소득세 계산기 2026 — 프리랜서 3.3% 환급액, 단순경비율, 5월 신고",
+     "종합소득세 계산기. 3.3%를 떼고 받은 프리랜서·강사의 1년 수입과 단순경비율 또는 실제 경비, 부양가족, 국민연금·연금저축을 넣으면 결정세액과 5월 신고 때 돌려받거나 더 낼 세금을 추정합니다.",
+     "생활", "3.3% 뗀 수입으로 보는 5월 환급액"),
 ]
 # 표·자료 페이지 (파일, 짧은 이름, 제목, description, 한 줄 설명)
 TABLES = [
@@ -283,6 +287,13 @@ GUIDES = [
      "상가주택(겸용주택) 취득세는 취득가액을 주택 부분과 상가 부분으로 나눠 따로 계산합니다. 12억원 상가주택에서 주택이 60%면 3,633만 6,000원. 주택 비율별 세금, 다주택 중과, 비율 나누는 법을 계산기로 정리했습니다."),
     ("guide-renewal-family.html", "실거주 갱신 거절, 누가 들어와야 인정되나", "실거주 갱신 거절 가족 범위 — 집주인 부모·자녀는 되고 배우자 혼자·형제는? 거절 기한과 손해배상",
      "계약갱신 거절 사유인 실거주는 집주인 본인과 부모·자녀 같은 직계존속·직계비속까지입니다. 배우자 혼자, 장인·장모, 형제자매는 조문에 없습니다. 거절 기한, 집이 팔린 경우, 거짓 실거주의 손해배상액을 정리했습니다."),
+    # 2026-10: 1월 연말정산·5월 종합소득세 시즌 대비
+    ("guide-year-end-dependents.html", "연말정산 부양가족 공제, 누구까지 되고 얼마나 줄어드나", "연말정산 부양가족 공제 기준 — 나이·소득 100만원 요건, 1명당 세금 22만 5천원, 맞벌이 누구 쪽에",
+     "연말정산 부양가족 기본공제는 1명당 150만원이고 소득 100만원 이하, 부모 60세 이상, 자녀 20세 이하 요건이 있습니다. 총급여별로 1명을 더하면 줄어드는 세금, 자녀세액공제, 맞벌이 부부의 차이를 계산기로 정리했습니다."),
+    ("guide-year-end-result.html", "연말정산 결과 읽는 법, 환급이 줄어든 이유", "연말정산 결과 보는 법 — 결정세액·기납부세액·차감징수세액, 환급 줄어든 이유, 추가 납부 분납",
+     "연말정산 환급액은 결정세액과 1년 동안 뗀 기납부세액의 차이입니다. 결정세액이 같은 총급여 5,000만원도 뗀 세금에 따라 68만원 환급부터 41만원 추가 납부까지 갈립니다. 원천징수영수증 읽는 법을 정리했습니다."),
+    ("guide-freelancer-refund.html", "프리랜서 3.3% 환급, 수입별로 얼마나 돌려받나", "프리랜서 3.3% 환급액 — 수입 1천만~5천만원 종합소득세, 단순경비율 64.1%, 5월 신고 방법",
+     "3.3%를 떼고 받은 프리랜서는 5월 종합소득세 신고로 세금을 다시 계산합니다. 수입 3,000만원이면 단순경비율로 45만 5,180원 환급, 장부 경비가 적으면 추가 납부. 수입별 환급액과 신고 방법을 정리했습니다."),
 ]
 # 계산기 쪽 결과 바로 아래에 붙는 「함께 읽는 안내 글」. 계산기마다 1~3편, 가장 가까운 글부터.
 # 2026-10 네이버 애널리틱스에서 평균 체류 39초, 방문당 1.63쪽이라 계산 뒤 다음 쪽으로 이어지게 넣었다.
@@ -317,12 +328,13 @@ TOOL_GUIDES = {
     "savings.html": ["guide-savings-real-rate.html"],
     "unemployment-benefit.html": ["guide-unemployment-floor.html", "guide-severance.html", "guide-minimum-wage-2027.html"],
     "hourly-wage.html": ["guide-minimum-wage-2027.html", "guide-salary-net.html"],
-    "year-end-tax.html": ["guide-year-end-december.html", "guide-rent-tax-credit-who.html", "guide-rent-credit-refund.html"],
+    "year-end-tax.html": ["guide-year-end-result.html", "guide-year-end-dependents.html", "guide-year-end-december.html"],
     "registration-cost.html": ["guide-self-registration.html", "guide-buying-costs.html", "guide-acquisition-tax.html"],
-    "pension-tax-credit.html": ["guide-year-end-december.html"],
+    "pension-tax-credit.html": ["guide-year-end-december.html", "guide-freelancer-refund.html"],
     "parental-leave.html": ["guide-parental-leave-pay.html"],
     "annual-leave.html": ["guide-annual-leave-pay.html", "guide-minimum-wage-2027.html"],
     "rental-income-tax.html": ["guide-rental-income-two-homes.html", "guide-officetel.html"],
+    "income-tax.html": ["guide-freelancer-refund.html", "guide-year-end-dependents.html"],
 }
 DOCS = [
     ("about.html", "사이트 소개"), ("privacy.html", "개인정보처리방침"), ("terms.html", "이용약관"),
@@ -406,6 +418,7 @@ TILE_ICONS = {
     "parental-leave.html": '<circle cx="12" cy="7" r="3"/><path d="M6 21v-3a6 6 0 0 1 12 0v3"/><path d="M10 14.5h4"/>',
     "annual-leave.html": _CAL + '<path d="m9 15 2 2 4-4"/>',
     "rental-income-tax.html": '<path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M9.5 13h5M9.5 16.5h5"/>',
+    "income-tax.html": '<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 11.5h6M9 15h3"/>',
     # 표·서식·용어
     "table-acquisition-tax.html": '<path d="M4 5h16v14H4z"/><path d="M4 10h16M10 10v9"/>',
     "table-capital-gains-tax.html": '<path d="M4 5h16v14H4z"/><path d="M4 10h16M10 10v9"/>',
@@ -463,6 +476,7 @@ TILE_KEYS = {
     "parental-leave.html": "육아휴직 급여 수당 6+6 통상임금 상한 250만원",
     "annual-leave.html": "연차 월차 연차수당 입사일 근속 15일",
     "rental-income-tax.html": "임대소득세 주택임대 간주임대료 분리과세 집주인 월세 세금",
+    "income-tax.html": "종합소득세 종소세 프리랜서 3.3% 환급 단순경비율 사업소득 5월 신고",
     "glossary.html": "용어 사전 대항력 확정일자 근저당 우선변제권",
     "base-rate-history.html": "기준금리 한국은행 금리 이력",
 }

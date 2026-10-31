@@ -1,4 +1,5 @@
 # 계산기 5차(2026-10): 연말정산 환급액, 등기비용, 연금저축·IRP 세액공제, 육아휴직 급여, 연차휴가, 주택임대소득세
+# 6차(2026-10): 종합소득세(프리랜서 3.3%)
 from site_core import *
 from pages_new import money, num, date, check, seg, form_open, form_close, hero, result_hero, layout
 from pages_cgt import select
@@ -213,6 +214,52 @@ def rental_income_tax_page():
         layout(left, right) + INLINE_AD + guide + faq_section(faq) + related(path)
     return main, head_for(path, faq)
 
+# ============================================================ 종합소득세 (6차, 2026-10)
+# 본문 숫자는 같은 계산기(940909 기본값, 혼자)로 뽑은 값. 경비율·세율이 바뀌면 다시 뽑을 것.
+def income_tax_page():
+    path = "income-tax.html"
+    faq = [
+        ("3.3%는 무엇인가요?", ["프리랜서·강사·배달 라이더처럼 사업자등록 없이 일하고 받는 돈(사업소득)에서 지급하는 쪽이 소득세 3%와 지방소득세 0.3%를 미리 떼는 것입니다. 1년 수입을 모아 다음 해 5월 종합소득세 신고로 실제 세금을 다시 계산하고, 미리 낸 세금이 더 많으면 돌려받습니다."]),
+        ("단순경비율은 누가 쓰나요?", ["장부 없이 수입에 업종별 경비율을 곱해 경비를 인정받는 방식입니다. 인적용역 사업자는 직전 해 수입이 3,600만원 미만이면 쓸 수 있고, 일을 처음 시작한 해는 그해 수입이 7,500만원 미만이면 됩니다.",
+                                       "경비율은 업종코드마다 다르고 해마다 3월에 고시됩니다. 홈택스의 기준·단순경비율 조회에서 내 업종코드를 찾아 넣으세요. 기본값 64.1%(4,000만원 초과분 49.7%)는 940909(기타자영업) 2024년 귀속 고시값입니다."]),
+        ("직전 해 수입이 3,600만원을 넘었으면요?", ["단순경비율 대신 기준경비율 대상입니다. 매입비·임차료·인건비처럼 증빙이 있는 주요경비 외에는 수입의 10%대만 경비로 인정돼 같은 수입에도 세금이 크게 늘 수 있습니다. 이 계산기는 기준경비율 계산을 하지 않으니, 장부로 정리한 실제 경비를 「실제 경비」 칸에 넣어 비교해 보세요."]),
+        ("직장도 다니면서 부업을 했으면요?", ["근로소득과 사업소득을 합쳐 세율을 매기므로 이 계산기보다 세금이 많아지는 경우가 대부분입니다. 이 계산기는 사업소득만 있는 사람을 기준으로 합니다. 연말정산한 근로소득은 <a href='year-end-tax.html'>연말정산 환급액 계산기</a>로 따로 보세요."]),
+        ("언제 신고하고 언제 돌려받나요?", ["2026년 수입은 2027년 5월 1일부터 31일까지 홈택스나 손택스로 신고합니다. 단순경비율 대상자는 국세청이 미리 채워 둔 신고서로 간단히 낼 수 있습니다. 환급금은 보통 6월 말에서 7월 사이에 들어옵니다.", "기한을 놓쳤어도 5년 안에는 기한 후 신고나 경정청구로 돌려받을 수 있습니다."]),
+    ]
+    simple = f'''            <div id="simple-fields">
+{num("rateBase", "단순경비율 (기본율)", "64.1", "%", step="0.1", max_="100", help_="홈택스 기준·단순경비율 조회에서 업종코드로 확인. 940909 기타자영업 64.1%")}
+{num("rateOver", "4,000만원 초과분 경비율 (초과율)", "49.7", "%", step="0.1", max_="100")}
+            </div>'''
+    book = f'''            <div id="book-fields" hidden>
+{money("expense", "실제 경비 (1년)", "0", help_="장부로 정리한 필요경비. 지역가입자 건강보험료도 여기에 넣습니다")}
+            </div>'''
+    left = form_open([("r1", "수입 1천만"), ("r3", "수입 3천만"), ("r5", "수입 5천만"), ("clear", "지우기")]) + \
+        money("revenue", "1년 수입 (3.3% 떼기 전)", "30,000,000", help_="지급명세서·홈택스 「지급명세서 등 제출 내역」의 지급액 합계") + \
+        select("method", "경비 계산 방법", [("simple", "단순경비율 (장부 없이)"), ("book", "실제 경비 (장부)")]) + simple + "\n" + book + "\n" + \
+        num("family", "기본공제 인원 (본인 포함)", "1", "명", step="1", min_="1", help_="연 소득 100만원 이하 배우자·부모(60세 이상)·자녀(20세 이하)") + \
+        num("kids8", "그중 8세 이상 자녀", "0", "명", step="1") + \
+        _group("국민연금·연금저축 (선택)", money("pension", "국민연금 보험료 (1년, 지역가입자)", "0") + money("saving", "연금저축 납입액", "0") + money("irp", "IRP 납입액", "0") +
+               money("paid", "기납부세액 (선택)", "0", help_="이미 뗀 소득세(3%분) 합계. 비우면 수입의 3%로 계산합니다")) + form_close("종합소득세 계산")
+    right = result_hero("5월 신고 때 돌려받는 돈", "out-total", "원", [("결정세액", "out-tax", "원"), ("기납부세액", "out-paid", "원"), ("지방소득세", "out-local", "원")], kicker_id="out-kicker") + \
+        _breakdown("계산 내역", [("수입금액", '<span id="out-revenue">0</span>원', False), ("필요경비 (수입의 <span id=\"out-expense-rate\">0</span>%)", '−<span id="out-expense">0</span>원', False),
+                              ("사업소득금액", '<span id="out-income">0</span>원', False), ("기본공제", '−<span id="out-personal">0</span>원', False),
+                              ("국민연금 보험료", '−<span id="out-pension-ins">0</span>원', False), ("과세표준", '<span id="out-base">0</span>원', False),
+                              ("산출세액 (6~45%)", '<span id="out-computed">0</span>원', False), ("자녀세액공제", '−<span id="out-c-child">0</span>원', False),
+                              ("연금계좌 세액공제", '−<span id="out-c-pension">0</span>원', False), ("표준세액공제", '−<span id="out-c-standard">0</span>원', False),
+                              ("결정세액", '<span id="out-tax2">0</span>원', True), ("기납부세액 (소득세 3%)", '<span id="out-paid2">0</span>원', False),
+                              ("지방소득세: 낼 금액 / 이미 낸 금액", '<span id="out-local2">0</span> / <span id="out-paid-local">0</span>원', False)],
+                   "참고용 추정이며 실제 세액은 홈택스 신고 결과에 따릅니다.")
+    guide = prose_section("종합소득세 계산 순서", [
+        "<ol><li><strong>사업소득금액</strong> = 1년 수입 − 필요경비(단순경비율이면 수입 × 경비율)</li><li><strong>과세표준</strong> = 사업소득금액 − 기본공제(1인당 150만원) − 국민연금 보험료</li><li><strong>산출세액</strong> = 과세표준 × 세율(6~45%)</li><li><strong>결정세액</strong> = 산출세액 − 자녀·연금계좌 세액공제 − 표준세액공제 7만원</li><li><strong>환급액</strong> = (미리 뗀 3% − 결정세액) × 1.1(지방소득세)</li></ol>",
+        "<p>다른 소득 없이 3.3%를 떼고 1년에 3,000만원을 받은 사람이 단순경비율 64.1%로 신고하면 경비 1,923만원, 사업소득금액 1,077만원, 과세표준 927만원입니다. 결정세액은 48만 6,200원이고 미리 뗀 세금이 90만원(지방소득세 포함 99만원)이라 45만 5,180원을 돌려받습니다. 같은 수입이라도 실제 경비 500만원으로 장부 신고를 하면 결정세액이 219만 5,000원이 되어 오히려 142만 4,500원을 더 냅니다.</p>",
+        "<h3>반영하지 않는 것</h3><ul><li>기준경비율과 비교과세, 기장세액공제·무기장가산세</li><li>노란우산공제 소득공제, 보험료·의료비·교육비·기부금(근로소득자만 받는 공제가 많음)</li><li>근로·연금·금융소득 등 다른 종합소득의 합산, 청년 창업 등 세액감면</li><li>8.8%를 떼는 기타소득(일시적인 강연료·원고료 등)</li></ul>",
+        "<p>수입별 환급액과 신고 방법은 <a href='guide-freelancer-refund.html'>프리랜서 3.3% 환급 글</a>에 정리했습니다. 연금저축·IRP 공제만 따로 보려면 <a href='pension-tax-credit.html'>연금저축·IRP 세액공제 계산기</a>를 쓰세요.</p>",
+    ])
+    main = hero("Income Tax", "종합소득세 계산기", "3.3% 떼고 받은 수입, 5월에 얼마나 돌려받나",
+                "프리랜서·강사·배달 라이더처럼 3.3%를 떼고 받은 1년 수입과 경비 계산 방법, 부양가족, 국민연금·연금저축을 넣으면 2026년 귀속 기준 결정세액을 계산하고 미리 뗀 세금과 비교해 5월 신고 때 돌려받거나 더 낼 금액을 참고용으로 추정합니다.") + \
+        layout(left, right) + INLINE_AD + guide + faq_section(faq) + related(path)
+    return main, head_for(path, faq)
+
 TOOLS4_PAGES = {
     "year-end-tax.html": (year_end_tax_page, "js/year-end-tax.js", "예상 환급액"),
     "registration-cost.html": (registration_cost_page, "js/registration-cost.js", "등기비용 합계"),
@@ -220,4 +267,5 @@ TOOLS4_PAGES = {
     "parental-leave.html": (parental_leave_page, "js/parental-leave.js", "육아휴직 급여 합계"),
     "annual-leave.html": (annual_leave_page, "js/annual-leave.js", "지금 연차"),
     "rental-income-tax.html": (rental_income_tax_page, "js/rental-income-tax.js", "임대소득세"),
+    "income-tax.html": (income_tax_page, "js/income-tax.js", "종합소득세"),
 }

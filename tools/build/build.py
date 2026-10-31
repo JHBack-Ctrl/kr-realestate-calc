@@ -128,7 +128,8 @@ assets = ["css/site.css", "js/common.js", "js/analytics.js", "js/forms.js", "js/
                                  "renewal", "tax-calendar", "moving", "rate-compare", "buy-vs-rent", "jeonse-insurance", "jeonse-fraud-check", "salary", "severance",
                                  "property-tax", "comprehensive-property-tax", "gift-tax",
                                  "inheritance-tax", "jeonse-loan", "savings", "unemployment-benefit", "hourly-wage",
-                                 "year-end-tax", "registration-cost", "pension-tax-credit", "parental-leave", "annual-leave", "rental-income-tax"]]
+                                 "year-end-tax", "registration-cost", "pension-tax-credit", "parental-leave", "annual-leave", "rental-income-tax",
+                                 "income-tax"]]
 
 
 
