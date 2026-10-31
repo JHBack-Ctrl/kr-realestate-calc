@@ -294,6 +294,10 @@ GUIDES = [
      "연말정산 환급액은 결정세액과 1년 동안 뗀 기납부세액의 차이입니다. 결정세액이 같은 총급여 5,000만원도 뗀 세금에 따라 68만원 환급부터 41만원 추가 납부까지 갈립니다. 원천징수영수증 읽는 법을 정리했습니다."),
     ("guide-freelancer-refund.html", "프리랜서 3.3% 환급, 수입별로 얼마나 돌려받나", "프리랜서 3.3% 환급액 — 수입 1천만~5천만원 종합소득세, 단순경비율 64.1%, 5월 신고 방법",
      "3.3%를 떼고 받은 프리랜서는 5월 종합소득세 신고로 세금을 다시 계산합니다. 수입 3,000만원이면 단순경비율로 45만 5,180원 환급, 장부 경비가 적으면 추가 납부. 수입별 환급액과 신고 방법을 정리했습니다."),
+    ("guide-year-end-medical.html", "연말정산 의료비 공제, 총급여 3%를 넘어야 시작된다", "연말정산 의료비 세액공제 — 총급여 3% 문턱, 15%, 700만원 한도, 표준세액공제와 맞벌이 계산",
+     "의료비 세액공제는 총급여의 3%를 넘는 금액부터 15%입니다. 총급여 5,000만원이면 150만원까지는 공제가 없습니다. 의료비 500만·1,000만원의 환급액, 표준세액공제 13만원과의 관계, 맞벌이 부부 차이를 계산기로 정리했습니다."),
+    ("guide-year-end-job-change.html", "퇴사·이직한 해의 연말정산, 5월에 할 일", "중도 퇴사자·이직자 연말정산 — 전 직장 소득 합산, 5월 종합소득세, 퇴사 후 카드·연금저축 공제",
+     "퇴사할 때 회사가 한 연말정산에는 카드·의료비가 빠져 있어 5월에 더 돌려받을 수 있습니다. 반대로 이직한 해에 전 직장 소득을 합치지 않으면 5월에 수백만원을 더 냅니다. 총급여 2,500만원 두 곳 예시로 정리했습니다."),
 ]
 # 계산기 쪽 결과 바로 아래에 붙는 「함께 읽는 안내 글」. 계산기마다 1~3편, 가장 가까운 글부터.
 # 2026-10 네이버 애널리틱스에서 평균 체류 39초, 방문당 1.63쪽이라 계산 뒤 다음 쪽으로 이어지게 넣었다.
@@ -322,13 +326,13 @@ TOOL_GUIDES = {
     "comprehensive-property-tax.html": ["guide-jongbuse-threshold.html", "guide-property-tax.html"],
     "gift-tax.html": ["guide-gift-vs-inheritance.html"],
     "salary.html": ["guide-salary-net.html", "guide-salary-raise.html", "guide-minimum-wage-2027.html"],
-    "severance.html": ["guide-severance.html", "guide-severance-tax.html"],
+    "severance.html": ["guide-severance.html", "guide-severance-tax.html", "guide-year-end-job-change.html"],
     "inheritance-tax.html": ["guide-gift-vs-inheritance.html"],
     "jeonse-loan.html": ["guide-jeonse-loan-vs-rent.html", "guide-base-rate-change.html", "guide-loan-rate-structure.html"],
     "savings.html": ["guide-savings-real-rate.html"],
     "unemployment-benefit.html": ["guide-unemployment-floor.html", "guide-severance.html", "guide-minimum-wage-2027.html"],
     "hourly-wage.html": ["guide-minimum-wage-2027.html", "guide-salary-net.html"],
-    "year-end-tax.html": ["guide-year-end-result.html", "guide-year-end-dependents.html", "guide-year-end-december.html"],
+    "year-end-tax.html": ["guide-year-end-result.html", "guide-year-end-medical.html", "guide-year-end-dependents.html"],
     "registration-cost.html": ["guide-self-registration.html", "guide-buying-costs.html", "guide-acquisition-tax.html"],
     "pension-tax-credit.html": ["guide-year-end-december.html", "guide-freelancer-refund.html"],
     "parental-leave.html": ["guide-parental-leave-pay.html"],
