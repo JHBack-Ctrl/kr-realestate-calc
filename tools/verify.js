@@ -826,6 +826,29 @@ function near(label, got, want, tol) {
   await page.selectOption('#homes', '2'); await setChk('high', false); await setChk('reg', false); await type('rent', '1700000'); expect('임대소득 글 월 170만 종합과세', await get('out-kind'), '종합과세');
   await page.fill('#rent', ''); await setChk('high', true); await type('deposit', '1500000000'); expect('임대소득 글 고가 2주택 15억 종합과세', await get('out-kind'), '종합과세');
   await type('deposit', '1200000000'); expect('임대소득 글 고가 2주택 12억 비과세', await get('out-kind'), '비과세');
+  // income-tax.html 본문 + guide-freelancer-refund.html — 혼자, 단순경비율 940909(64.1%·초과 49.7%)
+  await fresh('income-tax.html');
+  for (const [v, want] of [['10000000', '269,060'], ['20000000', '362,120'], ['30000000', '455,180'], ['40000000', '548,240'], ['50000000', '161,150']]) { await type('revenue', v); expect(`종소세 수입 ${v} 환급`, await get('out-total'), want); }
+  await type('revenue', '30000000'); expect('종소세 3천 경비', await get('out-expense'), '19,230,000'); expect('종소세 3천 과세표준', await get('out-base'), '9,270,000'); expect('종소세 3천 결정세액', await get('out-tax'), '486,200');
+  await type('family', '3'); expect('종소세 3천 부양 2명', await get('out-total'), '653,180'); await type('family', '1');
+  await openGroups(); await type('saving', '3000000'); expect('종소세 3천 연금저축 300만', await get('out-total'), '950,180'); await type('saving', '0');
+  await page.selectOption('#method', 'book'); await type('expense', '5000000');
+  expect('종소세 장부 경비 500만 결정세액', await get('out-tax'), '2,195,000'); expect('종소세 장부 추가 납부', await get('out-total'), '1,424,500'); expect('종소세 장부 추가 납부 문구', (await get('out-kicker')).includes('더 내는'), true);
+  await fresh('income-tax.html'); await page.click('.chip[data-preset="r5"]'); expect('종소세 5천 예시 버튼', await get('out-total'), '161,150');
+  // guide-year-end-dependents.html — 기납부 비움, 공제 없음. 결정세액
+  for (const [sal, fam, want] of [['30000000', '1', '371,860'], ['30000000', '2', '270,610'], ['40000000', '1', '1,430,480'], ['40000000', '2', '1,205,480'], ['50000000', '1', '2,658,716'], ['50000000', '2', '2,433,716'],
+                                  ['60000000', '1', '3,937,952'], ['60000000', '2', '3,712,952'], ['80000000', '1', '7,294,790'], ['80000000', '2', '6,934,790']]) {
+    await fresh('year-end-tax.html'); await type('family', fam); await type('salary', sal); expect(`부양가족 글 ${sal} ${fam}명`, await get('out-tax'), want);
+  }
+  for (const [fam, k, want] of [['3', '1', '3,237,952'], ['4', '2', '2,712,952']]) {
+    await fresh('year-end-tax.html'); await type('family', fam); await type('kids', k); await type('kids8', k); await type('salary', '60000000'); expect(`부양가족 글 6천 자녀 ${k}명`, await get('out-tax'), want);
+  }
+  // guide-year-end-result.html — 총급여 5천, 신용 1,500만·체크 500만, 기납부세액만 바꿈
+  for (const [w, want, add] of [['3000000', '684,780', false], ['2500000', '134,780', false], ['2000000', '415,200', true]]) {
+    await fresh('year-end-tax.html'); await openGroups(); await type('credit', '15000000'); await type('debit', '5000000'); await type('withheld', w); await type('salary', '50000000');
+    expect(`결과 글 기납부 ${w}`, await get('out-total'), want); expect(`결과 글 기납부 ${w} 결정세액`, await get('out-tax'), '2,377,466'); expect(`결과 글 기납부 ${w} 추가 납부 여부`, (await get('out-kicker')).includes('더 내는'), add);
+  }
+  await fresh('year-end-tax.html'); await type('withheld', '2000000'); await type('salary', '50000000'); expect('결과 글 카드 없이 추가 납부', await get('out-total'), '724,580');
   // guide-parental-leave-pay.html
   await fresh('parental-leave.html');
   for (const [w, m, six, want] of [['800000', '12', false, '9,000,000'], ['1500000', '12', false, '16,200,000'], ['2000000', '12', false, '21,600,000'], ['2500000', '12', false, '23,100,000'], ['5000000', '12', false, '23,100,000'],

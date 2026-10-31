@@ -179,6 +179,11 @@
   "modified": "2026-09-20",
   "published": "2026-09-20"
  },
+ "guide-freelancer-refund.html": {
+  "hash": "003ad5b65704",
+  "modified": "2026-10-31",
+  "published": "2026-10-31"
+ },
  "guide-gift-vs-inheritance.html": {
   "hash": "113ccba070f8",
   "modified": "2026-10-27",
@@ -354,14 +359,24 @@
   "modified": "2026-10-27",
   "published": "2026-10-27"
  },
+ "guide-year-end-dependents.html": {
+  "hash": "639df7324aab",
+  "modified": "2026-10-31",
+  "published": "2026-10-31"
+ },
+ "guide-year-end-result.html": {
+  "hash": "8b6674858bd3",
+  "modified": "2026-10-31",
+  "published": "2026-10-31"
+ },
  "guide-yield-vacancy.html": {
   "hash": "cf9cd89c2310",
   "modified": "2026-09-27",
   "published": "2026-09-27"
  },
  "guides.html": {
-  "hash": "fc008bf5da00",
-  "modified": "2026-10-30",
+  "hash": "11c6e7ce0872",
+  "modified": "2026-10-31",
   "published": "2026-09-17"
  },
  "hourly-wage.html": {
@@ -369,9 +384,14 @@
   "modified": "2026-10-30",
   "published": "2026-10-26"
  },
+ "income-tax.html": {
+  "hash": "8ac3cba6ad2c",
+  "modified": "2026-10-31",
+  "published": "2026-10-31"
+ },
  "index.html": {
-  "hash": "af9959c3662a",
-  "modified": "2026-10-30",
+  "hash": "ce56fa8f6e67",
+  "modified": "2026-10-31",
   "published": "2026-09-17"
  },
  "inheritance-tax.html": {
@@ -410,8 +430,8 @@
   "published": "2026-10-27"
  },
  "pension-tax-credit.html": {
-  "hash": "eeb27c300922",
-  "modified": "2026-10-30",
+  "hash": "7987906b7c18",
+  "modified": "2026-10-31",
   "published": "2026-10-27"
  },
  "policy.html": {
@@ -440,8 +460,8 @@
   "published": "2026-09-17"
  },
  "refs.html": {
-  "hash": "408460bcfd82",
-  "modified": "2026-10-30",
+  "hash": "f1bd433037bb",
+  "modified": "2026-10-31",
   "published": "2026-09-20"
  },
  "registration-cost.html": {
@@ -725,8 +745,8 @@
   "published": "2026-10-26"
  },
  "year-end-tax.html": {
-  "hash": "c5767cbeefbc",
-  "modified": "2026-10-30",
+  "hash": "d593f33a7e30",
+  "modified": "2026-10-31",
   "published": "2026-10-27"
  },
  "yield.html": {

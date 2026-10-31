@@ -12,16 +12,16 @@
 python3 tools/build/build.py
 ```
 
-등록부에서 147쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
+등록부에서 151쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
 같은 소스로 두 번 돌리면 결과가 같아야 합니다(멱등). 달라지면 버그입니다.
 
 - `site_core.py` — 등록부(TOOLS, TABLES, FORMS, REFS, GUIDES, HUBS, RATE_HISTORY)와 공통 틀.
   메뉴·사이트맵·홈 타일이 전부 여기서 나옵니다
 - `pages_new.py` / `pages_cgt.py` / `pages_tools2.py` / `pages_tax.py` / `pages_tools3.py` / `pages_tools4.py` — 계산기 본문
   (`pages_tax.py`는 재산세·종부세·증여세, `pages_tools3.py`는 상속세·전세대출·예적금·실업급여·시급,
-  `pages_tools4.py`는 연말정산·등기비용·연금저축IRP·육아휴직·연차·주택임대소득세)
+  `pages_tools4.py`는 연말정산·등기비용·연금저축IRP·육아휴직·연차·주택임대소득세·종합소득세)
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽, 안내 글 4편
-- `pages_guides2.py` — 안내 글 49편
+- `pages_guides2.py` — 안내 글 52편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
 - `build.py` — 위를 모아 쓰고 `manifest.json`, `sw.js`, `sitemap.xml`, `js/analytics.js`를 생성
 
@@ -41,8 +41,8 @@ python3 tools/build/build.py
 
 ### 검색 제외 (noindex)
 
-147쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
-검색 대상은 134쪽입니다(2026-10-30). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
+151쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
+검색 대상은 138쪽입니다(2026-10-31). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
 
 - 용어 9쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
 - 용어 39쪽 중 30쪽은 1,000자 이상으로 늘려 검색에 되돌렸습니다: 대항력·확정일자·전세가율·DSR·LTV,
@@ -188,7 +188,9 @@ https://전국부동산계산기.com/guide-prepayment.html
   안내 글 `guide-gift-vs-inheritance.html`의 비교표를 고칠 것
 - 연말정산: `js/year-end-tax.js` 상수 블록(카드 한도·공제율, 월세, 연금계좌, 혼인세액공제 2026년까지). 2026년 8월 개편안의
   월세 한도 1,200만원·청년 17%, 자녀세액공제 나이 기준은 **2027년 귀속, 국회 통과 전이라 미반영**. 통과되면 `js/rent-tax-credit.js`도 같이.
-  혼인세액공제는 2026년 혼인신고분까지라 연장 여부를 확인하고, 안내 글 `guide-year-end-december.html`(카드·연금·혼인 숫자)도 다시 뽑을 것
+  혼인세액공제는 2026년 혼인신고분까지라 연장 여부를 확인하고, 안내 글 `guide-year-end-december.html`(카드·연금·혼인 숫자)과
+  `guide-year-end-dependents.html`(부양가족·자녀 결정세액 표)·`guide-year-end-result.html`(기납부세액별 환급 표)도 다시 뽑을 것.
+  자녀세액공제가 바뀌면 `js/income-tax.js`의 `CHILD_CREDIT`도 같이(같은 값이 복사돼 있음)
 - 주택임대소득세: `js/rental-income-tax.js`의 `DEEMED_RATE`(간주임대료 이자율, 매년 3월 시행규칙. 2026년 귀속 3.1%)와 소형주택 주택 수 제외(2026년까지).
   바뀌면 안내 글 `guide-rental-income-two-homes.html`의 간주임대료 숫자도 다시 뽑을 것
 - 표: `tools/build/pages_tables.py`
@@ -201,7 +203,8 @@ https://전국부동산계산기.com/guide-prepayment.html
   `EMPLOY_RATE`, `BRACKETS`, `EARNED_DEDUCTION`, `RULES_DATE`.
   바뀌면 안내 글 `guide-salary-net.html`·`guide-salary-raise.html`의 숫자도 다시 뽑을 것.
   **`js/year-end-tax.js` 맨 위 4대보험·세율·근로소득공제 상수도 같은 값이라 함께 고칠 것**(두 파일에 복사돼 있음).
-  근로소득세액공제 한도는 7천만원 초과 구간이 「× 1/2」입니다(0.005로 잘못 넣었다가 2026-10에 고침)
+  근로소득세액공제 한도는 7천만원 초과 구간이 「× 1/2」입니다(0.005로 잘못 넣었다가 2026-10에 고침).
+  종합소득세 세율(`BRACKETS`)이 바뀌면 `js/income-tax.js`도 같은 값으로
 - `js/severance.js` — `SERVICE_DEDUCTION`, `CONVERTED_DEDUCTION`, `BRACKETS`.
   바뀌면 안내 글 `guide-severance-tax.html`·`guide-severance.html`의 세금 숫자도 다시 뽑을 것
 - `js/rent-tax-credit.js` — `INCOME_CAP`, `RATE_HIGH/LOW`, `RENT_CAP`, `TAX_YEAR_LABEL`.
@@ -224,6 +227,14 @@ https://전국부동산계산기.com/guide-prepayment.html
 요율을 바꾸면 `tools/verify.js`의 연봉·퇴직금 기대값이 실패합니다. 사이트가 고장 난 게
 아니라 기대값이 옛 요율로 적혀 있어서입니다. 새 요율로 계산기를 돌려 나온 값으로 기대값을
 바꾸고, 그 값이 맞는지는 국세청·공단 모의계산으로 한 번 대조하세요.
+
+### 3월 — 단순경비율 고시 (종합소득세)
+
+국세청이 매년 3월 말 전년도 귀속 경비율을 고시합니다(2025년 귀속은 고시 제2026-14호, 2026-03-30).
+`js/income-tax.js`의 `SIMPLE_RATE_DEFAULT`·`SIMPLE_OVER_DEFAULT`는 940909(기타자영업) 값이고 지금은 2024년 귀속 고시값
+64.1%·49.7%입니다(2025년 귀속 고시 원문은 2026-10에 확인하지 못함). 바뀌면 이 두 값과 계산기 문구(`pages_tools4.income_tax_page`,
+「2024년 귀속 고시값」), 안내 글 `guide-freelancer-refund.html`의 수입별 표, verify 기대값을 다시 뽑을 것.
+인적용역 단순경비율 기준(직전 해 3,600만원 미만, 신규는 7,500만원 미만)이 바뀌면 같은 글과 FAQ도 고칠 것
 
 ### 7월 — 국민연금 기준소득월액 상·하한
 
