@@ -837,13 +837,20 @@ function near(label, got, want, tol) {
   await fresh('income-tax.html'); await page.click('.chip[data-preset="r5"]'); expect('종소세 5천 예시 버튼', await get('out-total'), '161,150');
   // land-multiple.html — 예시 100만 → 2,000만원(1990→2026) 20배·연 8.68%, 같은 20배를 20년이면 16.16%, 물가는 2015~2025년만
   await fresh('land-multiple.html'); await page.click('.chip[data-preset="ex"]');
-  expect('땅값 예시 배수', await get('out-big'), '20'); expect('땅값 예시 연평균', await get('out-cagr'), '8.68'); expect('땅값 예시 기간', await get('out-years'), '36');
+  expect('땅값 예시 배수', await get('out-big'), '20'); expect('땅값 예시 연평균', await get('out-cagr'), '8.68'); expect('땅값 예시 기간', await get('out-years'), '36년');
   expect('땅값 예시 평당', await get('out-s3'), '66,115,702'); expect('땅값 1990 물가 없음', await get('out-cpi'), '—');
   await type('yearThen', '2006'); expect('땅값 20배 20년 연평균', await get('out-cagr'), '16.16');
   await type('yearThen', '2015'); await type('yearNow', '2025'); await type('priceNow', '2000000');
   expect('땅값 2015→2025 물가 배수', await get('out-cpi'), '1.23배'); expect('땅값 물가 뺀 배수', await get('out-real'), '1.63배');
   await type('area', '100'); await radio('areaUnit', 'py');
   expect('땅값 100평 ㎡', await get('out-area-m2'), '330.58'); expect('땅값 100평 그때', await get('out-total-then'), '330,578,512'); expect('땅값 100평 지금', await get('out-total-now'), '661,157,025');
+  // 지역 고르기 — 한국부동산원 지가지수(tools/data/land_index.json). 올해는 9월 지수라 기간이 9개월 짧다
+  await fresh('land-multiple.html'); expect('땅값 지역 처음 빈 화면', await get('sticky-monthly'), '—');
+  await page.selectOption('#region', '서울 강남구');
+  expect('땅값 강남구 1990→2026 배수', await get('out-big'), '2.53'); expect('땅값 강남구 연평균', await get('out-cagr'), '2.63'); expect('땅값 강남구 기간', await get('out-years'), '35년 9개월');
+  await type('yearNow', '2025'); await page.selectOption('#region', '전국');
+  expect('땅값 전국 1990→2025', await get('out-big'), '1.9'); expect('땅값 전국 물가 배수', await get('out-cpi'), '3.03배'); expect('땅값 전국 물가 뺀 배수', await get('out-real'), '0.63배');
+  await page.selectOption('#region', '부산 해운대구'); expect('땅값 해운대 1990 자료 없음', await get('out-big'), '—'); expect('땅값 해운대 안내', (await get('out-note')).includes('1994년부터'), true);
   // guide-year-end-dependents.html — 기납부 비움, 공제 없음. 결정세액
   for (const [sal, fam, want] of [['30000000', '1', '371,860'], ['30000000', '2', '270,610'], ['40000000', '1', '1,430,480'], ['40000000', '2', '1,205,480'], ['50000000', '1', '2,658,716'], ['50000000', '2', '2,433,716'],
                                   ['60000000', '1', '3,937,952'], ['60000000', '2', '3,712,952'], ['80000000', '1', '7,294,790'], ['80000000', '2', '6,934,790']]) {

@@ -272,7 +272,9 @@ def land_index_js():
     d = land_index()
     head = "/* 생성 파일 — tools/data/land_index.json에서 build.py가 만든다. 손으로 고치지 말 것 */\n"
     if not d: return head + "window.LAND_INDEX = null;\n"
-    data = {"source": d["meta"]["source"], "base": d["meta"]["base"], "latest": d["meta"]["latest"], "regions": {r["key"]: r["series"] for r in d["regions"]}}
+    m = d["meta"]
+    data = {"source": m["source"], "base": m["base"], "latest": m["latest"], "latestYear": m.get("latest_year"), "latestMonth": m.get("latest_month"),
+            "cpi": d.get("cpi"), "regions": {r["key"]: r["series"] for r in d["regions"]}}
     return head + "window.LAND_INDEX = " + json.dumps(data, ensure_ascii=False, separators=(",", ":"), sort_keys=True) + ";\n"
 
 def _region_select():
@@ -282,7 +284,7 @@ def _region_select():
                 <label for="region">지역</label>
                 <select id="region" disabled><option value="">지역 자료 준비 중</option></select>
               </div>'''
-    opts, group = [], None
+    opts, group = ['<option value="">지역을 고르세요</option>'], None
     for r in d["regions"]:
         if r["sido"] != group:
             if group: opts.append("</optgroup>")
@@ -317,7 +319,7 @@ def land_multiple_page():
         seg("areaUnit", "면적 단위", [("m2", "㎡"), ("py", "평")]) + '\n            </div>\n' + \
         num("yearThen", "그때 연도", "1990", "년", step="1", min_="1987", max_="2026") + num("yearNow", "지금 연도", "2026", "년", step="1", min_="1987", max_="2026") + \
         form_close("몇 배인지 계산")
-    right = result_hero("땅값 지수가 몇 배가 됐나", "out-big", "배", [("연평균 상승률", "out-cagr", "%"), ("기간", "out-years", "년"),
+    right = result_hero("땅값 지수가 몇 배가 됐나", "out-big", "배", [("연평균 상승률", "out-cagr", "%"), ("기간", "out-years", ""),
                                                      ('<span id="out-s3-label">지금 지가지수</span>', "out-s3", '<span id="out-s3-unit"></span>')], kicker_id="out-kicker") + \
         f'''
         <section class="card">

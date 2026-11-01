@@ -5,12 +5,11 @@
 
   // ---- 상수 (개정 시 이 블록만 수정) ----
   var PYEONG_M2 = 400 / 121;                 // 1평 = 3.305785㎡ (area.js와 같은 값)
-  // 소비자물가지수 연간 총지수(2020=100). 출처: 통계청(국가데이터처) 소비자물가조사, e-나라지표.
-  // 확인한 해만 넣었다. 비어 있는 해는 물가 비교를 하지 않고 화면에 그렇게 적는다.
-  var CPI = { 2015: 94.9, 2016: 95.8, 2017: 97.6, 2018: 99.1, 2019: 99.5, 2020: 100.0, 2021: 102.5, 2022: 107.7, 2023: 111.6, 2024: 114.2, 2025: 116.6 };
-  var CPI_FIRST = 2015, CPI_LAST = 2025;
-  // 지역 지가지수: js/land-index-data.js(빌드가 tools/data/land_index.json에서 만듦). 자료가 없으면 null
+  // 지역 지가지수와 소비자물가지수(2020=100, 연간): js/land-index-data.js(빌드가 tools/data/land_index.json에서 만듦).
+  // 자료가 없으면 null — 지역 고르기와 물가 비교는 「자료 준비 중」으로 나온다
   var IDX = window.LAND_INDEX || null;
+  var CPI = (IDX && IDX.cpi) || {};
+  var CPI_YEARS = Object.keys(CPI).map(Number).sort(function (a, b) { return a - b; });
 
   function firstYear(series) { var ys = Object.keys(series).map(Number).sort(function (a, b) { return a - b; }); return ys[0]; }
   function pair(i) {
@@ -20,14 +19,20 @@
     var a = s[i.yearThen], b = s[i.yearNow];
     return { then: a || 0, now: b || 0, missing: a && b ? null : 'year', first: firstYear(s) };
   }
+  // 기간(개월). 지역 지수의 올해 값은 최신 달(예: 9월) 값이라 그만큼 짧다. 지난해까지는 12월 값끼리 비교
+  function months(i) {
+    var m = (i.yearNow - i.yearThen) * 12;
+    if (i.mode === 'region' && IDX && i.yearNow === IDX.latestYear) m -= 12 - IDX.latestMonth;
+    return m;
+  }
   function calc(i) {
-    var p = pair(i), ok = p.then > 0 && p.now > 0, years = i.yearNow - i.yearThen;
+    var p = pair(i), ok = p.then > 0 && p.now > 0, years = i.yearNow - i.yearThen, mon = months(i);
     var multiple = ok ? p.now / p.then : 0;
-    var cagr = ok && years > 0 ? (Math.pow(multiple, 1 / years) - 1) * 100 : null;
+    var cagr = ok && mon > 0 ? (Math.pow(multiple, 12 / mon) - 1) * 100 : null;
     var m2 = i.mode === 'direct' && i.area > 0 ? (i.unit === 'py' ? i.area * PYEONG_M2 : i.area) : 0;
     var cpiThen = CPI[i.yearThen], cpiNow = CPI[i.yearNow];
     var cpiMultiple = cpiThen && cpiNow && years > 0 ? cpiNow / cpiThen : null;
-    return { p: p, ok: ok, years: years, multiple: multiple, cagr: cagr, pyThen: i.then * PYEONG_M2, pyNow: i.now * PYEONG_M2,
+    return { p: p, ok: ok, years: years, months: mon, multiple: multiple, cagr: cagr, pyThen: i.then * PYEONG_M2, pyNow: i.now * PYEONG_M2,
       m2: m2, totalThen: i.then * m2, totalNow: i.now * m2, cpiMultiple: cpiMultiple, real: cpiMultiple && ok ? multiple / cpiMultiple : null };
   }
   function readInput() {
@@ -37,6 +42,7 @@
       area: S.parseNonNegative($('area').value), unit: u ? u.value : 'm2' };
   }
   function times(n) { return S.fmtRate(n); }
+  function period(r) { return Math.floor(r.months / 12) + '년' + (r.months % 12 ? ' ' + (r.months % 12) + '개월' : ''); }
   function idx(n) { return n ? S.fmtRate(n) : '—'; }
   function basis(i) {
     return i.mode === 'region' ? '지역 평균 지가지수 기준(' + (IDX ? IDX.source + ', ' + IDX.latest + '까지' : '자료 준비 중') + '). 특정 필지의 공시지가와 다름'
@@ -51,7 +57,7 @@
     S.setText('out-big', r.ok ? times(r.multiple) : '—');
     S.setText('sticky-monthly', r.ok ? times(r.multiple) + '배' : '—');
     S.setText('out-cagr', r.cagr == null ? '—' : S.fmtRate(r.cagr));
-    S.setText('out-years', r.years > 0 ? String(r.years) : '—');
+    S.setText('out-years', r.months > 0 ? period(r) : '—');
     S.setText('out-s3-label', region ? '지금 지가지수' : '지금 평당 공시지가');
     S.setText('out-s3', region ? (r.ok ? idx(r.p.now) : '—') : (r.ok ? S.fmtWon(r.pyNow) : '—'));
     S.setText('out-s3-unit', region ? '' : '원');
@@ -62,15 +68,15 @@
     S.setText('out-area-m2', S.fmtRate(r.m2)); S.setText('out-total-then', S.fmtWon(r.totalThen)); S.setText('out-total-now', S.fmtWon(r.totalNow)); S.setText('out-total-diff', S.fmtWon(r.totalNow - r.totalThen));
     S.setText('out-cpi', r.cpiMultiple ? times(r.cpiMultiple) + '배' : '—');
     S.setText('out-real', r.real ? times(r.real) + '배' : '—');
-    S.setText('out-cpi-note', r.cpiMultiple ? '소비자물가지수 ' + i.yearThen + '년 ' + CPI[i.yearThen] + ' → ' + i.yearNow + '년 ' + CPI[i.yearNow] + '(2020=100). 땅값 배수를 물가 배수로 나눈 값이 물가를 뺀 배수입니다.' :
-      '물가 비교는 소비자물가지수가 들어 있는 해끼리만 합니다. 지금은 ' + CPI_FIRST + '~' + CPI_LAST + '년 연간값만 넣어 두었습니다.');
-    S.setText('rules-date', basis(i) + ' · 물가는 통계청 소비자물가지수 연간(2020=100)');
+    S.setText('out-cpi-note', r.cpiMultiple ? '소비자물가지수(2020=100, 연간) ' + i.yearThen + '년 ' + CPI[i.yearThen] + ' → ' + i.yearNow + '년 ' + CPI[i.yearNow] + '. 땅값 배수를 물가 배수로 나눈 값이 물가를 뺀 배수입니다.' :
+      CPI_YEARS.length ? '물가 비교는 연간 소비자물가지수가 있는 ' + CPI_YEARS[0] + '~' + CPI_YEARS[CPI_YEARS.length - 1] + '년 사이에서만 합니다. 올해 연간 지수는 다음 해 1월에 나옵니다.' : '물가 자료를 준비 중입니다.');
+    S.setText('rules-date', basis(i) + ' · 물가는 통계청 소비자물가지수 연간(2020=100)' + (i.mode === 'region' && IDX ? ' · 지난해까지는 12월 지수, 올해는 ' + IDX.latest + ' 지수' : ''));
     var note;
     if (region && r.p.missing === 'data') note = '지역별 지가지수 자료를 준비 중입니다. 지금은 「공시지가 직접 입력」으로 계산할 수 있습니다.';
     else if (region && r.p.missing === 'region') note = '지역을 고르면 바로 계산됩니다.';
     else if (region && r.p.missing === 'year') note = i.region + ' 자료는 ' + r.p.first + '년부터 ' + IDX.latest + '까지 있습니다. 그 안의 연도를 넣어 주세요.';
     else if (!r.ok) note = '그때와 지금의 공시지가(1㎡당)를 넣으면 바로 계산됩니다.';
-    else if (region) note = i.region + ' 지가지수: ' + i.yearThen + '년 ' + idx(r.p.then) + ' → ' + i.yearNow + '년 ' + idx(r.p.now) + '. ' + (r.years > 0 ? r.years + '년 동안 ' : '') +
+    else if (region) note = i.region + ' 지가지수: ' + i.yearThen + '년 ' + idx(r.p.then) + ' → ' + i.yearNow + '년 ' + idx(r.p.now) + '. ' + (r.months > 0 ? period(r) + ' 동안 ' : '') +
       times(r.multiple) + '배' + (r.cagr != null ? ', 연평균 ' + S.fmtRate(r.cagr) + '%' : '') + '입니다. 지역 평균이라 내 땅의 공시지가 배수와는 다를 수 있습니다.';
     else note = (r.years > 0 ? i.yearThen + '년 ' : '그때 ') + S.fmtKorean(i.then) + '/㎡이던 땅이 ' + (r.years > 0 ? i.yearNow + '년 ' : '지금 ') + S.fmtKorean(i.now) + '/㎡이면 ' +
       (r.years > 0 ? r.years + '년 동안 ' : '') + times(r.multiple) + '배' + (r.cagr != null ? ', 연평균 ' + S.fmtRate(r.cagr) + '%씩 오른 셈입니다. ' : '가 됐습니다. ') +
