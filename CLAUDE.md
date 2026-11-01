@@ -62,7 +62,7 @@ python3 tools/build/build.py
 ## 배포
 
 main에 머지하면 `.github/workflows/pages.yml`이 GitHub Pages로 올립니다.
-이때 `tools/`, `CLAUDE.md`, `README.md`는 빼고 올립니다. 저장소에는 그대로 있으니
+이때 `tools/`, `CLAUDE.md`, `README.md`, `.gitignore`는 빼고 올립니다. 저장소에는 그대로 있으니
 빌드·수정에는 영향이 없고, 사이트 주소로 개발 문서를 열 수만 없게 한 것입니다.
 사이트에 새로 개발용 파일을 두게 되면 이 워크플로의 제외 목록에도 넣으세요.
 
