@@ -221,6 +221,10 @@ https://전국부동산계산기.com/guide-prepayment.html
 - `js/savings.js`(이자소득세 15.4%)와 `js/jeonse-loan.js`(주택임차차입금 소득공제 40%·400만원)는 거의 안 바뀜
 - `js/land-multiple.js`의 `CPI` — 통계청이 1월 초 전년 연간 소비자물가지수(2020=100)를 내면 그해 값을 한 줄 더하고 `CPI_LAST`를 올릴 것.
   지금은 2015~2025년만 들어 있음(1990~2014년은 2026-11에 공식 값을 확인하지 못해 비워 둠, 화면에 그렇게 나옴)
+- 땅값 몇 배 계산기의 **지역 지가지수**(한국부동산원 시·군·구별 지가지수) — `tools/data/land_index.json`에 정리해 두면 빌드가
+  지역 목록과 `js/land-index-data.js`를 만든다(해마다 12월 값, 올해는 최신 달). 파일이 없으면 지역 고르기는 「자료 준비 중」.
+  1월에 전년 12월 값을 더할 것. 시안 화면을 볼 때만 `LAND_INDEX_FILE=<가짜 자료 경로> python3 tools/build/build.py`로 빌드하고,
+  그 뒤 반드시 그냥 다시 빌드해 가짜 자료가 커밋되지 않게 할 것
 - `js/parental-leave.js` — 육아휴직 급여 상한(250·200·160만원, 6+6 단계별 상한). 고용보험법 시행령이 바뀌면 안내 글 `guide-parental-leave-pay.html`도
 - `js/pension-tax-credit.js`(600·900만원, 15·12%), `js/annual-leave.js`(근로기준법 60조)는 거의 안 바뀜
 

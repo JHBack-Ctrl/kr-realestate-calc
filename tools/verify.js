@@ -838,7 +838,7 @@ function near(label, got, want, tol) {
   // land-multiple.html — 예시 100만 → 2,000만원(1990→2026) 20배·연 8.68%, 같은 20배를 20년이면 16.16%, 물가는 2015~2025년만
   await fresh('land-multiple.html'); await page.click('.chip[data-preset="ex"]');
   expect('땅값 예시 배수', await get('out-big'), '20'); expect('땅값 예시 연평균', await get('out-cagr'), '8.68'); expect('땅값 예시 기간', await get('out-years'), '36');
-  expect('땅값 예시 평당', await get('out-py-now'), '66,115,702'); expect('땅값 1990 물가 없음', await get('out-cpi'), '—');
+  expect('땅값 예시 평당', await get('out-s3'), '66,115,702'); expect('땅값 1990 물가 없음', await get('out-cpi'), '—');
   await type('yearThen', '2006'); expect('땅값 20배 20년 연평균', await get('out-cagr'), '16.16');
   await type('yearThen', '2015'); await type('yearNow', '2025'); await type('priceNow', '2000000');
   expect('땅값 2015→2025 물가 배수', await get('out-cpi'), '1.23배'); expect('땅값 물가 뺀 배수', await get('out-real'), '1.63배');

@@ -45,6 +45,10 @@ analytics = """/* 방문 통계 — ID를 비우면 그 도구는 아무것도 �
 """
 write("js/analytics.js", analytics)
 
+# 땅값 몇 배 계산기의 지역 지가지수 (tools/data/land_index.json → js/land-index-data.js). 자료가 없으면 null
+from pages_tools4 import land_index_js
+write("js/land-index-data.js", land_index_js())
+
 # 기준금리 상수는 site_core.RATE_HISTORY 마지막 값을 js에 주입한다. 손으로 고치지 말 것.
 for jsf in ["js/conversion.js", "js/renewal.js"]:
     js = read(jsf)
@@ -91,7 +95,8 @@ write("404.html", page("페이지를 찾을 수 없습니다 — 전국부동산
 for f, (fn, script, sticky) in NEW_PAGES.items():
     main, extra = fn()
     t = [x for x in TOOLS if x[0] == f][0]
-    write(f, page(t[2], t[3], f, with_related_guides(f, main), extra_head=extra, scripts=[script], sticky=sticky))
+    scripts = script if isinstance(script, list) else [script]   # 자료 파일이 따로 있는 계산기는 목록으로 준다(land-multiple)
+    write(f, page(t[2], t[3], f, with_related_guides(f, main), extra_head=extra, scripts=scripts, sticky=sticky))
 
 # ---------- 4) 안내 글, 목록, 홈 ----------
 write("guide-repayment.html", guide_repayment())
@@ -129,7 +134,7 @@ assets = ["css/site.css", "js/common.js", "js/analytics.js", "js/forms.js", "js/
                                  "property-tax", "comprehensive-property-tax", "gift-tax",
                                  "inheritance-tax", "jeonse-loan", "savings", "unemployment-benefit", "hourly-wage",
                                  "year-end-tax", "registration-cost", "pension-tax-credit", "parental-leave", "annual-leave", "rental-income-tax",
-                                 "income-tax", "land-multiple"]]
+                                 "income-tax", "land-multiple", "land-index-data"]]
 
 
 
