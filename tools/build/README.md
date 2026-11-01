@@ -10,7 +10,7 @@ python3 tools/build/build.py
   `TOOL_GUIDES`는 계산기 쪽 결과 아래에 붙는 「함께 읽는 안내 글」 목록입니다. 새 안내 글을 쓰면 관련 계산기 줄에 더합니다
 - `pages_new.py` / `pages_cgt.py` / `pages_tools2.py` / `pages_tax.py` / `pages_tools3.py` / `pages_tools4.py` — 계산기 본문(폼·결과·설명·FAQ)
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽(표·자료/서식·용어/참고 자료), 안내 글 4편
-- `pages_guides2.py` — 안내 글 52편
+- `pages_guides2.py` — 안내 글 54편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
 - `build.py` — 기존 페이지는 `<main>` 본문만 추출해 새 틀로 재포장하고, 나머지는 생성합니다. `manifest.json`, `sw.js`, `sitemap.xml`, `js/analytics.js`도 함께 씁니다.
   `sw.js`의 VERSION은 캐시 대상 파일 해시로 자동 생성되므로 손으로 올리지 마세요

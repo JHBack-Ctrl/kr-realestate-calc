@@ -12,7 +12,7 @@
 python3 tools/build/build.py
 ```
 
-등록부에서 151쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
+등록부에서 153쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
 같은 소스로 두 번 돌리면 결과가 같아야 합니다(멱등). 달라지면 버그입니다.
 
 - `site_core.py` — 등록부(TOOLS, TABLES, FORMS, REFS, GUIDES, HUBS, RATE_HISTORY)와 공통 틀.
@@ -21,7 +21,7 @@ python3 tools/build/build.py
   (`pages_tax.py`는 재산세·종부세·증여세, `pages_tools3.py`는 상속세·전세대출·예적금·실업급여·시급,
   `pages_tools4.py`는 연말정산·등기비용·연금저축IRP·육아휴직·연차·주택임대소득세·종합소득세)
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽, 안내 글 4편
-- `pages_guides2.py` — 안내 글 52편
+- `pages_guides2.py` — 안내 글 54편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
 - `build.py` — 위를 모아 쓰고 `manifest.json`, `sw.js`, `sitemap.xml`, `js/analytics.js`를 생성
 
@@ -41,8 +41,8 @@ python3 tools/build/build.py
 
 ### 검색 제외 (noindex)
 
-151쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
-검색 대상은 138쪽입니다(2026-10-31). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
+153쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
+검색 대상은 140쪽입니다(2026-10-31). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
 
 - 용어 9쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
 - 용어 39쪽 중 30쪽은 1,000자 이상으로 늘려 검색에 되돌렸습니다: 대항력·확정일자·전세가율·DSR·LTV,
@@ -189,7 +189,8 @@ https://전국부동산계산기.com/guide-prepayment.html
 - 연말정산: `js/year-end-tax.js` 상수 블록(카드 한도·공제율, 월세, 연금계좌, 혼인세액공제 2026년까지). 2026년 8월 개편안의
   월세 한도 1,200만원·청년 17%, 자녀세액공제 나이 기준은 **2027년 귀속, 국회 통과 전이라 미반영**. 통과되면 `js/rent-tax-credit.js`도 같이.
   혼인세액공제는 2026년 혼인신고분까지라 연장 여부를 확인하고, 안내 글 `guide-year-end-december.html`(카드·연금·혼인 숫자)과
-  `guide-year-end-dependents.html`(부양가족·자녀 결정세액 표)·`guide-year-end-result.html`(기납부세액별 환급 표)도 다시 뽑을 것.
+  `guide-year-end-dependents.html`(부양가족·자녀 결정세액 표)·`guide-year-end-result.html`(기납부세액별 환급 표)·
+  `guide-year-end-medical.html`(의료비 금액별·총급여별 표)·`guide-year-end-job-change.html`(퇴사 2,500만원·이직 합산 표)도 다시 뽑을 것.
   자녀세액공제가 바뀌면 `js/income-tax.js`의 `CHILD_CREDIT`도 같이(같은 값이 복사돼 있음)
 - 주택임대소득세: `js/rental-income-tax.js`의 `DEEMED_RATE`(간주임대료 이자율, 매년 3월 시행규칙. 2026년 귀속 3.1%)와 소형주택 주택 수 제외(2026년까지).
   바뀌면 안내 글 `guide-rental-income-two-homes.html`의 간주임대료 숫자도 다시 뽑을 것

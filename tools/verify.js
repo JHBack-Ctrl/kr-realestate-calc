@@ -849,6 +849,23 @@ function near(label, got, want, tol) {
     expect(`결과 글 기납부 ${w}`, await get('out-total'), want); expect(`결과 글 기납부 ${w} 결정세액`, await get('out-tax'), '2,377,466'); expect(`결과 글 기납부 ${w} 추가 납부 여부`, (await get('out-kicker')).includes('더 내는'), add);
   }
   await fresh('year-end-tax.html'); await type('withheld', '2000000'); await type('salary', '50000000'); expect('결과 글 카드 없이 추가 납부', await get('out-total'), '724,580');
+  // guide-year-end-medical.html — 1인, 기납부 비움. 의료비 공제가 표준세액공제 13만원보다 작으면 결정세액 그대로
+  const ye = async (sal, fields) => { await fresh('year-end-tax.html'); await openGroups(); for (const [k, v] of fields) await type(k, v); await type('salary', sal); };
+  for (const [label, sal, fields, tax, total] of [
+    ['본인 200만', '50000000', [['medSelf', '2000000']], '2,658,716', '0'], ['본인 200만+보험 100만', '50000000', [['medSelf', '2000000'], ['insurance', '1000000']], '2,593,716', '71,500'],
+    ['부모 500만', '50000000', [['medOther', '5000000']], '2,263,716', '434,500'], ['부모 1,000만', '50000000', [['medOther', '10000000']], '1,738,716', '1,012,000'],
+    ['본인 1,000만', '50000000', [['medSelf', '10000000']], '1,513,716', '1,259,500'],
+    ['3천 부양 300만', '30000000', [['medOther', '3000000']], '186,860', '203,500'], ['4천 부양 300만', '40000000', [['medOther', '3000000']], '1,290,480', '154,000'],
+    ['6천 부양 300만', '60000000', [['medOther', '3000000']], '3,887,952', '55,000']]) {
+    await ye(sal, fields); expect(`의료비 글 ${label} 결정세액`, await get('out-tax'), tax); expect(`의료비 글 ${label} 환급`, await get('out-total'), total);
+  }
+  // guide-year-end-job-change.html — 6월 퇴사 총급여 2,500만원(회사 정산 = 기납부 비움), 이직 두 곳 합산 5,000만원
+  for (const [label, sal, fields, tax, total] of [
+    ['퇴사 2,500만', '25000000', [], '195,913', '0'], ['퇴사 신용 1,000만', '25000000', [['credit', '10000000']], '180,725', '16,690'],
+    ['퇴사 체크 1,000만', '25000000', [['debit', '10000000']], '165,538', '33,400'], ['퇴사 신용+연금저축', '25000000', [['credit', '10000000'], ['saving', '3000000']], '0', '215,500'],
+    ['이직 합산 5,000만', '50000000', [], '2,658,716', '0']]) {
+    await ye(sal, fields); expect(`퇴사 글 ${label} 결정세액`, await get('out-tax'), tax); expect(`퇴사 글 ${label} 환급`, await get('out-total'), total);
+  }
   // guide-parental-leave-pay.html
   await fresh('parental-leave.html');
   for (const [w, m, six, want] of [['800000', '12', false, '9,000,000'], ['1500000', '12', false, '16,200,000'], ['2000000', '12', false, '21,600,000'], ['2500000', '12', false, '23,100,000'], ['5000000', '12', false, '23,100,000'],
