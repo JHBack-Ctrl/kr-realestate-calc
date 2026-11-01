@@ -129,7 +129,7 @@ assets = ["css/site.css", "js/common.js", "js/analytics.js", "js/forms.js", "js/
                                  "property-tax", "comprehensive-property-tax", "gift-tax",
                                  "inheritance-tax", "jeonse-loan", "savings", "unemployment-benefit", "hourly-wage",
                                  "year-end-tax", "registration-cost", "pension-tax-credit", "parental-leave", "annual-leave", "rental-income-tax",
-                                 "income-tax"]]
+                                 "income-tax", "land-multiple"]]
 
 
 

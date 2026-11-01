@@ -139,6 +139,10 @@ TOOLS = [
     ("income-tax.html", "종합소득세", "종합소득세 계산기 2026 — 프리랜서 3.3% 환급액, 단순경비율, 5월 신고",
      "종합소득세 계산기. 3.3%를 떼고 받은 프리랜서·강사의 1년 수입과 단순경비율 또는 실제 경비, 부양가족, 국민연금·연금저축을 넣으면 결정세액과 5월 신고 때 돌려받거나 더 낼 세금을 추정합니다.",
      "생활", "3.3% 뗀 수입으로 보는 5월 환급액"),
+    # ---- 7차 (2026-11, 시안): 땅값 몇 배 ----
+    ("land-multiple.html", "땅값 몇 배", "땅값 몇 배 계산기 — 공시지가 상승 배수, 연평균 상승률, 평당 공시지가",
+     "땅값 몇 배 계산기. 그때와 지금의 개별공시지가(1㎡당)와 연도를 넣으면 몇 배가 됐는지와 연평균 상승률, 평당 공시지가, 면적별 총액 변화를 계산합니다. 공시지가 기준이며 시세가 아닙니다.",
+     "매매·투자", "공시지가로 보는 상승 배수와 연평균"),
 ]
 # 표·자료 페이지 (파일, 짧은 이름, 제목, description, 한 줄 설명)
 TABLES = [
@@ -339,6 +343,7 @@ TOOL_GUIDES = {
     "annual-leave.html": ["guide-annual-leave-pay.html", "guide-minimum-wage-2027.html"],
     "rental-income-tax.html": ["guide-rental-income-two-homes.html", "guide-officetel.html"],
     "income-tax.html": ["guide-freelancer-refund.html", "guide-year-end-dependents.html"],
+    "land-multiple.html": ["guide-buy-vs-rent.html", "guide-area-84.html"],
 }
 DOCS = [
     ("about.html", "사이트 소개"), ("privacy.html", "개인정보처리방침"), ("terms.html", "이용약관"),
@@ -423,6 +428,7 @@ TILE_ICONS = {
     "annual-leave.html": _CAL + '<path d="m9 15 2 2 4-4"/>',
     "rental-income-tax.html": '<path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M9.5 13h5M9.5 16.5h5"/>',
     "income-tax.html": '<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 11.5h6M9 15h3"/>',
+    "land-multiple.html": '<path d="M3 20h18"/><path d="M5 16l5-5 3 3 6-6"/><path d="M15 8h4v4"/>',
     # 표·서식·용어
     "table-acquisition-tax.html": '<path d="M4 5h16v14H4z"/><path d="M4 10h16M10 10v9"/>',
     "table-capital-gains-tax.html": '<path d="M4 5h16v14H4z"/><path d="M4 10h16M10 10v9"/>',
@@ -481,6 +487,7 @@ TILE_KEYS = {
     "annual-leave.html": "연차 월차 연차수당 입사일 근속 15일",
     "rental-income-tax.html": "임대소득세 주택임대 간주임대료 분리과세 집주인 월세 세금",
     "income-tax.html": "종합소득세 종소세 프리랜서 3.3% 환급 단순경비율 사업소득 5월 신고",
+    "land-multiple.html": "땅값 공시지가 몇배 상승률 개별공시지가 평당 토지 그때 그 땅값",
     "glossary.html": "용어 사전 대항력 확정일자 근저당 우선변제권",
     "base-rate-history.html": "기준금리 한국은행 금리 이력",
 }

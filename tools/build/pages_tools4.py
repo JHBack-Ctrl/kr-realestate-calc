@@ -260,6 +260,59 @@ def income_tax_page():
         layout(left, right) + INLINE_AD + guide + faq_section(faq) + related(path)
     return main, head_for(path, faq)
 
+# ============================================================ 땅값 몇 배 (7차 시안, 2026-11)
+# 「그때 그 땅값」 쇼츠에서 넘어오는 사람용. 예시는 특정 동네처럼 보이지 않는 값(100만원 → 2,000만원, 1990→2026).
+def land_multiple_page():
+    path = "land-multiple.html"
+    faq = [
+        ("공시지가는 어디서 찾나요?", ["부동산 공시가격 알리미(realtyprice.kr)에서 개별공시지가를 고르고 땅의 주소(지번)를 넣으면 연도별 공시지가가 나옵니다. 1㎡당 금액이니 그대로 넣으면 됩니다.", "개별공시지가는 1990년부터 있습니다. 오래된 연도가 안 보이면 땅이 있는 시·군·구청에 문의하세요."]),
+        ("공시지가와 시세는 왜 다른가요?", ["공시지가는 정부가 해마다 1월 1일 기준으로 정해 세금과 부담금의 기준으로 쓰는 가격입니다. 실제 거래 가격(시세)을 얼마나 반영하는지(현실화율)가 해마다, 지역마다 달라 공시지가 배수와 시세 배수는 다를 수 있습니다."]),
+        ("개별공시지가와 표준지공시지가는 뭐가 다른가요?", ["표준지공시지가는 국토교통부가 전국에서 대표로 고른 땅에 매기는 가격이고, 개별공시지가는 그 표준지를 바탕으로 시·군·구가 모든 필지에 매기는 가격입니다. 내 땅의 값을 보려면 개별공시지가를 쓰세요."]),
+        ("평당 가격은 어떻게 환산하나요?", ["1평은 400/121㎡, 약 3.3058㎡입니다. 1㎡당 공시지가에 3.3058을 곱하면 평당 공시지가입니다. 넓이 환산은 <a href='area.html'>평수 변환기</a>에서도 할 수 있습니다."]),
+        ("물가 비교는 무엇을 기준으로 하나요?", ["통계청 소비자물가지수 연간 총지수(2020=100)입니다. 같은 기간 물가가 몇 배 올랐는지 구하고, 공시지가 배수를 그 값으로 나눠 물가를 뺀 배수를 보여 줍니다. 지금은 2015~2025년 연간값만 넣어 두었습니다."]),
+    ]
+    left = form_open([("ex", "예시: 100만 → 2,000만"), ("clear", "지우기")]) + \
+        money("priceThen", "그때 공시지가 (1㎡당)", "1,000,000", unit="원/㎡", help_="부동산 공시가격 알리미의 개별공시지가") + \
+        money("priceNow", "지금 공시지가 (1㎡당)", "20,000,000", unit="원/㎡") + \
+        num("yearThen", "그때 연도", "1990", "년", step="1", min_="1990", max_="2026") + num("yearNow", "지금 연도", "2026", "년", step="1", min_="1990", max_="2026") + \
+        num("area", "면적 (선택)", "", "", step="0.01", help_="넣으면 땅 전체 공시가격이 얼마에서 얼마로 바뀌었는지 보여 줍니다") + \
+        seg("areaUnit", "면적 단위", [("m2", "㎡"), ("py", "평")]) + form_close("몇 배인지 계산")
+    right = result_hero("공시지가가 몇 배가 됐나", "out-big", "배", [("연평균 상승률", "out-cagr", "%"), ("기간", "out-years", "년"), ("지금 평당 공시지가", "out-py-now", "원")]) + \
+        f'''
+        <section class="card">
+          <h2>계산 내역</h2>
+          <div class="table-wrap"><table class="tbl"><tbody>
+            <tr><th scope="row">그때 1㎡당</th><td><span id="out-then-m2">0</span>원</td></tr>
+            <tr><th scope="row">그때 평당</th><td><span id="out-then-py">0</span>원</td></tr>
+            <tr><th scope="row">지금 1㎡당</th><td><span id="out-now-m2">0</span>원</td></tr>
+            <tr><th scope="row">지금 평당</th><td><span id="out-now-py">0</span>원</td></tr>
+          </tbody><tbody id="area-rows" hidden>
+            <tr><th scope="row">면적</th><td><span id="out-area-m2">0</span>㎡</td></tr>
+            <tr><th scope="row">땅 전체: 그때</th><td><span id="out-total-then">0</span>원</td></tr>
+            <tr><th scope="row">땅 전체: 지금</th><td><span id="out-total-now">0</span>원</td></tr>
+            <tr><th scope="row">늘어난 금액</th><td><span id="out-total-diff">0</span>원</td></tr>
+          </tbody><tbody>
+            <tr><th scope="row">같은 기간 물가</th><td><span id="out-cpi">—</span></td></tr>
+            <tr class="total"><th scope="row">물가를 뺀 배수</th><td><span id="out-real">—</span></td></tr>
+          </tbody></table></div>
+          <p class="result-note" id="out-cpi-note"></p>
+          <p class="result-note"><span id="rules-date"></span>. 본 계산기는 참고용이며 금융·세무·법률 자문이 아닙니다.</p>
+        </section>'''
+    guide = prose_section("계산 방법과 공시지가 찾는 법", [
+        "<p><strong>공시지가 기준(시세 아님)</strong>입니다. 같은 땅의 개별공시지가를 두 해에 걸쳐 비교합니다.</p>",
+        "<ul><li><strong>몇 배</strong> = 지금 공시지가 ÷ 그때 공시지가</li><li><strong>연평균 상승률</strong> = 몇 배 ^ (1 ÷ 기간) − 1. 해마다 같은 비율로 올랐다고 볼 때의 비율입니다</li><li><strong>평당 공시지가</strong> = 1㎡당 공시지가 × 3.3058</li><li><strong>물가를 뺀 배수</strong> = 몇 배 ÷ 같은 기간 소비자물가 배수</li></ul>",
+        "<p>예를 들어 1990년 1㎡당 100만원이던 땅이 2026년 2,000만원이면 36년 동안 20배, 연평균 약 8.7%씩 오른 셈입니다. 같은 20배라도 20년 만이면 연평균 약 16.2%입니다. 기간이 길수록 같은 배수의 연평균 상승률은 낮아집니다.</p>",
+        "<h3>공시지가 찾는 법</h3>",
+        "<ol><li>부동산 공시가격 알리미(realtyprice.kr)에 들어갑니다</li><li>개별공시지가를 고르고 땅의 주소(지번)를 넣습니다</li><li>연도별 공시지가(1㎡당)가 나오면 비교할 두 해의 값을 계산기에 넣습니다</li></ol>",
+        "<h3>알아둘 것</h3>",
+        "<ul><li>공시지가는 시세를 반영하는 비율(현실화율)이 해마다, 지역마다 달라 공시지가 배수와 실제 땅값 배수는 다를 수 있습니다</li><li>땅이 나뉘거나 합쳐졌거나 지목·용도지역이 바뀌었다면 같은 땅으로 비교하기 어렵습니다</li><li>세금, 거래 비용, 그동안의 보유 비용은 반영하지 않습니다</li><li>물가 비교는 통계청 소비자물가지수 연간 총지수(2020=100)를 쓰고, 지금은 2015~2025년 연간값만 들어 있습니다</li></ul>",
+        "<p>본 계산기는 참고용이며 금융·세무·법률 자문이 아닙니다. 특정 지역이나 투자를 권하지 않습니다.</p>",
+    ])
+    main = hero("Land · Public Price", "땅값 몇 배 계산기", "같은 땅의 공시지가가 몇 배가 됐는지와 연평균 상승률",
+                "그때와 지금의 개별공시지가(1㎡당)와 연도를 넣으면 몇 배가 됐는지, 연평균 몇 %씩 올랐는지, 평당으로는 얼마인지 계산합니다. 면적을 넣으면 땅 전체 공시가격이 얼마에서 얼마로 바뀌었는지도 보여 줍니다. 공시지가 기준이며 시세가 아닙니다.") + \
+        layout(left, right) + INLINE_AD + guide + faq_section(faq) + related(path)
+    return main, head_for(path, faq)
+
 TOOLS4_PAGES = {
     "year-end-tax.html": (year_end_tax_page, "js/year-end-tax.js", "예상 환급액"),
     "registration-cost.html": (registration_cost_page, "js/registration-cost.js", "등기비용 합계"),
@@ -268,4 +321,5 @@ TOOLS4_PAGES = {
     "annual-leave.html": (annual_leave_page, "js/annual-leave.js", "지금 연차"),
     "rental-income-tax.html": (rental_income_tax_page, "js/rental-income-tax.js", "임대소득세"),
     "income-tax.html": (income_tax_page, "js/income-tax.js", "종합소득세"),
+    "land-multiple.html": (land_multiple_page, "js/land-multiple.js", "몇 배"),
 }

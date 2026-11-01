@@ -12,14 +12,14 @@
 python3 tools/build/build.py
 ```
 
-등록부에서 153쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
+등록부에서 154쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
 같은 소스로 두 번 돌리면 결과가 같아야 합니다(멱등). 달라지면 버그입니다.
 
 - `site_core.py` — 등록부(TOOLS, TABLES, FORMS, REFS, GUIDES, HUBS, RATE_HISTORY)와 공통 틀.
   메뉴·사이트맵·홈 타일이 전부 여기서 나옵니다
 - `pages_new.py` / `pages_cgt.py` / `pages_tools2.py` / `pages_tax.py` / `pages_tools3.py` / `pages_tools4.py` — 계산기 본문
   (`pages_tax.py`는 재산세·종부세·증여세, `pages_tools3.py`는 상속세·전세대출·예적금·실업급여·시급,
-  `pages_tools4.py`는 연말정산·등기비용·연금저축IRP·육아휴직·연차·주택임대소득세·종합소득세)
+  `pages_tools4.py`는 연말정산·등기비용·연금저축IRP·육아휴직·연차·주택임대소득세·종합소득세·땅값 몇 배)
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽, 안내 글 4편
 - `pages_guides2.py` — 안내 글 54편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
@@ -41,8 +41,8 @@ python3 tools/build/build.py
 
 ### 검색 제외 (noindex)
 
-153쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
-검색 대상은 140쪽입니다(2026-10-31). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
+154쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
+검색 대상은 141쪽입니다(2026-11-02). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
 
 - 용어 9쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
 - 용어 39쪽 중 30쪽은 1,000자 이상으로 늘려 검색에 되돌렸습니다: 대항력·확정일자·전세가율·DSR·LTV,
@@ -219,6 +219,8 @@ https://전국부동산계산기.com/guide-prepayment.html
   계산기 본문의 「334만원 이하면 하한, 344만원 이상이면 상한」 문장과 예시 숫자, 안내 글 `guide-unemployment-floor.html`(표·날수별 총액·
   조기재취업수당 예시·「2027년에 바뀔 것」 절)도 다시 뽑을 것
 - `js/savings.js`(이자소득세 15.4%)와 `js/jeonse-loan.js`(주택임차차입금 소득공제 40%·400만원)는 거의 안 바뀜
+- `js/land-multiple.js`의 `CPI` — 통계청이 1월 초 전년 연간 소비자물가지수(2020=100)를 내면 그해 값을 한 줄 더하고 `CPI_LAST`를 올릴 것.
+  지금은 2015~2025년만 들어 있음(1990~2014년은 2026-11에 공식 값을 확인하지 못해 비워 둠, 화면에 그렇게 나옴)
 - `js/parental-leave.js` — 육아휴직 급여 상한(250·200·160만원, 6+6 단계별 상한). 고용보험법 시행령이 바뀌면 안내 글 `guide-parental-leave-pay.html`도
 - `js/pension-tax-credit.js`(600·900만원, 15·12%), `js/annual-leave.js`(근로기준법 60조)는 거의 안 바뀜
 

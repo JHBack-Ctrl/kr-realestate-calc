@@ -835,6 +835,15 @@ function near(label, got, want, tol) {
   await page.selectOption('#method', 'book'); await type('expense', '5000000');
   expect('종소세 장부 경비 500만 결정세액', await get('out-tax'), '2,195,000'); expect('종소세 장부 추가 납부', await get('out-total'), '1,424,500'); expect('종소세 장부 추가 납부 문구', (await get('out-kicker')).includes('더 내는'), true);
   await fresh('income-tax.html'); await page.click('.chip[data-preset="r5"]'); expect('종소세 5천 예시 버튼', await get('out-total'), '161,150');
+  // land-multiple.html — 예시 100만 → 2,000만원(1990→2026) 20배·연 8.68%, 같은 20배를 20년이면 16.16%, 물가는 2015~2025년만
+  await fresh('land-multiple.html'); await page.click('.chip[data-preset="ex"]');
+  expect('땅값 예시 배수', await get('out-big'), '20'); expect('땅값 예시 연평균', await get('out-cagr'), '8.68'); expect('땅값 예시 기간', await get('out-years'), '36');
+  expect('땅값 예시 평당', await get('out-py-now'), '66,115,702'); expect('땅값 1990 물가 없음', await get('out-cpi'), '—');
+  await type('yearThen', '2006'); expect('땅값 20배 20년 연평균', await get('out-cagr'), '16.16');
+  await type('yearThen', '2015'); await type('yearNow', '2025'); await type('priceNow', '2000000');
+  expect('땅값 2015→2025 물가 배수', await get('out-cpi'), '1.23배'); expect('땅값 물가 뺀 배수', await get('out-real'), '1.63배');
+  await type('area', '100'); await radio('areaUnit', 'py');
+  expect('땅값 100평 ㎡', await get('out-area-m2'), '330.58'); expect('땅값 100평 그때', await get('out-total-then'), '330,578,512'); expect('땅값 100평 지금', await get('out-total-now'), '661,157,025');
   // guide-year-end-dependents.html — 기납부 비움, 공제 없음. 결정세액
   for (const [sal, fam, want] of [['30000000', '1', '371,860'], ['30000000', '2', '270,610'], ['40000000', '1', '1,430,480'], ['40000000', '2', '1,205,480'], ['50000000', '1', '2,658,716'], ['50000000', '2', '2,433,716'],
                                   ['60000000', '1', '3,937,952'], ['60000000', '2', '3,712,952'], ['80000000', '1', '7,294,790'], ['80000000', '2', '6,934,790']]) {
