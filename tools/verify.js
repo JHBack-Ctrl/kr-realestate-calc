@@ -839,8 +839,8 @@ function near(label, got, want, tol) {
   await fresh('land-multiple.html'); await page.click('.chip[data-preset="ex"]');
   expect('땅값 예시 배수', await get('out-big'), '20'); expect('땅값 예시 연평균', await get('out-cagr'), '8.68'); expect('땅값 예시 기간', await get('out-years'), '36년');
   expect('땅값 예시 평당', await get('out-s3'), '66,115,702'); expect('땅값 1990 물가 없음', await get('out-cpi'), '—');
-  await type('yearThen', '2006'); expect('땅값 20배 20년 연평균', await get('out-cagr'), '16.16');
-  await type('yearThen', '2015'); await type('yearNow', '2025'); await type('priceNow', '2000000');
+  await page.selectOption('#yearThen', '2006'); expect('땅값 20배 20년 연평균', await get('out-cagr'), '16.16');
+  await page.selectOption('#yearThen', '2015'); await page.selectOption('#yearNow', '2025'); await type('priceNow', '2000000');
   expect('땅값 2015→2025 물가 배수', await get('out-cpi'), '1.23배'); expect('땅값 물가 뺀 배수', await get('out-real'), '1.63배');
   await type('area', '100'); await radio('areaUnit', 'py');
   expect('땅값 100평 ㎡', await get('out-area-m2'), '330.58'); expect('땅값 100평 그때', await get('out-total-then'), '330,578,512'); expect('땅값 100평 지금', await get('out-total-now'), '661,157,025');
@@ -849,11 +849,17 @@ function near(label, got, want, tol) {
   await page.selectOption('#region', '서울 강남구');
   // 본문 「지역 지수와 내 땅의 공시지가 배수」 절의 숫자도 여기서 확인 (강남구 1990→2026, 1987→2026, 전국 1990→2026)
   expect('땅값 강남구 1990→2026 배수', await get('out-big'), '2.53'); expect('땅값 강남구 연평균', await get('out-cagr'), '2.63'); expect('땅값 강남구 기간', await get('out-years'), '35년 9개월');
-  await type('yearThen', '1987'); expect('땅값 강남구 1987→2026 배수', await get('out-big'), '7.04'); await type('yearThen', '1990');
+  // 「지금 1㎡당 가격」을 넣으면 그때 가격을 지수 비율로 거꾸로 추정 (FAQ: 강남구 1,000만원/㎡ → 1990년 약 395만원)
+  await type('regionPrice', '10000000'); expect('땅값 강남구 그때 1㎡당 추정', await get('out-rp-then-m2'), '395만원'); expect('땅값 강남구 지금 평당', await get('out-rp-now-py'), '3,306만원'); expect('땅값 강남구 평당 오른 금액(보이는 값끼리 셈)', await get('out-rp-diff-py'), '2,000만원');
+  expect('땅값 강남구 그때 평당 결과 칸', await get('out-s3'), '1,306만원'); await type('regionPrice', '');
+  await page.selectOption('#yearThen', '1987'); expect('땅값 강남구 1987→2026 배수', await get('out-big'), '7.04'); await page.selectOption('#yearThen', '1990');
   await page.selectOption('#region', '전국'); expect('땅값 전국 1990→2026 배수', await get('out-big'), '1.93');
-  await type('yearNow', '2025');
+  await page.selectOption('#yearNow', '2025');
   expect('땅값 전국 1990→2025', await get('out-big'), '1.9'); expect('땅값 전국 물가 배수', await get('out-cpi'), '3.03배'); expect('땅값 전국 물가 뺀 배수', await get('out-real'), '0.63배');
-  await page.selectOption('#region', '부산 해운대구'); expect('땅값 해운대 1990 자료 없음', await get('out-big'), '—'); expect('땅값 해운대 안내', (await get('out-note')).includes('1994년부터'), true);
+  // 연도는 그 지역 자료가 있는 해만 고를 수 있다. 해운대는 1994년부터라 1990이 1994로 옮겨지고, 다른 지역으로 바꾸면 1990으로 돌아온다
+  await page.selectOption('#region', '부산 해운대구'); expect('땅값 해운대 그때 연도 옮김', await page.inputValue('#yearThen'), '1994');
+  expect('땅값 해운대 연도 목록 첫 해', await page.$eval('#yearThen option', o => o.value), '1994'); expect('땅값 해운대 안내', (await get('out-note')).includes('1994년부터'), true);
+  await page.selectOption('#region', '서울 강남구'); expect('땅값 지역 바꾸면 고른 해로', await page.inputValue('#yearThen'), '1990');
   // guide-year-end-dependents.html — 기납부 비움, 공제 없음. 결정세액
   for (const [sal, fam, want] of [['30000000', '1', '371,860'], ['30000000', '2', '270,610'], ['40000000', '1', '1,430,480'], ['40000000', '2', '1,205,480'], ['50000000', '1', '2,658,716'], ['50000000', '2', '2,433,716'],
                                   ['60000000', '1', '3,937,952'], ['60000000', '2', '3,712,952'], ['80000000', '1', '7,294,790'], ['80000000', '2', '6,934,790']]) {
