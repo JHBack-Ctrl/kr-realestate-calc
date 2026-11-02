@@ -277,6 +277,16 @@ def land_index_js():
             "cpi": d.get("cpi"), "regions": {r["key"]: r["series"] for r in d["regions"]}}
     return head + "window.LAND_INDEX = " + json.dumps(data, ensure_ascii=False, separators=(",", ":"), sort_keys=True) + ";\n"
 
+def _year_options():
+    """연도 드롭다운의 처음 목록(전체 연도). 지역을 고르면 js가 그 지역 자료가 있는 해로 줄인다."""
+    d = land_index()
+    if d:
+        first = min(int(y) for r in d["regions"] for y in r["series"])
+        last = d["meta"]["latest_year"]
+    else:
+        first, last = 1987, 2026
+    return [(str(y), f"{y}년") for y in range(first, last + 1)]
+
 def _region_select():
     d = land_index()
     if not d:
@@ -309,17 +319,21 @@ def land_multiple_page():
         ("개별공시지가와 표준지공시지가는 뭐가 다른가요?", ["표준지공시지가는 국토교통부가 전국에서 대표로 고른 땅에 매기는 가격이고, 개별공시지가는 그 표준지를 바탕으로 시·군·구가 모든 필지에 매기는 가격입니다. 내 땅의 값을 보려면 개별공시지가를 쓰세요."]),
         ("평당 가격은 어떻게 환산하나요?", ["1평은 400/121㎡, 약 3.3058㎡입니다. 1㎡당 공시지가에 3.3058을 곱하면 평당 공시지가입니다. 넓이 환산은 <a href='area.html'>평수 변환기</a>에서도 할 수 있습니다."]),
         ("물가 비교는 무엇을 기준으로 하나요?", ["통계청 소비자물가지수 연간 총지수(2020=100)입니다. 같은 기간 물가가 몇 배 올랐는지 구하고, 땅값 배수를 그 값으로 나눠 물가를 뺀 배수를 보여 줍니다. 1990~2025년 연간값이 있고, 올해 연간값은 다음 해 1월에 나옵니다."]),
+        ("지역 고르기에서도 1㎡당 금액을 볼 수 있나요?", ["지가지수는 가격이 아니라 변동 비율이라, 지수만으로는 그 지역 땅이 1㎡당 얼마인지 알 수 없습니다. 「지금 1㎡당 가격」에 내 땅의 지금 공시지가나 시세를 넣으면 같은 지역 지수 비율로 그때 가격을 거꾸로 추정해, 1㎡당·평당 얼마에서 얼마로 올랐는지 보여 줍니다.",
+                                                    "예를 들어 서울 강남구에서 지금 1㎡당 1,000만원인 땅은 지수 비율로 보면 1990년에 약 395만원이었던 셈입니다. 지역 평균 변동을 적용한 추정이라 그 땅의 실제 그때 가격과는 다를 수 있습니다."]),
         ("영상이나 기사에서 본 배수와 왜 다른가요?", ["영상·기사는 대개 특정 땅 한 필지의 공시지가를 비교하고, 지역 고르기는 그 지역 땅값의 평균 변동(지가지수)을 씁니다. 개발로 쓰임새가 바뀐 땅은 지역 평균보다 훨씬 크게 오르고, 공시지가는 시세를 반영하는 비율도 해마다 달라 왔기 때문에 같은 동네라도 두 숫자가 크게 다를 수 있습니다.",
                                                    "어느 해부터 비교하느냐도 큰 차이를 냅니다. 1980년대 말에는 땅값이 짧은 기간에 크게 올라, 같은 지역도 1987년부터 보느냐 1990년부터 보느냐에 따라 배수가 몇 배씩 달라집니다."]),
     ]
     left = form_open([("ex", "예시: 100만 → 2,000만"), ("clear", "지우기")]) + \
         seg("mode", "계산 방식", [("region", "지역 고르기"), ("direct", "공시지가 직접 입력")]) + \
-        '\n            <div id="region-fields">\n' + _region_select() + '\n            </div>\n            <div id="direct-fields" hidden>\n' + \
+        '\n            <div id="region-fields">\n' + _region_select() + '\n' + \
+        money("regionPrice", "지금 1㎡당 가격 (선택)", "10,000,000", unit="원/㎡", help_="내 땅의 지금 공시지가나 시세(1㎡당)를 넣으면 지역 지수 비율로 그때 가격을 추정해 1㎡당·평당 얼마에서 얼마로 올랐는지 보여 줍니다") + \
+        '\n            </div>\n            <div id="direct-fields" hidden>\n' + \
         money("priceThen", "그때 공시지가 (1㎡당)", "1,000,000", unit="원/㎡", help_="부동산 공시가격 알리미의 개별공시지가") + \
         money("priceNow", "지금 공시지가 (1㎡당)", "20,000,000", unit="원/㎡") + \
         num("area", "면적 (선택)", "", "", step="0.01", help_="넣으면 땅 전체 공시가격이 얼마에서 얼마로 바뀌었는지 보여 줍니다") + \
         seg("areaUnit", "면적 단위", [("m2", "㎡"), ("py", "평")]) + '\n            </div>\n' + \
-        num("yearThen", "그때 연도", "1990", "년", step="1", min_="1987", max_="2026") + num("yearNow", "지금 연도", "2026", "년", step="1", min_="1987", max_="2026") + \
+        select("yearThen", "그때 연도", _year_options()) + select("yearNow", "지금 연도", _year_options(), help_="지역을 고르면 그 지역 자료가 있는 해만 나옵니다") + \
         form_close("몇 배인지 계산")
     right = result_hero("땅값 지수가 몇 배가 됐나", "out-big", "배", [("연평균 상승률", "out-cagr", "%"), ("기간", "out-years", ""),
                                                      ('<span id="out-s3-label">지금 지가지수</span>', "out-s3", '<span id="out-s3-unit"></span>')], kicker_id="out-kicker") + \
@@ -331,6 +345,12 @@ def land_multiple_page():
             <tr><th scope="row">그때 지가지수</th><td><span id="out-idx-then">—</span></td></tr>
             <tr><th scope="row">지금 지가지수</th><td><span id="out-idx-now">—</span></td></tr>
             <tr><th scope="row">지수 기준</th><td><span id="out-idx-base">—</span></td></tr>
+          </tbody><tbody id="region-price-rows" hidden>
+            <tr><th scope="row">그때 1㎡당 (추정)</th><td><span id="out-rp-then-m2">—</span></td></tr>
+            <tr><th scope="row">그때 평당 (추정)</th><td><span id="out-rp-then-py">—</span></td></tr>
+            <tr><th scope="row">지금 1㎡당</th><td><span id="out-rp-now-m2">—</span></td></tr>
+            <tr><th scope="row">지금 평당</th><td><span id="out-rp-now-py">—</span></td></tr>
+            <tr><th scope="row">평당 오른 금액</th><td><span id="out-rp-diff-py">—</span></td></tr>
           </tbody><tbody id="direct-rows" hidden>
             <tr><th scope="row">그때 1㎡당</th><td><span id="out-then-m2">0</span>원</td></tr>
             <tr><th scope="row">그때 평당</th><td><span id="out-then-py">0</span>원</td></tr>
