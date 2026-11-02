@@ -79,7 +79,9 @@
     else note = (r.years > 0 ? i.yearThen + '년 ' : '그때 ') + S.fmtKorean(i.then) + '/㎡이던 땅이 ' + (r.years > 0 ? i.yearNow + '년 ' : '지금 ') + S.fmtKorean(i.now) + '/㎡이면 ' +
       (r.years > 0 ? r.years + '년 동안 ' : '') + times(r.multiple) + '배' + (r.cagr != null ? ', 연평균 ' + S.fmtRate(r.cagr) + '%씩 오른 셈입니다. ' : '가 됐습니다. ') +
       (r.years <= 0 ? '연도를 넣으면 연평균 상승률도 나옵니다. ' : '') + '공시지가 기준이며 시세가 아닙니다.';
-    if (region && r.p.first && r.p.first > PI.dataFirst()) note += ' 이 지역 자료는 ' + r.p.first + '년부터 있습니다.';
+    var moved = region && !r.p.missing ? PI.movedFrom(i.yearThen) : 0;
+    if (moved) note += ' ' + moved + '년은 이 지역 자료가 없어 자료가 있는 ' + i.yearThen + '년부터 계산했습니다.';   // 연도가 저절로 옮겨진 걸 알 수 있게
+    else if (region && r.p.first && r.p.first > PI.dataFirst()) note += ' 이 지역 자료는 ' + r.p.first + '년부터 있습니다.';
     S.setText('out-note', note);
     last = { i: i, r: r };
   }

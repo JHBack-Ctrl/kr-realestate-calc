@@ -116,7 +116,9 @@
         : '지역 평균이라 우리 아파트와는 다를 수 있습니다. 「지금 시세」를 넣으면 그때 시세를 추정해 보여 줍니다.');
     else note = i.yearThen + '년 ' + S.fmtKorean(i.then) + '에 산 아파트가 ' + i.yearNow + '년 ' + S.fmtKorean(i.now) + '이면 ' + r.years + '년 동안 ' + times(r.multiple) + '배, 연평균 ' +
       S.fmtRate(r.cagr) + '%씩 오른 셈입니다.' + (r.cmp ? ' 같은 기간 ' + i.region + ' 평균은 ' + times(r.cmp) + '배입니다.' : '') + ' 세금과 거래 비용은 빠져 있습니다.';
-    if (region && r.p.first && r.p.first > PI.dataFirst() && !r.p.missing) note += ' 이 지역 자료는 ' + r.p.first + '년부터 있습니다.';
+    var moved = region && !r.p.missing ? PI.movedFrom(i.yearThen) : 0;
+    if (moved) note += ' ' + moved + '년은 이 지역 자료가 없어 자료가 있는 ' + i.yearThen + '년부터 계산했습니다.';   // 연도가 저절로 옮겨진 걸 알 수 있게
+    else if (region && r.p.first && r.p.first > PI.dataFirst() && !r.p.missing) note += ' 이 지역 자료는 ' + r.p.first + '년부터 있습니다.';
     S.setText('out-note', note);
     last = { i: i, r: r };
   }

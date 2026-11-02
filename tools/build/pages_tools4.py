@@ -288,17 +288,17 @@ def _index_js(d, var, src):
 def land_index_js(): return _index_js(land_index(), "LAND_INDEX", "land_index.json")
 def apt_index_js(): return _index_js(apt_index(), "APT_INDEX", "apt_index.json")
 
-def _year_options(d=None, first=None, fallback_first=1987):
+def _year_options(d, first=None, fallback_first=1987):
     """연도 드롭다운의 처음 목록(전체 연도). 지역을 고르면 js가 그 지역 자료가 있는 해로 줄인다.
-    first를 주면 자료와 상관없이 그해부터(직접 입력에서 자료보다 이른 해도 고를 수 있게)."""
-    if d is None: d = land_index()
+    first를 주면 자료와 상관없이 그해부터(직접 입력에서 자료보다 이른 해도 고를 수 있게).
+    d는 그 계산기의 자료(없으면 None). 다른 계산기 자료로 대신 채우지 않는다 — 아파트 자료가 없을 때
+    땅값 지역 목록이 아파트 계산기에 들어가 고를 수는 있는데 계산이 안 되던 일이 있었다(2026-11)."""
     if first is None:
         first = min(int(y) for r in d["regions"] for y in r["series"]) if d else fallback_first
     last = d["meta"]["latest_year"] if d else 2026
     return [(str(y), f"{y}년") for y in range(first, last + 1)]
 
-def _region_select(d=None, help_="시·군·구 평균이라 내 땅의 공시지가 배수와는 다를 수 있습니다"):
-    if d is None: d = land_index()
+def _region_select(d, help_="시·군·구 평균이라 내 땅의 공시지가 배수와는 다를 수 있습니다"):
     if not d:
         return '''              <div class="field">
                 <label for="region">지역</label>
@@ -336,14 +336,14 @@ def land_multiple_page():
     ]
     left = form_open([("ex", "예시: 100만 → 2,000만"), ("clear", "지우기")]) + \
         seg("mode", "계산 방식", [("region", "지역 고르기"), ("direct", "공시지가 직접 입력")]) + \
-        '\n            <div id="region-fields">\n' + _region_select() + '\n' + \
+        '\n            <div id="region-fields">\n' + _region_select(land_index()) + '\n' + \
         money("regionPrice", "지금 1㎡당 가격 (선택)", "10,000,000", unit="원/㎡", help_="내 땅의 지금 공시지가나 시세(1㎡당)를 넣으면 지역 지수 비율로 그때 가격을 추정해 1㎡당·평당 얼마에서 얼마로 올랐는지 보여 줍니다") + \
         '\n            </div>\n            <div id="direct-fields" hidden>\n' + \
         money("priceThen", "그때 공시지가 (1㎡당)", "1,000,000", unit="원/㎡", help_="부동산 공시가격 알리미의 개별공시지가") + \
         money("priceNow", "지금 공시지가 (1㎡당)", "20,000,000", unit="원/㎡") + \
         num("area", "면적 (선택)", "", "", step="0.01", help_="넣으면 땅 전체 공시가격이 얼마에서 얼마로 바뀌었는지 보여 줍니다") + \
         seg("areaUnit", "면적 단위", [("m2", "㎡"), ("py", "평")]) + '\n            </div>\n' + \
-        select("yearThen", "그때 연도", _year_options()) + select("yearNow", "지금 연도", _year_options(), help_="지역을 고르면 그 지역 자료가 있는 해만 나옵니다") + \
+        select("yearThen", "그때 연도", _year_options(land_index())) + select("yearNow", "지금 연도", _year_options(land_index()), help_="지역을 고르면 그 지역 자료가 있는 해만 나옵니다") + \
         form_close("몇 배인지 계산")
     right = result_hero("땅값 지수가 몇 배가 됐나", "out-big", "배", [("연평균 상승률", "out-cagr", "%"), ("기간", "out-years", ""),
                                                      ('<span id="out-s3-label">지금 지가지수</span>', "out-s3", '<span id="out-s3-unit"></span>')], kicker_id="out-kicker") + \
