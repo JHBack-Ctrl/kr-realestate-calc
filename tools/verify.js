@@ -869,6 +869,14 @@ function near(label, got, want, tol) {
   await page.selectOption('#region', '부산 해운대구'); expect('땅값 해운대 그때 연도 옮김', await page.inputValue('#yearThen'), '1994');
   expect('땅값 해운대 연도 목록 첫 해', await page.$eval('#yearThen option', o => o.value), '1994'); expect('땅값 해운대 안내', (await get('out-note')).includes('1994년부터'), true);
   await page.selectOption('#region', '서울 강남구'); expect('땅값 지역 바꾸면 고른 해로', await page.inputValue('#yearThen'), '1990');
+  // 공유 링크의 연도가 살아야 한다(2026-11 버그: 그때 연도가 1990으로 돌아가 34년이 36년으로 계산됨). 지역 고르기·목록 밖 연도도
+  await fresh('land-multiple.html?mode=direct&priceThen=10800000&priceNow=46220000&yearThen=1992&yearNow=2026');
+  expect('땅값 공유 링크 그때 연도', await page.inputValue('#yearThen'), '1992'); expect('땅값 공유 링크 기간', await get('out-years'), '34년');
+  expect('땅값 공유 링크 배수', await get('out-big'), '4.28'); expect('땅값 공유 링크 연평균', await get('out-cagr'), '4.37');
+  await fresh('land-multiple.html?mode=region&region=' + encodeURIComponent('서울 강남구') + '&yearThen=1992&yearNow=2020');
+  expect('땅값 공유 링크 지역 연도', (await page.inputValue('#yearThen')) + '→' + (await page.inputValue('#yearNow')), '1992→2020'); expect('땅값 공유 링크 지역 기간', await get('out-years'), '28년');
+  await fresh('land-multiple.html?mode=direct&priceThen=1000000&priceNow=2000000&yearThen=1970&yearNow=2026');
+  expect('땅값 목록 밖 연도는 처음 값', await page.inputValue('#yearThen'), '1990'); expect('땅값 목록 밖 연도 기간', await get('out-years'), '36년');
   // apartment-multiple.html — 예시 3억 → 9억(2006→2026) 3배·연 5.65%, 같은 3배를 10년이면 11.61% (FAQ·본문 숫자)
   // 지역 고르기(한국부동산원 아파트 매매가격지수)는 tools/data/apt_index.json이 들어오면 기대값을 더할 것
   await fresh('apartment-multiple.html'); expect('아파트 처음 빈 화면', await get('sticky-monthly'), '—');
@@ -876,6 +884,8 @@ function near(label, got, want, tol) {
   expect('아파트 예시 배수', await get('out-big'), '3'); expect('아파트 예시 연평균', await get('out-cagr'), '5.65'); expect('아파트 예시 기간', await get('out-years'), '20년');
   expect('아파트 예시 오른 금액', await get('out-s3'), '6억원'); expect('아파트 예시 표 오른 금액', await get('out-diff'), '6억원');
   await page.selectOption('#yearThen', '2016'); expect('아파트 3배 10년 연평균', await get('out-cagr'), '11.61');
+  await fresh('apartment-multiple.html?mode=direct&priceThen=300000000&priceNow=900000000&yearThen=2010&yearNow=2026');
+  expect('아파트 공유 링크 연도', await page.inputValue('#yearThen'), '2010'); expect('아파트 공유 링크 기간', await get('out-years'), '16년'); expect('아파트 공유 링크 연평균', await get('out-cagr'), '7.11');
   // guide-year-end-dependents.html — 기납부 비움, 공제 없음. 결정세액
   for (const [sal, fam, want] of [['30000000', '1', '371,860'], ['30000000', '2', '270,610'], ['40000000', '1', '1,430,480'], ['40000000', '2', '1,205,480'], ['50000000', '1', '2,658,716'], ['50000000', '2', '2,433,716'],
                                   ['60000000', '1', '3,937,952'], ['60000000', '2', '3,712,952'], ['80000000', '1', '7,294,790'], ['80000000', '2', '6,934,790']]) {

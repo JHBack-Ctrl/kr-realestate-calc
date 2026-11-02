@@ -55,6 +55,14 @@
         $('yearThen').value = String(opt.defaultThen); $('yearNow').value = String(lastYear());
         want = { then: opt.defaultThen, now: lastYear() };
       },
+      // 공유 링크나 저장된 값으로 칸이 채워진 뒤(wireCalc의 onApply) 그 연도를 사용자가 고른 해로 삼는다.
+      // 값을 넣을 때는 change 이벤트가 나지 않아, 이걸 안 하면 첫 계산에서 처음 값(1990 등)으로 덮인다(2026-11 공유 링크 버그).
+      // 목록에 없는 해가 들어와 칸이 비면 처음 값으로 둔다
+      adopt: function () {
+        if (!$('yearThen').value) $('yearThen').value = String(opt.defaultThen);
+        if (!$('yearNow').value) $('yearNow').value = String(lastYear());
+        want = { then: Number($('yearThen').value), now: Number($('yearNow').value) };
+      },
       // 연도 목록을 지역에 맞춘다(useRegion이면 그 지역 자료가 있는 해만). 목록이 바뀌었으면 사용자가 고른 해
       // (없으면 그때 연도는 그다음 있는 해, 지금 연도는 가장 늦은 해)로 맞춘다. 값이 바뀌었으면 true
       sync: function (region, useRegion, yearThen, yearNow) {

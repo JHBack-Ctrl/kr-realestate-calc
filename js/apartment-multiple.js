@@ -110,9 +110,12 @@
   }
   S.ready(function () {
     PI.init();   // 연도 고르는 것을 기억하는 처리를 계산보다 먼저 단다
+    // 지역 자료가 아직 없으면 처음 화면을 매매가 직접 입력으로(공유 링크·저장된 값은 wireCalc가 그 뒤에 덮는다)
+    if (!IDX) { var dm = document.querySelector('input[name="mode"][value="direct"]'); if (dm) dm.checked = true; }
     $('regionPrice').addEventListener('input', function () { $('regionPrice').removeAttribute('data-auto'); });   // 직접 고친 값은 내 값
     S.wireCalc({
       key: 'apartment-multiple',
+      onApply: function () { PI.adopt(); },   // 공유 링크·저장된 값의 연도를 살린다
       recalc: function () {
         var i = readInput(), moved = PI.sync(i.region, i.mode === 'region', i.yearThen, i.yearNow);
         if (autoFill(i) || moved) i = readInput();

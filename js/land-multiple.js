@@ -87,6 +87,7 @@
     PI.init();   // 연도 고르는 것을 기억하는 처리를 계산보다 먼저 단다
     S.wireCalc({
       key: 'land-multiple',
+      onApply: function () { PI.adopt(); },   // 공유 링크·저장된 값의 연도를 살린다
       recalc: function () { var i = readInput(); if (PI.sync(i.region, i.mode === 'region', i.yearThen, i.yearNow)) i = readInput(); render(i); },
       preset: function (name) {
         PI.reset();   // 지역에 맞춰 줄어든 목록이면 1990이 없을 수 있어 전체 목록부터
