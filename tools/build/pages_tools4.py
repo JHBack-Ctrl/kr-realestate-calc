@@ -260,6 +260,112 @@ def income_tax_page():
         layout(left, right) + INLINE_AD + guide + faq_section(faq) + related(path)
     return main, head_for(path, faq)
 
+# ============================================================ 땅값 몇 배 (7차 시안, 2026-11)
+# 지역 지가지수(한국부동산원)는 tools/data/land_index.json에 정리해 두고, 빌드가 지역 목록(select)과 js/land-index-data.js를 만든다.
+# 자료가 없으면 지역 고르기는 「자료 준비 중」으로 나오고 공시지가 직접 입력만 쓸 수 있다.
+LAND_INDEX_FILE = os.environ.get("LAND_INDEX_FILE") or os.path.join(ROOT, "tools", "data", "land_index.json")
+
+def land_index():
+    return json.load(open(LAND_INDEX_FILE, encoding="utf-8")) if os.path.exists(LAND_INDEX_FILE) else None
+
+def land_index_js():
+    d = land_index()
+    head = "/* 생성 파일 — tools/data/land_index.json에서 build.py가 만든다. 손으로 고치지 말 것 */\n"
+    if not d: return head + "window.LAND_INDEX = null;\n"
+    m = d["meta"]
+    data = {"source": m["source"], "base": m["base"], "latest": m["latest"], "latestYear": m.get("latest_year"), "latestMonth": m.get("latest_month"),
+            "cpi": d.get("cpi"), "regions": {r["key"]: r["series"] for r in d["regions"]}}
+    return head + "window.LAND_INDEX = " + json.dumps(data, ensure_ascii=False, separators=(",", ":"), sort_keys=True) + ";\n"
+
+def _region_select():
+    d = land_index()
+    if not d:
+        return '''              <div class="field">
+                <label for="region">지역</label>
+                <select id="region" disabled><option value="">지역 자료 준비 중</option></select>
+              </div>'''
+    opts, group = ['<option value="">지역을 고르세요</option>'], None
+    for r in d["regions"]:
+        if r["sido"] != group:
+            if group: opts.append("</optgroup>")
+            group = r["sido"]
+            if group: opts.append(f'<optgroup label="{group}">')
+        opts.append(f'<option value="{r["key"]}">{r["key"]}</option>')   # 고른 뒤에도 시·도가 보이게 전체 이름으로
+    if group: opts.append("</optgroup>")
+    return f'''              <div class="field">
+                <label for="region">지역</label>
+                <select id="region">{"".join(opts)}</select>
+                <p class="field-help">{d["meta"]["source"]}. 시·군·구 평균이라 내 땅의 공시지가 배수와는 다를 수 있습니다</p>
+              </div>'''
+
+# 「그때 그 땅값」 쇼츠에서 넘어오는 사람용. 예시는 특정 동네처럼 보이지 않는 값(100만원 → 2,000만원, 1990→2026).
+def land_multiple_page():
+    path = "land-multiple.html"
+    faq = [
+        ("지역 고르기는 무엇으로 계산하나요?", ["한국부동산원이 매달 조사해 내는 시·군·구별 지가지수입니다. 지역 안의 표본 땅값 변동을 평균한 지수라, 같은 지역이라도 내 땅의 공시지가가 몇 배가 됐는지와는 다를 수 있습니다.",
+                                               "해마다 12월 지수로 비교하고, 올해는 가장 최근 달 지수를 씁니다. 내 땅을 정확히 보려면 「공시지가 직접 입력」에 그 땅의 개별공시지가를 넣으세요."]),
+        ("공시지가는 어디서 찾나요?", ["부동산 공시가격 알리미(realtyprice.kr)에서 개별공시지가를 고르고 땅의 주소(지번)를 넣으면 연도별 공시지가가 나옵니다. 1㎡당 금액이니 그대로 넣으면 됩니다.", "개별공시지가는 1990년부터 있습니다. 오래된 연도가 안 보이면 땅이 있는 시·군·구청에 문의하세요."]),
+        ("공시지가와 시세는 왜 다른가요?", ["공시지가는 정부가 해마다 1월 1일 기준으로 정해 세금과 부담금의 기준으로 쓰는 가격입니다. 실제 거래 가격(시세)을 얼마나 반영하는지(현실화율)가 해마다, 지역마다 달라 공시지가 배수와 시세 배수는 다를 수 있습니다."]),
+        ("개별공시지가와 표준지공시지가는 뭐가 다른가요?", ["표준지공시지가는 국토교통부가 전국에서 대표로 고른 땅에 매기는 가격이고, 개별공시지가는 그 표준지를 바탕으로 시·군·구가 모든 필지에 매기는 가격입니다. 내 땅의 값을 보려면 개별공시지가를 쓰세요."]),
+        ("평당 가격은 어떻게 환산하나요?", ["1평은 400/121㎡, 약 3.3058㎡입니다. 1㎡당 공시지가에 3.3058을 곱하면 평당 공시지가입니다. 넓이 환산은 <a href='area.html'>평수 변환기</a>에서도 할 수 있습니다."]),
+        ("물가 비교는 무엇을 기준으로 하나요?", ["통계청 소비자물가지수 연간 총지수(2020=100)입니다. 같은 기간 물가가 몇 배 올랐는지 구하고, 땅값 배수를 그 값으로 나눠 물가를 뺀 배수를 보여 줍니다. 1990~2025년 연간값이 있고, 올해 연간값은 다음 해 1월에 나옵니다."]),
+        ("영상이나 기사에서 본 배수와 왜 다른가요?", ["영상·기사는 대개 특정 땅 한 필지의 공시지가를 비교하고, 지역 고르기는 그 지역 땅값의 평균 변동(지가지수)을 씁니다. 개발로 쓰임새가 바뀐 땅은 지역 평균보다 훨씬 크게 오르고, 공시지가는 시세를 반영하는 비율도 해마다 달라 왔기 때문에 같은 동네라도 두 숫자가 크게 다를 수 있습니다.",
+                                                   "어느 해부터 비교하느냐도 큰 차이를 냅니다. 1980년대 말에는 땅값이 짧은 기간에 크게 올라, 같은 지역도 1987년부터 보느냐 1990년부터 보느냐에 따라 배수가 몇 배씩 달라집니다."]),
+    ]
+    left = form_open([("ex", "예시: 100만 → 2,000만"), ("clear", "지우기")]) + \
+        seg("mode", "계산 방식", [("region", "지역 고르기"), ("direct", "공시지가 직접 입력")]) + \
+        '\n            <div id="region-fields">\n' + _region_select() + '\n            </div>\n            <div id="direct-fields" hidden>\n' + \
+        money("priceThen", "그때 공시지가 (1㎡당)", "1,000,000", unit="원/㎡", help_="부동산 공시가격 알리미의 개별공시지가") + \
+        money("priceNow", "지금 공시지가 (1㎡당)", "20,000,000", unit="원/㎡") + \
+        num("area", "면적 (선택)", "", "", step="0.01", help_="넣으면 땅 전체 공시가격이 얼마에서 얼마로 바뀌었는지 보여 줍니다") + \
+        seg("areaUnit", "면적 단위", [("m2", "㎡"), ("py", "평")]) + '\n            </div>\n' + \
+        num("yearThen", "그때 연도", "1990", "년", step="1", min_="1987", max_="2026") + num("yearNow", "지금 연도", "2026", "년", step="1", min_="1987", max_="2026") + \
+        form_close("몇 배인지 계산")
+    right = result_hero("땅값 지수가 몇 배가 됐나", "out-big", "배", [("연평균 상승률", "out-cagr", "%"), ("기간", "out-years", ""),
+                                                     ('<span id="out-s3-label">지금 지가지수</span>', "out-s3", '<span id="out-s3-unit"></span>')], kicker_id="out-kicker") + \
+        f'''
+        <section class="card">
+          <h2>계산 내역</h2>
+          <div class="table-wrap"><table class="tbl"><tbody id="region-rows">
+            <tr><th scope="row">지역</th><td><span id="out-region-name">—</span></td></tr>
+            <tr><th scope="row">그때 지가지수</th><td><span id="out-idx-then">—</span></td></tr>
+            <tr><th scope="row">지금 지가지수</th><td><span id="out-idx-now">—</span></td></tr>
+            <tr><th scope="row">지수 기준</th><td><span id="out-idx-base">—</span></td></tr>
+          </tbody><tbody id="direct-rows" hidden>
+            <tr><th scope="row">그때 1㎡당</th><td><span id="out-then-m2">0</span>원</td></tr>
+            <tr><th scope="row">그때 평당</th><td><span id="out-then-py">0</span>원</td></tr>
+            <tr><th scope="row">지금 1㎡당</th><td><span id="out-now-m2">0</span>원</td></tr>
+            <tr><th scope="row">지금 평당</th><td><span id="out-now-py">0</span>원</td></tr>
+          </tbody><tbody id="area-rows" hidden>
+            <tr><th scope="row">면적</th><td><span id="out-area-m2">0</span>㎡</td></tr>
+            <tr><th scope="row">땅 전체: 그때</th><td><span id="out-total-then">0</span>원</td></tr>
+            <tr><th scope="row">땅 전체: 지금</th><td><span id="out-total-now">0</span>원</td></tr>
+            <tr><th scope="row">늘어난 금액</th><td><span id="out-total-diff">0</span>원</td></tr>
+          </tbody><tbody>
+            <tr><th scope="row">같은 기간 물가</th><td><span id="out-cpi">—</span></td></tr>
+            <tr class="total"><th scope="row">물가를 뺀 배수</th><td><span id="out-real">—</span></td></tr>
+          </tbody></table></div>
+          <p class="result-note" id="out-cpi-note"></p>
+          <p class="result-note"><span id="rules-date"></span>. 본 계산기는 참고용이며 금융·세무·법률 자문이 아닙니다.</p>
+        </section>'''
+    guide = prose_section("계산 방법과 공시지가 찾는 법", [
+        "<p>두 가지로 계산할 수 있습니다. <strong>지역 고르기</strong>는 한국부동산원 시·군·구별 지가지수(지역 평균)로, <strong>공시지가 직접 입력</strong>은 같은 땅의 개별공시지가로 비교합니다. 공시지가는 시세가 아닙니다.</p>",
+        "<ul><li><strong>몇 배</strong> = 지금 값 ÷ 그때 값 (지가지수 또는 공시지가)</li><li><strong>연평균 상승률</strong> = 몇 배 ^ (1 ÷ 기간) − 1. 해마다 같은 비율로 올랐다고 볼 때의 비율입니다</li><li><strong>평당 공시지가</strong> = 1㎡당 공시지가 × 3.3058</li><li><strong>물가를 뺀 배수</strong> = 몇 배 ÷ 같은 기간 소비자물가 배수</li></ul>",
+        "<p>예를 들어 1990년 1㎡당 100만원이던 땅이 2026년 2,000만원이면 36년 동안 20배, 연평균 약 8.7%씩 오른 셈입니다. 같은 20배라도 20년 만이면 연평균 약 16.2%입니다. 기간이 길수록 같은 배수의 연평균 상승률은 낮아집니다.</p>",
+        "<h3>공시지가 찾는 법</h3>",
+        "<ol><li>부동산 공시가격 알리미(realtyprice.kr)에 들어갑니다</li><li>개별공시지가를 고르고 땅의 주소(지번)를 넣습니다</li><li>연도별 공시지가(1㎡당)가 나오면 비교할 두 해의 값을 계산기에 넣습니다</li></ol>",
+        "<h3>알아둘 것</h3>",
+        "<ul><li>공시지가는 시세를 반영하는 비율(현실화율)이 해마다, 지역마다 달라 공시지가 배수와 실제 땅값 배수는 다를 수 있습니다</li><li>땅이 나뉘거나 합쳐졌거나 지목·용도지역이 바뀌었다면 같은 땅으로 비교하기 어렵습니다</li><li>세금, 거래 비용, 그동안의 보유 비용은 반영하지 않습니다</li><li>물가 비교는 통계청 소비자물가지수 연간 총지수(2020=100)를 씁니다(1990~2025년)</li></ul>",
+        "<h3>지역 지수와 내 땅의 공시지가 배수</h3>",
+        "<p>지역 고르기로 보면 1990년부터 2026년 9월까지 전국 지가지수는 1.93배, 서울 강남구는 2.53배입니다. 특정 땅의 공시지가는 같은 기간 이보다 훨씬 크게 오른 경우가 많습니다. 지가지수는 지역 안 여러 땅의 평균 변동이고, 논밭이 도시로 바뀐 땅처럼 개발된 곳은 평균보다 크게 오르며, 공시지가는 시세를 반영하는 비율도 해마다 달라 왔기 때문입니다.</p>",
+        "<p>출발 연도도 숫자를 크게 바꿉니다. 서울 강남구를 1987년부터 보면 7.04배인데, 1990년부터 보면 2.53배입니다. 1987~1990년 사이 땅값이 짧은 기간에 크게 올랐기 때문입니다. 어느 숫자가 맞다기보다 무엇을 기준으로 언제부터 셌는지가 다릅니다.</p>",
+        "<p>본 계산기는 참고용이며 금융·세무·법률 자문이 아닙니다. 특정 지역이나 투자를 권하지 않습니다.</p>",
+    ])
+    main = hero("Land · Price Index", "땅값 몇 배 계산기", "우리 동네 땅값은 그때보다 몇 배가 됐나",
+                "지역과 연도를 고르면 한국부동산원 지가지수로 그 지역 땅값이 몇 배가 됐는지와 연평균 상승률을 계산합니다. 내 땅의 개별공시지가(1㎡당)를 직접 넣으면 같은 땅의 공시지가 배수와 평당 가격, 면적별 총액 변화도 볼 수 있습니다. 지역 지수는 평균이고, 공시지가는 시세가 아닙니다.") + \
+        layout(left, right) + INLINE_AD + guide + faq_section(faq) + related(path)
+    return main, head_for(path, faq)
+
 TOOLS4_PAGES = {
     "year-end-tax.html": (year_end_tax_page, "js/year-end-tax.js", "예상 환급액"),
     "registration-cost.html": (registration_cost_page, "js/registration-cost.js", "등기비용 합계"),
@@ -268,4 +374,5 @@ TOOLS4_PAGES = {
     "annual-leave.html": (annual_leave_page, "js/annual-leave.js", "지금 연차"),
     "rental-income-tax.html": (rental_income_tax_page, "js/rental-income-tax.js", "임대소득세"),
     "income-tax.html": (income_tax_page, "js/income-tax.js", "종합소득세"),
+    "land-multiple.html": (land_multiple_page, ["js/land-index-data.js", "js/land-multiple.js"], "몇 배"),
 }

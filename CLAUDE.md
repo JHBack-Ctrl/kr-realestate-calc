@@ -12,14 +12,14 @@
 python3 tools/build/build.py
 ```
 
-등록부에서 153쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
+등록부에서 154쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
 같은 소스로 두 번 돌리면 결과가 같아야 합니다(멱등). 달라지면 버그입니다.
 
 - `site_core.py` — 등록부(TOOLS, TABLES, FORMS, REFS, GUIDES, HUBS, RATE_HISTORY)와 공통 틀.
   메뉴·사이트맵·홈 타일이 전부 여기서 나옵니다
 - `pages_new.py` / `pages_cgt.py` / `pages_tools2.py` / `pages_tax.py` / `pages_tools3.py` / `pages_tools4.py` — 계산기 본문
   (`pages_tax.py`는 재산세·종부세·증여세, `pages_tools3.py`는 상속세·전세대출·예적금·실업급여·시급,
-  `pages_tools4.py`는 연말정산·등기비용·연금저축IRP·육아휴직·연차·주택임대소득세·종합소득세)
+  `pages_tools4.py`는 연말정산·등기비용·연금저축IRP·육아휴직·연차·주택임대소득세·종합소득세·땅값 몇 배)
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽, 안내 글 4편
 - `pages_guides2.py` — 안내 글 54편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
@@ -41,8 +41,8 @@ python3 tools/build/build.py
 
 ### 검색 제외 (noindex)
 
-153쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
-검색 대상은 140쪽입니다(2026-10-31). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
+154쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
+검색 대상은 141쪽입니다(2026-11-02). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
 
 - 용어 9쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
 - 용어 39쪽 중 30쪽은 1,000자 이상으로 늘려 검색에 되돌렸습니다: 대항력·확정일자·전세가율·DSR·LTV,
@@ -62,7 +62,7 @@ python3 tools/build/build.py
 ## 배포
 
 main에 머지하면 `.github/workflows/pages.yml`이 GitHub Pages로 올립니다.
-이때 `tools/`, `CLAUDE.md`, `README.md`는 빼고 올립니다. 저장소에는 그대로 있으니
+이때 `tools/`, `CLAUDE.md`, `README.md`, `.gitignore`는 빼고 올립니다. 저장소에는 그대로 있으니
 빌드·수정에는 영향이 없고, 사이트 주소로 개발 문서를 열 수만 없게 한 것입니다.
 사이트에 새로 개발용 파일을 두게 되면 이 워크플로의 제외 목록에도 넣으세요.
 
@@ -219,6 +219,14 @@ https://전국부동산계산기.com/guide-prepayment.html
   계산기 본문의 「334만원 이하면 하한, 344만원 이상이면 상한」 문장과 예시 숫자, 안내 글 `guide-unemployment-floor.html`(표·날수별 총액·
   조기재취업수당 예시·「2027년에 바뀔 것」 절)도 다시 뽑을 것
 - `js/savings.js`(이자소득세 15.4%)와 `js/jeonse-loan.js`(주택임차차입금 소득공제 40%·400만원)는 거의 안 바뀜
+- **땅값 몇 배 계산기 자료**(한국부동산원 지가지수 + 통계청 소비자물가지수) — 원자료는 `tools/data/raw/`(받은 그대로),
+  `python3 tools/data/convert_land_index.py`가 `tools/data/land_index.json`으로 정리하고, 빌드가 `js/land-index-data.js`와 지역 목록을 만든다.
+  해마다 1월(또는 최신 달을 더할 때) R-ONE 연간·월별 지가지수와 KOSIS 소비자물가지수(연간)를 다시 받아 raw/를 바꾸고 변환 → 빌드 → verify 기대값 확인.
+  연도 값은 12월 지수, 올해는 최신 달 지수(기간을 「35년 9개월」처럼 달 단위로 계산).
+  - 2026-11에 받은 **연간 표는 경북(의성군부터)·경남·제주에서 지역 이름과 숫자가 한 줄씩 어긋나 있었다.** 변환 스크립트가 2005년 이후 값으로
+    맞는 줄을 찾아 쓰고, 짝이 없는 울릉군·합천군은 2005년부터만 넣는다. 새로 받은 파일에서도 변환 결과 출력(바로잡은 지역 수)을 확인할 것
+  - 기준 시점: 지가지수 2026년 6월=100(파일 안에 없어 스크립트의 `BASE`에 적음), 물가 2020=100. KOSIS가 2026-12-18에 2025=100으로 바꿀 예정 — 배수는 같지만 표기를 고칠 것
+  - 시안 화면을 볼 때만 `LAND_INDEX_FILE=<가짜 자료 경로> python3 tools/build/build.py`로 빌드하고, 그 뒤 반드시 그냥 다시 빌드할 것
 - `js/parental-leave.js` — 육아휴직 급여 상한(250·200·160만원, 6+6 단계별 상한). 고용보험법 시행령이 바뀌면 안내 글 `guide-parental-leave-pay.html`도
 - `js/pension-tax-credit.js`(600·900만원, 15·12%), `js/annual-leave.js`(근로기준법 60조)는 거의 안 바뀜
 
