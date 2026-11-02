@@ -264,31 +264,40 @@ def income_tax_page():
 # 지역 지가지수(한국부동산원)는 tools/data/land_index.json에 정리해 두고, 빌드가 지역 목록(select)과 js/land-index-data.js를 만든다.
 # 자료가 없으면 지역 고르기는 「자료 준비 중」으로 나오고 공시지가 직접 입력만 쓸 수 있다.
 LAND_INDEX_FILE = os.environ.get("LAND_INDEX_FILE") or os.path.join(ROOT, "tools", "data", "land_index.json")
+# 아파트값 몇 배: 한국부동산원 아파트 매매가격지수(tools/data/apt_index.json → js/apt-index-data.js). 시안을 볼 때만 APT_INDEX_FILE로 가짜 자료
+APT_INDEX_FILE = os.environ.get("APT_INDEX_FILE") or os.path.join(ROOT, "tools", "data", "apt_index.json")
 
-def land_index():
-    return json.load(open(LAND_INDEX_FILE, encoding="utf-8")) if os.path.exists(LAND_INDEX_FILE) else None
+def _load_index(path):
+    return json.load(open(path, encoding="utf-8")) if os.path.exists(path) else None
 
-def land_index_js():
-    d = land_index()
-    head = "/* 생성 파일 — tools/data/land_index.json에서 build.py가 만든다. 손으로 고치지 말 것 */\n"
-    if not d: return head + "window.LAND_INDEX = null;\n"
+def land_index(): return _load_index(LAND_INDEX_FILE)
+def apt_index(): return _load_index(APT_INDEX_FILE)
+
+def _index_js(d, var, src):
+    head = f"/* 생성 파일 — tools/data/{src}에서 build.py가 만든다. 손으로 고치지 말 것 */\n"
+    if not d: return head + f"window.{var} = null;\n"
     m = d["meta"]
     data = {"source": m["source"], "base": m["base"], "latest": m["latest"], "latestYear": m.get("latest_year"), "latestMonth": m.get("latest_month"),
             "cpi": d.get("cpi"), "regions": {r["key"]: r["series"] for r in d["regions"]}}
-    return head + "window.LAND_INDEX = " + json.dumps(data, ensure_ascii=False, separators=(",", ":"), sort_keys=True) + ";\n"
+    if any("avg" in r for r in d["regions"]):     # 지역 평균 매매가(원). 아파트만 있다 — 지역을 고르면 「지금 시세」에 넣어 둔다
+        data["avg"] = {r["key"]: r["avg"] for r in d["regions"] if r.get("avg")}
+        data["avgLabel"] = m.get("avg_label", "")
+    return head + f"window.{var} = " + json.dumps(data, ensure_ascii=False, separators=(",", ":"), sort_keys=True) + ";\n"
 
-def _year_options():
-    """연도 드롭다운의 처음 목록(전체 연도). 지역을 고르면 js가 그 지역 자료가 있는 해로 줄인다."""
-    d = land_index()
-    if d:
-        first = min(int(y) for r in d["regions"] for y in r["series"])
-        last = d["meta"]["latest_year"]
-    else:
-        first, last = 1987, 2026
+def land_index_js(): return _index_js(land_index(), "LAND_INDEX", "land_index.json")
+def apt_index_js(): return _index_js(apt_index(), "APT_INDEX", "apt_index.json")
+
+def _year_options(d=None, first=None, fallback_first=1987):
+    """연도 드롭다운의 처음 목록(전체 연도). 지역을 고르면 js가 그 지역 자료가 있는 해로 줄인다.
+    first를 주면 자료와 상관없이 그해부터(직접 입력에서 자료보다 이른 해도 고를 수 있게)."""
+    if d is None: d = land_index()
+    if first is None:
+        first = min(int(y) for r in d["regions"] for y in r["series"]) if d else fallback_first
+    last = d["meta"]["latest_year"] if d else 2026
     return [(str(y), f"{y}년") for y in range(first, last + 1)]
 
-def _region_select():
-    d = land_index()
+def _region_select(d=None, help_="시·군·구 평균이라 내 땅의 공시지가 배수와는 다를 수 있습니다"):
+    if d is None: d = land_index()
     if not d:
         return '''              <div class="field">
                 <label for="region">지역</label>
@@ -305,7 +314,7 @@ def _region_select():
     return f'''              <div class="field">
                 <label for="region">지역</label>
                 <select id="region">{"".join(opts)}</select>
-                <p class="field-help">{d["meta"]["source"]}. 시·군·구 평균이라 내 땅의 공시지가 배수와는 다를 수 있습니다</p>
+                <p class="field-help">{d["meta"]["source"]}. {help_}</p>
               </div>'''
 
 # 「그때 그 땅값」 쇼츠에서 넘어오는 사람용. 예시는 특정 동네처럼 보이지 않는 값(100만원 → 2,000만원, 1990→2026).
@@ -379,10 +388,83 @@ def land_multiple_page():
         "<h3>지역 지수와 내 땅의 공시지가 배수</h3>",
         "<p>지역 고르기로 보면 1990년부터 2026년 9월까지 전국 지가지수는 1.93배, 서울 강남구는 2.53배입니다. 특정 땅의 공시지가는 같은 기간 이보다 훨씬 크게 오른 경우가 많습니다. 지가지수는 지역 안 여러 땅의 평균 변동이고, 논밭이 도시로 바뀐 땅처럼 개발된 곳은 평균보다 크게 오르며, 공시지가는 시세를 반영하는 비율도 해마다 달라 왔기 때문입니다.</p>",
         "<p>출발 연도도 숫자를 크게 바꿉니다. 서울 강남구를 1987년부터 보면 7.04배인데, 1990년부터 보면 2.53배입니다. 1987~1990년 사이 땅값이 짧은 기간에 크게 올랐기 때문입니다. 어느 숫자가 맞다기보다 무엇을 기준으로 언제부터 셌는지가 다릅니다.</p>",
+        "<p>아파트값은 <a href='apartment-multiple.html'>아파트값 몇 배 계산기</a>에서 지역 아파트 매매가격지수나 산 가격과 지금 시세로 따로 볼 수 있습니다.</p>",
         "<p>본 계산기는 참고용이며 금융·세무·법률 자문이 아닙니다. 특정 지역이나 투자를 권하지 않습니다.</p>",
     ])
     main = hero("Land · Price Index", "땅값 몇 배 계산기", "우리 동네 땅값은 그때보다 몇 배가 됐나",
                 "지역과 연도를 고르면 한국부동산원 지가지수로 그 지역 땅값이 몇 배가 됐는지와 연평균 상승률을 계산합니다. 내 땅의 개별공시지가(1㎡당)를 직접 넣으면 같은 땅의 공시지가 배수와 평당 가격, 면적별 총액 변화도 볼 수 있습니다. 지역 지수는 평균이고, 공시지가는 시세가 아닙니다.") + \
+        layout(left, right) + INLINE_AD + guide + faq_section(faq) + related(path)
+    return main, head_for(path, faq)
+
+# ============================================================ 아파트값 몇 배 (8차, 2026-11)
+# 땅값 몇 배의 짝. 지역 고르기는 한국부동산원 시·군·구별 아파트 매매가격지수(월간, 12월 값), 직접 입력은 그때 산 가격과 지금 시세.
+# 직접 입력에서 지역을 고르면 같은 기간 지역 평균 배수와 나란히 보여 준다. 직접 입력은 지수 자료보다 이른 해도 고를 수 있다.
+APT_DIRECT_FIRST = 1986
+
+def apartment_multiple_page():
+    path = "apartment-multiple.html"
+    d = apt_index()
+    faq = [
+        ("지역 고르기는 무엇으로 계산하나요?", ["한국부동산원 전국주택가격동향조사의 시·군·구별 아파트 매매가격지수(월간)입니다. 지역 안 표본 아파트들의 시세 변동을 평균한 지수라, 같은 지역이라도 우리 아파트가 몇 배가 됐는지와는 다를 수 있습니다.",
+                                               "해마다 12월 지수로 비교하고, 올해는 가장 최근 달 지수를 씁니다. 우리 집을 정확히 보려면 「매매가 직접 입력」에 산 가격과 지금 시세를 넣으세요."]),
+        ("지금 시세를 넣으면 그때 시세는 어떻게 나오나요?", ["매매가격지수는 가격이 아니라 변동 비율이라, 지수만으로는 아파트가 얼마였는지 알 수 없습니다. 「지금 시세」를 넣으면 지금 시세 × (그때 지수 ÷ 지금 지수)로 그때 시세를 거꾸로 추정합니다.",
+                                                         "지역을 고르면 「지금 시세」에 한국부동산원이 조사한 그 지역 아파트 평균 매매가를 먼저 넣어 둡니다. 이때 결과는 그 지역 평균 아파트가 얼마에서 얼마로 올랐는지에 대한 추정이고, 우리 집 시세로 바꿔 넣으면 우리 집 기준으로 다시 계산합니다.",
+                                                         "지역 평균 변동을 적용한 추정이라, 그 단지의 실제 그때 거래가와는 다를 수 있습니다. 실제 거래가는 국토교통부 실거래가 공개시스템에서 단지별로 볼 수 있습니다(2006년부터)."]),
+        ("우리 아파트 배수가 지역 평균과 왜 다른가요?", ["단지의 입지, 면적, 층, 재건축 기대감 같은 사정에 따라 같은 지역 안에서도 오른 정도가 크게 다릅니다. 지역 지수는 그 차이를 평균한 값이라, 평균보다 많이 오른 단지도 덜 오른 단지도 있습니다.",
+                                                      "「매매가 직접 입력」에서 지역을 함께 고르면 우리 집 배수와 같은 기간 지역 평균 배수를 나란히 볼 수 있습니다."]),
+        ("연평균 상승률은 무슨 뜻인가요?", ["몇 배를 기간으로 나눠, 해마다 같은 비율로 올랐다고 볼 때의 비율입니다. 같은 3배라도 10년 만이면 연평균 약 11.6%, 20년 만이면 약 5.6%입니다. 실제로는 오른 해와 내린 해가 섞여 있습니다."]),
+        ("물가 비교는 무엇을 기준으로 하나요?", ["통계청 소비자물가지수 연간 총지수(2020=100)입니다. 같은 기간 물가가 몇 배 올랐는지 구하고, 아파트값 배수를 그 값으로 나눠 물가를 뺀 배수를 보여 줍니다. 1990~2025년 연간값이 있고, 올해 연간값은 다음 해 1월에 나옵니다."]),
+        ("세금이나 대출 이자도 반영하나요?", ["반영하지 않습니다. 사고팔 때의 취득세·양도소득세, 중개보수, 보유하는 동안의 재산세·대출 이자는 빠져 있어 실제로 손에 남는 돈과는 다릅니다. 팔 때 세금은 <a href='capital-gains-tax.html'>양도소득세 계산기</a>, 사는 것과 전월세를 비교하려면 <a href='buy-vs-rent.html'>매매 vs 전월세 계산기</a>를 쓰세요."]),
+    ]
+    left = form_open([("ex", "예시: 3억 → 9억"), ("clear", "지우기")]) + \
+        seg("mode", "계산 방식", [("region", "지역 고르기"), ("direct", "매매가 직접 입력")]) + '\n' + \
+        _region_select(d, "시·군·구 평균이라 우리 아파트 시세 변동과는 다를 수 있습니다. 매매가 직접 입력에서 고르면 같은 기간 지역 평균과 비교합니다") + \
+        '\n            <div id="region-fields">\n' + \
+        money("regionPrice", "지금 시세", "800,000,000", help_='<span id="region-price-help">지역을 고르면 그 지역 아파트 평균 매매가가 들어갑니다. 우리 집 시세로 바꿔 넣으면 지역 지수 비율로 그때 시세를 추정합니다</span>') + \
+        '\n            </div>\n            <div id="direct-fields" hidden>\n' + \
+        money("priceThen", "그때 산 가격", "300,000,000", help_="매매 계약서의 매매가격") + \
+        money("priceNow", "지금 시세", "900,000,000", help_="최근 같은 단지·같은 면적의 실거래가나 시세") + '\n            </div>\n' + \
+        select("yearThen", "그때 연도", _year_options(d, first=APT_DIRECT_FIRST)) + \
+        select("yearNow", "지금 연도", _year_options(d, first=APT_DIRECT_FIRST), help_="지역 고르기에서는 그 지역 자료가 있는 해만 나옵니다") + \
+        form_close("몇 배인지 계산")
+    right = result_hero("아파트값이 몇 배가 됐나", "out-big", "배", [("연평균 상승률", "out-cagr", "%"), ("기간", "out-years", ""),
+                                                    ('<span id="out-s3-label">지금 매매지수</span>', "out-s3", "")], kicker_id="out-kicker").replace('class="card result-hero"', 'class="card result-hero wide-s3"', 1) + \
+        '''
+        <section class="card">
+          <h2>계산 내역</h2>
+          <div class="table-wrap"><table class="tbl"><tbody id="region-rows">
+            <tr><th scope="row">지역</th><td><span id="out-region-name">—</span></td></tr>
+            <tr><th scope="row">그때 매매지수</th><td><span id="out-idx-then">—</span></td></tr>
+            <tr><th scope="row">지금 매매지수</th><td><span id="out-idx-now">—</span></td></tr>
+            <tr><th scope="row">지수 기준</th><td><span id="out-idx-base">—</span></td></tr>
+          </tbody><tbody id="region-price-rows" hidden>
+            <tr><th scope="row" id="out-rp-then-label">그때 시세 (추정)</th><td><span id="out-rp-then">—</span></td></tr>
+            <tr><th scope="row" id="out-rp-now-label">지금 시세</th><td><span id="out-rp-now">—</span></td></tr>
+            <tr><th scope="row">오른 금액</th><td><span id="out-rp-diff">—</span></td></tr>
+          </tbody><tbody id="direct-rows" hidden>
+            <tr><th scope="row">그때 산 가격</th><td><span id="out-then">—</span></td></tr>
+            <tr><th scope="row">지금 시세</th><td><span id="out-now">—</span></td></tr>
+            <tr><th scope="row">오른 금액</th><td><span id="out-diff">—</span></td></tr>
+            <tr id="cmp-row" hidden><th scope="row">같은 기간 지역 평균</th><td><span id="out-cmp">—</span></td></tr>
+          </tbody><tbody>
+            <tr><th scope="row">같은 기간 물가</th><td><span id="out-cpi">—</span></td></tr>
+            <tr class="total"><th scope="row">물가를 뺀 배수</th><td><span id="out-real">—</span></td></tr>
+          </tbody></table></div>
+          <p class="result-note" id="out-cmp-note" hidden></p>
+          <p class="result-note" id="out-cpi-note"></p>
+          <p class="result-note"><span id="rules-date"></span>. 본 계산기는 참고용이며 금융·세무·법률 자문이 아닙니다.</p>
+        </section>'''
+    guide = prose_section("계산 방법과 알아둘 것", [
+        "<p>두 가지로 계산할 수 있습니다. <strong>지역 고르기</strong>는 한국부동산원 시·군·구별 아파트 매매가격지수(지역 평균)로, <strong>매매가 직접 입력</strong>은 우리 집을 산 가격과 지금 시세로 비교합니다.</p>",
+        "<ul><li><strong>몇 배</strong> = 지금 값 ÷ 그때 값 (매매가격지수 또는 매매가)</li><li><strong>연평균 상승률</strong> = 몇 배 ^ (1 ÷ 기간) − 1. 해마다 같은 비율로 올랐다고 볼 때의 비율입니다</li><li><strong>그때 시세 (추정)</strong> = 지금 시세 × 그때 지수 ÷ 지금 지수</li><li><strong>물가를 뺀 배수</strong> = 몇 배 ÷ 같은 기간 소비자물가 배수</li></ul>",
+        "<p>예를 들어 2006년에 3억원에 산 아파트가 2026년 9억원이면 20년 동안 3배, 연평균 약 5.6%씩 오른 셈입니다. 같은 3배라도 10년 만이면 연평균 약 11.6%입니다. 기간이 길수록 같은 배수의 연평균 상승률은 낮아집니다.</p>",
+        "<h3>알아둘 것</h3>",
+        "<ul><li>지역 지수는 표본 아파트들의 평균 변동이라 단지마다 오른 정도가 다릅니다</li><li>오래된 아파트는 시간이 지나며 낡는 만큼의 변화도 시세에 섞여 있습니다. 같은 아파트를 오래 보유하면 새 아파트 시세와 다르게 움직일 수 있습니다</li><li>취득세·양도소득세·중개보수, 보유하는 동안의 재산세와 대출 이자는 반영하지 않습니다</li><li>물가 비교는 통계청 소비자물가지수 연간 총지수(2020=100)를 씁니다(1990~2025년)</li></ul>",
+        "<p>땅값은 <a href='land-multiple.html'>땅값 몇 배 계산기</a>에서 지역 지가지수나 개별공시지가로 따로 볼 수 있습니다.</p>",
+        "<p>본 계산기는 참고용이며 금융·세무·법률 자문이 아닙니다. 특정 지역·단지나 투자를 권하지 않습니다.</p>",
+    ])
+    main = hero("Apartment · Price Index", "아파트값 몇 배 계산기", "우리 동네 아파트값은 그때보다 몇 배가 됐나",
+                "지역과 연도를 고르면 한국부동산원 아파트 매매가격지수로 그 지역 아파트값이 몇 배가 됐는지와 연평균 상승률을 계산합니다. 지금 시세를 넣으면 그때 시세를 추정하고, 산 가격과 지금 시세를 직접 넣으면 우리 집 배수를 지역 평균과 나란히 비교합니다.") + \
         layout(left, right) + INLINE_AD + guide + faq_section(faq) + related(path)
     return main, head_for(path, faq)
 
@@ -394,5 +476,6 @@ TOOLS4_PAGES = {
     "annual-leave.html": (annual_leave_page, "js/annual-leave.js", "지금 연차"),
     "rental-income-tax.html": (rental_income_tax_page, "js/rental-income-tax.js", "임대소득세"),
     "income-tax.html": (income_tax_page, "js/income-tax.js", "종합소득세"),
-    "land-multiple.html": (land_multiple_page, ["js/land-index-data.js", "js/land-multiple.js"], "몇 배"),
+    "land-multiple.html": (land_multiple_page, ["js/land-index-data.js", "js/price-index.js", "js/land-multiple.js"], "몇 배"),
+    "apartment-multiple.html": (apartment_multiple_page, ["js/apt-index-data.js", "js/price-index.js", "js/apartment-multiple.js"], "몇 배"),
 }

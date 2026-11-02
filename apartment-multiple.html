@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>아파트값 몇 배 계산기 — 지역별 아파트 매매가격지수 상승 배수, 연평균 상승률</title>
+  <meta name="description" content="아파트값 몇 배 계산기. 지역과 연도를 고르면 한국부동산원 아파트 매매가격지수로 몇 배가 됐는지와 연평균 상승률을, 지금 시세를 넣으면 그때 시세 추정을, 산 가격을 넣으면 지역 평균과의 비교를 보여 줍니다.">
+  <meta name="theme-color" content="#f6f4ee">
+  <meta name="naver-site-verification" content="23a58d13ef990301f4ed06e8867ec8a3350cd4cb">
+  <meta name="google-adsense-account" content="ca-pub-8294238973326626">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="css/site.css?v=66f8bb7a">
+  <link rel="canonical" href="https://xn--989anm2s84p8on6teba611m.com/apartment-multiple.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.json">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="전국부동산계산기">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="아파트값 몇 배 계산기 — 지역별 아파트 매매가격지수 상승 배수, 연평균 상승률">
+  <meta property="og:description" content="아파트값 몇 배 계산기. 지역과 연도를 고르면 한국부동산원 아파트 매매가격지수로 몇 배가 됐는지와 연평균 상승률을, 지금 시세를 넣으면 그때 시세 추정을, 산 가격을 넣으면 지역 평균과의 비교를 보여 줍니다.">
+  <meta property="og:url" content="https://xn--989anm2s84p8on6teba611m.com/apartment-multiple.html">
+  <meta property="og:image" content="https://xn--989anm2s84p8on6teba611m.com/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="아파트값 몇 배 계산기 — 지역별 아파트 매매가격지수 상승 배수, 연평균 상승률">
+  <meta name="twitter:description" content="아파트값 몇 배 계산기. 지역과 연도를 고르면 한국부동산원 아파트 매매가격지수로 몇 배가 됐는지와 연평균 상승률을, 지금 시세를 넣으면 그때 시세 추정을, 산 가격을 넣으면 지역 평균과의 비교를 보여 줍니다.">
+  <meta name="twitter:image" content="https://xn--989anm2s84p8on6teba611m.com/og.png">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "아파트값 몇 배 계산기",
+  "url": "https://xn--989anm2s84p8on6teba611m.com/apartment-multiple.html",
+  "description": "아파트값 몇 배 계산기. 지역과 연도를 고르면 한국부동산원 아파트 매매가격지수로 몇 배가 됐는지와 연평균 상승률을, 지금 시세를 넣으면 그때 시세 추정을, 산 가격을 넣으면 지역 평균과의 비교를 보여 줍니다.",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "All",
+  "inLanguage": "ko-KR",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "KRW"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "전국부동산계산기",
+    "url": "https://xn--989anm2s84p8on6teba611m.com/"
+  }
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "지역 고르기는 무엇으로 계산하나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "한국부동산원 전국주택가격동향조사의 시·군·구별 아파트 매매가격지수(월간)입니다. 지역 안 표본 아파트들의 시세 변동을 평균한 지수라, 같은 지역이라도 우리 아파트가 몇 배가 됐는지와는 다를 수 있습니다. 해마다 12월 지수로 비교하고, 올해는 가장 최근 달 지수를 씁니다. 우리 집을 정확히 보려면 「매매가 직접 입력」에 산 가격과 지금 시세를 넣으세요."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "지금 시세를 넣으면 그때 시세는 어떻게 나오나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "매매가격지수는 가격이 아니라 변동 비율이라, 지수만으로는 아파트가 얼마였는지 알 수 없습니다. 「지금 시세」를 넣으면 지금 시세 × (그때 지수 ÷ 지금 지수)로 그때 시세를 거꾸로 추정합니다. 지역을 고르면 「지금 시세」에 한국부동산원이 조사한 그 지역 아파트 평균 매매가를 먼저 넣어 둡니다. 이때 결과는 그 지역 평균 아파트가 얼마에서 얼마로 올랐는지에 대한 추정이고, 우리 집 시세로 바꿔 넣으면 우리 집 기준으로 다시 계산합니다. 지역 평균 변동을 적용한 추정이라, 그 단지의 실제 그때 거래가와는 다를 수 있습니다. 실제 거래가는 국토교통부 실거래가 공개시스템에서 단지별로 볼 수 있습니다(2006년부터)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "우리 아파트 배수가 지역 평균과 왜 다른가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "단지의 입지, 면적, 층, 재건축 기대감 같은 사정에 따라 같은 지역 안에서도 오른 정도가 크게 다릅니다. 지역 지수는 그 차이를 평균한 값이라, 평균보다 많이 오른 단지도 덜 오른 단지도 있습니다. 「매매가 직접 입력」에서 지역을 함께 고르면 우리 집 배수와 같은 기간 지역 평균 배수를 나란히 볼 수 있습니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "연평균 상승률은 무슨 뜻인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "몇 배를 기간으로 나눠, 해마다 같은 비율로 올랐다고 볼 때의 비율입니다. 같은 3배라도 10년 만이면 연평균 약 11.6%, 20년 만이면 약 5.6%입니다. 실제로는 오른 해와 내린 해가 섞여 있습니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "물가 비교는 무엇을 기준으로 하나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "통계청 소비자물가지수 연간 총지수(2020=100)입니다. 같은 기간 물가가 몇 배 올랐는지 구하고, 아파트값 배수를 그 값으로 나눠 물가를 뺀 배수를 보여 줍니다. 1990~2025년 연간값이 있고, 올해 연간값은 다음 해 1월에 나옵니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "세금이나 대출 이자도 반영하나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "반영하지 않습니다. 사고팔 때의 취득세·양도소득세, 중개보수, 보유하는 동안의 재산세·대출 이자는 빠져 있어 실제로 손에 남는 돈과는 다릅니다. 팔 때 세금은 양도소득세 계산기, 사는 것과 전월세를 비교하려면 매매 vs 전월세 계산기를 쓰세요."
+      }
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "전국부동산계산기",
+      "item": "https://xn--989anm2s84p8on6teba611m.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "아파트값 몇 배",
+      "item": "https://xn--989anm2s84p8on6teba611m.com/apartment-multiple.html"
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="header-row">
+        <a class="brand" href="./" aria-label="전국부동산계산기 홈"><span class="brand-mark" aria-hidden="true"></span>전국부동산계산기</a>
+        <div class="header-actions">
+          <button type="button" id="theme-toggle" class="icon-btn" aria-pressed="false" aria-label="어두운 화면으로 전환"><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+          <button type="button" id="menu-toggle" class="icon-btn" aria-expanded="false" aria-controls="menu-panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span class="btn-label">전체 계산기</span></button>
+        </div>
+      </div>
+      <nav aria-label="빠른 메뉴">
+        <ul class="tool-nav"><li><a href="index.html">홈</a></li><li><a href="rent.html">월세</a></li><li><a href="loan.html">대출이자</a></li><li><a href="acquisition-tax.html">취득세</a></li><li><a href="capital-gains-tax.html">양도세</a></li><li><a href="salary.html">연봉</a></li><li><a href="subscription.html">청약</a></li><li><a href="tables.html">표·자료</a></li><li><a href="forms.html">서식·용어</a></li><li><a href="refs.html">참고 자료</a></li><li><a href="guides.html">안내 글</a></li></ul>
+      </nav>
+    </div>
+      <div id="menu-panel" class="menu-panel" hidden>
+        <div class="container">
+          <div class="menu-groups">
+            <div class="menu-group"><h3>임대</h3><ul><li><a href="rent.html">월세 실부담<small>관리비와 보증금 기회비용까지 더한 진짜 월 지출</small></a></li><li><a href="conversion.html">전월세 전환율<small>법정 전환율로 전세를 월세로, 월세를 전세로</small></a></li><li><a href="rent-tax-credit.html">월세 세액공제<small>연말정산에서 돌려받는 월세 세액공제액</small></a></li><li><a href="fee.html">중개보수<small>법정 상한 요율 기준 예상 최대 중개보수</small></a></li><li><a href="renewal.html">계약 갱신 청구권<small>갱신 요구 기간 D-day와 5% 인상 상한</small></a></li><li><a href="jeonse-insurance.html">전세보증보험 자가진단<small>HUG 요건별 판정과 가능 보증금 상한</small></a></li><li><a href="jeonse-fraud-check.html">전세 사기 위험 체크<small>전세가율과 위험 신호 점수로 계약 전 점검</small></a></li><li><a href="moving.html">이사 체크리스트<small>이사일 기준 단계별 할 일과 법정 기한</small></a></li><li><a href="rental-income-tax.html">주택임대소득세<small>월세·보증금으로 보는 임대소득세</small></a></li></ul></div><div class="menu-group"><h3>대출</h3><ul><li><a href="loan.html">대출이자<small>상환 방식별 월 상환액과 회차별 상환표</small></a></li><li><a href="dsr.html">DSR·LTV 한도<small>연소득과 담보로 보는 대출 가능 금액</small></a></li><li><a href="prepayment.html">중도상환수수료<small>잔여일수 비율로 계산한 수수료와 면제일</small></a></li><li><a href="rate-compare.html">고정 vs 변동금리<small>금리가 얼마나 올라야 고정이 유리한지</small></a></li><li><a href="jeonse-loan.html">전세자금대출 이자<small>보증금 80% 대출의 월 이자와 월 주거비</small></a></li></ul></div><div class="menu-group"><h3>매매·투자</h3><ul><li><a href="acquisition-tax.html">취득세<small>취득세·지방교육세·농특세 참고용 추정</small></a></li><li><a href="capital-gains-tax.html">양도소득세<small>비과세·장특공제·중과까지 반영한 참고용 추정</small></a></li><li><a href="yield.html">상가 수익률<small>공실과 대출을 반영한 총투자·자기자본 수익률</small></a></li><li><a href="subscription.html">청약 가점<small>무주택기간·부양가족·통장기간 84점 만점</small></a></li><li><a href="area.html">평수 변환<small>평 ↔ ㎡ 변환과 평당 가격</small></a></li><li><a href="buy-vs-rent.html">매매 vs 전세<small>보유기간 총비용과 손익분기 집값 상승률</small></a></li><li><a href="tax-calendar.html">세금 달력<small>취득·양도·보유 세금 기한을 D-day로</small></a></li><li><a href="property-tax.html">재산세<small>공시가격으로 보는 7월·9월 재산세</small></a></li><li><a href="comprehensive-property-tax.html">종합부동산세<small>공시가격 합계로 보는 12월 종부세</small></a></li><li><a href="gift-tax.html">증여세<small>관계별 공제와 10년 합산으로 보는 증여세</small></a></li><li><a href="inheritance-tax.html">상속세<small>일괄·배우자·금융재산 공제로 보는 상속세</small></a></li><li><a href="registration-cost.html">등기비용<small>국민주택채권·인지세·수수료 합계</small></a></li><li><a href="land-multiple.html">땅값 몇 배<small>공시지가로 보는 상승 배수와 연평균</small></a></li><li><a href="apartment-multiple.html">아파트값 몇 배<small>지역 아파트 지수로 보는 상승 배수</small></a></li></ul></div><div class="menu-group"><h3>생활</h3><ul><li><a href="salary.html">연봉 실수령액<small>4대보험·세금 뺀 월 실수령액</small></a></li><li><a href="severance.html">퇴직금<small>평균임금 × 30일 × 재직일수 ÷ 365와 세금</small></a></li><li><a href="savings.html">예금·적금 이자<small>세후 이자와 만기 수령액, 적금 실제 수익률</small></a></li><li><a href="unemployment-benefit.html">실업급여<small>하루 구직급여와 받는 기간, 총 수급액</small></a></li><li><a href="hourly-wage.html">시급·주휴수당<small>주휴수당 포함 주급·월급과 최저임금 비교</small></a></li><li><a href="year-end-tax.html">연말정산 환급액<small>공제 항목으로 보는 환급액과 결정세액</small></a></li><li><a href="pension-tax-credit.html">연금저축·IRP 세액공제<small>납입액별 세액공제와 연말까지 남은 한도</small></a></li><li><a href="parental-leave.html">육아휴직 급여<small>달마다 받는 육아휴직 급여와 합계</small></a></li><li><a href="annual-leave.html">연차휴가<small>입사일 기준 연차 개수와 연차수당</small></a></li><li><a href="income-tax.html">종합소득세<small>3.3% 뗀 수입으로 보는 5월 환급액</small></a></li></ul></div><div class="menu-group"><h3>참고</h3><ul><li><a href="checklist.html">양도·취득 체크리스트<small>계약 전후 확인 항목과 준비 서류</small></a></li><li><a href="policy.html">세제·정책 참고<small>세금별 확인 포인트와 공식 기관 링크</small></a></li><li><a href="guides.html">안내 글<small>개념 설명과 계산 방법</small></a></li></ul></div><div class="menu-group"><h3>표·자료</h3><ul><li><a href="table-acquisition-tax.html">취득세율표<small>주택 수·지역·면적별 세율 한 표</small></a></li><li><a href="table-capital-gains-tax.html">양도세율표<small>누진세율·단기·중과·장특공제 한 표</small></a></li><li><a href="table-brokerage-fee.html">중개보수 요율표<small>거래금액 구간별 상한 요율과 한도액</small></a></li><li><a href="table-subscription-points.html">청약 가점표<small>84점 만점 배점표</small></a></li><li><a href="base-rate-history.html">기준금리 변동 이력<small>결정일별 금리와 변동폭</small></a></li></ul></div><div class="menu-group"><h3>서식·용어</h3><ul><li><a href="form-rent-receipt.html">월세 영수증 양식<small>입력하면 완성되는 영수증, 바로 인쇄</small></a></li><li><a href="form-notice.html">통지문 예시<small>갱신 요구·종료 통지·반환 요청 문구</small></a></li><li><a href="form-special-terms.html">특약 문구 모음<small>상황별 특약 문구 복사</small></a></li><li><a href="glossary.html">부동산 용어 사전<small>계약·등기·세금·대출 용어 설명</small></a></li></ul></div>
+          </div>
+          <ul class="footer-links" style="margin:14px 0 0"><li><a href="about.html">사이트 소개</a></li><li><a href="privacy.html">개인정보처리방침</a></li><li><a href="terms.html">이용약관</a></li></ul>
+        </div>
+      </div>
+  </header>
+
+<div class="page-shell">
+  <aside class="rail" aria-hidden="true"></aside>
+  <main id="main" class="container">
+    <section class="hero">
+      <p class="eyebrow">Apartment · Price Index</p>
+      <h1>아파트값 몇 배 계산기</h1>
+      <p class="hero-sub">우리 동네 아파트값은 그때보다 몇 배가 됐나</p>
+      <p class="hero-body">지역과 연도를 고르면 한국부동산원 아파트 매매가격지수로 그 지역 아파트값이 몇 배가 됐는지와 연평균 상승률을 계산합니다. 지금 시세를 넣으면 그때 시세를 추정하고, 산 가격과 지금 시세를 직접 넣으면 우리 집 배수를 지역 평균과 나란히 비교합니다.</p>
+    </section>
+    <div class="layout">
+      <div>
+        <section id="calc" class="card" aria-labelledby="calc-title">
+          <div class="card-head">
+            <h2 id="calc-title">입력</h2>
+            <span class="muted" style="font-size:13px">입력 즉시 재계산</span>
+          </div>
+          <div class="chips" role="group" aria-label="예시 값 채우기"><button type="button" class="chip" data-preset="ex">예시: 3억 → 9억</button><button type="button" class="chip" data-preset="clear">지우기</button></div>
+          <form id="calc-form" novalidate>
+              <div class="field">
+                <span class="label-text" id="mode-label">계산 방식</span>
+                <div class="segmented" role="radiogroup" aria-labelledby="mode-label" style="--n:2"><label class="seg-option"><input type="radio" name="mode" value="region" checked><span>지역 고르기</span></label><label class="seg-option"><input type="radio" name="mode" value="direct"><span>매매가 직접 입력</span></label></div>
+              </div>
+              <div class="field">
+                <label for="region">지역</label>
+                <select id="region"><option value="">지역을 고르세요</option><option value="전국">전국</option><optgroup label="서울"><option value="서울 전체">서울 전체</option><option value="서울 종로구">서울 종로구</option><option value="서울 중구">서울 중구</option><option value="서울 용산구">서울 용산구</option><option value="서울 성동구">서울 성동구</option><option value="서울 광진구">서울 광진구</option><option value="서울 동대문구">서울 동대문구</option><option value="서울 중랑구">서울 중랑구</option><option value="서울 성북구">서울 성북구</option><option value="서울 강북구">서울 강북구</option><option value="서울 도봉구">서울 도봉구</option><option value="서울 노원구">서울 노원구</option><option value="서울 은평구">서울 은평구</option><option value="서울 서대문구">서울 서대문구</option><option value="서울 마포구">서울 마포구</option><option value="서울 양천구">서울 양천구</option><option value="서울 강서구">서울 강서구</option><option value="서울 구로구">서울 구로구</option><option value="서울 금천구">서울 금천구</option><option value="서울 영등포구">서울 영등포구</option><option value="서울 동작구">서울 동작구</option><option value="서울 관악구">서울 관악구</option><option value="서울 서초구">서울 서초구</option><option value="서울 강남구">서울 강남구</option><option value="서울 송파구">서울 송파구</option><option value="서울 강동구">서울 강동구</option></optgroup><optgroup label="전남광주"><option value="전남 전체">전남 전체</option><option value="전남 목포시">전남 목포시</option><option value="전남 여수시">전남 여수시</option><option value="전남 순천시">전남 순천시</option><option value="전남 나주시">전남 나주시</option><option value="전남 광양시">전남 광양시</option><option value="전남 담양군">전남 담양군</option><option value="전남 곡성군">전남 곡성군</option><option value="전남 구례군">전남 구례군</option><option value="전남 고흥군">전남 고흥군</option><option value="전남 보성군">전남 보성군</option><option value="전남 화순군">전남 화순군</option><option value="전남 장흥군">전남 장흥군</option><option value="전남 강진군">전남 강진군</option><option value="전남 해남군">전남 해남군</option><option value="전남 영암군">전남 영암군</option><option value="전남 무안군">전남 무안군</option><option value="전남 함평군">전남 함평군</option><option value="전남 영광군">전남 영광군</option><option value="전남 장성군">전남 장성군</option><option value="전남 완도군">전남 완도군</option><option value="전남 진도군">전남 진도군</option><option value="전남 신안군">전남 신안군</option><option value="광주 전체">광주 전체</option><option value="광주 동구">광주 동구</option><option value="광주 서구">광주 서구</option><option value="광주 남구">광주 남구</option><option value="광주 북구">광주 북구</option><option value="광주 광산구">광주 광산구</option></optgroup><optgroup label="부산"><option value="부산 전체">부산 전체</option><option value="부산 중구">부산 중구</option><option value="부산 서구">부산 서구</option><option value="부산 동구">부산 동구</option><option value="부산 영도구">부산 영도구</option><option value="부산 부산진구">부산 부산진구</option><option value="부산 동래구">부산 동래구</option><option value="부산 남구">부산 남구</option><option value="부산 북구">부산 북구</option><option value="부산 해운대구">부산 해운대구</option><option value="부산 사하구">부산 사하구</option><option value="부산 금정구">부산 금정구</option><option value="부산 강서구">부산 강서구</option><option value="부산 연제구">부산 연제구</option><option value="부산 수영구">부산 수영구</option><option value="부산 사상구">부산 사상구</option><option value="부산 기장군">부산 기장군</option></optgroup><optgroup label="대구"><option value="대구 전체">대구 전체</option><option value="대구 중구">대구 중구</option><option value="대구 동구">대구 동구</option><option value="대구 서구">대구 서구</option><option value="대구 남구">대구 남구</option><option value="대구 북구">대구 북구</option><option value="대구 수성구">대구 수성구</option><option value="대구 달서구">대구 달서구</option><option value="대구 달성군">대구 달성군</option><option value="대구 군위군">대구 군위군</option></optgroup><optgroup label="인천"><option value="인천 전체">인천 전체</option><option value="인천 (구)중구">인천 (구)중구</option><option value="인천 (구)동구">인천 (구)동구</option><option value="인천 미추홀구">인천 미추홀구</option><option value="인천 연수구">인천 연수구</option><option value="인천 남동구">인천 남동구</option><option value="인천 부평구">인천 부평구</option><option value="인천 계양구">인천 계양구</option><option value="인천 (구)서구">인천 (구)서구</option><option value="인천 강화군">인천 강화군</option><option value="인천 옹진군">인천 옹진군</option></optgroup><optgroup label="대전"><option value="대전 전체">대전 전체</option><option value="대전 동구">대전 동구</option><option value="대전 중구">대전 중구</option><option value="대전 서구">대전 서구</option><option value="대전 유성구">대전 유성구</option><option value="대전 대덕구">대전 대덕구</option></optgroup><optgroup label="울산"><option value="울산 전체">울산 전체</option><option value="울산 중구">울산 중구</option><option value="울산 남구">울산 남구</option><option value="울산 동구">울산 동구</option><option value="울산 북구">울산 북구</option><option value="울산 울주군">울산 울주군</option></optgroup><optgroup label="세종"><option value="세종 전체">세종 전체</option></optgroup><optgroup label="경기"><option value="경기 전체">경기 전체</option><option value="경기 수원시">경기 수원시</option><option value="경기 수원시 장안구">경기 수원시 장안구</option><option value="경기 수원시 권선구">경기 수원시 권선구</option><option value="경기 수원시 팔달구">경기 수원시 팔달구</option><option value="경기 수원시 영통구">경기 수원시 영통구</option><option value="경기 성남시">경기 성남시</option><option value="경기 성남시 수정구">경기 성남시 수정구</option><option value="경기 성남시 중원구">경기 성남시 중원구</option><option value="경기 성남시 분당구">경기 성남시 분당구</option><option value="경기 의정부시">경기 의정부시</option><option value="경기 안양시">경기 안양시</option><option value="경기 안양시 만안구">경기 안양시 만안구</option><option value="경기 안양시 동안구">경기 안양시 동안구</option><option value="경기 부천시">경기 부천시</option><option value="경기 부천시 원미구">경기 부천시 원미구</option><option value="경기 부천시 소사구">경기 부천시 소사구</option><option value="경기 부천시 오정구">경기 부천시 오정구</option><option value="경기 광명시">경기 광명시</option><option value="경기 평택시">경기 평택시</option><option value="경기 동두천시">경기 동두천시</option><option value="경기 안산시">경기 안산시</option><option value="경기 안산시 상록구">경기 안산시 상록구</option><option value="경기 안산시 단원구">경기 안산시 단원구</option><option value="경기 고양시">경기 고양시</option><option value="경기 고양시 덕양구">경기 고양시 덕양구</option><option value="경기 고양시 일산동구">경기 고양시 일산동구</option><option value="경기 고양시 일산서구">경기 고양시 일산서구</option><option value="경기 과천시">경기 과천시</option><option value="경기 구리시">경기 구리시</option><option value="경기 남양주시">경기 남양주시</option><option value="경기 오산시">경기 오산시</option><option value="경기 시흥시">경기 시흥시</option><option value="경기 군포시">경기 군포시</option><option value="경기 의왕시">경기 의왕시</option><option value="경기 하남시">경기 하남시</option><option value="경기 용인시">경기 용인시</option><option value="경기 용인시 처인구">경기 용인시 처인구</option><option value="경기 용인시 기흥구">경기 용인시 기흥구</option><option value="경기 용인시 수지구">경기 용인시 수지구</option><option value="경기 파주시">경기 파주시</option><option value="경기 이천시">경기 이천시</option><option value="경기 안성시">경기 안성시</option><option value="경기 김포시">경기 김포시</option><option value="경기 화성시">경기 화성시</option><option value="경기 광주시">경기 광주시</option><option value="경기 양주시">경기 양주시</option><option value="경기 포천시">경기 포천시</option><option value="경기 여주시">경기 여주시</option><option value="경기 연천군">경기 연천군</option><option value="경기 가평군">경기 가평군</option><option value="경기 양평군">경기 양평군</option></optgroup><optgroup label="강원"><option value="강원 전체">강원 전체</option><option value="강원 춘천시">강원 춘천시</option><option value="강원 원주시">강원 원주시</option><option value="강원 강릉시">강원 강릉시</option><option value="강원 동해시">강원 동해시</option><option value="강원 태백시">강원 태백시</option><option value="강원 속초시">강원 속초시</option><option value="강원 삼척시">강원 삼척시</option><option value="강원 홍천군">강원 홍천군</option><option value="강원 횡성군">강원 횡성군</option><option value="강원 영월군">강원 영월군</option><option value="강원 평창군">강원 평창군</option><option value="강원 정선군">강원 정선군</option><option value="강원 철원군">강원 철원군</option><option value="강원 화천군">강원 화천군</option><option value="강원 양구군">강원 양구군</option><option value="강원 인제군">강원 인제군</option><option value="강원 고성군">강원 고성군</option><option value="강원 양양군">강원 양양군</option></optgroup><optgroup label="충북"><option value="충북 전체">충북 전체</option><option value="충북 청주시">충북 청주시</option><option value="충북 청주시 상당구">충북 청주시 상당구</option><option value="충북 청주시 서원구">충북 청주시 서원구</option><option value="충북 청주시 흥덕구">충북 청주시 흥덕구</option><option value="충북 청주시 청원구">충북 청주시 청원구</option><option value="충북 충주시">충북 충주시</option><option value="충북 제천시">충북 제천시</option><option value="충북 보은군">충북 보은군</option><option value="충북 옥천군">충북 옥천군</option><option value="충북 영동군">충북 영동군</option><option value="충북 증평군">충북 증평군</option><option value="충북 진천군">충북 진천군</option><option value="충북 괴산군">충북 괴산군</option><option value="충북 음성군">충북 음성군</option><option value="충북 단양군">충북 단양군</option></optgroup><optgroup label="충남"><option value="충남 전체">충남 전체</option><option value="충남 천안시">충남 천안시</option><option value="충남 천안시 동남구">충남 천안시 동남구</option><option value="충남 천안시 서북구">충남 천안시 서북구</option><option value="충남 공주시">충남 공주시</option><option value="충남 보령시">충남 보령시</option><option value="충남 아산시">충남 아산시</option><option value="충남 서산시">충남 서산시</option><option value="충남 논산시">충남 논산시</option><option value="충남 계룡시">충남 계룡시</option><option value="충남 당진시">충남 당진시</option><option value="충남 금산군">충남 금산군</option><option value="충남 부여군">충남 부여군</option><option value="충남 서천군">충남 서천군</option><option value="충남 청양군">충남 청양군</option><option value="충남 홍성군">충남 홍성군</option><option value="충남 예산군">충남 예산군</option><option value="충남 태안군">충남 태안군</option></optgroup><optgroup label="전북"><option value="전북 전체">전북 전체</option><option value="전북 전주시">전북 전주시</option><option value="전북 전주시 완산구">전북 전주시 완산구</option><option value="전북 전주시 덕진구">전북 전주시 덕진구</option><option value="전북 군산시">전북 군산시</option><option value="전북 익산시">전북 익산시</option><option value="전북 정읍시">전북 정읍시</option><option value="전북 남원시">전북 남원시</option><option value="전북 김제시">전북 김제시</option><option value="전북 완주군">전북 완주군</option><option value="전북 진안군">전북 진안군</option><option value="전북 무주군">전북 무주군</option><option value="전북 장수군">전북 장수군</option><option value="전북 임실군">전북 임실군</option><option value="전북 순창군">전북 순창군</option><option value="전북 고창군">전북 고창군</option><option value="전북 부안군">전북 부안군</option></optgroup><optgroup label="경북"><option value="경북 전체">경북 전체</option><option value="경북 포항시">경북 포항시</option><option value="경북 포항시 남구">경북 포항시 남구</option><option value="경북 포항시 북구">경북 포항시 북구</option><option value="경북 경주시">경북 경주시</option><option value="경북 김천시">경북 김천시</option><option value="경북 안동시">경북 안동시</option><option value="경북 구미시">경북 구미시</option><option value="경북 영주시">경북 영주시</option><option value="경북 영천시">경북 영천시</option><option value="경북 상주시">경북 상주시</option><option value="경북 문경시">경북 문경시</option><option value="경북 경산시">경북 경산시</option><option value="경북 (구)군위군">경북 (구)군위군</option><option value="경북 의성군">경북 의성군</option><option value="경북 청송군">경북 청송군</option><option value="경북 영양군">경북 영양군</option><option value="경북 영덕군">경북 영덕군</option><option value="경북 청도군">경북 청도군</option><option value="경북 고령군">경북 고령군</option><option value="경북 성주군">경북 성주군</option><option value="경북 칠곡군">경북 칠곡군</option><option value="경북 예천군">경북 예천군</option><option value="경북 봉화군">경북 봉화군</option><option value="경북 울진군">경북 울진군</option><option value="경북 울릉군">경북 울릉군</option></optgroup><optgroup label="경남"><option value="경남 전체">경남 전체</option><option value="경남 창원시">경남 창원시</option><option value="경남 창원시 의창구">경남 창원시 의창구</option><option value="경남 창원시 성산구">경남 창원시 성산구</option><option value="경남 창원시 마산합포구">경남 창원시 마산합포구</option><option value="경남 창원시 마산회원구">경남 창원시 마산회원구</option><option value="경남 창원시 진해구">경남 창원시 진해구</option><option value="경남 진주시">경남 진주시</option><option value="경남 통영시">경남 통영시</option><option value="경남 사천시">경남 사천시</option><option value="경남 김해시">경남 김해시</option><option value="경남 밀양시">경남 밀양시</option><option value="경남 거제시">경남 거제시</option><option value="경남 양산시">경남 양산시</option><option value="경남 의령군">경남 의령군</option><option value="경남 함안군">경남 함안군</option><option value="경남 창녕군">경남 창녕군</option><option value="경남 고성군">경남 고성군</option><option value="경남 남해군">경남 남해군</option><option value="경남 하동군">경남 하동군</option><option value="경남 산청군">경남 산청군</option><option value="경남 함양군">경남 함양군</option><option value="경남 거창군">경남 거창군</option><option value="경남 합천군">경남 합천군</option></optgroup><optgroup label="제주"><option value="제주 전체">제주 전체</option><option value="제주 제주시">제주 제주시</option><option value="제주 서귀포시">제주 서귀포시</option></optgroup></select>
+                <p class="field-help">한국부동산원 지가변동률조사 지가지수. 시·군·구 평균이라 우리 아파트 시세 변동과는 다를 수 있습니다. 매매가 직접 입력에서 고르면 같은 기간 지역 평균과 비교합니다</p>
+              </div>
+            <div id="region-fields">
+              <div class="field">
+                <label for="regionPrice">지금 시세</label>
+                <div class="input-wrap"><input id="regionPrice" type="text" inputmode="numeric" autocomplete="off" placeholder="800,000,000" data-money><span class="suffix">원</span></div>
+                <p class="field-help"><span id="region-price-help">지역을 고르면 그 지역 아파트 평균 매매가가 들어갑니다. 우리 집 시세로 바꿔 넣으면 지역 지수 비율로 그때 시세를 추정합니다</span></p>
+              </div>
+            </div>
+            <div id="direct-fields" hidden>
+              <div class="field">
+                <label for="priceThen">그때 산 가격</label>
+                <div class="input-wrap"><input id="priceThen" type="text" inputmode="numeric" autocomplete="off" placeholder="300,000,000" data-money><span class="suffix">원</span></div>
+                <p class="field-help">매매 계약서의 매매가격</p>
+              </div>              <div class="field">
+                <label for="priceNow">지금 시세</label>
+                <div class="input-wrap"><input id="priceNow" type="text" inputmode="numeric" autocomplete="off" placeholder="900,000,000" data-money><span class="suffix">원</span></div>
+                <p class="field-help">최근 같은 단지·같은 면적의 실거래가나 시세</p>
+              </div>
+            </div>
+              <div class="field">
+                <label for="yearThen">그때 연도</label>
+                <select id="yearThen"><option value="1986">1986년</option><option value="1987">1987년</option><option value="1988">1988년</option><option value="1989">1989년</option><option value="1990">1990년</option><option value="1991">1991년</option><option value="1992">1992년</option><option value="1993">1993년</option><option value="1994">1994년</option><option value="1995">1995년</option><option value="1996">1996년</option><option value="1997">1997년</option><option value="1998">1998년</option><option value="1999">1999년</option><option value="2000">2000년</option><option value="2001">2001년</option><option value="2002">2002년</option><option value="2003">2003년</option><option value="2004">2004년</option><option value="2005">2005년</option><option value="2006">2006년</option><option value="2007">2007년</option><option value="2008">2008년</option><option value="2009">2009년</option><option value="2010">2010년</option><option value="2011">2011년</option><option value="2012">2012년</option><option value="2013">2013년</option><option value="2014">2014년</option><option value="2015">2015년</option><option value="2016">2016년</option><option value="2017">2017년</option><option value="2018">2018년</option><option value="2019">2019년</option><option value="2020">2020년</option><option value="2021">2021년</option><option value="2022">2022년</option><option value="2023">2023년</option><option value="2024">2024년</option><option value="2025">2025년</option><option value="2026">2026년</option></select>
+              </div>              <div class="field">
+                <label for="yearNow">지금 연도</label>
+                <select id="yearNow"><option value="1986">1986년</option><option value="1987">1987년</option><option value="1988">1988년</option><option value="1989">1989년</option><option value="1990">1990년</option><option value="1991">1991년</option><option value="1992">1992년</option><option value="1993">1993년</option><option value="1994">1994년</option><option value="1995">1995년</option><option value="1996">1996년</option><option value="1997">1997년</option><option value="1998">1998년</option><option value="1999">1999년</option><option value="2000">2000년</option><option value="2001">2001년</option><option value="2002">2002년</option><option value="2003">2003년</option><option value="2004">2004년</option><option value="2005">2005년</option><option value="2006">2006년</option><option value="2007">2007년</option><option value="2008">2008년</option><option value="2009">2009년</option><option value="2010">2010년</option><option value="2011">2011년</option><option value="2012">2012년</option><option value="2013">2013년</option><option value="2014">2014년</option><option value="2015">2015년</option><option value="2016">2016년</option><option value="2017">2017년</option><option value="2018">2018년</option><option value="2019">2019년</option><option value="2020">2020년</option><option value="2021">2021년</option><option value="2022">2022년</option><option value="2023">2023년</option><option value="2024">2024년</option><option value="2025">2025년</option><option value="2026">2026년</option></select>
+                <p class="field-help">지역 고르기에서는 그 지역 자료가 있는 해만 나옵니다</p>
+              </div>            <div class="field" style="margin-top:14px">
+              <label class="toggle"><input type="checkbox" id="remember-toggle"><span class="knob" aria-hidden="true"></span>최근 계산 기억하기</label>
+              <p class="field-help">이 기기의 브라우저에만 저장되며 서버로 보내지 않습니다. 끄면 저장한 값을 지웁니다.</p>
+            </div>
+            <button type="submit" class="btn btn-primary">몇 배인지 계산</button>
+            <div class="btn-row">
+              <button type="button" id="native-share-btn" class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 16V3M7 8l5-5 5 5"/></svg>공유하기</button>
+              <button type="button" id="share-btn" class="btn btn-ghost btn-sm">링크 복사</button>
+              <button type="button" id="image-btn" class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>이미지 저장</button>
+            </div>
+          </form>
+        </section>
+      </div>
+      <div class="col-sticky">
+        <section id="result" class="card result-hero wide-s3" aria-live="polite" aria-labelledby="result-title">
+          <h2 id="result-title" class="sr-only">계산 결과</h2>
+          <p class="result-kicker" id="out-kicker">아파트값이 몇 배가 됐나</p>
+          <p class="result-big"><span id="out-big">0</span><span class="won">배</span></p>
+          <div class="stat-row"><div class="stat"><p class="k">연평균 상승률</p><p class="v"><span id="out-cagr">0</span><small>%</small></p></div><div class="stat"><p class="k">기간</p><p class="v"><span id="out-years">0</span><small></small></p></div><div class="stat"><p class="k"><span id="out-s3-label">지금 매매지수</span></p><p class="v"><span id="out-s3">0</span><small></small></p></div></div>
+          <p class="result-note" id="out-note"></p>
+        </section>
+        <section class="card">
+          <h2>계산 내역</h2>
+          <div class="table-wrap"><table class="tbl"><tbody id="region-rows">
+            <tr><th scope="row">지역</th><td><span id="out-region-name">—</span></td></tr>
+            <tr><th scope="row">그때 매매지수</th><td><span id="out-idx-then">—</span></td></tr>
+            <tr><th scope="row">지금 매매지수</th><td><span id="out-idx-now">—</span></td></tr>
+            <tr><th scope="row">지수 기준</th><td><span id="out-idx-base">—</span></td></tr>
+          </tbody><tbody id="region-price-rows" hidden>
+            <tr><th scope="row" id="out-rp-then-label">그때 시세 (추정)</th><td><span id="out-rp-then">—</span></td></tr>
+            <tr><th scope="row" id="out-rp-now-label">지금 시세</th><td><span id="out-rp-now">—</span></td></tr>
+            <tr><th scope="row">오른 금액</th><td><span id="out-rp-diff">—</span></td></tr>
+          </tbody><tbody id="direct-rows" hidden>
+            <tr><th scope="row">그때 산 가격</th><td><span id="out-then">—</span></td></tr>
+            <tr><th scope="row">지금 시세</th><td><span id="out-now">—</span></td></tr>
+            <tr><th scope="row">오른 금액</th><td><span id="out-diff">—</span></td></tr>
+            <tr id="cmp-row" hidden><th scope="row">같은 기간 지역 평균</th><td><span id="out-cmp">—</span></td></tr>
+          </tbody><tbody>
+            <tr><th scope="row">같은 기간 물가</th><td><span id="out-cpi">—</span></td></tr>
+            <tr class="total"><th scope="row">물가를 뺀 배수</th><td><span id="out-real">—</span></td></tr>
+          </tbody></table></div>
+          <p class="result-note" id="out-cmp-note" hidden></p>
+          <p class="result-note" id="out-cpi-note"></p>
+          <p class="result-note"><span id="rules-date"></span>. 본 계산기는 참고용이며 금융·세무·법률 자문이 아닙니다.</p>
+        </section>
+      </div>
+    </div>
+    <section class="card related related-guides" aria-labelledby="rel-guides-title">
+      <h2 id="rel-guides-title">이 계산기와 함께 읽는 안내 글</h2>
+      <div class="tool-grid"><a class="tool-card" href="guide-buy-vs-rent.html"><p class="t">매매와 전세, 집값이 몇 % 올라야 같아지나</p><p class="d">매매와 전세 중 어느 쪽이 덜 드는지는 앞으로의 집값에 달려 있습니다. 6억원 매매와 4억원 전세를 5년 기준으로 놓고, 사라지는 돈만 모아 비교한 총비용, 두 선택이 같아지는 연 집값 상승률, 기회비용과 보유기간에 따라 그 경계가 움직이는 폭을 계산기로 확인합니다.</p></a><a class="tool-card" href="guide-cgt-high-price.html"><p class="t">12억 넘는 집을 팔 때 세금, 거주 기간이 가른다</p><p class="d">양도가액 12억원을 넘는 1세대 1주택은 초과분 비율만큼만 과세하고 장기보유특별공제를 최대 80%까지 해 줍니다. 15억원에 팔면 거주 10년 480만원, 거주 없음 4,390만원으로 9배 차이 나는 계산과 20억원, 조정대상지역 취득 사례를 양도세 계산기로 정리했습니다.</p></a><a class="tool-card" href="guide-area-84.html"><p class="t">84㎡가 34평이 아닌 이유</p><p class="d">84㎡는 25.4평인데 왜 34평형이라고 부르는지 전용면적, 공급면적, 계약면적의 차이로 설명합니다. 59㎡·84㎡의 평 환산, 발코니 확장 서비스 면적, 평당 가격을 어느 면적으로 나누느냐에 따라 달라지는 문제를 정리합니다.</p></a></div>
+    </section>
+    <section class="card" aria-labelledby="guide-title">
+      <h2 id="guide-title">계산 방법과 알아둘 것</h2>
+      <div class="prose">
+<p>두 가지로 계산할 수 있습니다. <strong>지역 고르기</strong>는 한국부동산원 시·군·구별 아파트 매매가격지수(지역 평균)로, <strong>매매가 직접 입력</strong>은 우리 집을 산 가격과 지금 시세로 비교합니다.</p>
+<ul><li><strong>몇 배</strong> = 지금 값 ÷ 그때 값 (매매가격지수 또는 매매가)</li><li><strong>연평균 상승률</strong> = 몇 배 ^ (1 ÷ 기간) − 1. 해마다 같은 비율로 올랐다고 볼 때의 비율입니다</li><li><strong>그때 시세 (추정)</strong> = 지금 시세 × 그때 지수 ÷ 지금 지수</li><li><strong>물가를 뺀 배수</strong> = 몇 배 ÷ 같은 기간 소비자물가 배수</li></ul>
+<p>예를 들어 2006년에 3억원에 산 아파트가 2026년 9억원이면 20년 동안 3배, 연평균 약 5.6%씩 오른 셈입니다. 같은 3배라도 10년 만이면 연평균 약 11.6%입니다. 기간이 길수록 같은 배수의 연평균 상승률은 낮아집니다.</p>
+<h3>알아둘 것</h3>
+<ul><li>지역 지수는 표본 아파트들의 평균 변동이라 단지마다 오른 정도가 다릅니다</li><li>오래된 아파트는 시간이 지나며 낡는 만큼의 변화도 시세에 섞여 있습니다. 같은 아파트를 오래 보유하면 새 아파트 시세와 다르게 움직일 수 있습니다</li><li>취득세·양도소득세·중개보수, 보유하는 동안의 재산세와 대출 이자는 반영하지 않습니다</li><li>물가 비교는 통계청 소비자물가지수 연간 총지수(2020=100)를 씁니다(1990~2025년)</li></ul>
+<p>땅값은 <a href='land-multiple.html'>땅값 몇 배 계산기</a>에서 지역 지가지수나 개별공시지가로 따로 볼 수 있습니다.</p>
+<p>본 계산기는 참고용이며 금융·세무·법률 자문이 아닙니다. 특정 지역·단지나 투자를 권하지 않습니다.</p>
+      </div>
+    </section>
+    <section class="card" aria-labelledby="faq-title">
+      <h2 id="faq-title">자주 묻는 질문</h2>
+      <p class="hint">자주 나오는 질문을 모았습니다.</p>
+      <div class="faq">
+        <details>
+          <summary>지역 고르기는 무엇으로 계산하나요?</summary>
+          <div class="a">
+          <p>한국부동산원 전국주택가격동향조사의 시·군·구별 아파트 매매가격지수(월간)입니다. 지역 안 표본 아파트들의 시세 변동을 평균한 지수라, 같은 지역이라도 우리 아파트가 몇 배가 됐는지와는 다를 수 있습니다.</p>
+          <p>해마다 12월 지수로 비교하고, 올해는 가장 최근 달 지수를 씁니다. 우리 집을 정확히 보려면 「매매가 직접 입력」에 산 가격과 지금 시세를 넣으세요.</p>
+          </div>
+        </details>
+        <details>
+          <summary>지금 시세를 넣으면 그때 시세는 어떻게 나오나요?</summary>
+          <div class="a">
+          <p>매매가격지수는 가격이 아니라 변동 비율이라, 지수만으로는 아파트가 얼마였는지 알 수 없습니다. 「지금 시세」를 넣으면 지금 시세 × (그때 지수 ÷ 지금 지수)로 그때 시세를 거꾸로 추정합니다.</p>
+          <p>지역을 고르면 「지금 시세」에 한국부동산원이 조사한 그 지역 아파트 평균 매매가를 먼저 넣어 둡니다. 이때 결과는 그 지역 평균 아파트가 얼마에서 얼마로 올랐는지에 대한 추정이고, 우리 집 시세로 바꿔 넣으면 우리 집 기준으로 다시 계산합니다.</p>
+          <p>지역 평균 변동을 적용한 추정이라, 그 단지의 실제 그때 거래가와는 다를 수 있습니다. 실제 거래가는 국토교통부 실거래가 공개시스템에서 단지별로 볼 수 있습니다(2006년부터).</p>
+          </div>
+        </details>
+        <details>
+          <summary>우리 아파트 배수가 지역 평균과 왜 다른가요?</summary>
+          <div class="a">
+          <p>단지의 입지, 면적, 층, 재건축 기대감 같은 사정에 따라 같은 지역 안에서도 오른 정도가 크게 다릅니다. 지역 지수는 그 차이를 평균한 값이라, 평균보다 많이 오른 단지도 덜 오른 단지도 있습니다.</p>
+          <p>「매매가 직접 입력」에서 지역을 함께 고르면 우리 집 배수와 같은 기간 지역 평균 배수를 나란히 볼 수 있습니다.</p>
+          </div>
+        </details>
+        <details>
+          <summary>연평균 상승률은 무슨 뜻인가요?</summary>
+          <div class="a">
+          <p>몇 배를 기간으로 나눠, 해마다 같은 비율로 올랐다고 볼 때의 비율입니다. 같은 3배라도 10년 만이면 연평균 약 11.6%, 20년 만이면 약 5.6%입니다. 실제로는 오른 해와 내린 해가 섞여 있습니다.</p>
+          </div>
+        </details>
+        <details>
+          <summary>물가 비교는 무엇을 기준으로 하나요?</summary>
+          <div class="a">
+          <p>통계청 소비자물가지수 연간 총지수(2020=100)입니다. 같은 기간 물가가 몇 배 올랐는지 구하고, 아파트값 배수를 그 값으로 나눠 물가를 뺀 배수를 보여 줍니다. 1990~2025년 연간값이 있고, 올해 연간값은 다음 해 1월에 나옵니다.</p>
+          </div>
+        </details>
+        <details>
+          <summary>세금이나 대출 이자도 반영하나요?</summary>
+          <div class="a">
+          <p>반영하지 않습니다. 사고팔 때의 취득세·양도소득세, 중개보수, 보유하는 동안의 재산세·대출 이자는 빠져 있어 실제로 손에 남는 돈과는 다릅니다. 팔 때 세금은 <a href='capital-gains-tax.html'>양도소득세 계산기</a>, 사는 것과 전월세를 비교하려면 <a href='buy-vs-rent.html'>매매 vs 전월세 계산기</a>를 쓰세요.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="card related" aria-labelledby="rel-title">
+      <h2 id="rel-title">함께 쓰는 계산기</h2>
+      <div class="tool-grid"><a class="tool-card" href="acquisition-tax.html"><p class="t">취득세</p><p class="d">취득세·지방교육세·농특세 참고용 추정</p></a><a class="tool-card" href="capital-gains-tax.html"><p class="t">양도소득세</p><p class="d">비과세·장특공제·중과까지 반영한 참고용 추정</p></a><a class="tool-card" href="yield.html"><p class="t">상가 수익률</p><p class="d">공실과 대출을 반영한 총투자·자기자본 수익률</p></a><a class="tool-card" href="subscription.html"><p class="t">청약 가점</p><p class="d">무주택기간·부양가족·통장기간 84점 만점</p></a></div>
+    </section>
+  </main>
+  <aside class="rail" aria-hidden="true"></aside>
+</div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="menu-groups" style="margin-bottom:14px"><div class="menu-group"><h3>임대</h3><ul><li><a href="rent.html">월세 실부담</a></li><li><a href="conversion.html">전월세 전환율</a></li><li><a href="rent-tax-credit.html">월세 세액공제</a></li><li><a href="fee.html">중개보수</a></li><li><a href="renewal.html">계약 갱신 청구권</a></li><li><a href="jeonse-insurance.html">전세보증보험 자가진단</a></li><li><a href="jeonse-fraud-check.html">전세 사기 위험 체크</a></li><li><a href="moving.html">이사 체크리스트</a></li><li><a href="rental-income-tax.html">주택임대소득세</a></li></ul></div><div class="menu-group"><h3>대출</h3><ul><li><a href="loan.html">대출이자</a></li><li><a href="dsr.html">DSR·LTV 한도</a></li><li><a href="prepayment.html">중도상환수수료</a></li><li><a href="rate-compare.html">고정 vs 변동금리</a></li><li><a href="jeonse-loan.html">전세자금대출 이자</a></li></ul></div><div class="menu-group"><h3>매매·투자</h3><ul><li><a href="acquisition-tax.html">취득세</a></li><li><a href="capital-gains-tax.html">양도소득세</a></li><li><a href="yield.html">상가 수익률</a></li><li><a href="subscription.html">청약 가점</a></li><li><a href="area.html">평수 변환</a></li><li><a href="buy-vs-rent.html">매매 vs 전세</a></li><li><a href="tax-calendar.html">세금 달력</a></li><li><a href="property-tax.html">재산세</a></li><li><a href="comprehensive-property-tax.html">종합부동산세</a></li><li><a href="gift-tax.html">증여세</a></li><li><a href="inheritance-tax.html">상속세</a></li><li><a href="registration-cost.html">등기비용</a></li><li><a href="land-multiple.html">땅값 몇 배</a></li><li><a href="apartment-multiple.html">아파트값 몇 배</a></li></ul></div><div class="menu-group"><h3>생활</h3><ul><li><a href="salary.html">연봉 실수령액</a></li><li><a href="severance.html">퇴직금</a></li><li><a href="savings.html">예금·적금 이자</a></li><li><a href="unemployment-benefit.html">실업급여</a></li><li><a href="hourly-wage.html">시급·주휴수당</a></li><li><a href="year-end-tax.html">연말정산 환급액</a></li><li><a href="pension-tax-credit.html">연금저축·IRP 세액공제</a></li><li><a href="parental-leave.html">육아휴직 급여</a></li><li><a href="annual-leave.html">연차휴가</a></li><li><a href="income-tax.html">종합소득세</a></li></ul></div></div>
+      <ul class="footer-links footer-extra"><li><a href="glossary.html">용어 사전</a></li><li><a href="guides.html">안내 글</a></li><li><a href="checklist.html">체크리스트</a></li><li><a href="policy.html">세제·정책</a></li><li><a href="table-acquisition-tax.html">취득세율표</a></li><li><a href="table-capital-gains-tax.html">양도세율표</a></li><li><a href="table-brokerage-fee.html">중개보수 요율표</a></li><li><a href="table-subscription-points.html">청약 가점표</a></li><li><a href="base-rate-history.html">기준금리 변동 이력</a></li><li><a href="form-rent-receipt.html">월세 영수증 양식</a></li><li><a href="form-notice.html">통지문 예시</a></li><li><a href="form-special-terms.html">특약 문구 모음</a></li></ul>
+      <ul class="footer-links"><li><a href="about.html">사이트 소개</a></li><li><a href="privacy.html">개인정보처리방침</a></li><li><a href="terms.html">이용약관</a></li></ul>
+      <p class="disclaimer">본 계산기는 참고용이며 금융·세무·법률 자문이 아닙니다.</p>
+      <p class="privacy">입력값은 서버로 전송되거나 저장되지 않습니다. 최근 계산 기억 기능을 켜면 이 기기 브라우저에만 저장됩니다.</p>
+    </div>
+  </footer>
+  <div id="sticky-summary" class="sticky-summary" aria-hidden="true">
+    <div><p class="k">몇 배</p><p class="v"><span id="sticky-monthly">0</span></p></div>
+    <a href="#result">결과 보기</a>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="js/common.js?v=37b92414"></script>
+  <script src="js/analytics.js?v=c8407f74"></script>
+  <script src="js/apt-index-data.js?v=447dff87"></script>
+  <script src="js/price-index.js?v=28dfc296"></script>
+  <script src="js/apartment-multiple.js?v=cd7c0bf7"></script>
+</body>
+</html>

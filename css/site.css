@@ -355,6 +355,8 @@ legend { font-weight: 700; padding: 0; margin: 0 0 10px; font-size: 14px; color:
 .stat .k { font-size: 12.5px; color: var(--ink-3); font-weight: 600; margin: 0 0 2px; }
 .stat .v { font-size: 20px; font-weight: 800; letter-spacing: -.02em; margin: 0; font-variant-numeric: tabular-nums; }
 .stat .v small { font-size: 12px; font-weight: 600; color: var(--ink-3); margin-left: 2px; }
+/* 세 번째 칸에 「2억 7,500만원」처럼 긴 금액이 들어가는 계산기는 그 칸을 한 줄 전체로 (아파트값 몇 배) */
+.result-hero.wide-s3 .stat-row .stat:nth-child(3) { grid-column: 1 / -1; }
 
 table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
 .tbl th, .tbl td { padding: 10px 6px; border-bottom: 1px solid var(--line); text-align: left; font-weight: 400; vertical-align: top; font-size: 15px; }

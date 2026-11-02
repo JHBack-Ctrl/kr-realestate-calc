@@ -143,6 +143,10 @@ TOOLS = [
     ("land-multiple.html", "땅값 몇 배", "땅값 몇 배 계산기 — 공시지가 상승 배수, 연평균 상승률, 평당 공시지가",
      "땅값 몇 배 계산기. 그때와 지금의 개별공시지가(1㎡당)와 연도를 넣으면 몇 배가 됐는지와 연평균 상승률, 평당 공시지가, 면적별 총액 변화를 계산합니다. 공시지가 기준이며 시세가 아닙니다.",
      "매매·투자", "공시지가로 보는 상승 배수와 연평균"),
+    # ---- 8차 (2026-11): 아파트값 몇 배 ----
+    ("apartment-multiple.html", "아파트값 몇 배", "아파트값 몇 배 계산기 — 지역별 아파트 매매가격지수 상승 배수, 연평균 상승률",
+     "아파트값 몇 배 계산기. 지역과 연도를 고르면 한국부동산원 아파트 매매가격지수로 몇 배가 됐는지와 연평균 상승률을, 지금 시세를 넣으면 그때 시세 추정을, 산 가격을 넣으면 지역 평균과의 비교를 보여 줍니다.",
+     "매매·투자", "지역 아파트 지수로 보는 상승 배수"),
 ]
 # 표·자료 페이지 (파일, 짧은 이름, 제목, description, 한 줄 설명)
 TABLES = [
@@ -344,6 +348,7 @@ TOOL_GUIDES = {
     "rental-income-tax.html": ["guide-rental-income-two-homes.html", "guide-officetel.html"],
     "income-tax.html": ["guide-freelancer-refund.html", "guide-year-end-dependents.html"],
     "land-multiple.html": ["guide-buy-vs-rent.html", "guide-area-84.html"],
+    "apartment-multiple.html": ["guide-buy-vs-rent.html", "guide-cgt-high-price.html", "guide-area-84.html"],
 }
 DOCS = [
     ("about.html", "사이트 소개"), ("privacy.html", "개인정보처리방침"), ("terms.html", "이용약관"),
@@ -429,6 +434,7 @@ TILE_ICONS = {
     "rental-income-tax.html": '<path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M9.5 13h5M9.5 16.5h5"/>',
     "income-tax.html": '<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 11.5h6M9 15h3"/>',
     "land-multiple.html": '<path d="M3 20h18"/><path d="M5 16l5-5 3 3 6-6"/><path d="M15 8h4v4"/>',
+    "apartment-multiple.html": '<path d="M3 21h18"/><path d="M5 21V8h7v13"/><path d="M8 11h1M8 14h1M8 17h1"/><path d="M15 12l3-3 3 3"/><path d="M18 9v9"/>',
     # 표·서식·용어
     "table-acquisition-tax.html": '<path d="M4 5h16v14H4z"/><path d="M4 10h16M10 10v9"/>',
     "table-capital-gains-tax.html": '<path d="M4 5h16v14H4z"/><path d="M4 10h16M10 10v9"/>',
@@ -488,6 +494,7 @@ TILE_KEYS = {
     "rental-income-tax.html": "임대소득세 주택임대 간주임대료 분리과세 집주인 월세 세금",
     "income-tax.html": "종합소득세 종소세 프리랜서 3.3% 환급 단순경비율 사업소득 5월 신고",
     "land-multiple.html": "땅값 공시지가 몇배 상승률 개별공시지가 평당 토지 그때 그 땅값",
+    "apartment-multiple.html": "아파트값 아파트 시세 집값 몇배 상승률 매매가격지수 그때 그 아파트",
     "glossary.html": "용어 사전 대항력 확정일자 근저당 우선변제권",
     "base-rate-history.html": "기준금리 한국은행 금리 이력",
 }
