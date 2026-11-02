@@ -909,6 +909,63 @@ function near(label, got, want, tol) {
   expect('아파트 직접 입력 지역 비교', await get('out-cmp'), '1.47배');
   await fresh('apartment-multiple.html?mode=direct&priceThen=300000000&priceNow=900000000&yearThen=2010&yearNow=2026');
   expect('아파트 공유 링크 연도', await page.inputValue('#yearThen'), '2010'); expect('아파트 공유 링크 기간', await get('out-years'), '16년'); expect('아파트 공유 링크 연평균', await get('out-cagr'), '7.11');
+  // ------------------------------------------------------------ 안내 글 6편 (2026-11) 본문 숫자
+  // guide-gift-tax-free.html — 신고세액공제 3% 넣음
+  await fresh('gift-tax.html');
+  for (const [amt, rel, prior, marriage, skip, want] of [['10000000', 'other', '', false, false, '970,000'], ['10000000', 'kin', '', false, false, '0'], ['50000000', 'adult', '50000000', false, false, '4,850,000'],
+      ['150000000', 'adult', '', false, false, '9,700,000'], ['200000000', 'adult', '', false, false, '19,400,000'], ['500000000', 'adult', '', false, false, '77,600,000'],
+      ['150000000', 'adult', '', true, false, '0'], ['300000000', 'adult', '', true, false, '19,400,000'], ['50000000', 'minor', '', false, false, '2,910,000'],
+      ['800000000', 'spouse', '', false, false, '29,100,000'], ['1000000000', 'spouse', '', false, false, '67,900,000'], ['200000000', 'adult', '', false, true, '25,220,000']]) {
+    await page.selectOption('#rel', rel); await page.fill('#prior', ''); if (prior) await type('prior', prior); await setChk('marriage', marriage); await setChk('skip', skip);
+    await type('amount', amt); expect(`증여 면제 글 ${amt} ${rel}${prior ? ' 합산' + prior : ''}${marriage ? ' 혼인' : ''}${skip ? ' 세대생략' : ''}`, await get('out-tax'), want);
+  }
+  // guide-jongbuse-payment.html — 분납은 종부세(out-tax) 기준: 250만 초과~500만 이하는 250만 넘는 금액, 500만 초과는 절반. 농특세는 같은 비율
+  await fresh('comprehensive-property-tax.html');
+  for (const [kind, age, hold, pr, tax, rural] of [['one', 'a0', 'h0', '2000000000', '1,896,000', '379,200'], ['one', 'a0', 'h0', '2500000000', '3,996,000', '799,200'], ['one', 'a0', 'h0', '3000000000', '6,456,000', '1,291,200'],
+      ['two', 'a0', 'h0', '2000000000', '2,616,000', '523,200'], ['two', 'a0', 'h0', '3000000000', '7,356,000', '1,471,200'], ['one', 'a60', 'h10', '2000000000', '758,400', '151,680']]) {
+    await page.selectOption('#kind', kind); if (kind === 'one') { await page.selectOption('#age', age); await page.selectOption('#hold', hold); }
+    await type('price', pr); expect(`종부세 납부 글 ${kind} ${age} ${hold} ${pr} 종부세`, await get('out-tax'), tax); expect(`종부세 납부 글 ${kind} ${pr} 농특세`, await get('out-rural'), rural);
+  }
+  // guide-apartment-multiple.html — 시·도별 2006·2012·2020년부터 배수와 평균 매매가(자동으로 넣는 값)
+  await fresh('apartment-multiple.html');
+  for (const [r, a06, a12, a20, avg] of [['전국', '1.47', '1.22', '1.04', '523,000,000'], ['서울 전체', '1.68', '1.57', '1.21', '1,370,000,000'], ['부산 전체', '1.65', '1.07', '0.94', '370,000,000'],
+      ['대구 전체', '1.28', '1.12', '0.79', '322,000,000'], ['인천 전체', '1.58', '1.28', '1.05', '387,000,000'], ['광주 전체', '1.52', '1.12', '0.95', '270,000,000'], ['대전 전체', '1.64', '1.28', '0.95', '336,000,000'],
+      ['울산 전체', '1.47', '1.04', '1.02', '317,000,000'], ['세종 전체', '', '1.16', '0.74', '529,000,000'], ['경기 전체', '1.43', '1.41', '1.11', '599,000,000'], ['강원 전체', '1.34', '1.06', '1.07', '188,000,000'],
+      ['충북 전체', '1.43', '1.05', '1.09', '214,000,000'], ['충남 전체', '1.28', '1.03', '1.02', '199,000,000'], ['전북 전체', '1.58', '1.04', '1.09', '202,000,000'], ['전남 전체', '1.5', '0.97', '0.93', '178,000,000'],
+      ['경북 전체', '1.2', '1.01', '1.01', '168,000,000'], ['경남 전체', '1.35', '0.89', '0.99', '230,000,000'], ['제주 전체', '1.78', '1.21', '1.05', '286,000,000']]) {
+    await page.selectOption('#region', r); expect(`아파트 표 ${r} 평균 매매가`, await page.inputValue('#regionPrice'), avg);
+    for (const [y, want] of [['2006', a06], ['2012', a12], ['2020', a20]]) { if (!want) continue; await page.selectOption('#yearThen', y); expect(`아파트 표 ${r} ${y}→2026`, await get('out-big'), want); }
+  }
+  for (const [r, want] of [['전국', '0.91'], ['서울 전체', '1.12'], ['대구 전체', '0.73'], ['세종 전체', '0.75']]) { await page.selectOption('#region', r); await page.selectOption('#yearThen', '2021'); expect(`아파트 글 ${r} 2021→2026`, await get('out-big'), want); }
+  for (const [r, want] of [['부산 전체', '1.54'], ['서울 전체', '1.07']]) {   // 세종(2012년부터) 다음이라 지역을 먼저 고른다
+    await page.selectOption('#region', r); await page.selectOption('#yearThen', '2006'); await page.selectOption('#yearNow', '2012'); expect(`아파트 글 ${r} 2006→2012`, await get('out-big'), want);
+  }
+  await page.selectOption('#region', '전국'); await page.selectOption('#yearNow', '2025'); expect('아파트 글 전국 2006→2025', await get('out-big'), '1.43');
+  // guide-land-price-lookup.html — 직접 입력 30만 → 120만(2006→2026), 330㎡, 지역 고르기 전국
+  await fresh('land-multiple.html'); await radio('mode', 'direct'); await type('priceThen', '300000'); await type('priceNow', '1200000'); await page.selectOption('#yearThen', '2006');
+  expect('공시지가 글 4배', await get('out-big'), '4'); expect('공시지가 글 연평균', await get('out-cagr'), '7.18'); expect('공시지가 글 지금 평당', await get('out-s3'), '3,966,942');
+  await type('area', '330'); expect('공시지가 글 330㎡ 그때', await get('out-total-then'), '99,000,000'); expect('공시지가 글 330㎡ 지금', await get('out-total-now'), '396,000,000'); expect('공시지가 글 늘어난 금액', await get('out-total-diff'), '297,000,000');
+  await page.selectOption('#yearNow', '2025'); expect('공시지가 글 물가', await get('out-cpi'), '1.53배'); expect('공시지가 글 물가 뺀 배수', await get('out-real'), '2.61배');
+  await fresh('land-multiple.html'); await page.selectOption('#yearThen', '2006'); await page.selectOption('#region', '전국');
+  expect('공시지가 글 전국 지가 2006→2026', await get('out-big'), '1.57'); expect('공시지가 글 전국 연평균', await get('out-cagr'), '2.32');
+  await type('regionPrice', '1200000'); expect('공시지가 글 120만 → 2006 추정', await get('out-rp-then-m2'), '76만 3,400원');
+  // guide-inheritance-threshold.html — 자녀 2명, 장례비 기본 500만
+  await fresh('inheritance-tax.html');
+  for (const [est, spouse, kids, fin, want] of [['500000000', false, '2', '', '0'], ['505000000', false, '2', '', '0'], ['510000000', false, '2', '', '485,000'], ['1500000000', false, '2', '', '231,345,000'],
+      ['2000000000', false, '2', '', '424,860,000'], ['3000000000', false, '2', '', '812,860,000'], ['1500000000', true, '2', '', '59,031,429'], ['3000000000', true, '2', '', '314,834,286'],
+      ['1000000000', false, '3', '', '86,330,000'], ['1370000000', false, '2', '', '193,515,000'], ['1370000000', true, '2', '', '44,620,000'], ['1500000000', false, '2', '300000000', '213,885,000']]) {
+    await setChk('spouse', spouse); await type('kids', kids); await page.fill('#fin', ''); await page.fill('#prior', ''); await page.fill('#priorTax', ''); if (fin) await type('fin', fin);
+    await type('estate', est); expect(`상속 기준 글 ${est} ${spouse ? '배우자+' : ''}자녀${kids}${fin ? ' 금융' + fin : ''}`, await get('out-tax'), want);
+  }
+  await setChk('spouse', true); await type('kids', '2'); await page.fill('#fin', ''); await type('estate', '1500000000'); expect('상속 기준 글 15억 배우자공제', await get('out-spouse'), '640,714,285');
+  // guide-deposit-100m.html — 정기예금 단리, 15.4%
+  await fresh('savings.html');
+  for (const [amt, m, r, method, id, want] of [['100000000', '12', '2.5', 'simple', 'out-net', '2,115,000'], ['100000000', '12', '3', 'simple', 'out-tax', '462,000'], ['100000000', '12', '3.5', 'simple', 'out-net', '2,961,000'],
+      ['100000000', '12', '4', 'simple', 'out-net', '3,384,000'], ['100000000', '6', '3', 'simple', 'out-net', '1,269,000'], ['100000000', '24', '3', 'simple', 'out-net', '5,076,000'],
+      ['100000000', '12', '3', 'compound', 'out-interest', '3,041,595'], ['50000000', '12', '3', 'simple', 'out-net', '1,269,000'], ['300000000', '12', '3', 'simple', 'out-net', '7,614,000'],
+      ['667000000', '12', '3', 'simple', 'out-interest', '20,010,000']]) {
+    await radio('kind', 'deposit'); await radio('method', method); await type('months', m); await type('rate', r); await type('amount', amt); expect(`예금 글 ${amt} ${m}개월 ${r}% ${method}`, await get(id), want);
+  }
   // guide-year-end-dependents.html — 기납부 비움, 공제 없음. 결정세액
   for (const [sal, fam, want] of [['30000000', '1', '371,860'], ['30000000', '2', '270,610'], ['40000000', '1', '1,430,480'], ['40000000', '2', '1,205,480'], ['50000000', '1', '2,658,716'], ['50000000', '2', '2,433,716'],
                                   ['60000000', '1', '3,937,952'], ['60000000', '2', '3,712,952'], ['80000000', '1', '7,294,790'], ['80000000', '2', '6,934,790']]) {

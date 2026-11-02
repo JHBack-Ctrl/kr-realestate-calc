@@ -314,7 +314,10 @@ def home():
                    "guide-unemployment-floor.html": "실업급여 하한 구조",
                    "guide-mixed-use-acquisition.html": "상가주택 취득세", "guide-renewal-family.html": "실거주 거절 가족 범위",
                    "guide-year-end-dependents.html": "부양가족 공제 범위", "guide-year-end-result.html": "연말정산 결과 읽는 법", "guide-freelancer-refund.html": "프리랜서 3.3% 환급",
-                   "guide-year-end-medical.html": "의료비 공제 3% 문턱", "guide-year-end-job-change.html": "퇴사·이직 연말정산"}
+                   "guide-year-end-medical.html": "의료비 공제 3% 문턱", "guide-year-end-job-change.html": "퇴사·이직 연말정산",
+                   "guide-gift-tax-free.html": "증여세 없이 줄 수 있는 돈", "guide-jongbuse-payment.html": "종부세 납부·분납",
+                   "guide-apartment-multiple.html": "시·도별 아파트값 배수", "guide-land-price-lookup.html": "공시지가 조회하는 법",
+                   "guide-inheritance-threshold.html": "상속세 얼마부터 내나", "guide-deposit-100m.html": "1억 예금 이자"}
     ref = ("".join(f'<a class="tile" href="{f}" data-k="{n}" data-pub="{PAGE_DATES.get(f, {}).get("published", "")}">{tile_icon(f)}<span class="t">{GUIDE_SHORT.get(f, n)}</span></a>'
                    for (f, n, _t, _d) in GUIDES)
            + "".join(tile(f, n, "") for (f, n, _t, _d, _c, _s) in REFS if f != "guides.html"))
