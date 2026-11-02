@@ -15,8 +15,8 @@
   "published": "2026-09-17"
  },
  "annual-leave.html": {
-  "hash": "fe2d3be7b595",
-  "modified": "2026-10-30",
+  "hash": "d07ec44c1900",
+  "modified": "2026-11-03",
   "published": "2026-10-27"
  },
  "apartment-multiple.html": {
@@ -25,8 +25,8 @@
   "published": "2026-11-03"
  },
  "area.html": {
-  "hash": "b404db769692",
-  "modified": "2026-10-30",
+  "hash": "cc74003110e5",
+  "modified": "2026-11-03",
   "published": "2026-09-17"
  },
  "base-rate-history.html": {
@@ -40,8 +40,8 @@
   "published": "2026-09-17"
  },
  "capital-gains-tax.html": {
-  "hash": "2c32fd442310",
-  "modified": "2026-10-30",
+  "hash": "70e74d6fe972",
+  "modified": "2026-11-03",
   "published": "2026-09-17"
  },
  "checklist.html": {
@@ -395,8 +395,8 @@
   "published": "2026-09-17"
  },
  "hourly-wage.html": {
-  "hash": "8aa5ae54b4bc",
-  "modified": "2026-10-30",
+  "hash": "de6ef6333d68",
+  "modified": "2026-11-03",
   "published": "2026-10-26"
  },
  "income-tax.html": {
@@ -420,23 +420,23 @@
   "published": "2026-09-17"
  },
  "jeonse-insurance.html": {
-  "hash": "cbea4b3a2ec2",
-  "modified": "2026-10-30",
+  "hash": "f0891f963e55",
+  "modified": "2026-11-03",
   "published": "2026-09-17"
  },
  "jeonse-loan.html": {
-  "hash": "79d38bdc1631",
-  "modified": "2026-10-30",
+  "hash": "55de709cb89d",
+  "modified": "2026-11-03",
   "published": "2026-10-26"
  },
  "land-multiple.html": {
-  "hash": "84c50e92b261",
+  "hash": "7cf14d908ac7",
   "modified": "2026-11-03",
   "published": "2026-11-02"
  },
  "loan.html": {
-  "hash": "7144af178623",
-  "modified": "2026-10-30",
+  "hash": "9ff50317897b",
+  "modified": "2026-11-03",
   "published": "2026-09-17"
  },
  "moving.html": {
@@ -445,8 +445,8 @@
   "published": "2026-09-17"
  },
  "parental-leave.html": {
-  "hash": "7a43a8930601",
-  "modified": "2026-10-30",
+  "hash": "dac406592ca4",
+  "modified": "2026-11-03",
   "published": "2026-10-27"
  },
  "pension-tax-credit.html": {
@@ -460,8 +460,8 @@
   "published": "2026-09-17"
  },
  "prepayment.html": {
-  "hash": "28451d641941",
-  "modified": "2026-10-30",
+  "hash": "7f1c1e960aa7",
+  "modified": "2026-11-03",
   "published": "2026-09-17"
  },
  "privacy.html": {
@@ -490,18 +490,18 @@
   "published": "2026-10-27"
  },
  "renewal.html": {
-  "hash": "e5988dd35c36",
-  "modified": "2026-10-30",
+  "hash": "93041d3e20ed",
+  "modified": "2026-11-03",
   "published": "2026-09-17"
  },
  "rent-tax-credit.html": {
-  "hash": "94b0abc5e71a",
-  "modified": "2026-10-30",
+  "hash": "3d9ffbfbf04a",
+  "modified": "2026-11-03",
   "published": "2026-09-17"
  },
  "rent.html": {
-  "hash": "ac7c150b7384",
-  "modified": "2026-10-30",
+  "hash": "3f9d15315654",
+  "modified": "2026-11-03",
   "published": "2026-09-17"
  },
  "rental-income-tax.html": {
@@ -515,8 +515,8 @@
   "published": "2026-09-17"
  },
  "savings.html": {
-  "hash": "47c354a45c14",
-  "modified": "2026-10-30",
+  "hash": "14db483a8509",
+  "modified": "2026-11-03",
   "published": "2026-10-26"
  },
  "severance.html": {
@@ -760,8 +760,8 @@
   "published": "2026-09-17"
  },
  "unemployment-benefit.html": {
-  "hash": "ef4b1b4b2fa2",
-  "modified": "2026-10-30",
+  "hash": "eee5380b8a6e",
+  "modified": "2026-11-03",
   "published": "2026-10-26"
  },
  "year-end-tax.html": {

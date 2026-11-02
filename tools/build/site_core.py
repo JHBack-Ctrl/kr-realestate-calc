@@ -614,7 +614,23 @@ def head(title, desc, path, extra="", noindex=False, og_type="website"):
   <a class="skip-link" href="#main">본문으로 건너뛰기</a>
 '''
 
+# 입력칸 오른쪽 단위(원/㎡, 개월 등)가 숫자와 겹치지 않게 오른쪽 여백을 단위 길이에 맞춘다(css 기본 40px).
+# 한글·㎡ 한 자 14px, 영문·기호 8px, 띄어쓰기 4px로 넉넉히 어림하고(글꼴에 따라 실제보다 넓게 그려질 수 있음)
+# 오른쪽 12px + 숫자와 간격 10px을 더한다. 짧은 단위(원·%·명)는 그대로. 모든 쪽에 page()에서 적용하고,
+# 이미 style이 붙은 칸은 건드리지 않는다(옛 계산기는 만든 쪽에서 본문을 다시 읽으므로 두 번 붙지 않게)
+_SUFFIX_INPUT = re.compile(r'<input([^>]*)>(<span class="suffix">([^<]*)</span>)')
+
+def fit_suffixes(html):
+    def fix(m):
+        attrs, unit = m.group(1), m.group(3)
+        pad = sum(14 if ord(c) > 0x2000 else 4 if c == " " else 8 for c in unit) + 22
+        if pad <= 40 or "style=" in attrs: return m.group(0)
+        tail = " data-money" if attrs.endswith(" data-money") else ""
+        return f'<input{attrs[:len(attrs) - len(tail)]} style="padding-right:{pad}px"{tail}>{m.group(2)}'
+    return _SUFFIX_INPUT.sub(fix, html)
+
 def page(title, desc, path, main_html, extra_head="", scripts=(), noindex=False, sticky=None, with_rails=True, disclaimer=None, og_type="website"):
+    main_html = fit_suffixes(main_html)
     sc = "".join(f'\n  <script src="{asset(s)}"></script>' for s in scripts)
     sticky_html = f'''
   <div id="sticky-summary" class="sticky-summary" aria-hidden="true">

@@ -104,6 +104,15 @@ function near(label, got, want, tol) {
       const links = [...document.querySelectorAll('a[href]')].map(a => a.getAttribute('href')).filter(h => h && !/^(https?:|#|mailto:)/.test(h));
       const ids = [...document.querySelectorAll('[id]')].map(e => e.id); const dup = ids.filter((x, i) => ids.indexOf(x) !== i);
       if (dup.length) bad.push('dup-id:' + [...new Set(dup)].join(','));
+      // 입력칸 오른쪽 단위(원/㎡, 개월 등)가 숫자와 겹치지 않는지: 오른쪽 여백 ≥ 단위 폭 + 오른쪽 12px + 간격 4px.
+      // 숨은 칸도 재려고 단위 글자 폭은 같은 글꼴의 보이지 않는 span으로 잰다(site_core.fit_suffixes, 2026-11)
+      document.querySelectorAll('.input-wrap .suffix').forEach(s => {
+        const inp = s.parentNode.querySelector('input'); if (!inp || !s.textContent.trim()) return;
+        const probe = document.createElement('span'); probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font-size:' + getComputedStyle(s).fontSize;
+        probe.textContent = s.textContent; document.body.appendChild(probe);
+        const need = probe.getBoundingClientRect().width + 12 + 4; probe.remove();
+        if (parseFloat(getComputedStyle(inp).paddingRight) < need) bad.push('단위 겹침:' + (inp.id || '?') + '(' + s.textContent + ')');
+      });
       const robots = document.querySelector('meta[name=robots]');
       const desc = document.querySelector('meta[name=description]');
       return { bad, links, noindex: !!(robots && /noindex/.test(robots.content)), sw: document.documentElement.scrollWidth, text: document.body.innerText.length, desc: desc ? desc.content.length : 0,
