@@ -898,6 +898,12 @@ function near(label, got, want, tol) {
   await page.selectOption('#region', '세종 전체'); expect('아파트 세종은 2012년부터', await page.inputValue('#yearThen'), '2012');
   await page.fill('#regionPrice', '500000000'); await page.dispatchEvent('#regionPrice', 'input'); await page.selectOption('#region', '전국');
   expect('아파트 직접 넣은 시세는 지역을 바꿔도 그대로', await page.inputValue('#regionPrice'), '500,000,000');
+  // 자료보다 이른 해를 고른 뒤 지역을 고르면 그 지역 첫 해로 옮기고 알려 준다(2026-11 「계산이 안 돼」 — 1992 → 수정구 2003)
+  await fresh('apartment-multiple.html'); await page.selectOption('#yearThen', '1992'); await page.selectOption('#region', '경기 성남시 수정구');
+  expect('아파트 수정구 1992 → 2003', await page.inputValue('#yearThen'), '2003'); expect('아파트 수정구 배수', await get('out-big'), '2.27');
+  expect('아파트 연도 옮김 안내', (await get('out-note')).includes('1992년은 이 지역 자료가 없어'), true);
+  // 지역 목록과 설명은 아파트 자료여야 한다(자료가 없을 때 땅값 목록이 들어간 적 있음)
+  expect('아파트 지역 설명은 아파트 지수', (await page.textContent('#region-fields') + await page.evaluate(() => document.getElementById('region').parentNode.textContent)).includes('아파트 매매가격지수'), true);
   // 직접 입력 + 지역 비교: 3억 → 9억(2006→2026)은 3배, 같은 기간 전국 지수 1.47배
   await fresh('apartment-multiple.html'); await page.click('.chip[data-preset="ex"]'); await page.selectOption('#region', '전국');
   expect('아파트 직접 입력 지역 비교', await get('out-cmp'), '1.47배');

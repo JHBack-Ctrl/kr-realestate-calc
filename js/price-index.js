@@ -35,6 +35,8 @@
 
     return {
       CPI: CPI, CPI_YEARS: CPI_YEARS,
+      // 사용자가 고른 그때 연도가 이 지역 자료에 없어 옮겨졌으면 고른 해, 아니면 0
+      movedFrom: function (yearThen) { return want.then && want.then !== yearThen ? want.then : 0; },
       // 자료가 있는 가장 이른 해(모든 지역 중). 이보다 늦게 시작하는 지역은 「자료는 ○년부터」를 붙인다
       dataFirst: function () {
         var f = 0;
