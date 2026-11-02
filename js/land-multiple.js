@@ -8,66 +8,15 @@
   // 지역 지가지수와 소비자물가지수(2020=100, 연간): js/land-index-data.js(빌드가 tools/data/land_index.json에서 만듦).
   // 자료가 없으면 null — 지역 고르기와 물가 비교는 「자료 준비 중」으로 나온다
   var IDX = window.LAND_INDEX || null;
-  var CPI = (IDX && IDX.cpi) || {};
-  var CPI_YEARS = Object.keys(CPI).map(Number).sort(function (a, b) { return a - b; });
+  var PI = window.PriceIndex(IDX, { defaultThen: 1990 });   // 연도 목록·기간·물가 공통 (js/price-index.js)
 
-  // 연도는 드롭다운. 지역을 고르면 그 지역 자료가 있는 해만 보여 주고, 직접 입력일 때는 빌드가 넣은 전체 연도를 보여 준다
-  var YEARS_ALL = [];
-  function numSort(a, b) { return a - b; }
-  function allowedYears(i) {
-    var s = i.mode === 'region' && IDX && i.region ? IDX.regions[i.region] : null;
-    return s ? Object.keys(s).map(Number).sort(numSort) : YEARS_ALL;
-  }
-  function yearLabel(y, region) { return y + '년' + (region && IDX && y === IDX.latestYear ? ' ' + IDX.latestMonth + '월' : ''); }
-  function yearsSig(years, region) { return years.join(',') + (region ? 'r' : ''); }
-  function fillYears(sel, years, region) {
-    var sig = yearsSig(years, region);
-    if (sel.getAttribute('data-years') === sig) return;
-    var cur = sel.value;
-    sel.innerHTML = years.map(function (y) { return '<option value="' + y + '">' + yearLabel(y, region) + '</option>'; }).join('');
-    sel.setAttribute('data-years', sig);
-    if (years.indexOf(Number(cur)) >= 0) sel.value = cur;
-  }
-  // 사용자가 고른 연도. 자료가 짧은 지역 때문에 옮겨졌다가 다른 지역으로 바꾸면 이 해로 되돌린다
-  var want = { then: 0, now: 0 };
-  function pickYear(ys, y, isThen) {
-    if (ys.indexOf(y) >= 0) return y;
-    if (!isThen || y > ys[ys.length - 1]) return ys[ys.length - 1];
-    for (var k = 0; k < ys.length; k++) if (ys[k] >= y) return ys[k];
-    return ys[0];
-  }
-  // 연도 목록을 지역에 맞춘다. 목록이 바뀌었으면 사용자가 고른 해(없으면 그때 연도는 그다음 있는 해,
-  // 지금 연도는 가장 늦은 해)로 맞춘다. 값이 바뀌었으면 true
-  function syncYears(i) {
-    var ys = allowedYears(i), region = i.mode === 'region' && !!(IDX && i.region && IDX.regions[i.region]);
-    if (!ys.length) return false;
-    if ($('yearThen').getAttribute('data-years') === yearsSig(ys, region)) return false;
-    fillYears($('yearThen'), ys, region); fillYears($('yearNow'), ys, region);
-    var t = pickYear(ys, want.then || i.yearThen, true), n = pickYear(ys, want.now || i.yearNow, false);
-    $('yearThen').value = String(t); $('yearNow').value = String(n);
-    return t !== i.yearThen || n !== i.yearNow;
-  }
-  function firstYear(series) { var ys = Object.keys(series).map(Number).sort(function (a, b) { return a - b; }); return ys[0]; }
-  function pair(i) {
-    if (i.mode !== 'region') return { then: i.then, now: i.now };
-    var s = IDX && i.region ? IDX.regions[i.region] : null;
-    if (!s) return { then: 0, now: 0, missing: IDX ? 'region' : 'data' };
-    var a = s[i.yearThen], b = s[i.yearNow];
-    return { then: a || 0, now: b || 0, missing: a && b ? null : 'year', first: firstYear(s), series: s };
-  }
-  // 기간(개월). 지역 지수의 올해 값은 최신 달(예: 9월) 값이라 그만큼 짧다. 지난해까지는 12월 값끼리 비교
-  function months(i) {
-    var m = (i.yearNow - i.yearThen) * 12;
-    if (i.mode === 'region' && IDX && i.yearNow === IDX.latestYear) m -= 12 - IDX.latestMonth;
-    return m;
-  }
+  function pair(i) { return i.mode === 'region' ? PI.pair(i.region, i.yearThen, i.yearNow) : { then: i.then, now: i.now }; }
   function calc(i) {
-    var p = pair(i), ok = p.then > 0 && p.now > 0, years = i.yearNow - i.yearThen, mon = months(i);
+    var p = pair(i), ok = p.then > 0 && p.now > 0, years = i.yearNow - i.yearThen, mon = PI.months(i.yearThen, i.yearNow, i.mode === 'region');
     var multiple = ok ? p.now / p.then : 0;
     var cagr = ok && mon > 0 ? (Math.pow(multiple, 12 / mon) - 1) * 100 : null;
     var m2 = i.mode === 'direct' && i.area > 0 ? (i.unit === 'py' ? i.area * PYEONG_M2 : i.area) : 0;
-    var cpiThen = CPI[i.yearThen], cpiNow = CPI[i.yearNow];
-    var cpiMultiple = cpiThen && cpiNow && years > 0 ? cpiNow / cpiThen : null;
+    var cpiMultiple = PI.cpi(i.yearThen, i.yearNow);
     // 지역 고르기에서 지금 1㎡당 가격을 넣으면, 같은 지수 비율로 그때 가격을 거꾸로 추정한다(지수는 가격이 아니라 변동 비율이라)
     var rp = i.mode === 'region' && ok && i.regionPrice > 0 ? { nowM2: i.regionPrice, thenM2: i.regionPrice * p.then / p.now } : null;
     if (rp) { rp.nowPy = rp.nowM2 * PYEONG_M2; rp.thenPy = rp.thenM2 * PYEONG_M2; }
@@ -81,9 +30,8 @@
       area: S.parseNonNegative($('area').value), unit: u ? u.value : 'm2' };
   }
   function times(n) { return S.fmtRate(n); }
-  function period(r) { return Math.floor(r.months / 12) + '년' + (r.months % 12 ? ' ' + (r.months % 12) + '개월' : ''); }
+  function period(r) { return PI.period(r.months); }
   function idx(n) { return n ? S.fmtRate(n) : '—'; }
-  // 추정 금액은 끝자리까지 보이면 정확한 값처럼 읽혀서 반올림한다(100만원 이상은 만원, 1만원 이상은 100원 단위)
   // 추정 금액은 끝자리를 떼어 보여 준다(100만원 이상은 만원 단위). 오른 금액은 보이는 두 값의 차이로 계산해 표 안에서 셈이 맞게 한다
   function roundEst(n) { var u = n >= 1000000 ? 10000 : n >= 10000 ? 100 : 1; return Math.round(n / u) * u; }
   function approx(n) { return S.fmtKorean(roundEst(n)); }
@@ -116,8 +64,7 @@
     S.setText('out-area-m2', S.fmtRate(r.m2)); S.setText('out-total-then', S.fmtWon(r.totalThen)); S.setText('out-total-now', S.fmtWon(r.totalNow)); S.setText('out-total-diff', S.fmtWon(r.totalNow - r.totalThen));
     S.setText('out-cpi', r.cpiMultiple ? times(r.cpiMultiple) + '배' : '—');
     S.setText('out-real', r.real ? times(r.real) + '배' : '—');
-    S.setText('out-cpi-note', r.cpiMultiple ? '소비자물가지수(2020=100, 연간) ' + i.yearThen + '년 ' + CPI[i.yearThen] + ' → ' + i.yearNow + '년 ' + CPI[i.yearNow] + '. 땅값 배수를 물가 배수로 나눈 값이 물가를 뺀 배수입니다.' :
-      CPI_YEARS.length ? '물가 비교는 연간 소비자물가지수가 있는 ' + CPI_YEARS[0] + '~' + CPI_YEARS[CPI_YEARS.length - 1] + '년 사이에서만 합니다. 올해 연간 지수는 다음 해 1월에 나옵니다.' : '물가 자료를 준비 중입니다.');
+    S.setText('out-cpi-note', PI.cpiNote(i.yearThen, i.yearNow, '땅값'));
     S.setText('rules-date', basis(i) + ' · 물가는 통계청 소비자물가지수 연간(2020=100)' + (i.mode === 'region' && IDX ? ' · 지난해까지는 12월 지수, 올해는 ' + IDX.latest + ' 지수' : ''));
     var note;
     if (region && r.p.missing === 'data') note = '지역별 지가지수 자료를 준비 중입니다. 지금은 「공시지가 직접 입력」으로 계산할 수 있습니다.';
@@ -132,25 +79,19 @@
     else note = (r.years > 0 ? i.yearThen + '년 ' : '그때 ') + S.fmtKorean(i.then) + '/㎡이던 땅이 ' + (r.years > 0 ? i.yearNow + '년 ' : '지금 ') + S.fmtKorean(i.now) + '/㎡이면 ' +
       (r.years > 0 ? r.years + '년 동안 ' : '') + times(r.multiple) + '배' + (r.cagr != null ? ', 연평균 ' + S.fmtRate(r.cagr) + '%씩 오른 셈입니다. ' : '가 됐습니다. ') +
       (r.years <= 0 ? '연도를 넣으면 연평균 상승률도 나옵니다. ' : '') + '공시지가 기준이며 시세가 아닙니다.';
-    if (region && r.p.first && YEARS_ALL.length && r.p.first > YEARS_ALL[0]) note += ' 이 지역 자료는 ' + r.p.first + '년부터 있습니다.';
+    if (region && r.p.first && r.p.first > PI.dataFirst()) note += ' 이 지역 자료는 ' + r.p.first + '년부터 있습니다.';
     S.setText('out-note', note);
     last = { i: i, r: r };
   }
   S.ready(function () {
-    YEARS_ALL = S.$$('#yearThen option').map(function (o) { return Number(o.value); }).sort(numSort);
-    $('yearThen').value = '1990'; $('yearNow').value = String(YEARS_ALL[YEARS_ALL.length - 1]);
-    want = { then: 1990, now: YEARS_ALL[YEARS_ALL.length - 1] };
-    // 사용자가 연도를 직접 고를 때만 기억한다(계산보다 먼저 달아 둔다)
-    ['yearThen', 'yearNow'].forEach(function (id) {
-      $(id).addEventListener('change', function () { want[id === 'yearThen' ? 'then' : 'now'] = Number($(id).value); });
-    });
+    PI.init();   // 연도 고르는 것을 기억하는 처리를 계산보다 먼저 단다
     S.wireCalc({
       key: 'land-multiple',
-      recalc: function () { var i = readInput(); if (syncYears(i)) i = readInput(); render(i); },
+      onApply: function () { PI.adopt(); },   // 공유 링크·저장된 값의 연도를 살린다
+      recalc: function () { var i = readInput(); if (PI.sync(i.region, i.mode === 'region', i.yearThen, i.yearNow)) i = readInput(); render(i); },
       preset: function (name) {
-        fillYears($('yearThen'), YEARS_ALL, false); fillYears($('yearNow'), YEARS_ALL, false);   // 지역에 맞춰 줄어든 목록이면 1990이 없을 수 있다
-        $('priceThen').value = ''; $('priceNow').value = ''; $('area').value = ''; $('regionPrice').value = ''; $('yearThen').value = '1990'; $('yearNow').value = String(YEARS_ALL[YEARS_ALL.length - 1]);
-        want = { then: 1990, now: YEARS_ALL[YEARS_ALL.length - 1] };
+        PI.reset();   // 지역에 맞춰 줄어든 목록이면 1990이 없을 수 있어 전체 목록부터
+        $('priceThen').value = ''; $('priceNow').value = ''; $('area').value = ''; $('regionPrice').value = '';
         if (name === 'clear') return;
         if (name === 'ex') {
           var d = document.querySelector('input[name="mode"][value="direct"]'); if (d) d.checked = true;

@@ -12,14 +12,14 @@
 python3 tools/build/build.py
 ```
 
-등록부에서 154쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
+등록부에서 155쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
 같은 소스로 두 번 돌리면 결과가 같아야 합니다(멱등). 달라지면 버그입니다.
 
 - `site_core.py` — 등록부(TOOLS, TABLES, FORMS, REFS, GUIDES, HUBS, RATE_HISTORY)와 공통 틀.
   메뉴·사이트맵·홈 타일이 전부 여기서 나옵니다
 - `pages_new.py` / `pages_cgt.py` / `pages_tools2.py` / `pages_tax.py` / `pages_tools3.py` / `pages_tools4.py` — 계산기 본문
   (`pages_tax.py`는 재산세·종부세·증여세, `pages_tools3.py`는 상속세·전세대출·예적금·실업급여·시급,
-  `pages_tools4.py`는 연말정산·등기비용·연금저축IRP·육아휴직·연차·주택임대소득세·종합소득세·땅값 몇 배)
+  `pages_tools4.py`는 연말정산·등기비용·연금저축IRP·육아휴직·연차·주택임대소득세·종합소득세·땅값 몇 배·아파트값 몇 배)
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽, 안내 글 4편
 - `pages_guides2.py` — 안내 글 54편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
@@ -41,8 +41,8 @@ python3 tools/build/build.py
 
 ### 검색 제외 (noindex)
 
-154쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
-검색 대상은 141쪽입니다(2026-11-02). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
+155쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
+검색 대상은 142쪽입니다(2026-11-03). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
 
 - 용어 9쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
 - 용어 39쪽 중 30쪽은 1,000자 이상으로 늘려 검색에 되돌렸습니다: 대항력·확정일자·전세가율·DSR·LTV,
@@ -107,6 +107,7 @@ node tools/verify.js
 - 모든 쪽: 사이트맵에 있는 쪽은 noindex가 아니고, 없는 쪽은 noindex인지. 안내 글·홈은 반드시 검색 대상
 - 모든 쪽: 가로 넘침 — 390px과 320px 두 폭에서. 표는 자기 상자 안에서만 밀리면 통과
 - 모든 쪽: 검색 설명(meta description) 160자 이내
+- 모든 쪽: 입력칸 오른쪽 단위(원/㎡, 개월 등)가 숫자와 겹치지 않는지. 여백은 `site_core.fit_suffixes`가 단위 길이로 정함(2026-11, 원/㎡가 겹쳤음)
 - 주요 계산기에 값을 넣고 결과가 기대값과 맞는지 (안내 글 본문 숫자 일부 포함)
 - 콘솔 JS 오류
 
@@ -227,6 +228,12 @@ https://전국부동산계산기.com/guide-prepayment.html
     맞는 줄을 찾아 쓰고, 짝이 없는 울릉군·합천군은 2005년부터만 넣는다. 새로 받은 파일에서도 변환 결과 출력(바로잡은 지역 수)을 확인할 것
   - 기준 시점: 지가지수 2026년 6월=100(파일 안에 없어 스크립트의 `BASE`에 적음), 물가 2020=100. KOSIS가 2026-12-18에 2025=100으로 바꿀 예정 — 배수는 같지만 표기를 고칠 것
   - 시안 화면을 볼 때만 `LAND_INDEX_FILE=<가짜 자료 경로> python3 tools/build/build.py`로 빌드하고, 그 뒤 반드시 그냥 다시 빌드할 것
+- **아파트값 몇 배 계산기 자료**(한국부동산원 아파트 매매가격지수, 월간) — `tools/data/apt_index.json` → 빌드가 `js/apt-index-data.js`.
+  땅값과 같은 틀(연도 값은 12월 지수, 올해는 최신 달)이고, 연도 목록·기간·물가 계산은 두 계산기가 `js/price-index.js`를 같이 쓴다.
+  **2026-11-03 현재 자료가 아직 없어** 처음 화면이 매매가 직접 입력이고, 지역 고르기는 「자료 준비 중」으로 나온다(물가 비교도 자료 파일의 `cpi`를 쓰므로 그때까지 빈칸).
+  지역을 고르면 「지금 시세」 칸에 그 지역 아파트 평균 매매가(부동산원 평균매매가격, 최신 달 — json의 `regions[].avg`, `meta.avg_label`)를 넣어 둔다.
+  사용자가 직접 넣은 값은 덮어쓰지 않는다. 공유 링크·저장된 값의 연도는 `PriceIndex.adopt()`(wireCalc의 onApply)가 살린다 — 빼면 첫 계산에서 1990 등 처음 값으로 덮인다(2026-11 버그). 땅값 계산기는 지역 평균 땅값(원/㎡) 공식 자료가 없고 임야·논밭·대지가 섞여 의미도 약해 자동으로 넣지 않는다
+  시안은 `APT_INDEX_FILE=<가짜 자료 경로>`로 빌드해 보고 그 뒤 그냥 다시 빌드할 것
 - `js/parental-leave.js` — 육아휴직 급여 상한(250·200·160만원, 6+6 단계별 상한). 고용보험법 시행령이 바뀌면 안내 글 `guide-parental-leave-pay.html`도
 - `js/pension-tax-credit.js`(600·900만원, 15·12%), `js/annual-leave.js`(근로기준법 60조)는 거의 안 바뀜
 

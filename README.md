@@ -24,7 +24,7 @@ DNS는 가비아에서 관리하며 A 레코드 4개(185.199.108~111.153)가 ape
 
 ## 페이지
 
-**계산기 37개**
+**계산기 38개**
 
 | 파일 | 내용 |
 | --- | --- |
@@ -65,6 +65,7 @@ DNS는 가비아에서 관리하며 A 레코드 4개(185.199.108~111.153)가 ape
 | `rental-income-tax.html` | 주택임대소득세 — 비과세 판정, 간주임대료, 2천만원 이하 분리과세 (참고용) |
 | `income-tax.html` | 종합소득세 — 3.3% 뗀 사업소득의 단순경비율·실제 경비, 결정세액과 5월 환급액 (참고용) |
 | `land-multiple.html` | 땅값 몇 배 — 지역(시·군·구) 지가지수 또는 같은 땅의 개별공시지가로 상승 배수, 연평균 상승률, 물가 비교. 자료는 `tools/data/` |
+| `apartment-multiple.html` | 아파트값 몇 배 — 지역(시·군·구) 아파트 매매가격지수 또는 산 가격과 지금 시세로 상승 배수, 연평균 상승률, 그때 시세 추정, 지역 평균과 비교 |
 
 **표·자료** `table-acquisition-tax.html`, `table-capital-gains-tax.html`, `table-brokerage-fee.html`, `table-subscription-points.html`, `base-rate-history.html` — 세율표·요율표·가점표·기준금리 이력. 값이 바뀌면 `tools/build/pages_tables.py`와 해당 js 상수를 함께 고친다.
 

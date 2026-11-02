@@ -104,6 +104,15 @@ function near(label, got, want, tol) {
       const links = [...document.querySelectorAll('a[href]')].map(a => a.getAttribute('href')).filter(h => h && !/^(https?:|#|mailto:)/.test(h));
       const ids = [...document.querySelectorAll('[id]')].map(e => e.id); const dup = ids.filter((x, i) => ids.indexOf(x) !== i);
       if (dup.length) bad.push('dup-id:' + [...new Set(dup)].join(','));
+      // 입력칸 오른쪽 단위(원/㎡, 개월 등)가 숫자와 겹치지 않는지: 오른쪽 여백 ≥ 단위 폭 + 오른쪽 12px + 간격 4px.
+      // 숨은 칸도 재려고 단위 글자 폭은 같은 글꼴의 보이지 않는 span으로 잰다(site_core.fit_suffixes, 2026-11)
+      document.querySelectorAll('.input-wrap .suffix').forEach(s => {
+        const inp = s.parentNode.querySelector('input'); if (!inp || !s.textContent.trim()) return;
+        const probe = document.createElement('span'); probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font-size:' + getComputedStyle(s).fontSize;
+        probe.textContent = s.textContent; document.body.appendChild(probe);
+        const need = probe.getBoundingClientRect().width + 12 + 4; probe.remove();
+        if (parseFloat(getComputedStyle(inp).paddingRight) < need) bad.push('단위 겹침:' + (inp.id || '?') + '(' + s.textContent + ')');
+      });
       const robots = document.querySelector('meta[name=robots]');
       const desc = document.querySelector('meta[name=description]');
       return { bad, links, noindex: !!(robots && /noindex/.test(robots.content)), sw: document.documentElement.scrollWidth, text: document.body.innerText.length, desc: desc ? desc.content.length : 0,
@@ -860,6 +869,23 @@ function near(label, got, want, tol) {
   await page.selectOption('#region', '부산 해운대구'); expect('땅값 해운대 그때 연도 옮김', await page.inputValue('#yearThen'), '1994');
   expect('땅값 해운대 연도 목록 첫 해', await page.$eval('#yearThen option', o => o.value), '1994'); expect('땅값 해운대 안내', (await get('out-note')).includes('1994년부터'), true);
   await page.selectOption('#region', '서울 강남구'); expect('땅값 지역 바꾸면 고른 해로', await page.inputValue('#yearThen'), '1990');
+  // 공유 링크의 연도가 살아야 한다(2026-11 버그: 그때 연도가 1990으로 돌아가 34년이 36년으로 계산됨). 지역 고르기·목록 밖 연도도
+  await fresh('land-multiple.html?mode=direct&priceThen=10800000&priceNow=46220000&yearThen=1992&yearNow=2026');
+  expect('땅값 공유 링크 그때 연도', await page.inputValue('#yearThen'), '1992'); expect('땅값 공유 링크 기간', await get('out-years'), '34년');
+  expect('땅값 공유 링크 배수', await get('out-big'), '4.28'); expect('땅값 공유 링크 연평균', await get('out-cagr'), '4.37');
+  await fresh('land-multiple.html?mode=region&region=' + encodeURIComponent('서울 강남구') + '&yearThen=1992&yearNow=2020');
+  expect('땅값 공유 링크 지역 연도', (await page.inputValue('#yearThen')) + '→' + (await page.inputValue('#yearNow')), '1992→2020'); expect('땅값 공유 링크 지역 기간', await get('out-years'), '28년');
+  await fresh('land-multiple.html?mode=direct&priceThen=1000000&priceNow=2000000&yearThen=1970&yearNow=2026');
+  expect('땅값 목록 밖 연도는 처음 값', await page.inputValue('#yearThen'), '1990'); expect('땅값 목록 밖 연도 기간', await get('out-years'), '36년');
+  // apartment-multiple.html — 예시 3억 → 9억(2006→2026) 3배·연 5.65%, 같은 3배를 10년이면 11.61% (FAQ·본문 숫자)
+  // 지역 고르기(한국부동산원 아파트 매매가격지수)는 tools/data/apt_index.json이 들어오면 기대값을 더할 것
+  await fresh('apartment-multiple.html'); expect('아파트 처음 빈 화면', await get('sticky-monthly'), '—');
+  await page.click('.chip[data-preset="ex"]');
+  expect('아파트 예시 배수', await get('out-big'), '3'); expect('아파트 예시 연평균', await get('out-cagr'), '5.65'); expect('아파트 예시 기간', await get('out-years'), '20년');
+  expect('아파트 예시 오른 금액', await get('out-s3'), '6억원'); expect('아파트 예시 표 오른 금액', await get('out-diff'), '6억원');
+  await page.selectOption('#yearThen', '2016'); expect('아파트 3배 10년 연평균', await get('out-cagr'), '11.61');
+  await fresh('apartment-multiple.html?mode=direct&priceThen=300000000&priceNow=900000000&yearThen=2010&yearNow=2026');
+  expect('아파트 공유 링크 연도', await page.inputValue('#yearThen'), '2010'); expect('아파트 공유 링크 기간', await get('out-years'), '16년'); expect('아파트 공유 링크 연평균', await get('out-cagr'), '7.11');
   // guide-year-end-dependents.html — 기납부 비움, 공제 없음. 결정세액
   for (const [sal, fam, want] of [['30000000', '1', '371,860'], ['30000000', '2', '270,610'], ['40000000', '1', '1,430,480'], ['40000000', '2', '1,205,480'], ['50000000', '1', '2,658,716'], ['50000000', '2', '2,433,716'],
                                   ['60000000', '1', '3,937,952'], ['60000000', '2', '3,712,952'], ['80000000', '1', '7,294,790'], ['80000000', '2', '6,934,790']]) {
