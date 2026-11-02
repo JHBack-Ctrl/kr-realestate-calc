@@ -884,6 +884,23 @@ function near(label, got, want, tol) {
   expect('아파트 예시 배수', await get('out-big'), '3'); expect('아파트 예시 연평균', await get('out-cagr'), '5.65'); expect('아파트 예시 기간', await get('out-years'), '20년');
   expect('아파트 예시 오른 금액', await get('out-s3'), '6억원'); expect('아파트 예시 표 오른 금액', await get('out-diff'), '6억원');
   await page.selectOption('#yearThen', '2016'); expect('아파트 3배 10년 연평균', await get('out-cagr'), '11.61');
+  // 지역 고르기 — 한국부동산원 아파트 매매가격지수(tools/data/apt_index.json, 2026년 9월까지). 본문 「지역 지수로 본 배수」 절·FAQ 숫자
+  await fresh('apartment-multiple.html'); expect('아파트 지역 처음 빈 화면', await get('sticky-monthly'), '—');
+  await page.selectOption('#region', '전국');
+  expect('아파트 전국 2006→2026', await get('out-big'), '1.47'); expect('아파트 전국 연평균', await get('out-cagr'), '1.98'); expect('아파트 전국 기간', await get('out-years'), '19년 9개월');
+  expect('아파트 전국 평균 매매가 자동', await page.inputValue('#regionPrice'), '523,000,000'); expect('아파트 전국 2006 시세 추정', await get('out-s3'), '3억 5,500만원');
+  await page.selectOption('#yearNow', '2025'); expect('아파트 평균가는 최신 달 기준이라 2006 추정 그대로', await get('out-s3'), '3억 5,500만원');
+  expect('아파트 전국 2006→2025 물가', await get('out-cpi'), '1.53배'); expect('아파트 전국 물가 뺀 배수', await get('out-real'), '0.93배'); await page.selectOption('#yearNow', '2026');
+  await page.selectOption('#yearThen', '2012'); expect('아파트 전국 2012→2026', await get('out-big'), '1.22');
+  await page.selectOption('#yearThen', '2003'); expect('아파트 전국 2003→2026', await get('out-big'), '1.76');
+  await page.selectOption('#region', '서울 전체'); expect('아파트 서울 2003→2026', await get('out-big'), '2.24');
+  await page.selectOption('#yearThen', '2006'); expect('아파트 서울 2006→2026', await get('out-big'), '1.68');
+  await page.selectOption('#region', '세종 전체'); expect('아파트 세종은 2012년부터', await page.inputValue('#yearThen'), '2012');
+  await page.fill('#regionPrice', '500000000'); await page.dispatchEvent('#regionPrice', 'input'); await page.selectOption('#region', '전국');
+  expect('아파트 직접 넣은 시세는 지역을 바꿔도 그대로', await page.inputValue('#regionPrice'), '500,000,000');
+  // 직접 입력 + 지역 비교: 3억 → 9억(2006→2026)은 3배, 같은 기간 전국 지수 1.47배
+  await fresh('apartment-multiple.html'); await page.click('.chip[data-preset="ex"]'); await page.selectOption('#region', '전국');
+  expect('아파트 직접 입력 지역 비교', await get('out-cmp'), '1.47배');
   await fresh('apartment-multiple.html?mode=direct&priceThen=300000000&priceNow=900000000&yearThen=2010&yearNow=2026');
   expect('아파트 공유 링크 연도', await page.inputValue('#yearThen'), '2010'); expect('아파트 공유 링크 기간', await get('out-years'), '16년'); expect('아파트 공유 링크 연평균', await get('out-cagr'), '7.11');
   // guide-year-end-dependents.html — 기납부 비움, 공제 없음. 결정세액
