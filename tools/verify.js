@@ -847,8 +847,11 @@ function near(label, got, want, tol) {
   // 지역 고르기 — 한국부동산원 지가지수(tools/data/land_index.json). 올해는 9월 지수라 기간이 9개월 짧다
   await fresh('land-multiple.html'); expect('땅값 지역 처음 빈 화면', await get('sticky-monthly'), '—');
   await page.selectOption('#region', '서울 강남구');
+  // 본문 「지역 지수와 내 땅의 공시지가 배수」 절의 숫자도 여기서 확인 (강남구 1990→2026, 1987→2026, 전국 1990→2026)
   expect('땅값 강남구 1990→2026 배수', await get('out-big'), '2.53'); expect('땅값 강남구 연평균', await get('out-cagr'), '2.63'); expect('땅값 강남구 기간', await get('out-years'), '35년 9개월');
-  await type('yearNow', '2025'); await page.selectOption('#region', '전국');
+  await type('yearThen', '1987'); expect('땅값 강남구 1987→2026 배수', await get('out-big'), '7.04'); await type('yearThen', '1990');
+  await page.selectOption('#region', '전국'); expect('땅값 전국 1990→2026 배수', await get('out-big'), '1.93');
+  await type('yearNow', '2025');
   expect('땅값 전국 1990→2025', await get('out-big'), '1.9'); expect('땅값 전국 물가 배수', await get('out-cpi'), '3.03배'); expect('땅값 전국 물가 뺀 배수', await get('out-real'), '0.63배');
   await page.selectOption('#region', '부산 해운대구'); expect('땅값 해운대 1990 자료 없음', await get('out-big'), '—'); expect('땅값 해운대 안내', (await get('out-note')).includes('1994년부터'), true);
   // guide-year-end-dependents.html — 기납부 비움, 공제 없음. 결정세액
