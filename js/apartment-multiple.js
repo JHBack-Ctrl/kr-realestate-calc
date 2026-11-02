@@ -8,6 +8,8 @@
   var IDX = window.APT_INDEX || null;
   var PI = window.PriceIndex(IDX, { defaultThen: 2006 });   // 연도 목록·기간·물가 공통 (js/price-index.js)
   var AVG = (IDX && IDX.avg) || {};                          // 지역 평균 매매가(원, 최신 달)
+  var AVG_M2 = (IDX && IDX.avgM2) || {};                     // 지역 ㎡당 평균 매매가(원, 최신 달)
+  var PYEONG_M2 = 400 / 121;                                 // 1평 = 3.305785㎡ (area.js와 같은 값)
 
   // 지역을 바꾸면 「지금 시세」에 그 지역 평균 매매가를 넣어 둔다. 사용자가 직접 넣은 값은 덮어쓰지 않고,
   // 칸을 비워도 같은 지역에서는 다시 채우지 않는다(지역을 바꿀 때만). 넣었으면 true
@@ -31,8 +33,11 @@
     var multiple = ok ? b / a : 0;
     var cagr = ok && mon > 0 ? (Math.pow(multiple, 12 / mon) - 1) * 100 : null;
     var cpiMultiple = PI.cpi(i.yearThen, i.yearNow);
-    // 지역 고르기에서 지금 시세를 넣으면 같은 지수 비율로 그때 시세를 거꾸로 추정한다(지수는 가격이 아니라 변동 비율이라)
-    var rp = region && ok && i.regionPrice > 0 ? { now: i.regionPrice, then: i.regionPrice * p.then / p.now } : null;
+    // 지역 고르기에서 시세를 넣으면 같은 지수 비율로 그때 시세를 거꾸로 추정한다(지수는 가격이 아니라 변동 비율이라).
+    // 직접 넣은 시세는 「지금 연도」의 값으로 보고, 자동으로 넣은 평균 매매가는 최신 달 값이라 최신 달 지수에 맞춘다
+    // (지금 연도를 지난해로 고르면 그해 값도 추정 — anchored)
+    var ref = i.auto && IDX && IDX.regions[i.region] ? IDX.regions[i.region][IDX.latestYear] : p.now;
+    var rp = region && ok && i.regionPrice > 0 && ref ? { now: i.regionPrice * p.now / ref, then: i.regionPrice * p.then / ref, anchored: ref !== p.now || (i.auto && i.yearNow !== IDX.latestYear) } : null;
     // 직접 입력에서 지역을 고르면 같은 해의 지역 평균 배수
     var cmp = !region && i.region && !p.missing && years > 0 ? p.now / p.then : null;
     return { p: p, ok: ok, years: years, months: mon, multiple: multiple, cagr: cagr, rp: rp, cmp: cmp,
@@ -66,16 +71,22 @@
     S.setText('sticky-monthly', r.ok ? times(r.multiple) + '배' : '—');
     S.setText('out-cagr', r.cagr == null ? '—' : S.fmtRate(r.cagr));
     S.setText('out-years', r.months > 0 ? PI.period(r.months) : '—');
-    var avgWord = i.auto ? '평균 ' : '';
-    S.setText('out-s3-label', region ? (r.rp ? '그때 ' + avgWord + '시세 (추정)' : '지금 매매지수') : '오른 금액');
-    S.setText('out-rp-then-label', '그때 ' + avgWord + '시세 (추정)'); S.setText('out-rp-now-label', i.auto ? '지금 평균 매매가' : '지금 시세');
+    S.setText('out-s3-label', region ? (r.rp ? '그때 시세 (추정)' : '지금 매매지수') : '오른 금액');
+    S.setText('out-rp-then-label', i.yearThen + '년 시세 (추정)');
+    S.setText('out-rp-now-label', r.rp && r.rp.anchored ? i.yearNow + '년 시세 (추정)' : i.auto ? '지금 평균 매매가' : '지금 시세');
     S.setText('region-price-help', i.auto && i.region ? i.region + ' 아파트 평균 매매가(' + (IDX.avgLabel || IDX.latest) + ')를 넣어 두었습니다. 우리 집 시세로 바꿔 넣으면 우리 집 기준으로 다시 계산합니다' :
       '지역을 고르면 그 지역 아파트 평균 매매가가 들어갑니다. 우리 집 시세로 바꿔 넣으면 지역 지수 비율로 그때 시세를 추정합니다');
     S.setText('out-s3', region ? (r.rp ? approx(r.rp.then) : r.ok ? idx(r.p.now) : '—') : (r.ok ? S.fmtKorean(i.now - i.then) : '—'));
     // 지역 고르기
     S.setText('out-region-name', i.region || '—'); S.setText('out-idx-then', region ? idx(r.p.then) : '—'); S.setText('out-idx-now', region ? idx(r.p.now) : '—');
     S.setText('out-idx-base', IDX ? IDX.base : '—');
-    if (r.rp) { S.setText('out-rp-then', approx(r.rp.then)); S.setText('out-rp-now', S.fmtKorean(r.rp.now)); S.setText('out-rp-diff', S.fmtKorean(r.rp.now - roundEst(r.rp.then))); }
+    var am2 = region && i.region ? AVG_M2[i.region] : 0;
+    $('avg-py-row').hidden = !am2;
+    if (am2) S.setText('out-avg-py', approx(am2 * PYEONG_M2) + ' (' + (IDX.avgLabel || IDX.latest) + ')');
+    if (r.rp) {
+      var nowShown = r.rp.anchored ? roundEst(r.rp.now) : r.rp.now;   // 보이는 값끼리 빼서 표 안의 셈이 맞게
+      S.setText('out-rp-then', approx(r.rp.then)); S.setText('out-rp-now', S.fmtKorean(nowShown)); S.setText('out-rp-diff', S.fmtKorean(nowShown - roundEst(r.rp.then)));
+    }
     // 직접 입력
     S.setText('out-then', i.then ? S.fmtKorean(i.then) : '—'); S.setText('out-now', i.now ? S.fmtKorean(i.now) : '—');
     S.setText('out-diff', r.ok ? S.fmtKorean(i.now - i.then) : '—');
@@ -99,8 +110,9 @@
     else if (r.months <= 0) note = '지금 연도를 그때 연도보다 뒤로 골라 주세요.';
     else if (region) note = i.region + ' 아파트 매매가격지수: ' + i.yearThen + '년 ' + idx(r.p.then) + ' → ' + i.yearNow + '년 ' + idx(r.p.now) + '. ' + PI.period(r.months) + ' 동안 ' +
       times(r.multiple) + '배, 연평균 ' + S.fmtRate(r.cagr) + '%입니다. ' +
-      (r.rp ? (i.auto ? '지금 평균 매매가 ' + S.fmtKorean(r.rp.now) + ' 기준으로 ' + i.yearThen + '년 평균은 약 ' : '지금 시세가 ' + S.fmtKorean(r.rp.now) + '이면 같은 비율로 ' + i.yearThen + '년에는 약 ') +
-          approx(r.rp.then) + '이었던 셈입니다. 지역 평균 변동으로 거꾸로 계산한 추정값입니다.'
+      (r.rp ? (i.auto ? IDX.avgLabel + ' 평균 매매가(' + S.fmtKorean(i.regionPrice) + ') 수준의 아파트가 지수만큼 움직였다면 ' + i.yearThen + '년에는 약 ' + approx(r.rp.then) +
+          (r.rp.anchored ? ', ' + i.yearNow + '년에는 약 ' + approx(r.rp.now) : '') + '이었던 셈입니다. 그해 실제 평균 매매가와는 다릅니다(평균에 들어가는 아파트가 해마다 바뀜).'
+        : '지금 시세가 ' + S.fmtKorean(i.regionPrice) + '이면 같은 비율로 ' + i.yearThen + '년에는 약 ' + approx(r.rp.then) + '이었던 셈입니다. 지역 평균 변동으로 거꾸로 계산한 추정값입니다.')
         : '지역 평균이라 우리 아파트와는 다를 수 있습니다. 「지금 시세」를 넣으면 그때 시세를 추정해 보여 줍니다.');
     else note = i.yearThen + '년 ' + S.fmtKorean(i.then) + '에 산 아파트가 ' + i.yearNow + '년 ' + S.fmtKorean(i.now) + '이면 ' + r.years + '년 동안 ' + times(r.multiple) + '배, 연평균 ' +
       S.fmtRate(r.cagr) + '%씩 오른 셈입니다.' + (r.cmp ? ' 같은 기간 ' + i.region + ' 평균은 ' + times(r.cmp) + '배입니다.' : '') + ' 세금과 거래 비용은 빠져 있습니다.';
