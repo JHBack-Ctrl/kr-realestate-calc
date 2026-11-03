@@ -20,7 +20,7 @@
   "published": "2026-10-27"
  },
  "apartment-multiple.html": {
-  "hash": "8cc139ecb3a1",
+  "hash": "870e4a0b3667",
   "modified": "2026-11-03",
   "published": "2026-11-03"
  },
@@ -50,8 +50,8 @@
   "published": "2026-09-17"
  },
  "comprehensive-property-tax.html": {
-  "hash": "12d5c8655685",
-  "modified": "2026-10-30",
+  "hash": "8b45d96ba4ee",
+  "modified": "2026-11-03",
   "published": "2026-10-24"
  },
  "conversion.html": {
@@ -90,8 +90,8 @@
   "published": "2026-09-20"
  },
  "gift-tax.html": {
-  "hash": "0aebdbd0424f",
-  "modified": "2026-10-30",
+  "hash": "d170423a42e5",
+  "modified": "2026-11-03",
   "published": "2026-10-24"
  },
  "glossary.html": {
@@ -113,6 +113,11 @@
   "hash": "c05ea988197b",
   "modified": "2026-10-30",
   "published": "2026-10-30"
+ },
+ "guide-apartment-multiple.html": {
+  "hash": "9452721549b4",
+  "modified": "2026-11-03",
+  "published": "2026-11-03"
  },
  "guide-area-84.html": {
   "hash": "00097b72e7ca",
@@ -164,6 +169,11 @@
   "modified": "2026-10-06",
   "published": "2026-09-17"
  },
+ "guide-deposit-100m.html": {
+  "hash": "7388279c41eb",
+  "modified": "2026-11-03",
+  "published": "2026-11-03"
+ },
  "guide-deposit-return.html": {
   "hash": "49d34de3ddd9",
   "modified": "2026-10-21",
@@ -189,10 +199,20 @@
   "modified": "2026-10-31",
   "published": "2026-10-31"
  },
+ "guide-gift-tax-free.html": {
+  "hash": "f2802309eb6c",
+  "modified": "2026-11-03",
+  "published": "2026-11-03"
+ },
  "guide-gift-vs-inheritance.html": {
   "hash": "113ccba070f8",
   "modified": "2026-10-27",
   "published": "2026-10-27"
+ },
+ "guide-inheritance-threshold.html": {
+  "hash": "cfb7f30b6c80",
+  "modified": "2026-11-03",
+  "published": "2026-11-03"
  },
  "guide-jeonse-insurance-fail.html": {
   "hash": "53b0fbfe820d",
@@ -219,10 +239,20 @@
   "modified": "2026-11-02",
   "published": "2026-09-17"
  },
+ "guide-jongbuse-payment.html": {
+  "hash": "d38d42759dc1",
+  "modified": "2026-11-03",
+  "published": "2026-11-03"
+ },
  "guide-jongbuse-threshold.html": {
   "hash": "2b59ed83acd2",
   "modified": "2026-10-27",
   "published": "2026-10-27"
+ },
+ "guide-land-price-lookup.html": {
+  "hash": "b91095bd7631",
+  "modified": "2026-11-03",
+  "published": "2026-11-03"
  },
  "guide-loan-rate-structure.html": {
   "hash": "af5c3ccbaa42",
@@ -390,8 +420,8 @@
   "published": "2026-09-27"
  },
  "guides.html": {
-  "hash": "035a8ee8ae85",
-  "modified": "2026-10-31",
+  "hash": "6a33179322a0",
+  "modified": "2026-11-03",
   "published": "2026-09-17"
  },
  "hourly-wage.html": {
@@ -405,13 +435,13 @@
   "published": "2026-10-31"
  },
  "index.html": {
-  "hash": "80f8aee8b767",
+  "hash": "815a3d7f8f8d",
   "modified": "2026-11-03",
   "published": "2026-09-17"
  },
  "inheritance-tax.html": {
-  "hash": "27973062369f",
-  "modified": "2026-10-30",
+  "hash": "00ad9c402f72",
+  "modified": "2026-11-03",
   "published": "2026-10-26"
  },
  "jeonse-fraud-check.html": {
@@ -430,7 +460,7 @@
   "published": "2026-10-26"
  },
  "land-multiple.html": {
-  "hash": "7cf14d908ac7",
+  "hash": "2229aa81b800",
   "modified": "2026-11-03",
   "published": "2026-11-02"
  },
@@ -480,8 +510,8 @@
   "published": "2026-09-17"
  },
  "refs.html": {
-  "hash": "5450cbb683f3",
-  "modified": "2026-10-31",
+  "hash": "e8dfefd73303",
+  "modified": "2026-11-03",
   "published": "2026-09-20"
  },
  "registration-cost.html": {
@@ -515,7 +545,7 @@
   "published": "2026-09-17"
  },
  "savings.html": {
-  "hash": "14db483a8509",
+  "hash": "bdf55e203f78",
   "modified": "2026-11-03",
   "published": "2026-10-26"
  },

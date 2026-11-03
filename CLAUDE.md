@@ -12,7 +12,7 @@
 python3 tools/build/build.py
 ```
 
-등록부에서 155쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
+등록부에서 161쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
 같은 소스로 두 번 돌리면 결과가 같아야 합니다(멱등). 달라지면 버그입니다.
 
 - `site_core.py` — 등록부(TOOLS, TABLES, FORMS, REFS, GUIDES, HUBS, RATE_HISTORY)와 공통 틀.
@@ -21,7 +21,7 @@ python3 tools/build/build.py
   (`pages_tax.py`는 재산세·종부세·증여세, `pages_tools3.py`는 상속세·전세대출·예적금·실업급여·시급,
   `pages_tools4.py`는 연말정산·등기비용·연금저축IRP·육아휴직·연차·주택임대소득세·종합소득세·땅값 몇 배·아파트값 몇 배)
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽, 안내 글 4편
-- `pages_guides2.py` — 안내 글 54편
+- `pages_guides2.py` — 안내 글 60편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
 - `build.py` — 위를 모아 쓰고 `manifest.json`, `sw.js`, `sitemap.xml`, `js/analytics.js`를 생성
 
@@ -41,8 +41,8 @@ python3 tools/build/build.py
 
 ### 검색 제외 (noindex)
 
-155쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
-검색 대상은 142쪽입니다(2026-11-03). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
+161쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
+검색 대상은 148쪽입니다(2026-11-03). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
 
 - 용어 9쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
 - 용어 39쪽 중 30쪽은 1,000자 이상으로 늘려 검색에 되돌렸습니다: 대항력·확정일자·전세가율·DSR·LTV,
@@ -182,11 +182,12 @@ https://전국부동산계산기.com/guide-prepayment.html
   안내 글 `guide-acquisition-tax.html`·`guide-acquisition-6-9.html`·`guide-buying-costs.html`·`guide-mixed-use-acquisition.html`(상가주택)의 숫자도 다시 뽑을 것
 - 종합부동산세: `js/comprehensive-property-tax.js`. 2026년 8월 세제개편안(공정시장가액비율 70~80%, 실거주 1주택 공제,
   세액공제 금액 한도, 세부담상한 200%)은 **국회 통과 전이라 미반영**. 통과되면 상수와 계산기 안내 문구(`pages_tax.py`)를 고칠 것.
-  안내 글 `guide-jongbuse-threshold.html`의 공시가격별 표와 공동명의 예시도 다시 뽑을 것
-- 증여세: `js/gift-tax.js`의 `RATES`, `DEDUCT`, `MARRIAGE_BIRTH`. 상속·증여세 개편(유산취득세 등)이 통과되면 확인
+  안내 글 `guide-jongbuse-threshold.html`의 공시가격별 표와 공동명의 예시, `guide-jongbuse-payment.html`(세액별 분납 금액·납부유예 소득 기준)도 다시 뽑을 것
+- 증여세: `js/gift-tax.js`의 `RATES`, `DEDUCT`, `MARRIAGE_BIRTH`. 상속·증여세 개편(유산취득세 등)이 통과되면 확인.
+  바뀌면 안내 글 `guide-gift-tax-free.html`(관계별 한도·금액별 증여세 표)도 다시 뽑을 것
 - 상속세: `js/inheritance-tax.js`의 `LUMP`, `CHILD`, `SPOUSE_MIN/MAX`, `RATES`. 자녀공제 5억 상향·유산취득세 전환이
   **국회 통과 전이라 미반영**(2026-10). 통과되면 상수와 계산기 FAQ 「앞으로 바뀔 수 있나요?」(`pages_tools3.py`), verify 기대값,
-  안내 글 `guide-gift-vs-inheritance.html`의 비교표를 고칠 것
+  안내 글 `guide-gift-vs-inheritance.html`의 비교표와 `guide-inheritance-threshold.html`(재산별 상속세 표, 서울 평균 아파트 예시)를 고칠 것
 - 연말정산: `js/year-end-tax.js` 상수 블록(카드 한도·공제율, 월세, 연금계좌, 혼인세액공제 2026년까지). 2026년 8월 개편안의
   월세 한도 1,200만원·청년 17%, 자녀세액공제 나이 기준은 **2027년 귀속, 국회 통과 전이라 미반영**. 통과되면 `js/rent-tax-credit.js`도 같이.
   혼인세액공제는 2026년 혼인신고분까지라 연장 여부를 확인하고, 안내 글 `guide-year-end-december.html`(카드·연금·혼인 숫자)과
@@ -219,7 +220,8 @@ https://전국부동산계산기.com/guide-prepayment.html
   최저임금 10,700원이면 하한이 68,480원으로 지금 상한을 넘으므로 상한이 또 오를 가능성이 큼. 고용노동부 발표로 확인할 것.
   계산기 본문의 「334만원 이하면 하한, 344만원 이상이면 상한」 문장과 예시 숫자, 안내 글 `guide-unemployment-floor.html`(표·날수별 총액·
   조기재취업수당 예시·「2027년에 바뀔 것」 절)도 다시 뽑을 것
-- `js/savings.js`(이자소득세 15.4%)와 `js/jeonse-loan.js`(주택임차차입금 소득공제 40%·400만원)는 거의 안 바뀜
+- `js/savings.js`(이자소득세 15.4%)와 `js/jeonse-loan.js`(주택임차차입금 소득공제 40%·400만원)는 거의 안 바뀜.
+  예금자보호 한도(1억원, 2025-09부터)와 금융소득 종합과세 기준(2,000만원)은 `guide-deposit-100m.html`에 적혀 있음
 - **땅값 몇 배 계산기 자료**(한국부동산원 지가지수 + 통계청 소비자물가지수) — 원자료는 `tools/data/raw/`(받은 그대로),
   `python3 tools/data/convert_land_index.py`가 `tools/data/land_index.json`으로 정리하고, 빌드가 `js/land-index-data.js`와 지역 목록을 만든다.
   해마다 1월(또는 최신 달을 더할 때) R-ONE 연간·월별 지가지수와 KOSIS 소비자물가지수(연간)를 다시 받아 raw/를 바꾸고 변환 → 빌드 → verify 기대값 확인.
@@ -240,6 +242,8 @@ https://전국부동산계산기.com/guide-prepayment.html
   - 지역을 고르면 「지금 시세」 칸에 평균 매매가를 넣어 두되 사용자가 직접 넣은 값은 덮어쓰지 않는다. 공유 링크·저장된 값의 연도는
     `PriceIndex.adopt()`(wireCalc의 onApply)가 살린다 — 빼면 첫 계산에서 처음 값으로 덮인다(2026-11 버그).
     땅값 계산기는 지역 평균 땅값(원/㎡) 공식 자료가 없고 임야·논밭·대지가 섞여 의미도 약해 자동으로 넣지 않는다
+  - 자료를 새로 받으면 안내 글 `guide-apartment-multiple.html`의 시·도별 표(2006·2012·2020·2021년부터, 평균 매매가)와 `guide-inheritance-threshold.html`의 서울 평균 아파트 예시도 다시 뽑을 것.
+    땅값 자료를 새로 받으면 `guide-land-price-lookup.html`의 전국 지가지수 숫자도
   - 자료 파일이 없으면 처음 화면이 매매가 직접 입력이고 지역 고르기는 「자료 준비 중」. 시안은 `APT_INDEX_FILE=<가짜 자료 경로>`로 빌드해 보고 그 뒤 그냥 다시 빌드할 것
 - `js/parental-leave.js` — 육아휴직 급여 상한(250·200·160만원, 6+6 단계별 상한). 고용보험법 시행령이 바뀌면 안내 글 `guide-parental-leave-pay.html`도
 - `js/pension-tax-credit.js`(600·900만원, 15·12%), `js/annual-leave.js`(근로기준법 60조)는 거의 안 바뀜
