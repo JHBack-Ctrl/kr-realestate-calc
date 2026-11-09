@@ -317,7 +317,15 @@ GUIDES = [
     ("guide-inheritance-threshold.html", "상속세, 얼마부터 내나", "상속세 면제 기준 — 배우자 있으면 10억, 없으면 5억까지 세금 없는 이유",
      "상속재산이 배우자가 있으면 10억원, 자녀만 있으면 5억원 남짓까지는 상속세가 없습니다. 일괄공제·배우자공제·금융재산공제가 어떻게 쌓이는지, 재산 5억~30억원일 때 상속세가 얼마인지 계산기로 정리했습니다."),
     ("guide-deposit-100m.html", "1억 예금하면 이자 얼마인가", "1억 예금 이자 — 금리별 세후 이자, 금융소득 2천만원 기준, 예금자보호 1억",
-     "1억원을 연 3% 정기예금에 1년 넣으면 세전 300만원, 세후 253만 8,000원입니다. 금리·기간별 세후 이자, 이자가 2,000만원을 넘는 금액, 예금자보호 1억원 한도와 이자의 관계를 계산기로 정리했습니다."),
+     "1억원을 연 3% 정기예금에 1년 넣으면 세전 300만원, 세후 253만 8,000원입니다. 금리·기간별 세후 이자, 이자가 2,000만원을 넘는 금액, 예금자보호 1억원 한도와 이자의 관계를 계산기로 정리했습니다."),    # ---- 2026-11: 땅값·아파트값 글 4편 ----
+    ("guide-seoul-apartment-gu.html", "서울 25개 구 아파트값, 몇 배 올랐나", "서울 구별 아파트값 상승 배수 — 25개 구 매매가격지수, 2006·2012·2020년부터",
+     "한국부동산원 아파트 매매가격지수로 서울 25개 구의 아파트값이 2006년·2012년·2020년부터 몇 배가 됐는지 표로 정리했습니다. 출발 연도에 따라 순서가 바뀌는 이유와 구별 평균 매매가도 함께 봅니다."),
+    ("guide-land-index-sido.html", "땅값은 몇 배 올랐나, 시·도별 지가지수 표", "시·도별 땅값 상승 배수 — 지가지수로 본 1987·1990·2006년부터",
+     "한국부동산원 지가지수로 전국과 17개 시·도의 땅값이 2006년·2012년·2020년부터 몇 배가 됐는지, 1987년과 1990년부터 보면 왜 배수가 두 배씩 차이 나는지 계산기로 정리했습니다."),
+    ("guide-apartment-vs-land.html", "같은 동네, 아파트값과 땅값 중 어느 쪽이 더 올랐나", "아파트값과 땅값 비교 — 같은 지역 매매가격지수와 지가지수 배수",
+     "같은 시·도와 구에서 2006년부터 아파트 매매가격지수와 지가지수가 각각 몇 배가 됐는지 나란히 놓았습니다. 두 숫자가 다르게 움직이는 이유와 출발 연도에 따라 앞뒤가 바뀌는 곳도 정리했습니다."),
+    ("guide-real-price-multiple.html", "물가를 빼면 아파트값·땅값은 올랐을까", "물가 뺀 아파트값·땅값 — 소비자물가로 나눈 시·도별 배수",
+     "2006년부터 2025년까지 소비자물가는 1.53배가 됐습니다. 같은 기간 시·도별 아파트 매매가격지수와 지가지수를 물가 배수로 나눠, 물가를 뺀 배수가 1배보다 큰 곳과 작은 곳을 계산기로 정리했습니다."),
 ]
 # 계산기 쪽 결과 바로 아래에 붙는 「함께 읽는 안내 글」. 계산기마다 1~3편, 가장 가까운 글부터.
 # 2026-10 네이버 애널리틱스에서 평균 체류 39초, 방문당 1.63쪽이라 계산 뒤 다음 쪽으로 이어지게 넣었다.
@@ -359,8 +367,8 @@ TOOL_GUIDES = {
     "annual-leave.html": ["guide-annual-leave-pay.html", "guide-minimum-wage-2027.html"],
     "rental-income-tax.html": ["guide-rental-income-two-homes.html", "guide-officetel.html"],
     "income-tax.html": ["guide-freelancer-refund.html", "guide-year-end-dependents.html"],
-    "land-multiple.html": ["guide-land-price-lookup.html", "guide-apartment-multiple.html", "guide-buy-vs-rent.html"],
-    "apartment-multiple.html": ["guide-apartment-multiple.html", "guide-buy-vs-rent.html", "guide-cgt-high-price.html"],
+    "land-multiple.html": ["guide-land-price-lookup.html", "guide-land-index-sido.html", "guide-apartment-vs-land.html"],
+    "apartment-multiple.html": ["guide-apartment-multiple.html", "guide-seoul-apartment-gu.html", "guide-real-price-multiple.html"],
 }
 DOCS = [
     ("about.html", "사이트 소개"), ("privacy.html", "개인정보처리방침"), ("terms.html", "이용약관"),

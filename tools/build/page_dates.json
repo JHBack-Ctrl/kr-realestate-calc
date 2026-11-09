@@ -20,8 +20,8 @@
   "published": "2026-10-27"
  },
  "apartment-multiple.html": {
-  "hash": "870e4a0b3667",
-  "modified": "2026-11-03",
+  "hash": "8dc25c7c75b9",
+  "modified": "2026-11-05",
   "published": "2026-11-03"
  },
  "area.html": {
@@ -118,6 +118,11 @@
   "hash": "9452721549b4",
   "modified": "2026-11-03",
   "published": "2026-11-03"
+ },
+ "guide-apartment-vs-land.html": {
+  "hash": "20a94b0241aa",
+  "modified": "2026-11-05",
+  "published": "2026-11-05"
  },
  "guide-area-84.html": {
   "hash": "00097b72e7ca",
@@ -249,6 +254,11 @@
   "modified": "2026-10-27",
   "published": "2026-10-27"
  },
+ "guide-land-index-sido.html": {
+  "hash": "61e9ec0b53da",
+  "modified": "2026-11-05",
+  "published": "2026-11-05"
+ },
  "guide-land-price-lookup.html": {
   "hash": "b91095bd7631",
   "modified": "2026-11-03",
@@ -298,6 +308,11 @@
   "hash": "da159214e3f3",
   "modified": "2026-10-24",
   "published": "2026-09-21"
+ },
+ "guide-real-price-multiple.html": {
+  "hash": "3fcc4f592cc7",
+  "modified": "2026-11-05",
+  "published": "2026-11-05"
  },
  "guide-refinance.html": {
   "hash": "85b5be3ddea6",
@@ -358,6 +373,11 @@
   "hash": "2ffbef6edf24",
   "modified": "2026-10-30",
   "published": "2026-10-30"
+ },
+ "guide-seoul-apartment-gu.html": {
+  "hash": "2f84196b1c35",
+  "modified": "2026-11-05",
+  "published": "2026-11-05"
  },
  "guide-severance-tax.html": {
   "hash": "8e7a2ebdcba1",
@@ -420,8 +440,8 @@
   "published": "2026-09-27"
  },
  "guides.html": {
-  "hash": "6a33179322a0",
-  "modified": "2026-11-03",
+  "hash": "04fa3313ed74",
+  "modified": "2026-11-05",
   "published": "2026-09-17"
  },
  "hourly-wage.html": {
@@ -435,8 +455,8 @@
   "published": "2026-10-31"
  },
  "index.html": {
-  "hash": "815a3d7f8f8d",
-  "modified": "2026-11-03",
+  "hash": "44c9ed0034e9",
+  "modified": "2026-11-05",
   "published": "2026-09-17"
  },
  "inheritance-tax.html": {
@@ -460,8 +480,8 @@
   "published": "2026-10-26"
  },
  "land-multiple.html": {
-  "hash": "2229aa81b800",
-  "modified": "2026-11-03",
+  "hash": "c4eaf774b0d0",
+  "modified": "2026-11-05",
   "published": "2026-11-02"
  },
  "loan.html": {
@@ -510,8 +530,8 @@
   "published": "2026-09-17"
  },
  "refs.html": {
-  "hash": "e8dfefd73303",
-  "modified": "2026-11-03",
+  "hash": "225fc0cf01ae",
+  "modified": "2026-11-05",
   "published": "2026-09-20"
  },
  "registration-cost.html": {
