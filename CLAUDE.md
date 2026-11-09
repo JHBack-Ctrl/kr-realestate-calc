@@ -12,7 +12,7 @@
 python3 tools/build/build.py
 ```
 
-등록부에서 165쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
+등록부에서 170쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
 같은 소스로 두 번 돌리면 결과가 같아야 합니다(멱등). 달라지면 버그입니다.
 
 - `site_core.py` — 등록부(TOOLS, TABLES, FORMS, REFS, GUIDES, HUBS, RATE_HISTORY)와 공통 틀.
@@ -21,7 +21,7 @@ python3 tools/build/build.py
   (`pages_tax.py`는 재산세·종부세·증여세, `pages_tools3.py`는 상속세·전세대출·예적금·실업급여·시급,
   `pages_tools4.py`는 연말정산·등기비용·연금저축IRP·육아휴직·연차·주택임대소득세·종합소득세·땅값 몇 배·아파트값 몇 배)
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽, 안내 글 4편
-- `pages_guides2.py` — 안내 글 64편
+- `pages_guides2.py` — 안내 글 69편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
 - `build.py` — 위를 모아 쓰고 `manifest.json`, `sw.js`, `sitemap.xml`, `js/analytics.js`를 생성
 
@@ -41,8 +41,8 @@ python3 tools/build/build.py
 
 ### 검색 제외 (noindex)
 
-165쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
-검색 대상은 152쪽입니다(2026-11-04). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
+170쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
+검색 대상은 157쪽입니다(2026-11-09). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
 
 - 용어 9쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
 - 용어 39쪽 중 30쪽은 1,000자 이상으로 늘려 검색에 되돌렸습니다: 대항력·확정일자·전세가율·DSR·LTV,
@@ -179,7 +179,10 @@ https://전국부동산계산기.com/guide-prepayment.html
   중과·일시적 2주택 기한(`TEMP_TWO_YEARS`)이 바뀌면 `guide-temporary-two-homes.html`의 조정지역 숫자도 다시 뽑을 것
 - 취득세: `js/acquisition-tax.js`. 바뀌면 `js/buy-vs-rent.js`의 `PRESET_ACQ_RATE`(8억 예시 버튼의
   취득세율, 현재 2.56%)도 취득세 계산기에 8억·1주택을 넣어 다시 뽑은 실효세율로 바꿀 것.
-  안내 글 `guide-acquisition-tax.html`·`guide-acquisition-6-9.html`·`guide-buying-costs.html`·`guide-mixed-use-acquisition.html`(상가주택)의 숫자도 다시 뽑을 것
+  안내 글 `guide-acquisition-tax.html`·`guide-acquisition-6-9.html`·`guide-buying-costs.html`·`guide-mixed-use-acquisition.html`(상가주택)의 숫자도 다시 뽑을 것.
+  생애최초 감면(`FIRST_HOME_CAP` 200만원, 12억 이하)은 2028-12-31 취득분까지(2025년 말 연장). 소형·저가주택 300만원 한도는 계산기에 없고,
+  2026년 8월 개편안(청년 추가 감면 등)은 **국회 통과 전이라 미반영**. 바뀌면 `guide-first-home-acquisition.html`(집값별 표·요건·추징)을 다시 뽑을 것.
+  3개월 내 전입 요건은 2025년 말 개정으로 바뀌었다는 안내가 여럿이나 원문을 확인하지 못해(2026-11) 글·FAQ에는 「관할 시·군·구청 확인」으로 적어 둠
 - 종합부동산세: `js/comprehensive-property-tax.js`. 2026년 8월 세제개편안(공정시장가액비율 70~80%, 실거주 1주택 공제,
   세액공제 금액 한도, 세부담상한 200%)은 **국회 통과 전이라 미반영**. 통과되면 상수와 계산기 안내 문구(`pages_tax.py`)를 고칠 것.
   안내 글 `guide-jongbuse-threshold.html`의 공시가격별 표와 공동명의 예시, `guide-jongbuse-payment.html`(세액별 분납 금액·납부유예 소득 기준)도 다시 뽑을 것
@@ -193,7 +196,9 @@ https://전국부동산계산기.com/guide-prepayment.html
   혼인세액공제는 2026년 혼인신고분까지라 연장 여부를 확인하고, 안내 글 `guide-year-end-december.html`(카드·연금·혼인 숫자)과
   `guide-year-end-dependents.html`(부양가족·자녀 결정세액 표)·`guide-year-end-result.html`(기납부세액별 환급 표)·
   `guide-year-end-medical.html`(의료비 금액별·총급여별 표)·`guide-year-end-job-change.html`(퇴사 2,500만원·이직 합산 표)도 다시 뽑을 것.
-  자녀세액공제가 바뀌면 `js/income-tax.js`의 `CHILD_CREDIT`도 같이(같은 값이 복사돼 있음)
+  자녀세액공제가 바뀌면 `js/income-tax.js`의 `CHILD_CREDIT`도 같이(같은 값이 복사돼 있음).
+  청약통장 소득공제(`SUBSCRIPTION_*`, 연 300만원 × 40%, 총급여 7천만원)는 2028년까지 기한이 있고 2026년 개편안의 상시화는 **국회 통과 전**.
+  바뀌면 `guide-subscription-deduction.html`(납입액별·전세대출 합산 표)도 다시 뽑을 것
 - 주택임대소득세: `js/rental-income-tax.js`의 `DEEMED_RATE`(간주임대료 이자율, 매년 3월 시행규칙. 2026년 귀속 3.1%)와 소형주택 주택 수 제외(2026년까지).
   바뀌면 안내 글 `guide-rental-income-two-homes.html`의 간주임대료 숫자도 다시 뽑을 것
 - 표: `tools/build/pages_tables.py`
@@ -204,7 +209,7 @@ https://전국부동산계산기.com/guide-prepayment.html
 
 - `js/salary.js` — `PENSION_RATE`, `PENSION_BASE_MIN/MAX`, `HEALTH_RATE`, `LTC_RATE`,
   `EMPLOY_RATE`, `BRACKETS`, `EARNED_DEDUCTION`, `RULES_DATE`.
-  바뀌면 안내 글 `guide-salary-net.html`·`guide-salary-raise.html`의 숫자도 다시 뽑을 것.
+  바뀌면 안내 글 `guide-salary-net.html`·`guide-salary-raise.html`·`guide-salary-table.html`(연봉별 표 전체)의 숫자도 다시 뽑을 것.
   **`js/year-end-tax.js` 맨 위 4대보험·세율·근로소득공제 상수도 같은 값이라 함께 고칠 것**(두 파일에 복사돼 있음).
   근로소득세액공제 한도는 7천만원 초과 구간이 「× 1/2」입니다(0.005로 잘못 넣었다가 2026-10에 고침).
   종합소득세 세율(`BRACKETS`)이 바뀌면 `js/income-tax.js`도 같은 값으로
@@ -268,7 +273,7 @@ https://전국부동산계산기.com/guide-prepayment.html
 ### 7월 — 국민연금 기준소득월액 상·하한
 
 매년 7월 1일에 바뀝니다(2026.7~2027.6: 하한 41만원, 상한 659만원). `js/salary.js`의
-`PENSION_BASE_MIN/MAX`, `RULES_DATE`와 안내 글 `guide-salary-net.html`·`guide-salary-raise.html`의
+`PENSION_BASE_MIN/MAX`, `RULES_DATE`와 안내 글 `guide-salary-net.html`·`guide-salary-raise.html`·`guide-salary-table.html`의
 상한 숫자(연봉 약 8,148만원부터 월 31만 3,020원)를 고치고 verify 기대값을 다시 뽑습니다.
 
 ### 5월 — 재산세 1주택 특례
@@ -280,7 +285,9 @@ https://전국부동산계산기.com/guide-prepayment.html
 ### 수시
 
 - 조정대상지역 지정·해제 → 취득세·양도세 계산기는 사용자가 직접 고르므로 코드 수정은 불필요.
-  다만 안내 글에 예시로 적힌 지역이 있으면 확인
+  다만 안내 글에 예시로 적힌 지역이 있으면 확인. `guide-subscription-first-rank.html`에 지금 투기과열지구(서울 25개 구·경기 12곳, 2026년 7월
+  화성 동탄구·용인 기흥구·구리시 추가)가 적혀 있음. 청약 예치금·1순위 기간이 바뀌어도 이 글을 고칠 것
+- 전월세 신고제(보증금 6천만원·월세 30만원 초과, 30일, 과태료 최대 30만원·거짓 100만원) → 계산기 상수는 없고 `guide-rent-report.html`만 고치면 됨
 - 오피스텔 주택 수 특례(소형 신축, 시가표준액 1억 이하 제외) → 계산기 상수는 없고 `guide-officetel.html`의 「주택 수에서 빠지는 오피스텔」 절만 고치면 됨
 - HUG 전세보증보험 요건 → `js/jeonse-insurance.js`의 `DEPOSIT_CAP`, `LTV_CAP`, `SENIOR_CAP`.
   바뀌면 `guide-jeonse-ratio.html`·`guide-jeonse-insurance-fail.html`의 상한 숫자도 다시 뽑을 것

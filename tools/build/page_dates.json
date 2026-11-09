@@ -10,8 +10,8 @@
   "published": "2026-09-17"
  },
  "acquisition-tax.html": {
-  "hash": "e6d187b3f011",
-  "modified": "2026-10-30",
+  "hash": "94e5144f3c26",
+  "modified": "2026-11-10",
   "published": "2026-09-17"
  },
  "annual-leave.html": {
@@ -100,13 +100,13 @@
   "published": "2026-09-17"
  },
  "guide-acquisition-6-9.html": {
-  "hash": "005003e803ba",
-  "modified": "2026-10-21",
+  "hash": "66857c95ad05",
+  "modified": "2026-11-10",
   "published": "2026-10-21"
  },
  "guide-acquisition-tax.html": {
-  "hash": "3e599ed4a194",
-  "modified": "2026-10-23",
+  "hash": "2408a7b7255d",
+  "modified": "2026-11-10",
   "published": "2026-09-20"
  },
  "guide-annual-leave-pay.html": {
@@ -193,6 +193,11 @@
   "hash": "7a1d2d923b63",
   "modified": "2026-10-23",
   "published": "2026-09-20"
+ },
+ "guide-first-home-acquisition.html": {
+  "hash": "85be57df7c47",
+  "modified": "2026-11-10",
+  "published": "2026-11-10"
  },
  "guide-fixed-vs-variable.html": {
   "hash": "1af828497d94",
@@ -339,6 +344,11 @@
   "modified": "2026-10-21",
   "published": "2026-10-21"
  },
+ "guide-rent-report.html": {
+  "hash": "fac893c5a15b",
+  "modified": "2026-11-10",
+  "published": "2026-11-10"
+ },
  "guide-rent-tax-credit-who.html": {
   "hash": "c85dccdd9cb0",
   "modified": "2026-09-20",
@@ -364,6 +374,11 @@
   "modified": "2026-10-27",
   "published": "2026-10-21"
  },
+ "guide-salary-table.html": {
+  "hash": "a721923f22b2",
+  "modified": "2026-11-10",
+  "published": "2026-11-10"
+ },
  "guide-savings-real-rate.html": {
   "hash": "75af8c95f9e8",
   "modified": "2026-10-27",
@@ -388,6 +403,16 @@
   "hash": "4d5360c0df02",
   "modified": "2026-10-20",
   "published": "2026-09-20"
+ },
+ "guide-subscription-deduction.html": {
+  "hash": "b0d57b3fd81e",
+  "modified": "2026-11-10",
+  "published": "2026-11-10"
+ },
+ "guide-subscription-first-rank.html": {
+  "hash": "2330050b8dca",
+  "modified": "2026-11-10",
+  "published": "2026-11-10"
  },
  "guide-subscription-notice-date.html": {
   "hash": "175d2a96f2b0",
@@ -440,8 +465,8 @@
   "published": "2026-09-27"
  },
  "guides.html": {
-  "hash": "04fa3313ed74",
-  "modified": "2026-11-05",
+  "hash": "403908f47ec1",
+  "modified": "2026-11-10",
   "published": "2026-09-17"
  },
  "hourly-wage.html": {
@@ -455,8 +480,8 @@
   "published": "2026-10-31"
  },
  "index.html": {
-  "hash": "44c9ed0034e9",
-  "modified": "2026-11-05",
+  "hash": "b929a66da990",
+  "modified": "2026-11-10",
   "published": "2026-09-17"
  },
  "inheritance-tax.html": {
@@ -475,8 +500,8 @@
   "published": "2026-09-17"
  },
  "jeonse-loan.html": {
-  "hash": "55de709cb89d",
-  "modified": "2026-11-03",
+  "hash": "48f012002180",
+  "modified": "2026-11-10",
   "published": "2026-10-26"
  },
  "land-multiple.html": {
@@ -490,8 +515,8 @@
   "published": "2026-09-17"
  },
  "moving.html": {
-  "hash": "548c9bb548ed",
-  "modified": "2026-10-30",
+  "hash": "4b26de4dfb17",
+  "modified": "2026-11-10",
   "published": "2026-09-17"
  },
  "parental-leave.html": {
@@ -530,8 +555,8 @@
   "published": "2026-09-17"
  },
  "refs.html": {
-  "hash": "225fc0cf01ae",
-  "modified": "2026-11-05",
+  "hash": "ed907b1019a6",
+  "modified": "2026-11-10",
   "published": "2026-09-20"
  },
  "registration-cost.html": {
@@ -560,8 +585,8 @@
   "published": "2026-10-27"
  },
  "salary.html": {
-  "hash": "122e69d3f203",
-  "modified": "2026-10-30",
+  "hash": "695284ff8a75",
+  "modified": "2026-11-10",
   "published": "2026-09-17"
  },
  "savings.html": {
@@ -575,8 +600,8 @@
   "published": "2026-09-17"
  },
  "subscription.html": {
-  "hash": "0b4abd7ea0e3",
-  "modified": "2026-10-30",
+  "hash": "e5ab93a71f80",
+  "modified": "2026-11-10",
   "published": "2026-09-17"
  },
  "table-acquisition-tax.html": {
