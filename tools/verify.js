@@ -1112,6 +1112,65 @@ function near(label, got, want, tol) {
   await acq('생애최초 글 9억 실효', '900000000', 'one', false, true, '27,700,000'); expect('생애최초 글 9억 실효세율', await get('out-effective'), '3.08');
   await acq('생애최초 글 5억 85초과', '500000000', 'one', true, true, '4,500,000'); await acq('생애최초 글 9억 85초과', '900000000', 'one', true, true, '29,500,000');
 
+  // ------------------------------------------------------------ 안내 글 5편 (2026-11, 2차) 본문 숫자
+  // guide-pension-tax-credit.html — 근로소득, ISA 없음(마지막 두 줄만 ISA 3,000만원)
+  for (const [inc, sav, irp, isa, want] of [['50000000', '1200000', '0', '', '198,000'], ['50000000', '2400000', '0', '', '396,000'], ['50000000', '4800000', '0', '', '792,000'], ['50000000', '6000000', '0', '', '990,000'],
+      ['50000000', '6000000', '3000000', '', '1,485,000'], ['50000000', '0', '9000000', '', '1,485,000'], ['50000000', '9000000', '0', '', '990,000'], ['55000000', '6000000', '3000000', '', '1,485,000'],
+      ['55100000', '6000000', '3000000', '', '1,188,000'], ['80000000', '1200000', '0', '', '158,400'], ['80000000', '2400000', '0', '', '316,800'], ['80000000', '4800000', '0', '', '633,600'],
+      ['80000000', '6000000', '0', '', '792,000'], ['80000000', '6000000', '3000000', '', '1,188,000'], ['50000000', '6000000', '3000000', '30000000', '1,980,000'], ['80000000', '6000000', '3000000', '30000000', '1,584,000']]) {
+    await fresh('pension-tax-credit.html'); await page.selectOption('#kind', 'salary'); await type('income', inc); await type('saving', sav); await type('irp', irp); if (isa) await type('isa', isa);
+    expect(`연금저축 글 ${inc} 저축${sav} IRP${irp}${isa ? ' ISA' + isa : ''}`, await get('out-total'), want);
+  }
+  for (const [sal, six, nine] of [['25000000', '215,500', '215,500'], ['30000000', '409,040', '409,040'], ['35000000', '908,440', '908,440'], ['40000000', '990,000', '1,485,000'],
+      ['50000000', '990,000', '1,485,000'], ['60000000', '792,000', '1,188,000'], ['100000000', '792,000', '1,188,000']]) {
+    await ye(sal, [['saving', '6000000']]); expect(`연금저축 글 연말정산 ${sal} 600만`, await get('out-total'), six);
+    await ye(sal, [['saving', '6000000'], ['irp', '3000000']]); expect(`연금저축 글 연말정산 ${sal} 900만`, await get('out-total'), nine);
+  }
+  await ye('40000000', [['saving', '6000000'], ['irp', '3000000']]); expect('연금저축 글 4천 900만 남는 결정세액', await get('out-tax'), '80,480');
+  // guide-property-tax-table.html — 도시지역, 1세대 1주택 켜고 끔
+  await fresh('property-tax.html');
+  for (const [pr, one, other] of [['100000000', '86,000', '156,000'], ['200000000', '187,600', '348,000'], ['300000000', '299,400', '576,000'], ['400000000', '452,800', '840,000'], ['500000000', '620,000', '1,104,000'],
+      ['600000000', '787,200', '1,476,000'], ['700000000', '1,008,000', '1,848,000'], ['800000000', '1,260,000', '2,220,000'], ['900000000', '1,512,000', '2,592,000'], ['1000000000', '2,034,000', '2,964,000'],
+      ['1200000000', '2,592,000', '3,708,000'], ['1500000000', '3,429,000', '4,824,000']]) {
+    await setChk('urban', true); await setChk('oneHome', true); await type('price', pr); expect(`재산세 표 글 ${pr} 1주택`, await get('out-total'), one);
+    await setChk('oneHome', false); await type('price', pr); expect(`재산세 표 글 ${pr} 그 밖`, await get('out-total'), other);
+  }
+  await setChk('oneHome', true); await type('price', '600000000');
+  for (const [id, want] of [['out-base', '264,000,000'], ['out-tax', '348,000'], ['out-urban', '369,600'], ['out-edu', '69,600']]) expect(`재산세 표 글 6억 ${id}`, await get(id), want);
+  await type('price', '400000000'); expect('재산세 표 글 4억 본세', await get('out-tax'), '172,000'); expect('재산세 표 글 4억 7월 한 번', await get('out-sept'), '0');
+  await type('price', '500000000'); expect('재산세 표 글 5억 7월', await get('out-july'), '310,000'); expect('재산세 표 글 5억 9월', await get('out-sept'), '310,000');
+  await setChk('urban', false); expect('재산세 표 글 5억 도시지역 아님', await get('out-total'), '312,000'); await setChk('urban', true);
+  await setChk('oneHome', false); await type('price', '300000000'); expect('재산세 표 글 3억 그 밖 9월', await get('out-sept'), '288,000');
+  // guide-loan-30-vs-40.html — 원리금균등·원금균등, DSR(LTV 넉넉, 상한 비움)
+  for (const [method, pr, r, m, first, interest] of [['annuity', '300000000', '4', '360', '1,432,246', '215,608,519'], ['annuity', '300000000', '4', '480', '1,253,815', '301,831,396'],
+      ['annuity', '500000000', '4', '360', '2,387,076', '359,347,532'], ['annuity', '500000000', '4', '480', '2,089,692', '503,052,327'], ['annuity', '300000000', '3.5', '360', '1,347,134', '184,968,263'],
+      ['annuity', '300000000', '3.5', '480', '1,162,173', '257,842,983'], ['annuity', '300000000', '4.5', '360', '1,520,056', '247,220,135'], ['annuity', '300000000', '4.5', '480', '1,348,689', '347,370,486'],
+      ['principal', '300000000', '4', '360', '1,833,333', '180,500,000'], ['principal', '300000000', '4', '480', '1,625,000', '240,500,000']]) {
+    await fresh('loan.html'); await radio('method', method); await type('rate', r); await type('months', m); await type('principal', pr);
+    expect(`30vs40 글 ${method} ${pr} ${r}% ${m}개월 월`, await get('out-first'), first); expect(`30vs40 글 ${method} ${pr} ${r}% ${m}개월 이자`, await get('out-interest'), interest);
+  }
+  for (const [inc, yrs, stress, want] of [['50000000', '30', '0', '349,102,067'], ['50000000', '40', '0', '398,782,785'], ['50000000', '30', '0.75', '319,500,657'], ['50000000', '40', '0.75', '357,839,733'],
+      ['50000000', '30', '1.5', '293,536,272'], ['50000000', '40', '1.5', '323,141,276'], ['50000000', '30', '3', '250,512,613'], ['70000000', '30', '0', '488,742,894'], ['70000000', '40', '0', '558,295,899']]) {
+    await fresh('dsr.html'); await type('rate', '4'); await type('years', yrs); await type('stress', stress); await type('ltv', '70'); await page.fill('#cap', ''); await type('value', '2000000000'); await type('income', inc);
+    expect(`30vs40 글 DSR ${inc} ${yrs}년 가산${stress}`, await get('out-limit'), want);
+  }
+  // guide-annual-leave-days.html — 입사일·기준일
+  const leave = async (join, base) => { await fresh('annual-leave.html'); await page.fill('#base', base); await page.dispatchEvent('#base', 'input'); await page.fill('#join', join); await page.dispatchEvent('#join', 'input'); };
+  for (const [join, base, now, next] of [['2026-03-02', '2026-11-10', '8', '2026-12-02 · 1일'], ['2025-11-10', '2026-11-10', '15', '2027-11-10 · 15일'], ['2025-11-10', '2026-11-09', '11', '2026-11-10 · 15일'],
+      ['2024-11-10', '2026-11-10', '15', '2027-11-10 · 16일'], ['2023-11-10', '2026-11-10', '16', null], ['2021-11-10', '2026-11-10', '17', null], ['2016-11-10', '2026-11-10', '19', null], ['2005-11-10', '2026-11-10', '25', null], ['2000-11-10', '2026-11-10', '25', null]]) {
+    await leave(join, base); expect(`연차 글 ${join}→${base} 연차`, await get('out-now'), now); if (next) expect(`연차 글 ${join}→${base} 다음`, await get('out-next'), next);
+  }
+  expect('연차 글 근속 표', await page.$$eval('#table-body tr', r => r.map(x => x.textContent).join('/')), '1~2년15일/3~4년16일/5~6년17일/7~8년18일/9~10년19일/11~12년20일/13~14년21일/15~16년22일/17~18년23일/19~20년24일/21년 이상25일');
+  await leave('2016-11-10', '2026-11-10'); await type('wage', '3000000'); await type('unused', '5'); expect('연차 글 1일 통상임금', await get('out-daily'), '114,832'); expect('연차 글 5일 수당', await get('out-pay'), '574,160');
+  // guide-weekly-holiday-pay.html — 주휴 포함, 3.3% 끔
+  const hw = async (w, d, n, big) => { await fresh('hourly-wage.html'); await setChk('holiday', true); await setChk('big', big); await setChk('biz', false); await type('daily', d); await type('days', n); await type('wage', w); };
+  for (const [w, d, n, holiday, weekly] of [['10320', '7', '2', '0', '144,480'], ['10320', '3', '5', '30,960', '185,760'], ['10320', '4', '5', '41,280', '247,680'], ['10320', '5', '5', '51,600', null], ['10320', '6', '5', '61,920', null],
+      ['10320', '7', '5', '72,240', null], ['10320', '8', '5', '82,560', '495,360'], ['10320', '9', '5', '82,560', '572,760'], ['10700', '3', '5', '32,100', null], ['10700', '4', '5', '42,800', null], ['10700', '5', '5', '53,500', null],
+      ['10700', '6', '5', '64,200', null], ['10700', '7', '5', '74,900', null], ['10700', '8', '5', '85,600', '513,600'], ['10700', '9', '5', '85,600', null], ['12000', '8', '5', '96,000', null], ['12000', '4', '5', '48,000', null]]) {
+    await hw(w, d, n, true); expect(`주휴 글 ${w} ${d}h×${n} 주휴`, await get('out-holiday'), holiday); if (weekly) expect(`주휴 글 ${w} ${d}h×${n} 주급`, await get('out-weekly'), weekly);
+  }
+  await hw('10320', '9', '5', false); expect('주휴 글 5인 미만 9h×5 주급', await get('out-weekly'), '546,960'); expect('주휴 글 5인 미만 주휴', await get('out-holiday'), '82,560');
+
   // ------------------------------------------------------------ 빈 입력 상태·즐겨찾기·금액 읽기 (2026-10)
   // 처음 열었을 때 음수 금액이나 '유리'·'가입 어려움' 같은 판정이 보이면 안 된다
   for (const t of TOOL_PAGES) {
