@@ -12,7 +12,7 @@
 python3 tools/build/build.py
 ```
 
-등록부에서 170쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
+등록부에서 175쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
 같은 소스로 두 번 돌리면 결과가 같아야 합니다(멱등). 달라지면 버그입니다.
 
 - `site_core.py` — 등록부(TOOLS, TABLES, FORMS, REFS, GUIDES, HUBS, RATE_HISTORY)와 공통 틀.
@@ -21,7 +21,7 @@ python3 tools/build/build.py
   (`pages_tax.py`는 재산세·종부세·증여세, `pages_tools3.py`는 상속세·전세대출·예적금·실업급여·시급,
   `pages_tools4.py`는 연말정산·등기비용·연금저축IRP·육아휴직·연차·주택임대소득세·종합소득세·땅값 몇 배·아파트값 몇 배)
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽, 안내 글 4편
-- `pages_guides2.py` — 안내 글 69편
+- `pages_guides2.py` — 안내 글 74편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
 - `build.py` — 위를 모아 쓰고 `manifest.json`, `sw.js`, `sitemap.xml`, `js/analytics.js`를 생성
 
@@ -41,8 +41,8 @@ python3 tools/build/build.py
 
 ### 검색 제외 (noindex)
 
-170쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
-검색 대상은 157쪽입니다(2026-11-09). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
+175쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
+검색 대상은 162쪽입니다(2026-11-10). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
 
 - 용어 9쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
 - 용어 39쪽 중 30쪽은 1,000자 이상으로 늘려 검색에 되돌렸습니다: 대항력·확정일자·전세가율·DSR·LTV,
@@ -220,7 +220,8 @@ https://전국부동산계산기.com/guide-prepayment.html
 
 - `js/hourly-wage.js` — `MIN_WAGE`(올해 최저임금)와 `NEXT_MIN_WAGE`(고시된 내년 값). 1월에 2027년 10,700원을 `MIN_WAGE`로
   옮기고, 8월 고시 뒤 `NEXT_MIN_WAGE`를 그다음 해 값으로. 계산기 본문 예시(`pages_tools3.hourly_wage_page`)와 verify 기대값도 다시 뽑을 것.
-  안내 글 `guide-minimum-wage-2027.html`은 「계산기는 2026년 10,320원과 비교」 문장과 2026·2027 비교표를 손볼 것
+  안내 글 `guide-minimum-wage-2027.html`은 「계산기는 2026년 10,320원과 비교」 문장과 2026·2027 비교표를 손볼 것.
+  `guide-weekly-holiday-pay.html`(주휴수당 2026·2027 열, 「주휴 포함 시급 12,384원」 문장)도 새 해 기준으로 고칠 것
 - `js/unemployment-benefit.js` — `MIN_WAGE`, `DAILY_MAX`(하루 상한 68,100원), `RULES_DATE`. **2027년 1월 주의**:
   최저임금 10,700원이면 하한이 68,480원으로 지금 상한을 넘으므로 상한이 또 오를 가능성이 큼. 고용노동부 발표로 확인할 것.
   계산기 본문의 「334만원 이하면 하한, 344만원 이상이면 상한」 문장과 예시 숫자, 안내 글 `guide-unemployment-floor.html`(표·날수별 총액·
@@ -253,7 +254,8 @@ https://전국부동산계산기.com/guide-prepayment.html
     둘 다 — `guide-apartment-vs-land.html`(같은 지역 비교), `guide-real-price-multiple.html`(물가 뺀 배수. 물가 자료가 바뀌어도)
   - 자료 파일이 없으면 처음 화면이 매매가 직접 입력이고 지역 고르기는 「자료 준비 중」. 시안은 `APT_INDEX_FILE=<가짜 자료 경로>`로 빌드해 보고 그 뒤 그냥 다시 빌드할 것
 - `js/parental-leave.js` — 육아휴직 급여 상한(250·200·160만원, 6+6 단계별 상한). 고용보험법 시행령이 바뀌면 안내 글 `guide-parental-leave-pay.html`도
-- `js/pension-tax-credit.js`(600·900만원, 15·12%), `js/annual-leave.js`(근로기준법 60조)는 거의 안 바뀜
+- `js/pension-tax-credit.js`(600·900만원, 15·12%), `js/annual-leave.js`(근로기준법 60조)는 거의 안 바뀜.
+  바뀌면 `guide-pension-tax-credit.html`(납입액별·총급여별 표, ISA 전환)과 `guide-annual-leave-days.html`(근속별 표·366일째 발생)을 다시 볼 것
 
 국민연금 보험료율은 2026년 9.5%(근로자 4.75%)부터 2033년 13%까지 해마다 0.5%p씩 오릅니다.
 2027년 1월에는 `PENSION_RATE`를 5.0으로 바꿔야 합니다. 2026년 1월분을 놓쳐 10월에야 고쳤습니다.
@@ -281,6 +283,7 @@ https://전국부동산계산기.com/guide-prepayment.html
 1세대 1주택 공정시장가액비율(2026년 43·44·45%)은 해마다 시행령으로 정하고, 특례세율(공시가격 9억 이하)은
 법 부칙으로 기한이 붙어 있습니다. 6월 1일 과세기준일 전에 그해 값을 확인하고 `js/property-tax.js`의
 `FMV_ONEHOME`, `RATES_ONEHOME`, `RULES_DATE`를 고칩니다. 종부세 계산기의 재산세 공제(약식)도 이 비율을 씁니다.
+바뀌면 안내 글 `guide-property-tax-table.html`(공시가격별 1주택·다주택 표, 9억 경계, 7월·9월 금액)을 다시 뽑을 것.
 
 ### 수시
 
@@ -295,7 +298,8 @@ https://전국부동산계산기.com/guide-prepayment.html
 - 대출 규제(LTV·스트레스 DSR·금액 상한) → `js/dsr.js`의 `DEFAULT_STRESS`, `PRESETS`, 계산기 안내 문구(`pages_new.dsr_page`).
   2025-10-15 대책 이후 수도권·규제지역 LTV 40%(생애최초 70%), 스트레스 3.0%p, 금액 상한 6억·4억·2억.
   지방은 1.5%p의 50%(0.75%p)를 2026년 12월까지 운영 — **2027년 1월에 지방 기준을 확인할 것**.
-  바뀌면 안내 글 `guide-mortgage-limit`·`guide-dsr-ltv`·`guide-base-rate-change`·`guide-refinance`,
+  수도권·규제지역 주담대 만기는 2025-06-28부터 최장 30년(`guide-loan-30-vs-40.html`이 이걸 전제로 40년은 그 밖 지역 이야기로 씀).
+  바뀌면 안내 글 `guide-mortgage-limit`·`guide-dsr-ltv`·`guide-base-rate-change`·`guide-refinance`·`guide-loan-30-vs-40`,
   용어 `term-dsr`·`term-ltv`·`term-stress-dsr`의 숫자를 다시 뽑을 것
 - 전세대출 규제(1주택자 수도권·규제지역 2억원 한도는 2025-09 대책, 이자 DSR 반영은 2025-10-29부터) →
   계산기에는 상수가 없고 `pages_tools3.jeonse_loan_page`의 FAQ·본문 문장과 안내 글 `guide-jeonse-loan-vs-rent.html`(1주택자 2억 한도 절)에만 있음. 바뀌면 그 문장을 고칠 것

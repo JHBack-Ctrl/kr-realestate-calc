@@ -15,8 +15,8 @@
   "published": "2026-09-17"
  },
  "annual-leave.html": {
-  "hash": "d07ec44c1900",
-  "modified": "2026-11-03",
+  "hash": "17b50c34a5de",
+  "modified": "2026-11-10",
   "published": "2026-10-27"
  },
  "apartment-multiple.html": {
@@ -60,8 +60,8 @@
   "published": "2026-09-17"
  },
  "dsr.html": {
-  "hash": "c09b52f43c5f",
-  "modified": "2026-10-30",
+  "hash": "8fe2f43ce22d",
+  "modified": "2026-11-10",
   "published": "2026-09-17"
  },
  "fee.html": {
@@ -108,6 +108,11 @@
   "hash": "2408a7b7255d",
   "modified": "2026-11-10",
   "published": "2026-09-20"
+ },
+ "guide-annual-leave-days.html": {
+  "hash": "0bd1a504e81e",
+  "modified": "2026-11-10",
+  "published": "2026-11-10"
  },
  "guide-annual-leave-pay.html": {
   "hash": "c05ea988197b",
@@ -269,6 +274,11 @@
   "modified": "2026-11-03",
   "published": "2026-11-03"
  },
+ "guide-loan-30-vs-40.html": {
+  "hash": "d8a77e1d4d5a",
+  "modified": "2026-11-10",
+  "published": "2026-11-10"
+ },
  "guide-loan-rate-structure.html": {
   "hash": "af5c3ccbaa42",
   "modified": "2026-09-21",
@@ -304,10 +314,20 @@
   "modified": "2026-10-30",
   "published": "2026-10-30"
  },
+ "guide-pension-tax-credit.html": {
+  "hash": "25b19b83ce19",
+  "modified": "2026-11-10",
+  "published": "2026-11-10"
+ },
  "guide-prepayment.html": {
   "hash": "869fdd3702fe",
   "modified": "2026-09-21",
   "published": "2026-09-21"
+ },
+ "guide-property-tax-table.html": {
+  "hash": "5a93cec4efc8",
+  "modified": "2026-11-10",
+  "published": "2026-11-10"
  },
  "guide-property-tax.html": {
   "hash": "da159214e3f3",
@@ -434,6 +454,11 @@
   "modified": "2026-10-30",
   "published": "2026-10-30"
  },
+ "guide-weekly-holiday-pay.html": {
+  "hash": "2b9acb54236a",
+  "modified": "2026-11-10",
+  "published": "2026-11-10"
+ },
  "guide-year-end-december.html": {
   "hash": "23fba9d5100d",
   "modified": "2026-10-27",
@@ -465,13 +490,13 @@
   "published": "2026-09-27"
  },
  "guides.html": {
-  "hash": "403908f47ec1",
+  "hash": "93f0610dc76a",
   "modified": "2026-11-10",
   "published": "2026-09-17"
  },
  "hourly-wage.html": {
-  "hash": "de6ef6333d68",
-  "modified": "2026-11-03",
+  "hash": "c4cf8ef4ee48",
+  "modified": "2026-11-10",
   "published": "2026-10-26"
  },
  "income-tax.html": {
@@ -480,7 +505,7 @@
   "published": "2026-10-31"
  },
  "index.html": {
-  "hash": "b929a66da990",
+  "hash": "c14f8b11717d",
   "modified": "2026-11-10",
   "published": "2026-09-17"
  },
@@ -510,8 +535,8 @@
   "published": "2026-11-02"
  },
  "loan.html": {
-  "hash": "9ff50317897b",
-  "modified": "2026-11-03",
+  "hash": "3c74c1ee9c4e",
+  "modified": "2026-11-10",
   "published": "2026-09-17"
  },
  "moving.html": {
@@ -525,8 +550,8 @@
   "published": "2026-10-27"
  },
  "pension-tax-credit.html": {
-  "hash": "7987906b7c18",
-  "modified": "2026-10-31",
+  "hash": "7df3b9e2f735",
+  "modified": "2026-11-10",
   "published": "2026-10-27"
  },
  "policy.html": {
@@ -545,8 +570,8 @@
   "published": "2026-09-17"
  },
  "property-tax.html": {
-  "hash": "34937ebc2f37",
-  "modified": "2026-10-30",
+  "hash": "e381b6b38899",
+  "modified": "2026-11-10",
   "published": "2026-10-24"
  },
  "rate-compare.html": {
@@ -555,7 +580,7 @@
   "published": "2026-09-17"
  },
  "refs.html": {
-  "hash": "ed907b1019a6",
+  "hash": "e30ff80cfd0f",
   "modified": "2026-11-10",
   "published": "2026-09-20"
  },

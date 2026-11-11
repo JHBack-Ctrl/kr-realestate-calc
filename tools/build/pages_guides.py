@@ -322,7 +322,9 @@ def home():
                    "guide-apartment-vs-land.html": "아파트값 vs 땅값", "guide-real-price-multiple.html": "물가 뺀 집값·땅값",
                    "guide-salary-table.html": "연봉별 실수령액 표", "guide-subscription-deduction.html": "청약통장 연말정산",
                    "guide-first-home-acquisition.html": "생애최초 취득세 감면", "guide-subscription-first-rank.html": "청약 1순위·예치금",
-                   "guide-rent-report.html": "전월세 신고제"}
+                   "guide-rent-report.html": "전월세 신고제", "guide-pension-tax-credit.html": "연금저축·IRP 세액공제",
+                   "guide-property-tax-table.html": "재산세 공시가격별 표", "guide-loan-30-vs-40.html": "주담대 30년 vs 40년",
+                   "guide-annual-leave-days.html": "연차 개수 계산", "guide-weekly-holiday-pay.html": "주휴수당 계산법"}
     ref = ("".join(f'<a class="tile" href="{f}" data-k="{n}" data-pub="{PAGE_DATES.get(f, {}).get("published", "")}">{tile_icon(f)}<span class="t">{GUIDE_SHORT.get(f, n)}</span></a>'
                    for (f, n, _t, _d) in GUIDES)
            + "".join(tile(f, n, "") for (f, n, _t, _d, _c, _s) in REFS if f != "guides.html"))
