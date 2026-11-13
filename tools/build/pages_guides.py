@@ -193,16 +193,26 @@ def guide_jeonse_vs_monthly():
 
 def guides_index():
     r = REFS[2]
-    cards = "".join(f'<a class="tool-card" href="{f}"><p class="t">{n}</p><p class="d">{d}</p></a>' for (f, n, _t, d) in GUIDES)
+    card = lambda g: f'<a class="tool-card" href="{g[0]}"><p class="t">{g[1]}</p><p class="d">{g[3]}</p></a>'
+    topics = guide_topics()
+    newest = "".join(card(g) for g in GUIDES[::-1][:GUIDE_NEW_COUNT])
+    jump = "".join(f'<a class="chip" href="#t-{k}">{label} <span class="n">{len(gs)}</span></a>' for (k, label, gs) in topics)
+    secs = "".join(f'''
+    <section class="card guide-topic" id="t-{k}" aria-labelledby="t-{k}-h">
+      <div class="sec-head"><h2 id="t-{k}-h">{label}</h2><span class="n">{len(gs)}편</span></div>
+      <div class="tool-grid">{"".join(card(g) for g in gs)}</div>
+    </section>''' for (k, label, gs) in topics)
     main = f'''    <section class="hero">
       <p class="eyebrow">Guides</p>
       <h1>안내 글</h1>
       <p class="hero-sub">부동산 숫자를 읽는 법</p>
       <p class="hero-body">계산기에 넣는 숫자가 무엇을 뜻하는지, 결과를 어떻게 읽어야 하는지 설명합니다. 세율이나 법령을 확정 해석하지 않으며, 개념과 계산 방법에 집중합니다.</p>
     </section>
-    <section class="card">
-      <div class="tool-grid">{cards}</div>
-    </section>{INLINE_AD}
+    <nav class="guide-jump" aria-label="주제별 바로가기">{jump}</nav>
+    <section class="card guide-topic" aria-labelledby="t-new-h">
+      <div class="sec-head"><h2 id="t-new-h">새로 올린 글</h2><span class="n">전체 {len(GUIDES)}편</span></div>
+      <div class="tool-grid">{newest}</div>
+    </section>{INLINE_AD}{secs}
     <section class="card">
       <h2>계산기로 바로 가기</h2>
       <div class="tool-grid">{"".join(f'<a class="tool-card" href="{f}"><p class="t">{n}</p><p class="d">{d}</p></a>' for (f, n, _t, _d, _c, d) in TOOLS[:6])}</div>
@@ -325,10 +335,23 @@ def home():
                    "guide-rent-report.html": "전월세 신고제", "guide-pension-tax-credit.html": "연금저축·IRP 세액공제",
                    "guide-property-tax-table.html": "재산세 공시가격별 표", "guide-loan-30-vs-40.html": "주담대 30년 vs 40년",
                    "guide-annual-leave-days.html": "연차 개수 계산", "guide-weekly-holiday-pay.html": "주휴수당 계산법"}
-    ref = ("".join(f'<a class="tile" href="{f}" data-k="{n}" data-pub="{PAGE_DATES.get(f, {}).get("published", "")}">{tile_icon(f)}<span class="t">{GUIDE_SHORT.get(f, n)}</span></a>'
-                   for (f, n, _t, _d) in GUIDES)
+    gtile = lambda g: (f'<a class="tile" href="{g[0]}" data-k="{g[1]}" data-pub="{PAGE_DATES.get(g[0], {}).get("published", "")}">'
+                       f'{tile_icon(g[0])}<span class="t">{GUIDE_SHORT.get(g[0], g[1])}</span></a>')
+    # 안내 글은 새 글 몇 편만 먼저 보이고 나머지는 접어 둔다(2026-11: 타일 78개가 폰에서 화면 4개 분량이었다).
+    # 접힌 글도 링크는 그대로 있어 검색 로봇이 따라가고, 홈 검색창에 낱말을 넣으면 js/home.js가 펼쳐서 찾는다
+    newest_first = GUIDES[::-1]
+    ref = ("".join(gtile(g) for g in newest_first[:GUIDE_NEW_COUNT])
            + "".join(tile(f, n, "") for (f, n, _t, _d, _c, _s) in REFS if f != "guides.html"))
-    ref_sec = section("안내 글 · 참고", ref, len(GUIDES) + len(REFS) - 1, cls=" mini")
+    rest = "".join(gtile(g) for g in newest_first[GUIDE_NEW_COUNT:])
+    ref_sec = f'''
+    <section class="sec" data-sec>
+      <div class="sec-head"><h2>안내 글 · 참고</h2><a class="n" href="guides.html">주제별로 보기</a></div>
+      <div class="tiles mini" data-group>{ref}</div>
+      <details class="more-tiles" id="more-guides">
+        <summary>안내 글 {len(GUIDES)}편 모두 보기</summary>
+        <div class="tiles mini" data-group>{rest}</div>
+      </details>
+    </section>'''
 
     n_tools = len(TOOLS)
     main = f'''    <section class="hero tile-hero">
@@ -341,10 +364,9 @@ def home():
       <label class="sr-only" for="q">계산기 검색</label>
       <input class="tool-search" id="q" type="search" placeholder="무엇을 계산하시나요?  예: 취득세, 연봉, 전세" autocomplete="off">
     </div>
-    <section class="sec fav-sec" id="fav-sec">
-      <div class="sec-head"><h2>즐겨찾기</h2></div>
+    <section class="sec fav-sec" id="fav-sec" hidden>
+      <div class="sec-head"><h2>즐겨찾기</h2><span class="n">이 기기에만 저장</span></div>
       <div class="tiles" id="fav-tiles"></div>
-      <p class="fav-empty" id="fav-empty">계산기 제목 아래 ☆ 즐겨찾기를 누르면 여기에 모입니다. 이 기기 브라우저에만 저장됩니다.</p>
     </section>{section("많이 찾는 계산기", pop, 0, cls=" hot")}{cats_html}{mini_sec}{ref_sec}
     <p class="tile-empty" id="tile-empty" hidden>찾는 계산기가 없습니다. 다른 말로 검색해 보세요.</p>
     <section class="card" style="margin-top:28px">

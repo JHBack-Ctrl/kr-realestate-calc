@@ -1200,8 +1200,30 @@ function near(label, got, want, tol) {
   await type('salary', '350000000'); expect('금액 읽기 도움말', await page.$eval('.money-hint', e => e.textContent), '3억 5,000만원');
   await page.click('.fav-btn'); expect('즐겨찾기 버튼', await page.getAttribute('.fav-btn', 'aria-pressed'), 'true');
   await page.goto(BASE + 'index.html'); expect('홈 즐겨찾기 타일', await page.$$eval('#fav-tiles .tile', t => t.map(x => x.getAttribute('href')).join(',')), 'salary.html');
-  expect('홈 즐겨찾기 안내 숨김', await page.isHidden('#fav-empty'), true);
+  expect('홈 즐겨찾기 묶음 보임', await page.isVisible('#fav-sec'), true);
   await page.evaluate(() => localStorage.clear());
+  // 홈 (2026-11): 즐겨찾기가 없으면 묶음째 숨김, 안내 글은 새 글만 보이고 나머지는 접힘(링크는 그대로), 검색하면 접힌 글도 찾음
+  await page.goto(BASE + 'index.html'); expect('홈 즐겨찾기 없으면 숨김', await page.isHidden('#fav-sec'), true);
+  const guideCount = PAGES.filter(f => f.startsWith('guide-')).length;
+  expect('홈에 안내 글 링크 전부', await page.$$eval('main .tile[href^="guide-"]', a => new Set(a.map(x => x.getAttribute('href'))).size), guideCount);
+  expect('홈 안내 글 접힘', await page.$eval('#more-guides', d => d.open), false);
+  expect('홈 접힌 글은 안 보임', await page.isHidden('#more-guides .tile'), true);
+  await page.fill('#q', '복비'); await page.dispatchEvent('#q', 'input');
+  expect('홈 검색: 접힌 안내 글도 찾음', await page.isVisible('#more-guides .tile[href="guide-brokerage.html"]'), true);
+  expect('홈 검색 중 즐겨찾기 숨김', await page.isHidden('#fav-sec'), true);
+  await page.fill('#q', ''); await page.dispatchEvent('#q', 'input'); expect('홈 검색 지우면 다시 접힘', await page.$eval('#more-guides', d => d.open), false);
+  await page.click('#more-guides summary'); expect('홈 「모두 보기」 펼침', await page.isVisible('#more-guides .tile[href="guide-repayment.html"]'), true);
+  // 안내 글 목록 (2026-11): 주제 묶음 8개에 모든 글이 한 번씩, 맨 위는 새로 올린 글
+  await page.goto(BASE + 'guides.html');
+  expect('안내 글 목록 주제 묶음', await page.$$eval('.guide-topic[id^="t-"]', s => s.length), 8);
+  expect('안내 글 목록: 주제 묶음에 모든 글 한 번씩', await page.$$eval('.guide-topic[id^="t-"] .tool-card', a => a.length + '/' + new Set(a.map(x => x.getAttribute('href'))).size), guideCount + '/' + guideCount);
+  expect('안내 글 목록 바로가기', await page.$$eval('.guide-jump a', a => a.every(x => document.querySelector(x.getAttribute('href'))) && a.length), 8);
+  // 한글 줄바꿈·회색 대비·푸터 링크 크기 (2026-11)
+  expect('한글은 낱말 단위로 줄바꿈', await page.$eval('h1', e => getComputedStyle(e).wordBreak), 'keep-all');
+  const ratio = await page.evaluate(() => { const lum = c => { const v = c.match(/[\d.]+/g).slice(0, 3).map(x => { x = x / 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); }); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
+    const probe = document.createElement('p'); probe.style.cssText = 'color:var(--ink-3);background:var(--bg)'; document.body.appendChild(probe); const s = getComputedStyle(probe); const a = lum(s.color), b = lum(s.backgroundColor); probe.remove(); return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05); });
+  expect('회색 글자 대비 4.5:1 이상(종이색 바탕)', ratio >= 4.5, true);
+  expect('푸터 링크 누르는 높이 32px 이상', await page.$$eval('.site-footer .footer-links a', a => a.length > 5 && a.every(x => x.getBoundingClientRect().height >= 32)), true);
 
   // ------------------------------------------------------------ 서식·이미지
   console.log('--- 서식·이미지 ---');
