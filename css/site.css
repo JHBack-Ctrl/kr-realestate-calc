@@ -360,13 +360,34 @@ legend { font-weight: 700; padding: 0; margin: 0 0 10px; font-size: 14px; color:
 
 table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
 .tbl th, .tbl td { padding: 10px 6px; border-bottom: 1px solid var(--line); text-align: left; font-weight: 400; vertical-align: top; font-size: 15px; }
-.tbl td, .tbl thead th:not(:first-child) { text-align: right; white-space: nowrap; }
+.tbl td { text-align: right; white-space: nowrap; }
+.tbl thead th { word-break: keep-all; }                              /* 표 머리는 좁으면 낱말 사이에서 줄바꿈 */
+.tbl thead th:not(:first-child) { text-align: right; }
+/* 글자 열(tx)과 숫자 열 안의 긴 글(wr)은 줄바꿈한다. 빌드가 열마다 정해 붙임(site_core.fit_tables). 숫자 칸은 한 줄 그대로 */
+.tbl td.tx, .tbl thead th.tx { text-align: left; }
+.tbl td.tx, .tbl td.wr { white-space: normal; word-break: keep-all; overflow-wrap: break-word; }
 .tbl th[scope="row"] { word-break: keep-all; }
-.tbl.nowrap-head th[scope="row"] { white-space: nowrap; }
+/* 줄 제목(첫 열)은 자리가 모자랄 때만 낱말 사이에서 줄바꿈한다. 예전 nowrap-head는 한 줄로 고정해 표를 상자 밖으로 밀었다(2026-11에 풀었음, class는 남아 있음).
+   열이 넷 이상인 표(dense)와 좁은 상자의 글자 줄이기는 .article 표 규칙 뒤(아래쪽)에 있다 */
+/* 좁은 상자에서는 마지막 열을 뺀다(연봉 표의 연 실수령). 폰과 데스크톱 2단 배치의 결과 카드(약 400px) 둘 다 */
+@media (max-width: 480px) { .tbl.drop-last-sm th:last-child, .tbl.drop-last-sm td:last-child { display: none; } }
+@container tw (max-width: 400px) { .tbl.drop-last-sm th:last-child, .tbl.drop-last-sm td:last-child { display: none; } }
+/* 그래도 상자보다 넓은 표는 줄마다 세로로 푼다: 줄 제목 아래에 「열 제목 … 값」이 한 줄씩. common.js fitTables가 넘침을 재서 stack을 붙이고 뗀다 */
+.tbl.stack, .tbl.stack tbody, .tbl.stack tr, .tbl.stack th[scope="row"], .tbl.stack td { display: block; }
+.tbl.stack thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.tbl.stack tr { padding: 10px 0; border-bottom: 1px solid var(--line); }
+.tbl.stack tbody tr:last-child { border-bottom: 0; }
+.tbl.stack th[scope="row"], .tbl.stack td:not([data-th]) { border: 0; padding: 0 0 4px; font-weight: 700; text-align: left; white-space: normal; }
+.tbl.stack td[data-th] { overflow: hidden; border: 0; padding: 3px 0; text-align: right; white-space: normal; word-break: keep-all; }
+.tbl.stack td[data-th]::before { content: attr(data-th); float: left; max-width: 55%; margin-right: 16px; color: var(--ink-3); font-size: 13px; font-weight: 400; text-align: left; }
+.tbl.stack td.tx[data-th] { text-align: left; }                                  /* 글자 칸은 열 제목을 윗줄에 */
+.tbl.stack td.tx[data-th]::before { float: none; display: block; max-width: none; margin: 0 0 1px; }
+.tbl.stack tr.total { border-top: 1px solid var(--line-2); }
+.tbl.stack tr.total th, .tbl.stack tr.total td { padding-top: 3px; }
 .tbl thead th { font-weight: 600; color: var(--ink-3); font-size: 13px; padding-top: 0; }
 .tbl tr.total th, .tbl tr.total td { font-weight: 800; border-bottom: 0; padding-top: 12px; }
 .tbl tr.sub th, .tbl tr.sub td { color: var(--ink-2); font-size: 14px; }
-.table-wrap { overflow-x: auto; margin: 0 -18px; padding: 0 18px; }
+.table-wrap { overflow-x: auto; margin: 0 -18px; padding: 0 18px; container: tw / inline-size; }   /* tw: 표 상자 폭으로 글자 크기를 정한다(@container tw) */
 @media (min-width: 720px) { .table-wrap { margin: 0 -24px; padding: 0 24px; } }
 .na { color: var(--ink-3); }
 
@@ -584,6 +605,34 @@ details[open] .details-summary::after { content: "접기"; }
 .article .lead { font-size: 18px; color: var(--ink-2); margin: 0 0 6px; }
 .article .meta { color: var(--ink-3); font-size: 13px; margin: 0 0 22px; }
 .article table.tbl th, .article table.tbl td { font-size: 14.5px; }
+/* 폰: 열이 넷 이상인 표(dense, 빌드가 붙임)는 글자·여백을 줄여 한 화면에 넣고, 430px 이하 폰은 모든 표를 조금, 380px 이하는 조금 더 줄인다. 위 14.5px 규칙보다 뒤에 있어야 먹는다 */
+@media (max-width: 480px) {
+  .tbl.dense th, .tbl.dense td, .article table.tbl.dense th, .article table.tbl.dense td { font-size: 13px; padding: 9px 4px; }
+  .tbl.dense thead th, .article table.tbl.dense thead th { font-size: 12px; }
+}
+@media (max-width: 430px) {
+  .tbl th, .tbl td, .article table.tbl th, .article table.tbl td { font-size: 13.5px; padding: 9px 4px; }
+  .tbl thead th, .article table.tbl thead th { font-size: 12.5px; }
+  .tbl.dense th, .tbl.dense td, .article table.tbl.dense th, .article table.tbl.dense td { font-size: 13px; }
+}
+@media (max-width: 380px) {
+  .tbl th, .tbl td, .article table.tbl th, .article table.tbl td { font-size: 13px; padding: 9px 3px; }
+  .tbl.dense th, .tbl.dense td, .article table.tbl.dense th, .article table.tbl.dense td { font-size: 12.5px; }
+  .tbl thead th, .tbl.dense thead th, .article table.tbl thead th, .article table.tbl.dense thead th { font-size: 12px; }
+}
+/* 데스크톱 2단 배치의 결과 카드처럼 화면은 넓어도 표 상자가 좁은 곳(안쪽 폭 400px 이하)도 같은 식으로 줄인다 */
+@container tw (max-width: 400px) {
+  .tbl th, .tbl td, .article table.tbl th, .article table.tbl td { font-size: 13.5px; padding: 9px 4px; }
+  .tbl thead th, .article table.tbl thead th { font-size: 12.5px; }
+  .tbl.dense th, .tbl.dense td, .article table.tbl.dense th, .article table.tbl.dense td { font-size: 13px; }
+}
+@container tw (max-width: 310px) {      /* 360px 폰의 표 상자 안쪽 폭이 290px. 위 @media (max-width: 380px)과 같은 값 */
+  .tbl th, .tbl td, .article table.tbl th, .article table.tbl td { font-size: 13px; padding: 9px 3px; }
+  .tbl.dense th, .tbl.dense td, .article table.tbl.dense th, .article table.tbl.dense td { font-size: 12.5px; }
+  .tbl thead th, .tbl.dense thead th, .article table.tbl thead th, .article table.tbl.dense thead th { font-size: 12px; }
+}
+/* 세로로 푼 표(stack)는 폭이 넉넉하니 글자를 줄이지 않는다 */
+.tbl.stack th[scope="row"], .tbl.stack td, .article table.tbl.stack th[scope="row"], .article table.tbl.stack td { font-size: 14.5px; }
 .cta-box {
   margin: 26px 0; padding: 16px 18px; border-radius: var(--radius-sm);
   background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
@@ -616,6 +665,8 @@ details[open] .details-summary::after { content: "접기"; }
 
 /* 큰 참고표 */
 .ref-table th, .ref-table td { font-size: 13.5px; padding: 8px 6px; }
+/* 작은 표 셋을 나란히(청약 가점표). 자리가 모자라면 둘씩, 하나씩으로 내려간다 */
+.tbl-trio { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px 28px; align-items: start; }
 
 /* ---------- 2차 추가: 판정 표시, 이사 단계, 서식, 용어 사전 ---------- */
 .ok-mark, .warn-mark, .bad-mark { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 999px; margin-right: 4px; vertical-align: 1px; }

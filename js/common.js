@@ -460,6 +460,44 @@
     });
   }
 
+  // 표가 상자보다 넓으면 줄마다 세로로 푼다(css .tbl.stack). 글자 칸 줄바꿈과 좁은 글자로도 안 들어가는 표만 해당한다.
+  // 2026-11: 폰에서 표 오른쪽이 잘려 안 보였음. 화면 폭·글꼴·줄 내용이 바뀌면 다시 잰다
+  function heads_of(t) { return t.querySelectorAll('thead th').length; }
+  function fitTables() {
+    var wraps = document.querySelectorAll('.table-wrap');
+    for (var k = 0; k < wraps.length; k++) {
+      var w = wraps[k], t = w.querySelector('table.tbl');
+      if (!t || t.classList.contains('schedule')) continue;
+      t.classList.remove('stack');
+      if (!w.clientWidth) continue;
+      var tight = w.scrollWidth - w.clientWidth > 1;
+      if (!tight && heads_of(t) >= 3) {                                       // 넘치지는 않아도 글자 칸이 여섯 줄 넘게 꺾이면 읽기 어렵다
+        var tx = t.querySelectorAll('td.tx');
+        for (var q = 0; q < tx.length && !tight; q++) tight = tx[q].clientHeight > 6.5 * parseFloat(getComputedStyle(tx[q]).lineHeight);
+      }
+      if (!tight) continue;
+      var heads = [].map.call(t.querySelectorAll('thead th'), function (h) { return h.textContent.trim(); });
+      [].forEach.call(t.querySelectorAll('tbody tr'), function (tr) {
+        [].forEach.call(tr.children, function (c, j) {
+          if (c.tagName === 'TD' && j > 0 && c.colSpan === 1 && heads[j]) c.setAttribute('data-th', heads[j]); else c.removeAttribute('data-th');
+        });
+      });
+      t.classList.add('stack');
+    }
+  }
+  function initTables() {
+    if (!document.querySelector('.table-wrap')) return;
+    var queued = false;
+    function later() { if (queued) return; queued = true; (window.requestAnimationFrame || setTimeout)(function () { queued = false; fitTables(); }); }
+    fitTables();
+    window.addEventListener('resize', later);
+    document.addEventListener('toggle', later, true);                       // 접힌 묶음을 펼칠 때
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(later);
+    if (window.MutationObserver) {                                            // 계산할 때마다 줄을 새로 그리는 표
+      var mo = new MutationObserver(later);
+      [].forEach.call(document.querySelectorAll('.table-wrap tbody'), function (b) { mo.observe(b, { childList: true }); });
+    }
+  }
   function ready(fn) { if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn); else fn(); }
 
   // ---- 폼 직렬화: 계산기 입력을 {id: 값} 객체로 (공유 링크·기억 기능 공용) ----
@@ -548,5 +586,5 @@
 
   // 테마는 화면 깜빡임을 줄이기 위해 즉시 적용
   applyTheme(lsGet(THEME_KEY));
-  ready(function () { initTheme(); initMenu(); markCurrentNav(); initNavScroll(); initSoonLinks(); initServiceWorker(); initInstallPrompt(); initFavButton(); });
+  ready(function () { initTheme(); initMenu(); markCurrentNav(); initNavScroll(); initSoonLinks(); initServiceWorker(); initInstallPrompt(); initFavButton(); initTables(); });
 })(window);

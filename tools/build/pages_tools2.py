@@ -77,7 +77,7 @@ def tax_calendar_page():
     right = result_hero("다음 기한까지", "out-big", "", [("다음 기한", "out-next-name", ""), ("날짜", "out-next-date", ""), ("표시된 기한", "out-count", "건")]) + '''
         <section class="card">
           <h2>기한 목록</h2>
-          <div class="table-wrap"><table class="tbl nowrap-head"><thead><tr><th scope="col">기한</th><th scope="col">항목</th><th scope="col">어디서</th><th scope="col">남은 날</th></tr></thead><tbody id="event-body"></tbody></table></div>
+          <div class="table-wrap"><table class="tbl nowrap-head"><thead><tr><th scope="col">기한</th><th scope="col" class="tx">항목</th><th scope="col" class="tx">어디서</th><th scope="col">남은 날</th></tr></thead><tbody id="event-body"></tbody></table></div>
           <p class="result-note"><span id="rules-date"></span>. 기한이 공휴일이면 다음 영업일까지. 참고용이며 고지서와 홈택스·위택스 안내가 우선합니다.</p>
         </section>'''
     main = hero("Tax Calendar", "부동산 세금 달력 · 신고 납부 기한 계산기", "취득세 60일, 양도세 예정신고, 재산세 7·9월, 종부세 12월",
@@ -322,7 +322,7 @@ def salary_page():
         <section class="card">
           <h2>연봉별 실수령액 표</h2>
           <p class="hint">위에 입력한 부양가족·비과세 기준으로 계산합니다.</p>
-          <div class="table-wrap"><table class="tbl nowrap-head"><thead><tr><th scope="col">연봉</th><th scope="col">월 실수령</th><th scope="col">월 공제</th><th scope="col">연 실수령</th></tr></thead><tbody id="table-body"></tbody></table></div>
+          <div class="table-wrap"><table class="tbl nowrap-head drop-last-sm"><thead><tr><th scope="col">연봉</th><th scope="col">월 실수령</th><th scope="col">월 공제</th><th scope="col">연 실수령</th></tr></thead><tbody id="table-body"></tbody></table></div>
         </section>'''
     guide = prose_section("실수령액 읽는 법", [
         "<p>연봉 5,000만원이면 월 세전은 약 417만원이지만 손에 쥐는 돈은 350만원 안팎입니다. 차이는 4대보험 약 9%와 소득세·지방소득세입니다. 연봉이 오를수록 소득세 누진 구간이 올라가 실수령 비율은 조금씩 내려갑니다.</p>",

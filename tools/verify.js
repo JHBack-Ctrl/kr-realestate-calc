@@ -132,15 +132,34 @@ function near(label, got, want, tol) {
     if (r.bad.length) { fails++; console.log(`FAIL ${f.padEnd(34)} ${String(r.text).padStart(5)}자  ${r.bad.join(' ')}`); }
   }
 
-  // 가장 좁은 폰(320px)에서 페이지 전체가 옆으로 밀리는지. 표는 자기 상자 안에서만 스크롤되면 된다.
-  await page.setViewportSize({ width: 320, height: 844 });
-  for (const f of PAGES) {
-    await page.goto(BASE + f);
-    const sw = await page.evaluate(() => document.documentElement.scrollWidth);
-    if (sw > 321) { fails++; console.log(`FAIL ${f.padEnd(34)} overflow320=${sw}`); }
+  // 폰 폭 세 가지(320·360·412px)에서 페이지 전체가 옆으로 밀리는지, 표가 자기 상자 밖으로 잘리는지.
+  // 표는 글자 칸 줄바꿈(site_core.fit_tables) → 좁은 글자(css) → 줄마다 세로로 풀기(common.js fitTables) 순서로 상자 안에 넣는다.
+  // 2026-11: 「상자 안에서 옆으로 밀리면 통과」였을 때 표 76개가 폰에서 오른쪽이 잘려 있었다(사용자 제보, guide-officetel)
+  const tableOver = () => page.evaluate(() => [...document.querySelectorAll('.table-wrap')].map((w, i) => ({ i, over: w.clientWidth ? w.scrollWidth - w.clientWidth : 0 })).filter(x => x.over > 1).map(x => '#' + x.i + '(+' + x.over + 'px)'));
+  for (const w of [320, 360, 412]) {
+    await page.setViewportSize({ width: w, height: 844 });
+    for (const f of PAGES) {
+      await page.goto(BASE + f);
+      const sw = await page.evaluate(() => document.documentElement.scrollWidth);
+      if (sw > w + 1) { fails++; console.log(`FAIL ${f.padEnd(34)} overflow${w}=${sw}`); }
+      await page.waitForFunction(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(() => r(true)))));   // 계산기가 그린 표를 fitTables가 다시 잴 때까지
+      const cut = await tableOver();
+      if (cut.length) { fails++; console.log(`FAIL ${f.padEnd(34)} ${w}px에서 표가 잘림 ${cut.join(' ')}`); }
+    }
   }
   await page.setViewportSize({ width: 390, height: 844 });
-  console.log(`  구조 검사 끝 (390px·320px) — 검색 대상 ${SITEMAP.size}쪽, 검색 제외 ${PAGES.length - SITEMAP.size}쪽`);
+  // 표 처리 방식이 실제로 먹는지: 글자 칸 줄바꿈, 세로로 풀기, 넓어지면 다시 표로
+  await page.goto(BASE + 'guide-officetel.html');
+  expect('표 글자 칸 줄바꿈(오피스텔 글)', await page.$eval('.table-wrap td.tx', e => getComputedStyle(e).whiteSpace), 'normal');
+  expect('열 여섯인 표는 폰에서 세로로', await page.$$eval('.table-wrap table', ts => ts.filter(t => t.classList.contains('stack')).length >= 1), true);
+  expect('세로로 푼 칸에 열 제목', await page.$eval('.tbl.stack td[data-th]', e => e.getAttribute('data-th').length > 0), true);
+  await page.setViewportSize({ width: 1280, height: 900 }); await page.waitForFunction(() => !document.querySelector('.tbl.stack'));
+  expect('넓은 화면에서는 다시 표', await page.$$eval('.tbl.stack', e => e.length), 0);
+  await page.setViewportSize({ width: 360, height: 844 }); await page.goto(BASE + 'guide-salary-table.html');
+  expect('표 숫자 칸은 한 줄(연봉 표 글, 360px)', await page.$$eval('.table-wrap table:not(.stack) td:not(.tx):not(.wr)', es => es.length > 40 && es.every(e => getComputedStyle(e).whiteSpace === 'nowrap')), true);
+  expect('줄 많은 숫자 표는 360px에서도 표 그대로', await page.$$eval('.tbl.stack', e => e.length), 0);
+  await page.setViewportSize({ width: 390, height: 844 });
+  console.log(`  구조 검사 끝 (390px·320px·360px·412px) — 검색 대상 ${SITEMAP.size}쪽, 검색 제외 ${PAGES.length - SITEMAP.size}쪽`);
 
   // ------------------------------------------------------------ 계산기 값
   console.log('--- 계산기 ---');

@@ -1,5 +1,6 @@
 # 전국부동산계산기 사이트 빌더 — 공통 틀(헤더·메뉴·레일·푸터)과 페이지 등록부
 import json, re, os, hashlib, datetime
+import html as html_mod
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 # 사이트 주소. 한글 도메인 전국부동산계산기.com 의 퓨니코드 표기.
@@ -671,8 +672,72 @@ def fit_suffixes(html):
         return f'<input{attrs[:len(attrs) - len(tail)]} style="padding-right:{pad}px"{tail}>{m.group(2)}'
     return _SUFFIX_INPUT.sub(fix, html)
 
+# 표의 열마다 숫자 칸인지 글자 칸인지 빌드 때 정해 class를 붙인다(2026-11, 폰에서 글자 칸이 한 줄로만 써져 표가 잘렸음).
+# 숫자 칸은 한 줄·오른쪽 정렬 그대로, 글자 열은 tx(왼쪽 정렬·줄바꿈), 숫자 열 안의 긴 글은 wr(줄바꿈만).
+# 본문이 곧 원본인 기존 계산기 4개도 지나가므로 붙였던 class를 먼저 떼고 다시 붙인다(여러 번 빌드해도 같음).
+_TABLE = re.compile(r'(<table class=["\']tbl[^>]*>)(.*?)(</table>)', re.S)
+_ROW = re.compile(r'<tr[^>]*>.*?</tr>', re.S)
+_CELL = re.compile(r'<(th|td)([^>]*)>(.*?)</\1>', re.S)
+_FIT_CLS = re.compile(r'\s*\b(?:tx|wr)\b')
+
+def _cell_text(inner):
+    return re.sub(r'\s+', '', html_mod.unescape(re.sub(r'<[^>]+>', '', inner)))
+
+def _numeric(text):
+    """숫자 칸인가. 「2억 3,134만 5,000원」(빈칸 빼고 13자)까지는 숫자, 그보다 긴 계산식·설명은 글자로 본다."""
+    d = sum(c.isdigit() for c in text)
+    return d >= 1 and d / len(text) >= 0.3 and len(text) < 16
+
+def _set_cls(attrs, cls):
+    m = re.search(r'class=(["\'])(.*?)\1', attrs)
+    if m:
+        cur = _FIT_CLS.sub('', m.group(2)).strip()
+        val = (cur + ' ' + cls).strip() if cls else cur
+        rest = attrs[:m.start()] + (f'class={m.group(1)}{val}{m.group(1)}' if val else '') + attrs[m.end():]
+        return rest if val else re.sub(r'\s+$', '', rest)
+    return attrs + (f' class="{cls}"' if cls else '')
+
+def fit_tables(html):
+    def fix(m):
+        head, body, tail = m.group(1), m.group(2), m.group(3)
+        if 'schedule' in head or 'rowspan' in body: return m.group(0)
+        rows = [(r.group(0), list(_CELL.finditer(r.group(0)))) for r in _ROW.finditer(body)]
+        span = lambda cells: any('colspan' in c.group(2) for c in cells)      # 칸을 합친 줄은 열 판단에서 빼고, 합친 칸은 글자 칸(tx)으로
+        data = [cells for (_r, cells) in rows if cells and not span(cells) and any(c.group(1) == 'td' for c in cells)]
+        ncol = max((len(c) for c in data), default=0)
+        heads = max((len(cells) for (_r, cells) in rows if cells and all(c.group(1) == 'th' for c in cells)), default=0)
+        if max(ncol, heads) >= 4 and 'dense' not in head:      # 열이 넷 이상이면 폰에서 글자와 여백을 조금 줄인다(css .tbl.dense)
+            head = re.sub(r'class=(["\'])tbl', r'class=\1tbl dense', head, count=1)
+        if not ncol: return head + body + tail      # 줄을 스크립트가 그리는 표: 손대지 않는다(칸의 class는 그 스크립트가 붙임)
+        kind = []                                   # 열마다 'tx'(글자 열) 또는 ''(숫자 열)
+        for j in range(ncol):
+            texts = [_cell_text(c[j].group(3)) for c in data if j < len(c) and c[j].group(1) == 'td']
+            texts = [x for x in texts if x and x not in ('—', '-', '−')]
+            plain = [x for x in texts if not _numeric(x)]
+            kind.append('tx' if texts and len(plain) / len(texts) >= 0.4 else '')
+        def cell(c, j, spanned=False):
+            tag, attrs, inner = c.group(1), c.group(2), c.group(3)
+            cls = ''
+            if spanned: cls = 'tx' if 'colspan' in attrs and tag == 'td' else None
+            elif j < ncol and (tag == 'td' or 'scope="col"' in attrs or 'scope=\'col\'' in attrs or not attrs.strip()):
+                if kind[j] and not (tag == 'th' and j == 0): cls = 'tx'
+                elif tag == 'td':
+                    x = _cell_text(inner)
+                    if len(x) >= 9 and not _numeric(x): cls = 'wr'
+            return c.group(0) if cls is None else f'<{tag}{_set_cls(attrs, cls)}>{inner}</{tag}>'
+        out = body
+        for raw, cells in rows:
+            if not cells: continue
+            pos, parts, sp = 0, [], span(cells)
+            for j, c in enumerate(cells):
+                parts.append(raw[pos:c.start()]); parts.append(cell(c, j, sp)); pos = c.end()
+            parts.append(raw[pos:])
+            out = out.replace(raw, ''.join(parts), 1)
+        return head + out + tail
+    return _TABLE.sub(fix, html)
+
 def page(title, desc, path, main_html, extra_head="", scripts=(), noindex=False, sticky=None, with_rails=True, disclaimer=None, og_type="website"):
-    main_html = fit_suffixes(main_html)
+    main_html = fit_tables(fit_suffixes(main_html))
     sc = "".join(f'\n  <script src="{asset(s)}"></script>' for s in scripts)
     sticky_html = f'''
   <div id="sticky-summary" class="sticky-summary" aria-hidden="true">
