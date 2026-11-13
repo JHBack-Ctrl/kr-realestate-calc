@@ -222,17 +222,11 @@ def subscription_page():
         </section>
         <section class="card">
           <h2>가점표</h2>
-          <div class="table-wrap"><table class="tbl ref-table">
-            <thead><tr><th scope="col">무주택기간</th><th scope="col">점</th><th scope="col">부양가족</th><th scope="col">점</th><th scope="col">통장기간</th><th scope="col">점</th></tr></thead>
-            <tbody>
-              <tr><td>1년 미만</td><td>2</td><td>0명</td><td>5</td><td>6개월 미만</td><td>1</td></tr>
-              <tr><td>1~2년</td><td>4</td><td>1명</td><td>10</td><td>6개월~1년</td><td>2</td></tr>
-              <tr><td>2~3년</td><td>6</td><td>2명</td><td>15</td><td>1~2년</td><td>3</td></tr>
-              <tr><td>…</td><td>+2/년</td><td>3명</td><td>20</td><td>…</td><td>+1/년</td></tr>
-              <tr><td>14~15년</td><td>30</td><td>4명</td><td>25</td><td>14~15년</td><td>16</td></tr>
-              <tr><td>15년 이상</td><td>32</td><td>5명</td><td>30</td><td>15년 이상</td><td>17</td></tr>
-              <tr><td>유주택</td><td>0</td><td>6명 이상</td><td>35</td><td></td><td></td></tr>
-            </tbody></table></div>
+          <div class="tbl-trio">
+            <div class="table-wrap"><table class="tbl ref-table"><thead><tr><th scope="col">무주택기간</th><th scope="col">점</th></tr></thead><tbody><tr><th scope="row">1년 미만</th><td>2</td></tr><tr><th scope="row">1~2년</th><td>4</td></tr><tr><th scope="row">2~3년</th><td>6</td></tr><tr><th scope="row">…</th><td>+2/년</td></tr><tr><th scope="row">14~15년</th><td>30</td></tr><tr><th scope="row">15년 이상</th><td>32</td></tr><tr><th scope="row">유주택</th><td>0</td></tr></tbody></table></div>
+            <div class="table-wrap"><table class="tbl ref-table"><thead><tr><th scope="col">부양가족</th><th scope="col">점</th></tr></thead><tbody><tr><th scope="row">0명</th><td>5</td></tr><tr><th scope="row">1명</th><td>10</td></tr><tr><th scope="row">2명</th><td>15</td></tr><tr><th scope="row">3명</th><td>20</td></tr><tr><th scope="row">4명</th><td>25</td></tr><tr><th scope="row">5명</th><td>30</td></tr><tr><th scope="row">6명 이상</th><td>35</td></tr></tbody></table></div>
+            <div class="table-wrap"><table class="tbl ref-table"><thead><tr><th scope="col">통장기간</th><th scope="col">점</th></tr></thead><tbody><tr><th scope="row">6개월 미만</th><td>1</td></tr><tr><th scope="row">6개월~1년</th><td>2</td></tr><tr><th scope="row">1~2년</th><td>3</td></tr><tr><th scope="row">…</th><td>+1/년</td></tr><tr><th scope="row">14~15년</th><td>16</td></tr><tr><th scope="row">15년 이상</th><td>17</td></tr></tbody></table></div>
+          </div>
         </section>'''
     main = hero("Subscription · Score", "청약 가점 계산기", "무주택기간·부양가족·통장기간으로 84점 만점 계산", "생년월일, 혼인 여부, 부양가족 수, 청약통장 가입일을 넣으면 가점을 계산합니다. 무주택기간은 만 30세부터 자동 산정되고, 입주자모집공고일을 넣으면 그날 기준으로 셉니다. 참고용이며 실제 청약에서는 청약홈이 산정한 점수를 써야 합니다. 잘못 넣어 당첨되면 취소될 수 있습니다.") + layout(left, right) + INLINE_AD + guide + faq_section(faq) + related("subscription.html")
     return main, app_ld("청약 가점 계산기", desc_of("subscription.html"), "subscription.html") + faq_ld(faq) + breadcrumb_ld("청약 가점", "subscription.html")

@@ -10,7 +10,7 @@
   "published": "2026-09-17"
  },
  "acquisition-tax.html": {
-  "hash": "94e5144f3c26",
+  "hash": "200992bb6308",
   "modified": "2026-11-10",
   "published": "2026-09-17"
  },
@@ -30,7 +30,7 @@
   "published": "2026-09-17"
  },
  "base-rate-history.html": {
-  "hash": "5c1a18296aef",
+  "hash": "67eb602c3216",
   "modified": "2026-10-23",
   "published": "2026-09-17"
  },
@@ -40,7 +40,7 @@
   "published": "2026-09-17"
  },
  "capital-gains-tax.html": {
-  "hash": "70e74d6fe972",
+  "hash": "3235263df6a1",
   "modified": "2026-11-03",
   "published": "2026-09-17"
  },
@@ -105,12 +105,12 @@
   "published": "2026-10-21"
  },
  "guide-acquisition-tax.html": {
-  "hash": "2408a7b7255d",
+  "hash": "c975753d1517",
   "modified": "2026-11-10",
   "published": "2026-09-20"
  },
  "guide-annual-leave-days.html": {
-  "hash": "0bd1a504e81e",
+  "hash": "06c4b73454d5",
   "modified": "2026-11-10",
   "published": "2026-11-10"
  },
@@ -120,7 +120,7 @@
   "published": "2026-10-30"
  },
  "guide-apartment-multiple.html": {
-  "hash": "9452721549b4",
+  "hash": "65bfa2912249",
   "modified": "2026-11-03",
   "published": "2026-11-03"
  },
@@ -130,7 +130,7 @@
   "published": "2026-11-05"
  },
  "guide-area-84.html": {
-  "hash": "00097b72e7ca",
+  "hash": "bbc614a49af3",
   "modified": "2026-10-06",
   "published": "2026-09-20"
  },
@@ -140,22 +140,22 @@
   "published": "2026-10-21"
  },
  "guide-brokerage.html": {
-  "hash": "ff26b01f740c",
+  "hash": "04e89fea76ce",
   "modified": "2026-10-06",
   "published": "2026-09-17"
  },
  "guide-buy-vs-rent.html": {
-  "hash": "500cbd81985f",
+  "hash": "9626d666983f",
   "modified": "2026-09-30",
   "published": "2026-09-30"
  },
  "guide-buying-costs.html": {
-  "hash": "9b5782222d22",
+  "hash": "319dec45b692",
   "modified": "2026-10-21",
   "published": "2026-10-21"
  },
  "guide-cgt-exemption.html": {
-  "hash": "e7dd326bf2ec",
+  "hash": "d0c93388178d",
   "modified": "2026-09-20",
   "published": "2026-09-20"
  },
@@ -180,12 +180,12 @@
   "published": "2026-09-17"
  },
  "guide-deposit-100m.html": {
-  "hash": "7388279c41eb",
+  "hash": "b23c25fd7348",
   "modified": "2026-11-03",
   "published": "2026-11-03"
  },
  "guide-deposit-return.html": {
-  "hash": "49d34de3ddd9",
+  "hash": "9c740a2ca304",
   "modified": "2026-10-21",
   "published": "2026-10-21"
  },
@@ -195,7 +195,7 @@
   "published": "2026-09-30"
  },
  "guide-dsr-ltv.html": {
-  "hash": "7a1d2d923b63",
+  "hash": "56145a762a20",
   "modified": "2026-10-23",
   "published": "2026-09-20"
  },
@@ -205,22 +205,22 @@
   "published": "2026-11-10"
  },
  "guide-fixed-vs-variable.html": {
-  "hash": "1af828497d94",
+  "hash": "d4c7f996b5a0",
   "modified": "2026-09-20",
   "published": "2026-09-20"
  },
  "guide-freelancer-refund.html": {
-  "hash": "003ad5b65704",
+  "hash": "265cca1374bb",
   "modified": "2026-10-31",
   "published": "2026-10-31"
  },
  "guide-gift-tax-free.html": {
-  "hash": "f2802309eb6c",
+  "hash": "f03e8841e24b",
   "modified": "2026-11-03",
   "published": "2026-11-03"
  },
  "guide-gift-vs-inheritance.html": {
-  "hash": "113ccba070f8",
+  "hash": "6b9dd94c0784",
   "modified": "2026-10-27",
   "published": "2026-10-27"
  },
@@ -230,22 +230,22 @@
   "published": "2026-11-03"
  },
  "guide-jeonse-insurance-fail.html": {
-  "hash": "53b0fbfe820d",
+  "hash": "a70bf80468a6",
   "modified": "2026-09-20",
   "published": "2026-09-20"
  },
  "guide-jeonse-loan-vs-rent.html": {
-  "hash": "ea81d70636ae",
+  "hash": "bdf27832e709",
   "modified": "2026-10-30",
   "published": "2026-10-30"
  },
  "guide-jeonse-ratio.html": {
-  "hash": "501051285a11",
+  "hash": "8482424227b3",
   "modified": "2026-10-23",
   "published": "2026-10-23"
  },
  "guide-jeonse-registry.html": {
-  "hash": "b637fc6341a2",
+  "hash": "25abca50fb39",
   "modified": "2026-09-20",
   "published": "2026-09-20"
  },
@@ -255,7 +255,7 @@
   "published": "2026-09-17"
  },
  "guide-jongbuse-payment.html": {
-  "hash": "d38d42759dc1",
+  "hash": "13276ab6e25f",
   "modified": "2026-11-03",
   "published": "2026-11-03"
  },
@@ -265,7 +265,7 @@
   "published": "2026-10-27"
  },
  "guide-land-index-sido.html": {
-  "hash": "61e9ec0b53da",
+  "hash": "f2b851e9e44e",
   "modified": "2026-11-05",
   "published": "2026-11-05"
  },
@@ -280,7 +280,7 @@
   "published": "2026-11-10"
  },
  "guide-loan-rate-structure.html": {
-  "hash": "af5c3ccbaa42",
+  "hash": "1c2c3851f702",
   "modified": "2026-09-21",
   "published": "2026-09-21"
  },
@@ -290,22 +290,22 @@
   "published": "2026-10-30"
  },
  "guide-mixed-use-acquisition.html": {
-  "hash": "cba46a6a14c5",
+  "hash": "5e75a3c799a4",
   "modified": "2026-10-30",
   "published": "2026-10-30"
  },
  "guide-mortgage-limit.html": {
-  "hash": "aec22cc2d0f9",
+  "hash": "1c05b180a8eb",
   "modified": "2026-10-23",
   "published": "2026-10-21"
  },
  "guide-moving-14days.html": {
-  "hash": "2ddaca06e26b",
+  "hash": "e87dd53b8187",
   "modified": "2026-09-22",
   "published": "2026-09-22"
  },
  "guide-officetel.html": {
-  "hash": "e06fff27e143",
+  "hash": "92880f33f483",
   "modified": "2026-10-30",
   "published": "2026-09-21"
  },
@@ -330,7 +330,7 @@
   "published": "2026-11-10"
  },
  "guide-property-tax.html": {
-  "hash": "da159214e3f3",
+  "hash": "3ad4d2833d28",
   "modified": "2026-10-24",
   "published": "2026-09-21"
  },
@@ -340,22 +340,22 @@
   "published": "2026-11-05"
  },
  "guide-refinance.html": {
-  "hash": "85b5be3ddea6",
+  "hash": "cc52a2696a23",
   "modified": "2026-10-23",
   "published": "2026-10-23"
  },
  "guide-renewal-family.html": {
-  "hash": "d40a9e8fb27b",
+  "hash": "28e5ce9a6c18",
   "modified": "2026-10-30",
   "published": "2026-10-30"
  },
  "guide-renewal-refusal.html": {
-  "hash": "51e7e93616fc",
+  "hash": "9d0ea6223f52",
   "modified": "2026-09-20",
   "published": "2026-09-20"
  },
  "guide-renewal-rent-increase.html": {
-  "hash": "2240fcc29a31",
+  "hash": "763b4ba50b50",
   "modified": "2026-10-21",
   "published": "2026-10-21"
  },
@@ -365,12 +365,12 @@
   "published": "2026-10-21"
  },
  "guide-rent-report.html": {
-  "hash": "fac893c5a15b",
+  "hash": "1c9196f95d13",
   "modified": "2026-11-10",
   "published": "2026-11-10"
  },
  "guide-rent-tax-credit-who.html": {
-  "hash": "c85dccdd9cb0",
+  "hash": "dc3ba457edbb",
   "modified": "2026-09-20",
   "published": "2026-09-20"
  },
@@ -410,7 +410,7 @@
   "published": "2026-10-30"
  },
  "guide-seoul-apartment-gu.html": {
-  "hash": "2f84196b1c35",
+  "hash": "5e5880c31dd0",
   "modified": "2026-11-05",
   "published": "2026-11-05"
  },
@@ -420,7 +420,7 @@
   "published": "2026-10-20"
  },
  "guide-severance.html": {
-  "hash": "4d5360c0df02",
+  "hash": "b174a09a151e",
   "modified": "2026-10-20",
   "published": "2026-09-20"
  },
@@ -430,22 +430,22 @@
   "published": "2026-11-10"
  },
  "guide-subscription-first-rank.html": {
-  "hash": "2330050b8dca",
+  "hash": "74ee089cf93e",
   "modified": "2026-11-10",
   "published": "2026-11-10"
  },
  "guide-subscription-notice-date.html": {
-  "hash": "175d2a96f2b0",
+  "hash": "0ef6b17ff5ae",
   "modified": "2026-10-01",
   "published": "2026-10-01"
  },
  "guide-subscription-points.html": {
-  "hash": "d175d1f79840",
+  "hash": "1fd5c0ca6126",
   "modified": "2026-09-20",
   "published": "2026-09-20"
  },
  "guide-temporary-two-homes.html": {
-  "hash": "96c425513167",
+  "hash": "8a4651ff62dd",
   "modified": "2026-10-23",
   "published": "2026-10-23"
  },
@@ -455,7 +455,7 @@
   "published": "2026-10-30"
  },
  "guide-weekly-holiday-pay.html": {
-  "hash": "2b9acb54236a",
+  "hash": "1559e677ae2f",
   "modified": "2026-11-10",
   "published": "2026-11-10"
  },
@@ -465,7 +465,7 @@
   "published": "2026-10-27"
  },
  "guide-year-end-dependents.html": {
-  "hash": "639df7324aab",
+  "hash": "52844727461d",
   "modified": "2026-10-31",
   "published": "2026-10-31"
  },
@@ -475,17 +475,17 @@
   "published": "2026-10-31"
  },
  "guide-year-end-medical.html": {
-  "hash": "ab3c8f50afde",
+  "hash": "d961633c5090",
   "modified": "2026-10-31",
   "published": "2026-10-31"
  },
  "guide-year-end-result.html": {
-  "hash": "8b6674858bd3",
+  "hash": "4e6ad53af357",
   "modified": "2026-10-31",
   "published": "2026-10-31"
  },
  "guide-yield-vacancy.html": {
-  "hash": "cf9cd89c2310",
+  "hash": "ff8b51775887",
   "modified": "2026-09-27",
   "published": "2026-09-27"
  },
@@ -535,7 +535,7 @@
   "published": "2026-11-02"
  },
  "loan.html": {
-  "hash": "3c74c1ee9c4e",
+  "hash": "b47f8c777587",
   "modified": "2026-11-10",
   "published": "2026-09-17"
  },
@@ -575,7 +575,7 @@
   "published": "2026-10-24"
  },
  "rate-compare.html": {
-  "hash": "3a96a63389e8",
+  "hash": "7fca7c3680ef",
   "modified": "2026-10-30",
   "published": "2026-09-17"
  },
@@ -600,7 +600,7 @@
   "published": "2026-09-17"
  },
  "rent.html": {
-  "hash": "3f9d15315654",
+  "hash": "ee617244a061",
   "modified": "2026-11-03",
   "published": "2026-09-17"
  },
@@ -610,7 +610,7 @@
   "published": "2026-10-27"
  },
  "salary.html": {
-  "hash": "695284ff8a75",
+  "hash": "5b7503178ac2",
   "modified": "2026-11-10",
   "published": "2026-09-17"
  },
@@ -625,12 +625,12 @@
   "published": "2026-09-17"
  },
  "subscription.html": {
-  "hash": "e5ab93a71f80",
+  "hash": "3be9a57eb952",
   "modified": "2026-11-10",
   "published": "2026-09-17"
  },
  "table-acquisition-tax.html": {
-  "hash": "8b0978b9af51",
+  "hash": "097e8d391145",
   "modified": "2026-10-16",
   "published": "2026-09-17"
  },
@@ -640,7 +640,7 @@
   "published": "2026-09-17"
  },
  "table-capital-gains-tax.html": {
-  "hash": "a559bd8fdf9b",
+  "hash": "8ee11760735e",
   "modified": "2026-09-20",
   "published": "2026-09-17"
  },
@@ -655,7 +655,7 @@
   "published": "2026-09-20"
  },
  "tax-calendar.html": {
-  "hash": "94462e9e71c3",
+  "hash": "73108be70b60",
   "modified": "2026-10-30",
   "published": "2026-09-17"
  },
@@ -870,7 +870,7 @@
   "published": "2026-10-27"
  },
  "yield.html": {
-  "hash": "997e880783af",
+  "hash": "3b57831a21e5",
   "modified": "2026-10-30",
   "published": "2026-09-17"
  }

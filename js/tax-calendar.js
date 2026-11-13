@@ -70,11 +70,12 @@
     S.setText('out-next-date', next ? S.fmtDate(next.date) : '—');
     S.setText('out-count', String(ev.length));
     var tb = $('event-body'); tb.innerHTML = '';
-    if (!ev.length) tb.innerHTML = '<tr><td colspan="4" class="muted">취득일·양도일을 넣거나 보유 항목을 켜면 기한이 나옵니다.</td></tr>';
+    if (!ev.length) tb.innerHTML = '<tr><td colspan="4" class="muted tx">취득일·양도일을 넣거나 보유 항목을 켜면 기한이 나옵니다.</td></tr>';
     ev.forEach(function (e) {
       var tr = document.createElement('tr');
       var passed = e.date < today;
-      tr.innerHTML = '<th scope="row">' + S.fmtDate(e.date) + '</th><td>' + e.name + '<br><small class="muted">' + e.desc + '</small></td><td>' + e.where + '</td><td' + (passed ? ' class="na"' : '') + '>' + dday(today, e.date) + '</td>';
+      // 항목·어디서는 글자 칸이라 줄바꿈(tx). 폰에서 한 줄로만 써져 표가 잘렸음(2026-11)
+      tr.innerHTML = '<th scope="row">' + S.fmtDate(e.date) + '</th><td class="tx">' + e.name + '<br><small class="muted">' + e.desc + '</small></td><td class="tx">' + e.where + '</td><td' + (passed ? ' class="na"' : '') + '>' + dday(today, e.date) + '</td>';
       tb.appendChild(tr);
     });
     S.setText('rules-date', RULES_DATE);
