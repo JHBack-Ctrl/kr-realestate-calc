@@ -20,8 +20,10 @@
       var src = document.querySelector('[data-group] .tile[href="' + f + '"]');
       if (src) { favTiles.appendChild(src.cloneNode(true)); added++; }
     });
-    document.getElementById('fav-empty').hidden = added > 0;
+    favSec.hidden = !added;   // 즐겨찾기가 없으면 묶음째 숨긴다(2026-11: 빈 상자가 첫 화면을 차지했음). 방법은 계산기 제목 아래 ☆ 단추에 적혀 있다
   }
+  var hasFav = !!(favTiles && favTiles.children.length);
+  var more = document.getElementById('more-guides');   // 접어 둔 안내 글. 검색할 때는 펼쳐서 찾는다
 
   var groups = [].slice.call(document.querySelectorAll('[data-group]')).map(function (g) {
     return {
@@ -35,19 +37,26 @@
 
   function apply() {
     var v = q.value.trim().toLowerCase();
-    var any = false;
-    for (var i = 0; i < groups.length; i++) {
+    var any = false, i, secs = [], counts = [];
+    for (i = 0; i < groups.length; i++) {
       var g = groups[i], shown = 0;
       for (var j = 0; j < g.tiles.length; j++) {
         var hit = !v || g.tiles[j].key.indexOf(v) !== -1;
         g.tiles[j].el.hidden = !hit;
         if (hit) shown++;
       }
-      if (g.sec) g.sec.hidden = !shown;
+      var k = secs.indexOf(g.sec); if (k < 0) { k = secs.push(g.sec) - 1; counts[k] = 0; }   // 한 묶음에 타일 상자가 둘일 수 있다(안내 글: 새 글 + 접힌 글)
+      counts[k] += shown;
       if (shown) any = true;
     }
+    for (i = 0; i < secs.length; i++) if (secs[i]) secs[i].hidden = !counts[i];
+    if (more) {
+      if (v && !more.hasAttribute('data-was')) { more.setAttribute('data-was', more.open ? '1' : '0'); more.open = true; }
+      if (!v && more.hasAttribute('data-was')) { more.open = more.getAttribute('data-was') === '1'; more.removeAttribute('data-was'); }
+      more.classList.toggle('searching', !!v);
+    }
     if (empty) empty.hidden = any;
-    if (favSec) favSec.hidden = !!v;   // 검색 중에는 즐겨찾기 묶음을 숨겨 결과만 보이게
+    if (favSec) favSec.hidden = !!v || !hasFav;   // 검색 중에는 즐겨찾기 묶음을 숨겨 결과만 보이게
   }
 
   q.addEventListener('input', apply);

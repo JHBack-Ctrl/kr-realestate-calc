@@ -350,6 +350,39 @@ GUIDES = [
     ("guide-weekly-holiday-pay.html", "주휴수당 계산법, 주 몇 시간부터 얼마 받나", "주휴수당 계산법 2026 — 주 15·20·40시간 주휴수당, 받는 조건, 주휴 포함 시급 12,384원",
      "주휴수당은 1주 15시간 이상 일하고 출근할 날을 다 나오면 받습니다. 2026년 최저임금으로 주 40시간 8만 2,560원, 주 20시간 4만 1,280원입니다. 근무시간별 금액, 받는 조건, 주휴수당을 넣은 시급을 정리했습니다."),
 ]
+# 안내 글 주제 묶음(안내 글 목록 guides.html). 글은 꼭 한 묶음에만 넣는다 — 빠지거나 겹치면 빌드가 멈춘다.
+# 2026-11: 묶음 없이 오래된 글부터 84장이 한 줄로 이어져 폰에서 화면 23개 분량이었다. 새 글을 쓰면 여기에도 넣을 것
+GUIDE_TOPICS = [
+    ("rent", "전세·월세", "conversion jeonse-vs-monthly jeonse-registry renewal-refusal jeonse-insurance-fail moving-14days deposit-vs-rent deposit-return "
+                         "renewal-rent-increase jeonse-ratio renewal-family rent-report jeonse-loan-vs-rent brokerage"),
+    ("loan", "대출", "repayment dsr-ltv fixed-vs-variable loan-rate-structure prepayment mortgage-limit base-rate-change refinance loan-30-vs-40"),
+    ("buy", "집 살 때·팔 때", "acquisition-tax acquisition-6-9 first-home-acquisition mixed-use-acquisition buying-costs self-registration buy-vs-rent "
+                           "cgt-exemption cgt-heavy cgt-high-price cgt-filing temporary-two-homes officetel area-84 yield-vacancy"),
+    ("hold", "보유세·상속·증여", "property-tax property-tax-table jongbuse-threshold jongbuse-payment rental-income-two-homes gift-tax-free gift-vs-inheritance inheritance-threshold"),
+    ("sub", "청약", "subscription-points subscription-notice-date subscription-first-rank subscription-deduction"),
+    ("pay", "월급·연말정산", "salary-net salary-raise salary-table year-end-december year-end-dependents year-end-result year-end-medical year-end-job-change "
+                          "rent-tax-credit-who rent-credit-refund pension-tax-credit freelancer-refund"),
+    ("work", "퇴직·휴가·저축", "severance severance-tax annual-leave-pay annual-leave-days minimum-wage-2027 weekly-holiday-pay parental-leave-pay unemployment-floor "
+                            "savings-real-rate deposit-100m"),
+    ("price", "집값·땅값 흐름", "apartment-multiple seoul-apartment-gu land-price-lookup land-index-sido apartment-vs-land real-price-multiple"),
+]
+GUIDE_NEW_COUNT = 6      # 「새로 올린 글」과 홈에 먼저 보이는 안내 글 수. 새 글은 GUIDES 맨 뒤에 붙이므로 뒤에서부터 센다
+
+def guide_topics():
+    """[(id, 이름, [GUIDES 항목…])] — 묶음 안에서는 새 글이 위. 등록부와 어긋나면 멈춘다."""
+    order = {g[0]: i for i, g in enumerate(GUIDES)}
+    seen, out = [], []
+    for key, label, names in GUIDE_TOPICS:
+        files = ["guide-" + n + ".html" for n in names.split()]
+        bad = [f for f in files if f not in order]
+        assert not bad, "GUIDE_TOPICS에 없는 안내 글: " + ", ".join(bad)
+        seen += files
+        out.append((key, label, [GUIDES[order[f]] for f in sorted(files, key=lambda f: -order[f])]))
+    missing = [f for f in order if f not in seen]; dup = sorted({f for f in seen if seen.count(f) > 1})
+    assert not missing, "주제 묶음(GUIDE_TOPICS)에 넣지 않은 안내 글: " + ", ".join(missing)
+    assert not dup, "주제 묶음 두 곳에 들어간 안내 글: " + ", ".join(dup)
+    return out
+
 # 계산기 쪽 결과 바로 아래에 붙는 「함께 읽는 안내 글」. 계산기마다 1~3편, 가장 가까운 글부터.
 # 2026-10 네이버 애널리틱스에서 평균 체류 39초, 방문당 1.63쪽이라 계산 뒤 다음 쪽으로 이어지게 넣었다.
 # 새 안내 글을 쓰면 관련 계산기 줄에 더할 것. 없는 글을 적으면 빌드가 멈춘다(related_guides).
