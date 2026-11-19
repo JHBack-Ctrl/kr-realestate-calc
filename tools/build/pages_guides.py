@@ -21,7 +21,7 @@ def article(path, h1, lead, blocks, cta, related_tools):
       <section class="card related" aria-labelledby="rel-title">
         <h2 id="rel-title">이 글과 함께 쓰는 계산기</h2>
         <div class="tool-grid">{rel}</div>
-      </section>
+      </section>{topic_guides(path)}
       <p class="hint" style="margin-top:14px"><a href="guides.html">← 안내 글 목록</a></p>
     </article>'''
 
@@ -334,7 +334,10 @@ def home():
                    "guide-first-home-acquisition.html": "생애최초 취득세 감면", "guide-subscription-first-rank.html": "청약 1순위·예치금",
                    "guide-rent-report.html": "전월세 신고제", "guide-pension-tax-credit.html": "연금저축·IRP 세액공제",
                    "guide-property-tax-table.html": "재산세 공시가격별 표", "guide-loan-30-vs-40.html": "주담대 30년 vs 40년",
-                   "guide-annual-leave-days.html": "연차 개수 계산", "guide-weekly-holiday-pay.html": "주휴수당 계산법"}
+                   "guide-annual-leave-days.html": "연차 개수 계산", "guide-weekly-holiday-pay.html": "주휴수당 계산법",
+                   "guide-loan-100m-interest.html": "1억 대출 이자", "guide-card-deduction.html": "신용카드 소득공제",
+                   "guide-family-loan.html": "부모님께 빌린 돈", "guide-jeonse-deemed-rent.html": "전세 간주임대료",
+                   "guide-severance-table.html": "퇴직금 계산 표"}
     gtile = lambda g: (f'<a class="tile" href="{g[0]}" data-k="{g[1]}" data-pub="{PAGE_DATES.get(g[0], {}).get("published", "")}">'
                        f'{tile_icon(g[0])}<span class="t">{GUIDE_SHORT.get(g[0], g[1])}</span></a>')
     # 안내 글은 새 글 몇 편만 먼저 보이고 나머지는 접어 둔다(2026-11: 타일 78개가 폰에서 화면 4개 분량이었다).

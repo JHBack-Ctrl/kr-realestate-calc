@@ -12,7 +12,7 @@
 python3 tools/build/build.py
 ```
 
-등록부에서 175쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
+등록부에서 180쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
 같은 소스로 두 번 돌리면 결과가 같아야 합니다(멱등). 달라지면 버그입니다.
 
 - `site_core.py` — 등록부(TOOLS, TABLES, FORMS, REFS, GUIDES, HUBS, RATE_HISTORY)와 공통 틀.
@@ -21,7 +21,7 @@ python3 tools/build/build.py
   (`pages_tax.py`는 재산세·종부세·증여세, `pages_tools3.py`는 상속세·전세대출·예적금·실업급여·시급,
   `pages_tools4.py`는 연말정산·등기비용·연금저축IRP·육아휴직·연차·주택임대소득세·종합소득세·땅값 몇 배·아파트값 몇 배)
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽, 안내 글 4편
-- `pages_guides2.py` — 안내 글 74편
+- `pages_guides2.py` — 안내 글 79편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
 - `build.py` — 위를 모아 쓰고 `manifest.json`, `sw.js`, `sitemap.xml`, `js/analytics.js`를 생성
 
@@ -35,14 +35,15 @@ python3 tools/build/build.py
 해시가 바뀐 쪽만 수정일을 빌드한 날(한국 시간)로 바꿉니다. 새 쪽은 작성일·수정일이 빌드한 날입니다.
 
 - 이 파일은 빌드가 고치는 파일이라 **같이 커밋**하세요. 빠뜨리면 다음 빌드에서 날짜가 또 바뀝니다
-- 메뉴·푸터만 바뀐 쪽(새 글을 넣어 메뉴가 늘어난 경우 등)은 수정으로 치지 않습니다
+- 메뉴·푸터만 바뀐 쪽(새 글을 넣어 메뉴가 늘어난 경우 등)은 수정으로 치지 않습니다.
+  안내 글 맨 아래 「같은 주제의 안내 글」 상자도 자동으로 바뀌는 것이라 수정으로 치지 않습니다(`page_dates`가 그 부분을 빼고 해시를 냄)
 - 손으로 고칠 일은 거의 없습니다. 날짜를 되돌려야 하면 그 쪽의 `modified`만 고치면 됩니다
 - 2026-10 이전에는 모든 쪽이 2026-09-21로 고정돼 있었습니다. 초기값은 git 기록에서 뽑았습니다
 
 ### 검색 제외 (noindex)
 
-175쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
-검색 대상은 162쪽입니다(2026-11-10). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
+180쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
+검색 대상은 167쪽입니다(2026-11-19). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
 
 - 용어 9쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
 - 용어 39쪽 중 30쪽은 1,000자 이상으로 늘려 검색에 되돌렸습니다: 대항력·확정일자·전세가율·DSR·LTV,
@@ -188,7 +189,8 @@ https://전국부동산계산기.com/guide-prepayment.html
   세액공제 금액 한도, 세부담상한 200%)은 **국회 통과 전이라 미반영**. 통과되면 상수와 계산기 안내 문구(`pages_tax.py`)를 고칠 것.
   안내 글 `guide-jongbuse-threshold.html`의 공시가격별 표와 공동명의 예시, `guide-jongbuse-payment.html`(세액별 분납 금액·납부유예 소득 기준)도 다시 뽑을 것
 - 증여세: `js/gift-tax.js`의 `RATES`, `DEDUCT`, `MARRIAGE_BIRTH`. 상속·증여세 개편(유산취득세 등)이 통과되면 확인.
-  바뀌면 안내 글 `guide-gift-tax-free.html`(관계별 한도·금액별 증여세 표)도 다시 뽑을 것
+  바뀌면 안내 글 `guide-gift-tax-free.html`(관계별 한도·금액별 증여세 표)도 다시 뽑을 것.
+  `guide-family-loan.html`은 적정 이자율 연 4.6%·이자 차액 1,000만원 기준(상증세법 41조의4)으로 쓴 규정 글. 이자율이 바뀌면 표와 「약 2억 1,739만원」을 고칠 것
 - 상속세: `js/inheritance-tax.js`의 `LUMP`, `CHILD`, `SPOUSE_MIN/MAX`, `RATES`. 자녀공제 5억 상향·유산취득세 전환이
   **국회 통과 전이라 미반영**(2026-10). 통과되면 상수와 계산기 FAQ 「앞으로 바뀔 수 있나요?」(`pages_tools3.py`), verify 기대값,
   안내 글 `guide-gift-vs-inheritance.html`의 비교표와 `guide-inheritance-threshold.html`(재산별 상속세 표, 서울 평균 아파트 예시)를 고칠 것
@@ -201,7 +203,7 @@ https://전국부동산계산기.com/guide-prepayment.html
   청약통장 소득공제(`SUBSCRIPTION_*`, 연 300만원 × 40%, 총급여 7천만원)는 2028년까지 기한이 있고 2026년 개편안의 상시화는 **국회 통과 전**.
   바뀌면 `guide-subscription-deduction.html`(납입액별·전세대출 합산 표)도 다시 뽑을 것
 - 주택임대소득세: `js/rental-income-tax.js`의 `DEEMED_RATE`(간주임대료 이자율, 매년 3월 시행규칙. 2026년 귀속 3.1%)와 소형주택 주택 수 제외(2026년까지).
-  바뀌면 안내 글 `guide-rental-income-two-homes.html`의 간주임대료 숫자도 다시 뽑을 것
+  바뀌면 안내 글 `guide-rental-income-two-homes.html`의 간주임대료 숫자와 `guide-jeonse-deemed-rent.html`(보증금별 표, 0원·종합과세 경계 금액)도 다시 뽑을 것
 - 표: `tools/build/pages_tables.py`
 
 ### 1월 — 4대보험 요율·소득세
@@ -211,11 +213,12 @@ https://전국부동산계산기.com/guide-prepayment.html
 - `js/salary.js` — `PENSION_RATE`, `PENSION_BASE_MIN/MAX`, `HEALTH_RATE`, `LTC_RATE`,
   `EMPLOY_RATE`, `BRACKETS`, `EARNED_DEDUCTION`, `RULES_DATE`.
   바뀌면 안내 글 `guide-salary-net.html`·`guide-salary-raise.html`·`guide-salary-table.html`(연봉별 표 전체)의 숫자도 다시 뽑을 것.
+  세율·카드 공제 한도가 바뀌면 `guide-card-deduction.html`(총급여별 환급 표)도 다시 뽑을 것.
   **`js/year-end-tax.js` 맨 위 4대보험·세율·근로소득공제 상수도 같은 값이라 함께 고칠 것**(두 파일에 복사돼 있음).
   근로소득세액공제 한도는 7천만원 초과 구간이 「× 1/2」입니다(0.005로 잘못 넣었다가 2026-10에 고침).
   종합소득세 세율(`BRACKETS`)이 바뀌면 `js/income-tax.js`도 같은 값으로
 - `js/severance.js` — `SERVICE_DEDUCTION`, `CONVERTED_DEDUCTION`, `BRACKETS`.
-  바뀌면 안내 글 `guide-severance-tax.html`·`guide-severance.html`의 세금 숫자도 다시 뽑을 것
+  바뀌면 안내 글 `guide-severance-tax.html`·`guide-severance.html`·`guide-severance-table.html`(세금 뺀 금액)의 세금 숫자도 다시 뽑을 것
 - `js/rent-tax-credit.js` — `INCOME_CAP`, `RATE_HIGH/LOW`, `RENT_CAP`, `TAX_YEAR_LABEL`.
   바뀌면 `guide-rent-credit-refund.html`의 「몇 년 전 것까지」 설명(어느 해부터 같은 요건인지)도 확인할 것
 
@@ -289,8 +292,8 @@ https://전국부동산계산기.com/guide-prepayment.html
 ### 수시
 
 - 조정대상지역 지정·해제 → 취득세·양도세 계산기는 사용자가 직접 고르므로 코드 수정은 불필요.
-  다만 안내 글에 예시로 적힌 지역이 있으면 확인. `guide-subscription-first-rank.html`에 지금 투기과열지구(서울 25개 구·경기 12곳, 2026년 7월
-  화성 동탄구·용인 기흥구·구리시 추가)가 적혀 있음. 청약 예치금·1순위 기간이 바뀌어도 이 글을 고칠 것
+  다만 안내 글에 예시로 적힌 지역이 있으면 확인. `guide-subscription-first-rank.html`·`guide-dsr-ltv.html`·`term-ltv.html`과 DSR 계산기 FAQ(`pages_new.py`)에
+  지금 규제지역(서울 25개 구·경기 12곳, 2026년 7월 1일 화성 동탄구·용인 기흥구·구리시 추가 — 국토부 보도자료)이 적혀 있음. 청약 예치금·1순위 기간이 바뀌어도 이 글을 고칠 것
 - 전월세 신고제(보증금 6천만원·월세 30만원 초과, 30일, 과태료 최대 30만원·거짓 100만원) → 계산기 상수는 없고 `guide-rent-report.html`만 고치면 됨
 - 오피스텔 주택 수 특례(소형 신축, 시가표준액 1억 이하 제외) → 계산기 상수는 없고 `guide-officetel.html`의 「주택 수에서 빠지는 오피스텔」 절만 고치면 됨
 - HUG 전세보증보험 요건 → `js/jeonse-insurance.js`의 `DEPOSIT_CAP`, `LTV_CAP`, `SENIOR_CAP`.
@@ -328,6 +331,9 @@ https://전국부동산계산기.com/guide-prepayment.html
   **새 안내 글을 쓰면 `GUIDE_TOPICS`의 한 묶음에 넣으세요.** 빠지거나 두 곳에 넣으면 빌드가 멈춥니다. 새 글은 `GUIDES` 맨 뒤에 붙여야 「새로 올린 글」에 뜹니다.
   홈은 새 글 6편만 보이고 나머지는 「모두 보기」로 접혀 있습니다. 접힌 글도 링크는 HTML에 그대로 있습니다 — 홈에서 링크를 빼면
   검색 로봇이 새 글을 찾는 길이 줄어드니 빼지 말 것(서치콘솔에 새 글이 「색인 안 됨」으로 오래 남았음). 홈 검색창은 접힌 글도 찾습니다
+- **같은 주제의 안내 글**(2026-11): 안내 글마다 맨 아래에 같은 주제 묶음의 다른 글 3편이 자동으로 붙습니다(`site_core.topic_guides`).
+  `GUIDE_TOPICS`에 적힌 순서로 다음 3편이라, 묶음 안에서 가까운 글끼리 붙여 적으면 됩니다. 모든 글이 다른 글 3편에서 링크를 받습니다(verify 확인).
+  본문에서 들어오는 링크가 1개뿐인 글이 16편이었고 서치콘솔에 새 글이 색인되지 않은 채 남아 있어 넣었습니다
 - **글자**(2026-11): 한글은 낱말 사이에서만 줄바꿈(`word-break: keep-all`)하고, 회색 글자 `--ink-3`은 대비 4.5:1 이상으로 맞췄습니다. verify가 둘 다 확인합니다.
   좁은 칸(2열 타일 등)에 빈칸 없는 긴 낱말을 넣으면 줄바꿈할 곳이 없어 잘리니 그 칸에는 `overflow-wrap: anywhere`를 주세요
 - **함께 읽는 안내 글**: 계산기 입력·결과 바로 아래에 관련 안내 글 1~3편 카드가 붙습니다(`site_core.TOOL_GUIDES`, `with_related_guides`).

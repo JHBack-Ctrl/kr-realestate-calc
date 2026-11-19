@@ -1190,6 +1190,63 @@ function near(label, got, want, tol) {
   }
   await hw('10320', '9', '5', false); expect('주휴 글 5인 미만 9h×5 주급', await get('out-weekly'), '546,960'); expect('주휴 글 5인 미만 주휴', await get('out-holiday'), '82,560');
 
+  // ------------------------------------------------------------ 안내 글 5편 (2026-11, 3차) 본문 숫자
+  // guide-loan-100m-interest.html — 만기일시(이자만)·원리금균등·원금균등
+  const loanCase = async (method, pr, r, m) => { await fresh('loan.html'); await radio('method', method); await type('rate', r); await type('months', m); await type('principal', pr); };
+  for (const [r, mon] of [['3', '250,000'], ['3.5', '291,667'], ['4', '333,333'], ['4.5', '375,000'], ['5', '416,667'], ['5.5', '458,333'], ['6', '500,000']]) { await loanCase('bullet', '100000000', r, '12'); expect(`1억 이자 글 ${r}% 한 달 이자`, await get('out-first'), mon); }
+  for (const [pr, r, m, first, interest] of [['100000000', '3', '240', '554,598', null], ['100000000', '3', '360', '421,604', null], ['100000000', '4', '120', '1,012,451', '21,494,166'], ['100000000', '4', '240', '605,980', '45,435,279'],
+      ['100000000', '4', '360', '477,415', '71,869,506'], ['100000000', '5', '240', '659,956', null], ['100000000', '5', '360', '536,822', null], ['100000000', '6', '240', '716,431', null], ['100000000', '6', '360', '599,551', '115,838,189'],
+      ['200000000', '4', '360', '954,831', null], ['100000000', '5', '12', '8,560,748', '2,728,978'], ['100000000', '5', '36', '2,997,090', '7,895,230'], ['100000000', '5', '60', '1,887,123', '13,227,402']]) {
+    await loanCase('annuity', pr, r, m); expect(`1억 이자 글 원리금 ${pr} ${r}% ${m}개월 월`, await get('out-first'), first); if (interest) expect(`1억 이자 글 원리금 ${pr} ${r}% ${m}개월 이자`, await get('out-interest'), interest);
+  }
+  await loanCase('principal', '100000000', '4', '360'); expect('1억 이자 글 원금균등 첫 달', await get('out-first'), '611,111'); expect('1억 이자 글 원금균등 마지막 달', await get('c-pr-last'), '278,704'); expect('1억 이자 글 원금균등 이자', await get('out-interest'), '60,166,667');
+  for (const [pr, want] of [['50000000', '166,667'], ['200000000', '666,667'], ['300000000', '1,000,000']]) { await loanCase('bullet', pr, '4', '12'); expect(`1억 이자 글 ${pr} 4% 한 달 이자`, await get('out-first'), want); }
+  // guide-card-deduction.html — 본인 1명, 기납부 비움(카드 없을 때 세금). 환급 = out-total
+  for (const [sal, c20, c30] of [['30000000', '137,430', '170,840'], ['40000000', '247,500', '495,000'], ['50000000', '185,620', '433,120'], ['60000000', '123,750', '371,250'], ['70000000', '61,870', '309,370'], ['80000000', '0', '396,000'], ['100000000', '0', '198,000']]) {
+    await ye(sal, [['credit', '20000000']]); expect(`카드 글 ${sal} 신용 2,000만`, await get('out-total'), c20); await ye(sal, [['credit', '30000000']]); expect(`카드 글 ${sal} 신용 3,000만`, await get('out-total'), c30);
+  }
+  for (const [sal, want] of [['40000000', '495,000'], ['50000000', '371,250'], ['60000000', '247,500'], ['70000000', '123,750'], ['80000000', '0']]) { await ye(sal, [['debit', '20000000']]); expect(`카드 글 ${sal} 체크 2,000만`, await get('out-total'), want); }
+  for (const [label, sal, fields, card, total] of [['5천 체크 2,500만 한도', '50000000', [['debit', '25000000']], '3,000,000', '495,000'], ['5천 신용 3,250만 한도', '50000000', [['credit', '32500000']], '3,000,000', '495,000'],
+      ['5천 신용 3,200만 한도 전', '50000000', [['credit', '32000000']], '2,925,000', '482,620'], ['7천 신용 4,000만 한도', '70000000', [['credit', '40000000']], '3,000,000', '495,000'],
+      ['8천 체크 3,000만 한도 250만', '80000000', [['debit', '30000000']], '2,500,000', '660,000'], ['3천 신용 3,000만 한도', '30000000', [['credit', '30000000']], '3,000,000', '170,840'],
+      ['5천 신용 2,000만 + 전통시장 300만', '50000000', [['credit', '20000000'], ['market', '3000000']], '2,325,000', '383,620'], ['5천 자녀 2명 체크 4,000만', '50000000', [['family', '4'], ['kids', '2'], ['debit', '40000000']], '4,000,000', '660,000']]) {
+    await ye(sal, fields); expect(`카드 글 ${label} 공제`, await get('out-card'), card); expect(`카드 글 ${label} 환급`, await get('out-total'), total);
+  }
+  // guide-family-loan.html — 증여로 볼 때 세금(성년 자녀), 적정 이자율 4.6% 한 달 이자
+  for (const [amt, want] of [['200000000', '19,400,000'], ['300000000', '38,800,000']]) { await fresh('gift-tax.html'); await page.selectOption('#rel', 'adult'); await type('amount', amt); expect(`가족 간 대여 글 증여 ${amt}`, await get('out-tax'), want); }
+  await loanCase('bullet', '200000000', '4.6', '12'); expect('가족 간 대여 글 2억 4.6% 한 달 이자', await get('out-first'), '766,667'); expect('가족 간 대여 글 2억 4.6% 1년 이자', await get('out-interest'), '9,200,000');
+  await loanCase('bullet', '300000000', '4.6', '12'); expect('가족 간 대여 글 3억 4.6% 1년 이자', await get('out-interest'), '13,800,000');
+  // guide-jeonse-deemed-rent.html — 3주택 이상, 월세 없음. 이자율 3.1%가 바뀌면 전부 다시 뽑을 것
+  const deemed = async (homes, high, dep, rent, reg, low) => { await fresh('rental-income-tax.html'); await page.selectOption('#homes', homes); await setChk('high', high); await setChk('reg', reg); await setChk('otherLow', low); await type('rent', rent); await type('deposit', dep); };
+  for (const [dep, d, tax, kind] of [['300000000', '0', '0', '비과세'], ['500000000', '3,720,000', '0', '분리과세 선택 가능'], ['515000000', '3,999,000', '0', '분리과세 선택 가능'], ['700000000', '7,440,000', '264,880', '분리과세 선택 가능'],
+      ['1000000000', '13,020,000', '694,540', '분리과세 선택 가능'], ['1200000000', '16,740,000', '980,980', '분리과세 선택 가능'], ['1375000000', '19,995,000', '1,231,615', '분리과세 선택 가능'],
+      ['1376000000', '20,013,600', '0', '종합과세'], ['1500000000', '22,320,000', '0', '종합과세'], ['2000000000', '31,620,000', '0', '종합과세']]) {
+    await deemed('3', false, dep, '0', false, true); expect(`간주임대료 글 ${dep} 간주임대료`, await get('out-deemed'), d); expect(`간주임대료 글 ${dep} 세금`, await get('out-total'), tax); expect(`간주임대료 글 ${dep} 구분`, await get('out-kind'), kind);
+  }
+  await deemed('3', false, '1000000000', '0', true, true); expect('간주임대료 글 10억 등록', await get('out-total'), '186,032');
+  await deemed('3', false, '700000000', '0', true, true); expect('간주임대료 글 7억 등록', await get('out-total'), '0');
+  await deemed('3', false, '1000000000', '0', false, false); expect('간주임대료 글 10억 기본공제 없음', await get('out-total'), '1,002,540');
+  await deemed('3', false, '1000000000', '500000', false, true); expect('간주임대료 글 10억 + 월세 50만 수입', await get('out-revenue'), '19,020,000'); expect('간주임대료 글 10억 + 월세 50만 세금', await get('out-total'), '1,156,540');
+  await deemed('2', false, '1000000000', '0', false, true); expect('간주임대료 글 2주택 일반', await get('out-deemed'), '0');
+  await deemed('2', true, '1200000000', '0', false, true); expect('간주임대료 글 고가 2주택 12억', await get('out-deemed'), '0');
+  await deemed('2', true, '1500000000', '0', false, true); expect('간주임대료 글 고가 2주택 15억', await get('out-deemed'), '22,320,000'); expect('간주임대료 글 고가 2주택 15억 구분', await get('out-kind'), '종합과세');
+  // guide-severance-table.html — 퇴직일 2026-09-17, 입사는 N년 전 같은 날(3개월 92일). 세율이 바뀌면 세후 금액을 다시 뽑을 것
+  const sev = async (years, m, bonus) => { await fresh('severance.html'); await page.fill('#join', (2026 - years) + '-09-17'); await page.fill('#leave', '2026-09-17'); if (bonus) await type('bonus', bonus); await type('monthly', m); };
+  for (const [y, m, want] of [[1, '3000000', '2,934,783'], [3, '3000000', '8,812,388'], [5, '3000000', '14,681,954'], [10, '3000000', '29,363,907'], [20, '3000000', '58,735,855'],
+      [1, '4000000', '3,913,043'], [3, '4000000', '11,749,851'], [5, '4000000', '19,575,938'], [10, '4000000', '39,151,876'], [20, '4000000', '78,314,473']]) { await sev(y, m); expect(`퇴직금 표 글 ${m} ${y}년`, await get('out-sev'), want); }
+  for (const [m, s, net] of [['2500000', '24,469,923', '24,395,917'], ['3000000', '29,363,907', '29,160,700'], ['3500000', '34,257,892', '33,925,483'], ['4000000', '39,151,876', '38,690,267'], ['5000000', '48,939,845', '48,219,833'], ['6000000', '58,727,814', '57,436,778']]) {
+    await sev(10, m); expect(`퇴직금 표 글 10년 ${m} 퇴직금`, await get('out-sev'), s); expect(`퇴직금 표 글 10년 ${m} 세후`, await get('out-net'), net);
+  }
+  await sev(10, '3000000'); expect('퇴직금 표 글 300만 10년 소득세', await get('out-tax'), '184,734'); expect('퇴직금 표 글 300만 10년 지방소득세', await get('out-local'), '18,473');
+  await sev(1, '3000000'); expect('퇴직금 표 글 1일 평균임금', await get('out-avg'), '97,826');
+  await sev(5, '3000000', '6000000'); expect('퇴직금 표 글 상여 600만', await get('out-sev'), '17,128,946');
+  await fresh('severance.html'); await page.fill('#join', '2025-09-18'); await page.fill('#leave', '2026-09-17'); await type('monthly', '3000000'); expect('퇴직금 표 글 364일', await get('out-sev'), '0');
+  // 안내 글마다 「같은 주제의 안내 글」 3편(청약처럼 글이 넷이면 나머지 셋). 모든 글이 다른 글 3편 이상에서 링크를 받는다 (2026-11)
+  { const inbound = {}; const guidePages = PAGES.filter(f => f.startsWith('guide-'));
+    for (const f of guidePages) { const links = [...fs.readFileSync(path.join(ROOT, f), 'utf8').matchAll(/<section class="card related topic-guides"[\s\S]*?<\/section>/g)].flatMap(m => [...m[0].matchAll(/class="tool-card" href="([^"]+)"/g)].map(x => x[1]));
+      if (links.length !== 3 || links.includes(f)) { fails++; console.log(`FAIL ${f} 같은 주제의 안내 글 ${links.length}편`); } for (const l of links) inbound[l] = (inbound[l] || 0) + 1; }
+    const few = guidePages.filter(f => (inbound[f] || 0) < 3); expect('같은 주제 링크를 3편 미만에서 받는 안내 글', few.join(',') || '없음', '없음'); }
+
   // ------------------------------------------------------------ 빈 입력 상태·즐겨찾기·금액 읽기 (2026-10)
   // 처음 열었을 때 음수 금액이나 '유리'·'가입 어려움' 같은 판정이 보이면 안 된다
   for (const t of TOOL_PAGES) {
