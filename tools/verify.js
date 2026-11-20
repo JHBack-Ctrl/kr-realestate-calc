@@ -848,11 +848,11 @@ function near(label, got, want, tol) {
   await fresh('rental-income-tax.html');
   for (const [homes, high, rent, dep, reg, other, want] of [['2', false, '500000', '', false, true, '154,000'], ['2', false, '500000', '', true, true, '0'], ['2', false, '1500000', '', false, true, '1,078,000'], ['2', false, '1500000', '', true, true, '492,800'],
                                                            ['2', false, '1660000', '', false, true, '1,225,840'], ['2', false, '1000000', '', false, false, '924,000'], ['2', true, '', '1300000000', false, true, '1,124,200'], ['1', true, '1000000', '', false, true, '616,000']]) {
-    await page.selectOption('#homes', homes); await setChk('high', high); await page.fill('#rent', ''); await page.fill('#deposit', ''); if (rent) await type('rent', rent); if (dep) await type('deposit', dep); await setChk('reg', reg); await setChk('otherLow', other);
+    await page.selectOption('#homes', homes); await setChk('high', high); await setChk('highBoth', high && homes === '2'); await page.fill('#rent', ''); await page.fill('#deposit', ''); if (rent) await type('rent', rent); if (dep) await type('deposit', dep); await setChk('reg', reg); await setChk('otherLow', other);
     expect(`임대소득 글 ${homes}주택${high ? ' 고가' : ''} ${rent || dep}${reg ? ' 등록' : ''}${other ? '' : ' 기본공제X'}`, await get('out-total'), want);
   }
   await page.selectOption('#homes', '2'); await setChk('high', false); await setChk('reg', false); await type('rent', '1700000'); expect('임대소득 글 월 170만 종합과세', await get('out-kind'), '종합과세');
-  await page.fill('#rent', ''); await setChk('high', true); await type('deposit', '1500000000'); expect('임대소득 글 고가 2주택 15억 종합과세', await get('out-kind'), '종합과세');
+  await page.fill('#rent', ''); await setChk('high', true); await type('deposit', '1500000000'); expect('임대소득 글 한 채만 고가 2주택 15억 비과세', await get('out-kind'), '비과세'); await setChk('highBoth', true); expect('임대소득 글 고가 2주택 15억 종합과세', await get('out-kind'), '종합과세');
   await type('deposit', '1200000000'); expect('임대소득 글 고가 2주택 12억 비과세', await get('out-kind'), '비과세');
   // income-tax.html 본문 + guide-freelancer-refund.html — 혼자, 단순경비율 940909(64.1%·초과 49.7%)
   await fresh('income-tax.html');
@@ -1206,7 +1206,7 @@ function near(label, got, want, tol) {
     await ye(sal, [['credit', '20000000']]); expect(`카드 글 ${sal} 신용 2,000만`, await get('out-total'), c20); await ye(sal, [['credit', '30000000']]); expect(`카드 글 ${sal} 신용 3,000만`, await get('out-total'), c30);
   }
   for (const [sal, want] of [['40000000', '495,000'], ['50000000', '371,250'], ['60000000', '247,500'], ['70000000', '123,750'], ['80000000', '0']]) { await ye(sal, [['debit', '20000000']]); expect(`카드 글 ${sal} 체크 2,000만`, await get('out-total'), want); }
-  for (const [label, sal, fields, card, total] of [['5천 체크 2,500만 한도', '50000000', [['debit', '25000000']], '3,000,000', '495,000'], ['5천 신용 3,250만 한도', '50000000', [['credit', '32500000']], '3,000,000', '495,000'],
+  for (const [label, sal, fields, card, total] of [['5천 체크 2,250만 한도', '50000000', [['debit', '22500000']], '3,000,000', '495,000'], ['5천 신용 3,250만 한도', '50000000', [['credit', '32500000']], '3,000,000', '495,000'],
       ['5천 신용 3,200만 한도 전', '50000000', [['credit', '32000000']], '2,925,000', '482,620'], ['7천 신용 4,000만 한도', '70000000', [['credit', '40000000']], '3,000,000', '495,000'],
       ['8천 체크 3,000만 한도 250만', '80000000', [['debit', '30000000']], '2,500,000', '660,000'], ['3천 신용 3,000만 한도', '30000000', [['credit', '30000000']], '3,000,000', '170,840'],
       ['5천 신용 2,000만 + 전통시장 300만', '50000000', [['credit', '20000000'], ['market', '3000000']], '2,325,000', '383,620'], ['5천 자녀 2명 체크 4,000만', '50000000', [['family', '4'], ['kids', '2'], ['debit', '40000000']], '4,000,000', '660,000']]) {
@@ -1217,7 +1217,7 @@ function near(label, got, want, tol) {
   await loanCase('bullet', '200000000', '4.6', '12'); expect('가족 간 대여 글 2억 4.6% 한 달 이자', await get('out-first'), '766,667'); expect('가족 간 대여 글 2억 4.6% 1년 이자', await get('out-interest'), '9,200,000');
   await loanCase('bullet', '300000000', '4.6', '12'); expect('가족 간 대여 글 3억 4.6% 1년 이자', await get('out-interest'), '13,800,000');
   // guide-jeonse-deemed-rent.html — 3주택 이상, 월세 없음. 이자율 3.1%가 바뀌면 전부 다시 뽑을 것
-  const deemed = async (homes, high, dep, rent, reg, low) => { await fresh('rental-income-tax.html'); await page.selectOption('#homes', homes); await setChk('high', high); await setChk('reg', reg); await setChk('otherLow', low); await type('rent', rent); await type('deposit', dep); };
+  const deemed = async (homes, high, dep, rent, reg, low) => { await fresh('rental-income-tax.html'); await page.selectOption('#homes', homes); await setChk('high', high); await setChk('highBoth', high && homes === '2'); await setChk('reg', reg); await setChk('otherLow', low); await type('rent', rent); await type('deposit', dep); };
   for (const [dep, d, tax, kind] of [['300000000', '0', '0', '비과세'], ['500000000', '3,720,000', '0', '분리과세 선택 가능'], ['515000000', '3,999,000', '0', '분리과세 선택 가능'], ['700000000', '7,440,000', '264,880', '분리과세 선택 가능'],
       ['1000000000', '13,020,000', '694,540', '분리과세 선택 가능'], ['1200000000', '16,740,000', '980,980', '분리과세 선택 가능'], ['1375000000', '19,995,000', '1,231,615', '분리과세 선택 가능'],
       ['1376000000', '20,013,600', '0', '종합과세'], ['1500000000', '22,320,000', '0', '종합과세'], ['2000000000', '31,620,000', '0', '종합과세']]) {
@@ -1228,6 +1228,7 @@ function near(label, got, want, tol) {
   await deemed('3', false, '1000000000', '0', false, false); expect('간주임대료 글 10억 기본공제 없음', await get('out-total'), '1,002,540');
   await deemed('3', false, '1000000000', '500000', false, true); expect('간주임대료 글 10억 + 월세 50만 수입', await get('out-revenue'), '19,020,000'); expect('간주임대료 글 10억 + 월세 50만 세금', await get('out-total'), '1,156,540');
   await deemed('2', false, '1000000000', '0', false, true); expect('간주임대료 글 2주택 일반', await get('out-deemed'), '0');
+  await deemed('2', true, '1500000000', '0', false, true); await setChk('highBoth', false); expect('간주임대료 글 한 채만 고가 2주택 15억', await get('out-deemed'), '0');
   await deemed('2', true, '1200000000', '0', false, true); expect('간주임대료 글 고가 2주택 12억', await get('out-deemed'), '0');
   await deemed('2', true, '1500000000', '0', false, true); expect('간주임대료 글 고가 2주택 15억', await get('out-deemed'), '22,320,000'); expect('간주임대료 글 고가 2주택 15억 구분', await get('out-kind'), '종합과세');
   // guide-severance-table.html — 퇴직일 2026-09-17, 입사는 N년 전 같은 날(3개월 92일). 세율이 바뀌면 세후 금액을 다시 뽑을 것
