@@ -10,7 +10,7 @@
   <meta name="google-adsense-account" content="ca-pub-8294238973326626">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/site.css?v=19150555">
+  <link rel="stylesheet" href="css/site.css?v=cb2639b3">
   <link rel="canonical" href="https://xn--989anm2s84p8on6teba611m.com/rental-income-tax.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -69,7 +69,7 @@
       "name": "간주임대료는 무엇인가요?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "전세보증금을 받은 집주인이 그 돈으로 얻었을 이자를 임대료로 보고 세금을 매기는 것입니다. 3주택 이상이고 보증금 합계가 3억원을 넘으면 (보증금 합계 − 3억원) × 60% × 정기예금이자율(2026년 귀속 3.1%)이 수입이 됩니다. 2026년 귀속부터는 고가주택 2주택자의 보증금 합계가 12억원을 넘어도 대상입니다. 전용 40㎡ 이하이면서 기준시가 2억원 이하인 소형주택은 2026년까지 간주임대료 주택 수에서 빠집니다."
+        "text": "전세보증금을 받은 집주인이 그 돈으로 얻었을 이자를 임대료로 보고 세금을 매기는 것입니다. 3주택 이상이고 보증금 합계가 3억원을 넘으면 (보증금 합계 − 3억원) × 60% × 정기예금이자율(2026년 귀속 3.1%)이 수입이 됩니다. 2026년 귀속부터는 두 채 모두 기준시가 12억원을 넘는 2주택자의 보증금 합계가 12억원을 넘어도 대상입니다. 기준시가 12억원 이하인 집은 이때 주택 수에서 빠져, 한 채만 고가주택인 2주택자는 대상이 아닙니다. 전용 40㎡ 이하이면서 기준시가 2억원 이하인 소형주택은 2026년까지 간주임대료 주택 수에서 빠집니다."
       }
     },
     {
@@ -170,6 +170,8 @@
               </div>              <div class="field">
                 <label class="toggle"><input type="checkbox" id="high"><span class="knob" aria-hidden="true"></span>기준시가 12억원 넘는 고가주택이 있음</label>
               </div>              <div class="field">
+                <label class="toggle"><input type="checkbox" id="highBoth"><span class="knob" aria-hidden="true"></span>2주택이고 두 채 모두 기준시가 12억원 초과</label>
+              </div>              <div class="field">
                 <label for="rent">받는 월세 합계 (월)</label>
                 <div class="input-wrap"><input id="rent" type="text" inputmode="numeric" autocomplete="off" placeholder="1,000,000" data-money><span class="suffix">원</span></div>
               </div>              <div class="field">
@@ -212,12 +214,12 @@
     </div>
     <section class="card related related-guides" aria-labelledby="rel-guides-title">
       <h2 id="rel-guides-title">이 계산기와 함께 읽는 안내 글</h2>
-      <div class="tool-grid"><a class="tool-card" href="guide-rental-income-two-homes.html"><p class="t">2주택 집주인 월세 세금, 등록하면 얼마나 줄어드나</p><p class="d">2주택자의 월세 100만원 임대소득세는 미등록 61만 6,000원, 등록 12만 3,200원입니다. 월세별 분리과세, 기본공제 조건, 2,000만원 경계, 2026년부터 생긴 고가 2주택 간주임대료를 계산기로 정리했습니다.</p></a><a class="tool-card" href="guide-officetel.html"><p class="t">오피스텔은 주택인가</p><p class="d">아파트 한 채에 주거용 오피스텔 한 채면 세금에서는 대개 1가구 2주택입니다. 취득세는 주택 외 4%인데 주택 수에는 들어가고, 양도세·종부세는 주거용이면 주택입니다. 주택 수에서 빠지는 오피스텔과 청약 판정까지 정리합니다.</p></a></div>
+      <div class="tool-grid"><a class="tool-card" href="guide-rental-income-two-homes.html"><p class="t">2주택 집주인 월세 세금, 등록하면 얼마나 줄어드나</p><p class="d">2주택자의 월세 100만원 임대소득세는 미등록 61만 6,000원, 등록 12만 3,200원입니다. 월세별 분리과세, 기본공제 조건, 2,000만원 경계, 2026년부터 생긴 고가 2주택 간주임대료를 계산기로 정리했습니다.</p></a><a class="tool-card" href="guide-jeonse-deemed-rent.html"><p class="t">전세만 놓아도 세금이 나오는 경우, 간주임대료</p><p class="d">3주택 이상이고 전세보증금 합계가 3억원을 넘으면 간주임대료가 임대수입으로 잡힙니다. 보증금 10억원이면 간주임대료 1,302만원, 세금 69만 4,540원입니다. 보증금별 세금과 2026년부터 대상이 된 고가주택 2주택자를 정리했습니다.</p></a><a class="tool-card" href="guide-officetel.html"><p class="t">오피스텔은 주택인가</p><p class="d">아파트 한 채에 주거용 오피스텔 한 채면 세금에서는 대개 1가구 2주택입니다. 취득세는 주택 외 4%인데 주택 수에는 들어가고, 양도세·종부세는 주거용이면 주택입니다. 주택 수에서 빠지는 오피스텔과 청약 판정까지 정리합니다.</p></a></div>
     </section>
     <section class="card" aria-labelledby="guide-title">
       <h2 id="guide-title">주택임대소득세 계산 순서</h2>
       <div class="prose">
-<ol><li><strong>과세 대상</strong>: 1주택(기준시가 12억원 이하) 월세는 비과세. 2주택 이상 월세는 과세</li><li><strong>간주임대료</strong>: 3주택 이상이고 보증금 합계 3억원 초과(2026년 귀속부터 고가주택 2주택자는 12억원 초과)면 (보증금 − 3억원) × 60% × 3.1%</li><li><strong>분리과세</strong>(총수입 2,000만원 이하): (총수입 − 필요경비 50% 또는 60% − 기본공제 200만원 또는 400만원) × 14%, 지방소득세 1.4% 별도</li></ol>
+<ol><li><strong>과세 대상</strong>: 1주택(기준시가 12억원 이하) 월세는 비과세. 2주택 이상 월세는 과세</li><li><strong>간주임대료</strong>: 3주택 이상이고 보증금 합계 3억원 초과(2026년 귀속부터 두 채 모두 기준시가 12억원을 넘는 2주택자는 12억원 초과)면 (보증금 − 3억원) × 60% × 3.1%</li><li><strong>분리과세</strong>(총수입 2,000만원 이하): (총수입 − 필요경비 50% 또는 60% − 기본공제 200만원 또는 400만원) × 14%, 지방소득세 1.4% 별도</li></ol>
 <p>2주택자가 한 채를 월세 100만원에 놓으면 1년 수입 1,200만원에서 필요경비 600만원과 기본공제 200만원을 빼 과세표준 400만원, 세금은 지방소득세를 합쳐 61만 6,000원입니다. 같은 집을 임대사업자로 등록했다면 필요경비 720만원과 기본공제 400만원을 빼 12만 3,200원입니다. 3주택자가 보증금 8억원을 받았다면 간주임대료만 930만원이라, 월세 100만원까지 더하면 총수입이 2,130만원으로 2,000만원을 넘어 종합과세 대상이 됩니다.</p>
 <h3>반영하지 않는 것</h3><ul><li>종합과세 세액(다른 소득에 따라 달라짐)과 장부 작성 시 실제 경비</li><li>등록 소형주택 세액감면(단기 30%·장기 75% 등), 공동명의 지분별 계산</li><li>간주임대료에서 빼는 보증금 운용 수입이자, 소형주택 주택 수 제외 판정</li></ul>
 <p>주택을 여러 채 가지고 있으면 <a href='comprehensive-property-tax.html'>종합부동산세 계산기</a>와 <a href='property-tax.html'>재산세 계산기</a>로 보유세도 함께 보세요. 월세와 보증금을 서로 바꿀 때는 <a href='conversion.html'>전월세 전환율 계산기</a>를 쓸 수 있습니다.</p>
@@ -236,7 +238,7 @@
         <details>
           <summary>간주임대료는 무엇인가요?</summary>
           <div class="a">
-          <p>전세보증금을 받은 집주인이 그 돈으로 얻었을 이자를 임대료로 보고 세금을 매기는 것입니다. 3주택 이상이고 보증금 합계가 3억원을 넘으면 (보증금 합계 − 3억원) × 60% × 정기예금이자율(2026년 귀속 3.1%)이 수입이 됩니다. 2026년 귀속부터는 고가주택 2주택자의 보증금 합계가 12억원을 넘어도 대상입니다.</p>
+          <p>전세보증금을 받은 집주인이 그 돈으로 얻었을 이자를 임대료로 보고 세금을 매기는 것입니다. 3주택 이상이고 보증금 합계가 3억원을 넘으면 (보증금 합계 − 3억원) × 60% × 정기예금이자율(2026년 귀속 3.1%)이 수입이 됩니다. 2026년 귀속부터는 두 채 모두 기준시가 12억원을 넘는 2주택자의 보증금 합계가 12억원을 넘어도 대상입니다. 기준시가 12억원 이하인 집은 이때 주택 수에서 빠져, 한 채만 고가주택인 2주택자는 대상이 아닙니다.</p>
           <p>전용 40㎡ 이하이면서 기준시가 2억원 이하인 소형주택은 2026년까지 간주임대료 주택 수에서 빠집니다.</p>
           </div>
         </details>
@@ -285,6 +287,6 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="js/common.js?v=2219cd74"></script>
   <script src="js/analytics.js?v=c8407f74"></script>
-  <script src="js/rental-income-tax.js?v=94c24f05"></script>
+  <script src="js/rental-income-tax.js?v=4826b168"></script>
 </body>
 </html>

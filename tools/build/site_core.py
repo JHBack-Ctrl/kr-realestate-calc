@@ -349,20 +349,31 @@ GUIDES = [
      "연차는 첫해 한 달 개근마다 1일(최대 11일), 1년을 채운 다음 날 15일, 그 뒤 2년마다 1일씩 늘어 최대 25일입니다. 근속별 연차 표, 1년 채우고 퇴사하면 15일이 없는 이유, 회계연도 기준을 정리했습니다."),
     ("guide-weekly-holiday-pay.html", "주휴수당 계산법, 주 몇 시간부터 얼마 받나", "주휴수당 계산법 2026 — 주 15·20·40시간 주휴수당, 받는 조건, 주휴 포함 시급 12,384원",
      "주휴수당은 1주 15시간 이상 일하고 출근할 날을 다 나오면 받습니다. 2026년 최저임금으로 주 40시간 8만 2,560원, 주 20시간 4만 1,280원입니다. 근무시간별 금액, 받는 조건, 주휴수당을 넣은 시급을 정리했습니다."),
+    # 2026-11: 1억 대출 이자, 카드 소득공제, 부모에게 빌린 돈, 전세 간주임대료, 퇴직금 표
+    ("guide-loan-100m-interest.html", "1억 대출 이자, 한 달에 얼마인가", "1억 대출 이자 — 금리 3~6% 한 달 이자, 20년·30년 원리금 상환액, 총이자",
+     "1억원을 연 4%로 빌리면 이자만 한 달 33만 3,333원, 30년 원리금균등이면 월 47만 7,415원입니다. 금리 3~6%별 한 달 이자와 상환액, 총이자, 2억·3억원일 때 숫자를 계산기로 정리했습니다."),
+    ("guide-card-deduction.html", "신용카드 소득공제, 얼마를 써야 얼마 돌려받나", "신용카드 소득공제 계산 — 총급여 25% 문턱, 총급여별 환급액, 한도 300만원, 체크카드 30%",
+     "신용카드 소득공제는 총급여의 25%를 넘겨 쓴 금액부터 시작합니다. 총급여 5,000만원이 신용카드 2,000만원을 쓰면 18만 5,620원, 체크카드면 37만 1,250원, 한도를 채우면 49만 5,000원입니다. 총급여별 표와 한도를 정리했습니다."),
+    ("guide-family-loan.html", "부모님께 빌린 돈, 증여세 없이 빌리는 기준", "부모 자식 간 차용증 — 무이자 2억 1,739만원, 적정 이자율 4.6%, 증여로 보는 경우",
+     "부모에게 빌린 돈은 연 4.6%보다 덜 낸 이자가 1년 1,000만원 이상이면 그 차액을 증여로 봅니다. 무이자면 약 2억 1,739만원이 경계입니다. 차용증과 이자·원금 상환 기록이 없으면 받은 돈 전체가 증여가 될 수 있습니다."),
+    ("guide-jeonse-deemed-rent.html", "전세만 놓아도 세금이 나오는 경우, 간주임대료", "간주임대료 계산 — 3주택 전세보증금 3억 초과, 보증금별 세금, 고가주택 2주택 12억",
+     "3주택 이상이고 전세보증금 합계가 3억원을 넘으면 간주임대료가 임대수입으로 잡힙니다. 보증금 10억원이면 간주임대료 1,302만원, 세금 69만 4,540원입니다. 보증금별 세금과 2026년부터 대상이 된 고가주택 2주택자를 정리했습니다."),
+    ("guide-severance-table.html", "퇴직금 계산 표, 월급별·근속연수별", "퇴직금 계산 표 — 월급 250만~600만원, 근속 1~20년 퇴직금과 세후 금액",
+     "월급 300만원으로 5년 일하면 퇴직금 1,468만 1,954원, 10년이면 2,936만 3,907원입니다. 월급 250만~600만원과 근속 1~20년의 퇴직금, 세금을 뺀 금액, 1년 치가 월급보다 조금 적은 이유를 정리했습니다."),
 ]
 # 안내 글 주제 묶음(안내 글 목록 guides.html). 글은 꼭 한 묶음에만 넣는다 — 빠지거나 겹치면 빌드가 멈춘다.
 # 2026-11: 묶음 없이 오래된 글부터 84장이 한 줄로 이어져 폰에서 화면 23개 분량이었다. 새 글을 쓰면 여기에도 넣을 것
 GUIDE_TOPICS = [
     ("rent", "전세·월세", "conversion jeonse-vs-monthly jeonse-registry renewal-refusal jeonse-insurance-fail moving-14days deposit-vs-rent deposit-return "
                          "renewal-rent-increase jeonse-ratio renewal-family rent-report jeonse-loan-vs-rent brokerage"),
-    ("loan", "대출", "repayment dsr-ltv fixed-vs-variable loan-rate-structure prepayment mortgage-limit base-rate-change refinance loan-30-vs-40"),
+    ("loan", "대출", "repayment loan-100m-interest dsr-ltv fixed-vs-variable loan-rate-structure prepayment mortgage-limit base-rate-change refinance loan-30-vs-40"),
     ("buy", "집 살 때·팔 때", "acquisition-tax acquisition-6-9 first-home-acquisition mixed-use-acquisition buying-costs self-registration buy-vs-rent "
                            "cgt-exemption cgt-heavy cgt-high-price cgt-filing temporary-two-homes officetel area-84 yield-vacancy"),
-    ("hold", "보유세·상속·증여", "property-tax property-tax-table jongbuse-threshold jongbuse-payment rental-income-two-homes gift-tax-free gift-vs-inheritance inheritance-threshold"),
+    ("hold", "보유세·상속·증여", "property-tax property-tax-table jongbuse-threshold jongbuse-payment rental-income-two-homes jeonse-deemed-rent gift-tax-free family-loan gift-vs-inheritance inheritance-threshold"),
     ("sub", "청약", "subscription-points subscription-notice-date subscription-first-rank subscription-deduction"),
-    ("pay", "월급·연말정산", "salary-net salary-raise salary-table year-end-december year-end-dependents year-end-result year-end-medical year-end-job-change "
+    ("pay", "월급·연말정산", "salary-net salary-raise salary-table year-end-december card-deduction year-end-dependents year-end-result year-end-medical year-end-job-change "
                           "rent-tax-credit-who rent-credit-refund pension-tax-credit freelancer-refund"),
-    ("work", "퇴직·휴가·저축", "severance severance-tax annual-leave-pay annual-leave-days minimum-wage-2027 weekly-holiday-pay parental-leave-pay unemployment-floor "
+    ("work", "퇴직·휴가·저축", "severance severance-table severance-tax annual-leave-pay annual-leave-days minimum-wage-2027 weekly-holiday-pay parental-leave-pay unemployment-floor "
                             "savings-real-rate deposit-100m"),
     ("price", "집값·땅값 흐름", "apartment-multiple seoul-apartment-gu land-price-lookup land-index-sido apartment-vs-land real-price-multiple"),
 ]
@@ -383,6 +394,27 @@ def guide_topics():
     assert not dup, "주제 묶음 두 곳에 들어간 안내 글: " + ", ".join(dup)
     return out
 
+TOPIC_OPEN, TOPIC_CLOSE = "<!--auto:topic-->", "<!--/auto:topic-->"
+
+def topic_guides(path, n=3):
+    """안내 글 맨 아래 「같은 주제의 안내 글」: 같은 묶음에서 GUIDE_TOPICS에 적힌 순서로 다음 n편(끝에서는 처음으로 돌아감).
+    모든 글이 같은 주제의 다른 글 n편에서 링크를 받는다. 2026-11: 본문에서 들어오는 링크가 1개뿐인 글이 16편이었고
+    서치콘솔에 새 글이 색인되지 않은 채 남아 있었다. 이 상자는 자동으로 바뀌므로 수정일 계산에서는 뺀다(page_dates)."""
+    gmap = {g[0]: g for g in GUIDES}
+    for key, label, names in GUIDE_TOPICS:
+        files = ["guide-" + x + ".html" for x in names.split()]
+        if path not in files: continue
+        i = files.index(path)
+        picks = [files[(i + k) % len(files)] for k in range(1, min(n, len(files) - 1) + 1)]
+        cards = "".join(f'<a class="tool-card" href="{f}"><p class="t">{gmap[f][1]}</p><p class="d">{gmap[f][3]}</p></a>' for f in picks)
+        return (TOPIC_OPEN + f'''
+      <section class="card related topic-guides" aria-labelledby="topic-title">
+        <h2 id="topic-title">같은 주제의 안내 글</h2>
+        <div class="tool-grid">{cards}</div>
+        <p class="hint" style="margin:12px 0 0"><a href="guides.html#t-{key}">{label} 글 {len(files)}편 모두 보기 →</a></p>
+      </section>''' + TOPIC_CLOSE)
+    return ""
+
 # 계산기 쪽 결과 바로 아래에 붙는 「함께 읽는 안내 글」. 계산기마다 1~3편, 가장 가까운 글부터.
 # 2026-10 네이버 애널리틱스에서 평균 체류 39초, 방문당 1.63쪽이라 계산 뒤 다음 쪽으로 이어지게 넣었다.
 # 새 안내 글을 쓰면 관련 계산기 줄에 더할 것. 없는 글을 적으면 빌드가 멈춘다(related_guides).
@@ -391,7 +423,7 @@ TOOL_GUIDES = {
     "conversion.html": ["guide-conversion.html", "guide-renewal-rent-increase.html", "guide-deposit-vs-rent.html"],
     "rent-tax-credit.html": ["guide-rent-tax-credit-who.html", "guide-rent-credit-refund.html", "guide-year-end-december.html"],
     "fee.html": ["guide-brokerage.html", "guide-buying-costs.html", "guide-jeonse-registry.html"],
-    "loan.html": ["guide-repayment.html", "guide-loan-30-vs-40.html", "guide-base-rate-change.html"],
+    "loan.html": ["guide-loan-100m-interest.html", "guide-repayment.html", "guide-loan-30-vs-40.html"],
     "dsr.html": ["guide-dsr-ltv.html", "guide-mortgage-limit.html", "guide-loan-30-vs-40.html"],
     "prepayment.html": ["guide-prepayment.html", "guide-refinance.html", "guide-repayment.html"],
     "acquisition-tax.html": ["guide-acquisition-tax.html", "guide-first-home-acquisition.html", "guide-acquisition-6-9.html"],
@@ -408,20 +440,20 @@ TOOL_GUIDES = {
     "tax-calendar.html": ["guide-property-tax.html", "guide-cgt-filing.html", "guide-year-end-december.html"],
     "property-tax.html": ["guide-property-tax-table.html", "guide-property-tax.html", "guide-jongbuse-threshold.html"],
     "comprehensive-property-tax.html": ["guide-jongbuse-payment.html", "guide-jongbuse-threshold.html", "guide-property-tax.html"],
-    "gift-tax.html": ["guide-gift-tax-free.html", "guide-gift-vs-inheritance.html"],
+    "gift-tax.html": ["guide-gift-tax-free.html", "guide-family-loan.html", "guide-gift-vs-inheritance.html"],
     "salary.html": ["guide-salary-net.html", "guide-salary-table.html", "guide-salary-raise.html"],
-    "severance.html": ["guide-severance.html", "guide-severance-tax.html", "guide-year-end-job-change.html"],
+    "severance.html": ["guide-severance-table.html", "guide-severance.html", "guide-severance-tax.html"],
     "inheritance-tax.html": ["guide-inheritance-threshold.html", "guide-gift-vs-inheritance.html"],
     "jeonse-loan.html": ["guide-jeonse-loan-vs-rent.html", "guide-subscription-deduction.html", "guide-base-rate-change.html"],
     "savings.html": ["guide-deposit-100m.html", "guide-savings-real-rate.html"],
     "unemployment-benefit.html": ["guide-unemployment-floor.html", "guide-severance.html", "guide-minimum-wage-2027.html"],
     "hourly-wage.html": ["guide-weekly-holiday-pay.html", "guide-minimum-wage-2027.html", "guide-salary-net.html"],
-    "year-end-tax.html": ["guide-year-end-result.html", "guide-year-end-medical.html", "guide-year-end-dependents.html"],
+    "year-end-tax.html": ["guide-year-end-result.html", "guide-card-deduction.html", "guide-year-end-medical.html"],
     "registration-cost.html": ["guide-self-registration.html", "guide-buying-costs.html", "guide-acquisition-tax.html"],
     "pension-tax-credit.html": ["guide-pension-tax-credit.html", "guide-year-end-december.html", "guide-freelancer-refund.html"],
     "parental-leave.html": ["guide-parental-leave-pay.html"],
     "annual-leave.html": ["guide-annual-leave-days.html", "guide-annual-leave-pay.html", "guide-minimum-wage-2027.html"],
-    "rental-income-tax.html": ["guide-rental-income-two-homes.html", "guide-officetel.html"],
+    "rental-income-tax.html": ["guide-rental-income-two-homes.html", "guide-jeonse-deemed-rent.html", "guide-officetel.html"],
     "income-tax.html": ["guide-freelancer-refund.html", "guide-year-end-dependents.html"],
     "land-multiple.html": ["guide-land-price-lookup.html", "guide-land-index-sido.html", "guide-apartment-vs-land.html"],
     "apartment-multiple.html": ["guide-apartment-multiple.html", "guide-seoul-apartment-gu.html", "guide-real-price-multiple.html"],
@@ -896,7 +928,8 @@ def today_kst():
 
 def page_dates(path, s):
     m = re.search(r"<main[^>]*>(.*)</main>", s, re.S)
-    h = hashlib.sha1((m.group(1) if m else s).encode("utf-8")).hexdigest()[:12]
+    body = re.sub(re.escape(TOPIC_OPEN) + ".*?" + re.escape(TOPIC_CLOSE), "", m.group(1) if m else s, flags=re.S)   # 자동으로 붙는 「같은 주제의 안내 글」은 수정으로 치지 않는다
+    h = hashlib.sha1(body.encode("utf-8")).hexdigest()[:12]
     d = PAGE_DATES.get(path)
     if d is None: d = PAGE_DATES[path] = {"published": today_kst(), "modified": today_kst(), "hash": h}   # 새 쪽
     elif d["hash"] is None: d["hash"] = h                      # git 기록에서 옮겨 온 초기값: 지금 본문을 기준으로 삼는다

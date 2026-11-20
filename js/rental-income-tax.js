@@ -9,7 +9,7 @@
   var DEEMED_FREE = 300000000;          // 간주임대료: 보증금 합계에서 3억원을 빼고
   var DEEMED_RATIO = 60;                // 60%에
   var DEEMED_RATE = 3.1;                // 정기예금이자율(매년 시행규칙으로 정함)을 곱한다
-  var TWO_HIGH_LINE = 1200000000;       // 2026년 귀속부터: 고가주택 2주택자 보증금 합계 12억원 초과도 간주임대료 대상
+  var TWO_HIGH_LINE = 1200000000;       // 2026년 귀속부터: 두 채 모두 기준시가 12억원 초과인 2주택자(12억 이하 주택은 주택 수에서 뺌)는 보증금 합계 12억원 초과면 간주임대료 대상
   var SEPARATE_LINE = 20000000;         // 총수입 2천만원 이하면 분리과세 선택 가능
   var EXPENSE = { reg: 60, unreg: 50 }, BASIC = { reg: 4000000, unreg: 2000000 };   // 필요경비율, 기본공제(다른 종합소득금액 2천만원 이하일 때)
   var SEPARATE_RATE = 14, LOCAL_RATE = 10;
@@ -18,7 +18,7 @@
   function calc(i) {
     var rentTaxed = !(i.homes === 1 && !i.high);                // 1주택(고가 아님) 월세는 비과세
     var rentIncome = rentTaxed ? i.rent : 0;
-    var deemedTarget = (i.homes >= 3 && i.deposit > DEEMED_FREE) || (i.homes === 2 && i.high && i.deposit > TWO_HIGH_LINE);
+    var deemedTarget = (i.homes >= 3 && i.deposit > DEEMED_FREE) || (i.homes === 2 && i.highBoth && i.deposit > TWO_HIGH_LINE);
     var deemed = deemedTarget ? won((i.deposit - DEEMED_FREE) * DEEMED_RATIO / 100 * DEEMED_RATE / 100) : 0;
     var revenue = rentIncome + deemed;
     var separate = revenue > 0 && revenue <= SEPARATE_LINE;
@@ -31,7 +31,7 @@
       taxBase: taxBase, tax: tax, local: local, total: tax + local, expenseRate: EXPENSE[kind] };
   }
   function readInput() {
-    return { homes: parseInt($('homes').value, 10) || 1, high: $('high').checked, rent: S.parseMoney($('rent').value) * 12, deposit: S.parseMoney($('deposit').value),
+    return { homes: parseInt($('homes').value, 10) || 1, high: $('high').checked, highBoth: $('highBoth').checked, rent: S.parseMoney($('rent').value) * 12, deposit: S.parseMoney($('deposit').value),
       reg: $('reg').checked, otherLow: $('otherLow').checked };
   }
   var last = null;
@@ -60,7 +60,7 @@
       preset: function (name) {
         if (name === 'clear') { $('rent').value = ''; $('deposit').value = ''; return; }
         var p = { two: ['2', 1000000, 0, false], tworeg: ['2', 1000000, 0, true], three: ['3', 1000000, 800000000, false] }[name]; if (!p) return;
-        $('homes').value = p[0]; S.setMoney('rent', p[1]); S.setMoney('deposit', p[2]); $('reg').checked = p[3]; $('high').checked = false; $('otherLow').checked = true;
+        $('homes').value = p[0]; S.setMoney('rent', p[1]); S.setMoney('deposit', p[2]); $('reg').checked = p[3]; $('high').checked = false; $('highBoth').checked = false; $('otherLow').checked = true;
       },
       share: function () { var r = last.r; return { title: '주택임대소득세 계산 결과', text: '[주택임대소득세] ' + last.i.homes + '주택 · 총수입 ' + S.fmtKorean(r.revenue) + '\n' + (r.separate ? '분리과세 ' + S.fmtWon(r.total) + '원 (지방소득세 포함)' : r.revenue ? '종합과세 대상' : '비과세') }; },
       card: function () {
