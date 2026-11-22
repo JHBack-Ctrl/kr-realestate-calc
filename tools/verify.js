@@ -1242,6 +1242,49 @@ function near(label, got, want, tol) {
   await sev(1, '3000000'); expect('퇴직금 표 글 1일 평균임금', await get('out-avg'), '97,826');
   await sev(5, '3000000', '6000000'); expect('퇴직금 표 글 상여 600만', await get('out-sev'), '17,128,946');
   await fresh('severance.html'); await page.fill('#join', '2025-09-18'); await page.fill('#leave', '2026-09-17'); await type('monthly', '3000000'); expect('퇴직금 표 글 364일', await get('out-sev'), '0');
+  // ------------------------------------------------------------ 안내 글 5편 (2026-11, 4차) 본문 숫자
+  // guide-unemployment-days.html — 하루 8시간, 퇴직일 비움. 월급 200만원 = 하한 66,048원, 400만원 = 상한 68,100원
+  for (const [w, age, list] of [['2000000', 'under50', ['120:7,925,760', '150:9,907,200', '180:11,888,640', '210:13,870,080', '240:15,851,520']], ['2000000', 'over50', ['120:7,925,760', '180:11,888,640', '210:13,870,080', '240:15,851,520', '270:17,832,960']],
+      ['4000000', 'under50', ['120:8,172,000', '150:10,215,000', '180:12,258,000', '210:14,301,000', '240:16,344,000']], ['4000000', 'over50', ['120:8,172,000', '180:12,258,000', '210:14,301,000', '240:16,344,000', '270:18,387,000']]]) {
+    for (let y = 0; y < 5; y++) { await fresh('unemployment-benefit.html'); await radio('age', age); await page.selectOption('#years', String(y)); await type('wage', w); expect(`수급 기간 글 ${w} ${age} ${y}`, (await get('out-days')) + ':' + (await get('out-total')), list[y]); }
+  }
+  await fresh('unemployment-benefit.html'); await type('wage', '2000000'); expect('수급 기간 글 하한 하루', await get('out-daily'), '66,048'); expect('수급 기간 글 하한 30일', await get('out-month'), '1,981,440');
+  await type('wage', '4000000'); expect('수급 기간 글 상한 하루', await get('out-daily'), '68,100'); expect('수급 기간 글 상한 30일', await get('out-month'), '2,043,000');
+  // guide-hourly-wage-table.html — 주휴 포함·5인 이상. 4대보험 뗀 금액은 그 연봉을 salary.html 기본값에 넣은 것
+  for (const [w, mon, year, net33, h4, h6, salNet] of [['10320', '2,156,880', '25,882,560', '2,085,710', '1,073,280', '1,609,920', '1,951,620'], ['10700', '2,236,300', '26,835,600', null, null, null, null], ['11000', '2,299,000', '27,588,000', null, null, null, null],
+      ['12000', '2,508,000', '30,096,000', '2,425,240', '1,248,000', '1,872,000', '2,260,380'], ['13000', '2,717,000', '32,604,000', null, null, null, null], ['14000', '2,926,000', '35,112,000', null, null, null, null],
+      ['15000', '3,135,000', '37,620,000', '3,031,550', '1,560,000', '2,340,000', '2,771,680'], ['17000', '3,553,000', '42,636,000', null, null, null, null], ['20000', '4,180,000', '50,160,000', '4,042,060', '2,080,000', '3,120,000', '3,575,820']]) {
+    await hw(w, '8', '5', true); expect(`시급 표 글 ${w} 월급`, await get('out-monthly'), mon); expect(`시급 표 글 ${w} 연봉`, await get('out-yearly'), year);
+    if (net33) { await setChk('biz', true); expect(`시급 표 글 ${w} 3.3% 뗀 금액`, await get('out-net'), net33); await hw(w, '4', '5', true); expect(`시급 표 글 ${w} 4h×5`, await get('out-monthly'), h4); await hw(w, '6', '5', true); expect(`시급 표 글 ${w} 6h×5`, await get('out-monthly'), h6);
+      await fresh('salary.html'); await type('salary', year.replace(/,/g, '')); expect(`시급 표 글 ${w} 4대보험 뗀 금액`, await get('out-net'), salNet); }
+  }
+  await hw('12000', '8', '5', true); await setChk('holiday', false); expect('시급 표 글 12,000 주휴 빼면', await get('out-monthly'), '2,088,000');
+  await hw('12000', '5', '3', true); expect('시급 표 글 12,000 주 15시간', await get('out-monthly'), '936,000'); await hw('12000', '7', '2', true); expect('시급 표 글 12,000 주 14시간', await get('out-monthly'), '732,000'); expect('시급 표 글 주 14시간 주휴', await get('out-holiday'), '0');
+  // guide-year-end-education.html — 본인 1명, 기납부 비움. 줄어드는 세금 = out-total
+  for (const [e, c, total] of [['1000000', '150,000', '22,000'], ['3000000', '450,000', '352,000'], ['5000000', '750,000', '682,000'], ['9000000', '1,350,000', '1,342,000'], ['12000000', '1,800,000', '1,837,000']]) {
+    await ye('50000000', [['edu', e]]); expect(`교육비 글 5천 ${e} 공제`, await get('out-c-edu'), c); expect(`교육비 글 5천 ${e} 줄어드는 세금`, await get('out-total'), total); expect(`교육비 글 5천 ${e} 표준세액공제`, await get('out-c-standard'), '0');
+  }
+  await ye('30000000', []); expect('교육비 글 3천 결정세액', await get('out-tax'), '371,860'); expect('교육비 글 3천 표준세액공제', await get('out-c-standard'), '130,000');
+  for (const e of ['5000000', '12000000']) { await ye('30000000', [['edu', e]]); expect(`교육비 글 3천 ${e}`, await get('out-total'), '409,040'); }
+  await ye('40000000', [['edu', '12000000']]); expect('교육비 글 4천 1,200만 결정세액', await get('out-tax'), '0'); expect('교육비 글 4천 1,200만 줄어드는 세금', await get('out-total'), '1,573,520');
+  await ye('60000000', [['family', '3']]); expect('교육비 글 6천 3인 결정세액', await get('out-tax'), '3,487,952'); await ye('60000000', [['family', '3'], ['edu', '9000000']]); expect('교육비 글 6천 3인 등록금 900만', await get('out-tax'), '2,267,952');
+  // guide-income-tax-brackets.html — 장부·경비 0·본인 1명이라 과세표준 = 수입 − 150만원. 총급여별 과세표준은 연말정산 계산기
+  for (const [base, want] of [[10e6, '600,000'], [14e6, '840,000'], [20e6, '1,740,000'], [30e6, '3,240,000'], [50e6, '6,240,000'], [51e6, '6,480,000'], [70e6, '11,040,000'], [88e6, '15,360,000'], [89e6, '15,710,000'], [100e6, '19,560,000'],
+      [150e6, '37,060,000'], [151e6, '37,440,000'], [200e6, '56,060,000'], [300e6, '94,060,000'], [500e6, '174,060,000'], [1000e6, '384,060,000']]) {
+    await fresh('income-tax.html'); await page.selectOption('#method', 'book'); await type('expense', '0'); await type('revenue', String(base + 1500000));
+    expect(`세율 구간 글 과세표준 ${base / 1e4}만`, (await get('out-base')).replace(/,/g, ''), String(base)); expect(`세율 구간 글 ${base / 1e4}만 산출세액`, await get('out-computed'), want);
+  }
+  for (const [sal, base] of [['30000000', '15,834,960'], ['50000000', '31,391,440'], ['70000000', '48,448,040'], ['80000000', '57,019,960'], ['100000000', '75,026,480'], ['150000000', '121,542,840']]) { await ye(sal, []); expect(`세율 구간 글 총급여 ${sal} 과세표준`, await get('out-base'), base); }
+  // guide-loan-interest-by-amount.html
+  for (const [pr, r, want] of [['200000000', '4', '666,667'], ['200000000', '5', '833,333'], ['300000000', '3', '750,000'], ['300000000', '4', '1,000,000'], ['300000000', '5', '1,250,000'], ['300000000', '6', '1,500,000'], ['400000000', '4', '1,333,333'], ['400000000', '5', '1,666,667'],
+      ['500000000', '4', '1,666,667'], ['500000000', '5', '2,083,333']]) { await loanCase('bullet', pr, r, '12'); expect(`대출 금액별 글 ${pr} ${r}% 한 달 이자`, await get('out-first'), want); }
+  for (const [pr, r, m, first, interest] of [['200000000', '3', '360', '843,208', null], ['200000000', '3.5', '360', '898,089', null], ['200000000', '4', '360', '954,831', null], ['200000000', '4.5', '360', '1,013,371', null], ['200000000', '5', '360', '1,073,643', null], ['200000000', '6', '360', '1,199,101', null],
+      ['300000000', '3', '360', '1,264,812', null], ['300000000', '3.5', '360', '1,347,134', null], ['300000000', '4', '360', '1,432,246', '215,608,519'], ['300000000', '4.5', '360', '1,520,056', '247,220,135'], ['300000000', '5', '360', '1,610,465', null], ['300000000', '6', '360', '1,798,652', null],
+      ['500000000', '3', '360', '2,108,020', '258,887,261'], ['500000000', '4', '360', '2,387,076', '359,347,532'], ['500000000', '4.5', '360', '2,533,427', null], ['500000000', '5', '360', '2,684,108', '466,278,921'], ['500000000', '6', '360', '2,997,753', '579,190,945'],
+      ['300000000', '4', '240', '1,817,941', '136,305,837'], ['300000000', '4', '480', '1,253,815', '301,831,396']]) {
+    await loanCase('annuity', pr, r, m); expect(`대출 금액별 글 ${pr} ${r}% ${m}개월 월`, await get('out-first'), first); if (interest) expect(`대출 금액별 글 ${pr} ${r}% ${m}개월 이자`, await get('out-interest'), interest);
+  }
+  await loanCase('principal', '300000000', '4', '360'); expect('대출 금액별 글 원금균등 첫 달', await get('out-first'), '1,833,333'); expect('대출 금액별 글 원금균등 마지막 달', await get('c-pr-last'), '836,111'); expect('대출 금액별 글 원금균등 이자', await get('out-interest'), '180,500,000');
   // 안내 글마다 「같은 주제의 안내 글」 3편(청약처럼 글이 넷이면 나머지 셋). 모든 글이 다른 글 3편 이상에서 링크를 받는다 (2026-11)
   { const inbound = {}; const guidePages = PAGES.filter(f => f.startsWith('guide-'));
     for (const f of guidePages) { const links = [...fs.readFileSync(path.join(ROOT, f), 'utf8').matchAll(/<section class="card related topic-guides"[\s\S]*?<\/section>/g)].flatMap(m => [...m[0].matchAll(/class="tool-card" href="([^"]+)"/g)].map(x => x[1]));

@@ -12,7 +12,7 @@
 python3 tools/build/build.py
 ```
 
-등록부에서 180쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
+등록부에서 185쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
 같은 소스로 두 번 돌리면 결과가 같아야 합니다(멱등). 달라지면 버그입니다.
 
 - `site_core.py` — 등록부(TOOLS, TABLES, FORMS, REFS, GUIDES, HUBS, RATE_HISTORY)와 공통 틀.
@@ -21,7 +21,7 @@ python3 tools/build/build.py
   (`pages_tax.py`는 재산세·종부세·증여세, `pages_tools3.py`는 상속세·전세대출·예적금·실업급여·시급,
   `pages_tools4.py`는 연말정산·등기비용·연금저축IRP·육아휴직·연차·주택임대소득세·종합소득세·땅값 몇 배·아파트값 몇 배)
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽, 안내 글 4편
-- `pages_guides2.py` — 안내 글 79편
+- `pages_guides2.py` — 안내 글 84편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
 - `build.py` — 위를 모아 쓰고 `manifest.json`, `sw.js`, `sitemap.xml`, `js/analytics.js`를 생성
 
@@ -42,8 +42,8 @@ python3 tools/build/build.py
 
 ### 검색 제외 (noindex)
 
-180쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
-검색 대상은 167쪽입니다(2026-11-19). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
+185쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
+검색 대상은 172쪽입니다(2026-11-22). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
 
 - 용어 9쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
 - 용어 39쪽 중 30쪽은 1,000자 이상으로 늘려 검색에 되돌렸습니다: 대항력·확정일자·전세가율·DSR·LTV,
@@ -198,7 +198,8 @@ https://전국부동산계산기.com/guide-prepayment.html
   월세 한도 1,200만원·청년 17%, 자녀세액공제 나이 기준은 **2027년 귀속, 국회 통과 전이라 미반영**. 통과되면 `js/rent-tax-credit.js`도 같이.
   혼인세액공제는 2026년 혼인신고분까지라 연장 여부를 확인하고, 안내 글 `guide-year-end-december.html`(카드·연금·혼인 숫자)과
   `guide-year-end-dependents.html`(부양가족·자녀 결정세액 표)·`guide-year-end-result.html`(기납부세액별 환급 표)·
-  `guide-year-end-medical.html`(의료비 금액별·총급여별 표)·`guide-year-end-job-change.html`(퇴사 2,500만원·이직 합산 표)도 다시 뽑을 것.
+  `guide-year-end-medical.html`(의료비 금액별·총급여별 표)·`guide-year-end-job-change.html`(퇴사 2,500만원·이직 합산 표)·
+  `guide-year-end-education.html`(교육비별 줄어드는 세금, 한도 300만·900만원, 표준세액공제 13만원)도 다시 뽑을 것.
   자녀세액공제가 바뀌면 `js/income-tax.js`의 `CHILD_CREDIT`도 같이(같은 값이 복사돼 있음).
   청약통장 소득공제(`SUBSCRIPTION_*`, 연 300만원 × 40%, 총급여 7천만원)는 2028년까지 기한이 있고 2026년 개편안의 상시화는 **국회 통과 전**.
   바뀌면 `guide-subscription-deduction.html`(납입액별·전세대출 합산 표)도 다시 뽑을 것
@@ -214,6 +215,7 @@ https://전국부동산계산기.com/guide-prepayment.html
   `EMPLOY_RATE`, `BRACKETS`, `EARNED_DEDUCTION`, `RULES_DATE`.
   바뀌면 안내 글 `guide-salary-net.html`·`guide-salary-raise.html`·`guide-salary-table.html`(연봉별 표 전체)의 숫자도 다시 뽑을 것.
   세율·카드 공제 한도가 바뀌면 `guide-card-deduction.html`(총급여별 환급 표)도 다시 뽑을 것.
+  요율이 바뀌면 `guide-hourly-wage-table.html`의 「4대보험·세금 뗀 금액」 열도, 세율표가 바뀌면 `guide-income-tax-brackets.html`(세율표·과세표준별 세금·총급여별 과세표준)도 다시 뽑을 것.
   **`js/year-end-tax.js` 맨 위 4대보험·세율·근로소득공제 상수도 같은 값이라 함께 고칠 것**(두 파일에 복사돼 있음).
   근로소득세액공제 한도는 7천만원 초과 구간이 「× 1/2」입니다(0.005로 잘못 넣었다가 2026-10에 고침).
   종합소득세 세율(`BRACKETS`)이 바뀌면 `js/income-tax.js`도 같은 값으로
@@ -225,11 +227,13 @@ https://전국부동산계산기.com/guide-prepayment.html
 - `js/hourly-wage.js` — `MIN_WAGE`(올해 최저임금)와 `NEXT_MIN_WAGE`(고시된 내년 값). 1월에 2027년 10,700원을 `MIN_WAGE`로
   옮기고, 8월 고시 뒤 `NEXT_MIN_WAGE`를 그다음 해 값으로. 계산기 본문 예시(`pages_tools3.hourly_wage_page`)와 verify 기대값도 다시 뽑을 것.
   안내 글 `guide-minimum-wage-2027.html`은 「계산기는 2026년 10,320원과 비교」 문장과 2026·2027 비교표를 손볼 것.
-  `guide-weekly-holiday-pay.html`(주휴수당 2026·2027 열, 「주휴 포함 시급 12,384원」 문장)도 새 해 기준으로 고칠 것
+  `guide-weekly-holiday-pay.html`(주휴수당 2026·2027 열, 「주휴 포함 시급 12,384원」 문장)도 새 해 기준으로 고칠 것.
+  `guide-hourly-wage-table.html`(시급별 월급 표)은 첫 두 줄(10,320원·10,700원)의 설명 문장을 새 해 기준으로 고칠 것
 - `js/unemployment-benefit.js` — `MIN_WAGE`, `DAILY_MAX`(하루 상한 68,100원), `RULES_DATE`. **2027년 1월 주의**:
   최저임금 10,700원이면 하한이 68,480원으로 지금 상한을 넘으므로 상한이 또 오를 가능성이 큼. 고용노동부 발표로 확인할 것.
   계산기 본문의 「334만원 이하면 하한, 344만원 이상이면 상한」 문장과 예시 숫자, 안내 글 `guide-unemployment-floor.html`(표·날수별 총액·
-  조기재취업수당 예시·「2027년에 바뀔 것」 절)도 다시 뽑을 것
+  조기재취업수당 예시·「2027년에 바뀔 것」 절)와
+  `guide-unemployment-days.html`(날수별 총액 표의 하루 금액 두 열, 30일 금액)도 다시 뽑을 것
 - `js/savings.js`(이자소득세 15.4%)와 `js/jeonse-loan.js`(주택임차차입금 소득공제 40%·400만원)는 거의 안 바뀜.
   예금자보호 한도(1억원, 2025-09부터)와 금융소득 종합과세 기준(2,000만원)은 `guide-deposit-100m.html`에 적혀 있음
 - **땅값 몇 배 계산기 자료**(한국부동산원 지가지수 + 통계청 소비자물가지수) — 원자료는 `tools/data/raw/`(받은 그대로),

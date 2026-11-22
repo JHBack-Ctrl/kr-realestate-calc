@@ -360,20 +360,30 @@ GUIDES = [
      "3주택 이상이고 전세보증금 합계가 3억원을 넘으면 간주임대료가 임대수입으로 잡힙니다. 보증금 10억원이면 간주임대료 1,302만원, 세금 69만 4,540원입니다. 보증금별 세금과 2026년부터 대상이 된 고가주택 2주택자를 정리했습니다."),
     ("guide-severance-table.html", "퇴직금 계산 표, 월급별·근속연수별", "퇴직금 계산 표 — 월급 250만~600만원, 근속 1~20년 퇴직금과 세후 금액",
      "월급 300만원으로 5년 일하면 퇴직금 1,468만 1,954원, 10년이면 2,936만 3,907원입니다. 월급 250만~600만원과 근속 1~20년의 퇴직금, 세금을 뺀 금액, 1년 치가 월급보다 조금 적은 이유를 정리했습니다."),
+    ("guide-unemployment-days.html", "실업급여 수급 기간, 나이와 가입 기간별로 며칠 받나", "실업급여 수급 기간 — 나이·고용보험 가입 기간별 120~270일 표와 총액",
+     "실업급여를 받는 날수는 퇴직할 때의 나이와 고용보험 가입 기간으로 정해지고 120일에서 270일 사이입니다. 50세 미만이 3년 이상 5년 미만 가입했다면 180일, 하한액 기준 1,188만 8,640원입니다. 날수별 총액과 다 못 받는 경우를 정리했습니다."),
+    ("guide-hourly-wage-table.html", "시급별 월급 표, 최저임금부터 2만원까지", "시급별 월급 표 — 시급 10,320원~2만원 월급·연봉, 209시간 계산, 세후 금액",
+     "시급을 월급으로 바꿀 때는 한 달을 209시간으로 계산합니다. 시급 12,000원이면 월 250만 8,000원, 15,000원이면 313만 5,000원입니다. 최저임금부터 2만원까지의 월급·연봉과 근무시간별 금액, 세금을 뗀 금액을 정리했습니다."),
+    ("guide-year-end-education.html", "연말정산 교육비 공제, 누구 학비가 얼마까지 되나", "연말정산 교육비 세액공제 — 자녀 300만·대학생 900만원 한도, 15%, 학원비는 대상 아님",
+     "교육비 세액공제는 공제 대상 금액의 15%입니다. 본인은 한도가 없고 자녀는 초·중·고 300만원, 대학생 900만원까지입니다. 총급여 5,000만원이 300만원을 공제받으면 세금이 35만 2,000원 줄어듭니다. 되는 항목과 안 되는 항목을 정리했습니다."),
+    ("guide-income-tax-brackets.html", "종합소득세 세율 구간, 소득이 늘면 세금은 얼마나 느나", "종합소득세 세율표 — 과세표준 구간 6~45%, 누진공제, 과세표준별 세금 표",
+     "종합소득세 세율은 과세표준에 따라 6%에서 45%까지 여덟 구간입니다. 과세표준 5,000만원의 산출세액은 624만원, 1억원은 1,956만원입니다. 구간을 넘으면 넘은 금액에만 높은 세율이 붙습니다. 세율표와 과세표준별 세금을 정리했습니다."),
+    ("guide-loan-interest-by-amount.html", "2억·3억·5억 대출 이자, 금리별로 한 달에 얼마인가", "2억·3억·5억 대출 이자 — 금리 3~6% 한 달 이자, 30년 원리금 상환액, 총이자",
+     "3억원을 연 4%로 30년 동안 원리금균등으로 갚으면 한 달 143만 2,246원, 총이자는 2억 1,560만 8,519원입니다. 2억·3억·5억원의 금리별 한 달 이자와 상환액, 기간과 상환 방식에 따른 차이를 정리했습니다."),
 ]
 # 안내 글 주제 묶음(안내 글 목록 guides.html). 글은 꼭 한 묶음에만 넣는다 — 빠지거나 겹치면 빌드가 멈춘다.
 # 2026-11: 묶음 없이 오래된 글부터 84장이 한 줄로 이어져 폰에서 화면 23개 분량이었다. 새 글을 쓰면 여기에도 넣을 것
 GUIDE_TOPICS = [
     ("rent", "전세·월세", "conversion jeonse-vs-monthly jeonse-registry renewal-refusal jeonse-insurance-fail moving-14days deposit-vs-rent deposit-return "
                          "renewal-rent-increase jeonse-ratio renewal-family rent-report jeonse-loan-vs-rent brokerage"),
-    ("loan", "대출", "repayment loan-100m-interest dsr-ltv fixed-vs-variable loan-rate-structure prepayment mortgage-limit base-rate-change refinance loan-30-vs-40"),
+    ("loan", "대출", "repayment loan-100m-interest loan-interest-by-amount dsr-ltv fixed-vs-variable loan-rate-structure prepayment mortgage-limit base-rate-change refinance loan-30-vs-40"),
     ("buy", "집 살 때·팔 때", "acquisition-tax acquisition-6-9 first-home-acquisition mixed-use-acquisition buying-costs self-registration buy-vs-rent "
                            "cgt-exemption cgt-heavy cgt-high-price cgt-filing temporary-two-homes officetel area-84 yield-vacancy"),
     ("hold", "보유세·상속·증여", "property-tax property-tax-table jongbuse-threshold jongbuse-payment rental-income-two-homes jeonse-deemed-rent gift-tax-free family-loan gift-vs-inheritance inheritance-threshold"),
     ("sub", "청약", "subscription-points subscription-notice-date subscription-first-rank subscription-deduction"),
-    ("pay", "월급·연말정산", "salary-net salary-raise salary-table year-end-december card-deduction year-end-dependents year-end-result year-end-medical year-end-job-change "
-                          "rent-tax-credit-who rent-credit-refund pension-tax-credit freelancer-refund"),
-    ("work", "퇴직·휴가·저축", "severance severance-table severance-tax annual-leave-pay annual-leave-days minimum-wage-2027 weekly-holiday-pay parental-leave-pay unemployment-floor "
+    ("pay", "월급·연말정산", "salary-net salary-raise salary-table year-end-december card-deduction year-end-dependents year-end-result year-end-medical year-end-education year-end-job-change "
+                          "rent-tax-credit-who rent-credit-refund pension-tax-credit freelancer-refund income-tax-brackets"),
+    ("work", "퇴직·휴가·저축", "severance severance-table severance-tax annual-leave-pay annual-leave-days minimum-wage-2027 weekly-holiday-pay hourly-wage-table parental-leave-pay unemployment-floor unemployment-days "
                             "savings-real-rate deposit-100m"),
     ("price", "집값·땅값 흐름", "apartment-multiple seoul-apartment-gu land-price-lookup land-index-sido apartment-vs-land real-price-multiple"),
 ]
@@ -423,7 +433,7 @@ TOOL_GUIDES = {
     "conversion.html": ["guide-conversion.html", "guide-renewal-rent-increase.html", "guide-deposit-vs-rent.html"],
     "rent-tax-credit.html": ["guide-rent-tax-credit-who.html", "guide-rent-credit-refund.html", "guide-year-end-december.html"],
     "fee.html": ["guide-brokerage.html", "guide-buying-costs.html", "guide-jeonse-registry.html"],
-    "loan.html": ["guide-loan-100m-interest.html", "guide-repayment.html", "guide-loan-30-vs-40.html"],
+    "loan.html": ["guide-loan-100m-interest.html", "guide-loan-interest-by-amount.html", "guide-repayment.html"],
     "dsr.html": ["guide-dsr-ltv.html", "guide-mortgage-limit.html", "guide-loan-30-vs-40.html"],
     "prepayment.html": ["guide-prepayment.html", "guide-refinance.html", "guide-repayment.html"],
     "acquisition-tax.html": ["guide-acquisition-tax.html", "guide-first-home-acquisition.html", "guide-acquisition-6-9.html"],
@@ -446,15 +456,15 @@ TOOL_GUIDES = {
     "inheritance-tax.html": ["guide-inheritance-threshold.html", "guide-gift-vs-inheritance.html"],
     "jeonse-loan.html": ["guide-jeonse-loan-vs-rent.html", "guide-subscription-deduction.html", "guide-base-rate-change.html"],
     "savings.html": ["guide-deposit-100m.html", "guide-savings-real-rate.html"],
-    "unemployment-benefit.html": ["guide-unemployment-floor.html", "guide-severance.html", "guide-minimum-wage-2027.html"],
-    "hourly-wage.html": ["guide-weekly-holiday-pay.html", "guide-minimum-wage-2027.html", "guide-salary-net.html"],
-    "year-end-tax.html": ["guide-year-end-result.html", "guide-card-deduction.html", "guide-year-end-medical.html"],
+    "unemployment-benefit.html": ["guide-unemployment-days.html", "guide-unemployment-floor.html", "guide-severance.html"],
+    "hourly-wage.html": ["guide-hourly-wage-table.html", "guide-weekly-holiday-pay.html", "guide-minimum-wage-2027.html"],
+    "year-end-tax.html": ["guide-year-end-result.html", "guide-card-deduction.html", "guide-year-end-education.html"],
     "registration-cost.html": ["guide-self-registration.html", "guide-buying-costs.html", "guide-acquisition-tax.html"],
     "pension-tax-credit.html": ["guide-pension-tax-credit.html", "guide-year-end-december.html", "guide-freelancer-refund.html"],
     "parental-leave.html": ["guide-parental-leave-pay.html"],
     "annual-leave.html": ["guide-annual-leave-days.html", "guide-annual-leave-pay.html", "guide-minimum-wage-2027.html"],
     "rental-income-tax.html": ["guide-rental-income-two-homes.html", "guide-jeonse-deemed-rent.html", "guide-officetel.html"],
-    "income-tax.html": ["guide-freelancer-refund.html", "guide-year-end-dependents.html"],
+    "income-tax.html": ["guide-freelancer-refund.html", "guide-income-tax-brackets.html", "guide-year-end-dependents.html"],
     "land-multiple.html": ["guide-land-price-lookup.html", "guide-land-index-sido.html", "guide-apartment-vs-land.html"],
     "apartment-multiple.html": ["guide-apartment-multiple.html", "guide-seoul-apartment-gu.html", "guide-real-price-multiple.html"],
 }
