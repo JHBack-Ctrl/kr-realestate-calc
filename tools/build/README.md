@@ -10,6 +10,7 @@ python3 tools/build/build.py
   `TOOL_GUIDES`는 계산기 쪽 결과 아래에 붙는 「함께 읽는 안내 글」 목록입니다. 새 안내 글을 쓰면 관련 계산기 줄에 더합니다
 - `pages_new.py` / `pages_cgt.py` / `pages_tools2.py` / `pages_tax.py` / `pages_tools3.py` / `pages_tools4.py` — 계산기 본문(폼·결과·설명·FAQ)
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽(표·자료/서식·용어/참고 자료), 안내 글 4편, 안내 글 틀(핵심 숫자 상자·차례)
+- `og_cards.py` — 쪽마다 공유 카드(og:image) 내용. 그림은 `python3 tools/og/make_cards.py`(바뀐 카드만). 숫자가 계산기·안내 글 본문에 없으면 빌드가 멈춥니다
 - `guide_keys.py` — 안내 글 맨 위 「핵심 숫자」 값. 본문에 똑같이 있는 숫자만 쓰고, 없으면 빌드가 멈춥니다. 새 안내 글을 쓰면 여기에도 넣습니다
 - `pages_guides2.py` — 안내 글 84편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어

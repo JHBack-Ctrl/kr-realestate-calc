@@ -131,7 +131,7 @@ ID를 넣으면 `privacy.html` 6-1 항목을 실제 도입 내용으로 갱신�
 - `sw.js`, `manifest.json` — 앱 설치와 오프라인 캐시
 - `CNAME` — GitHub Pages 커스텀 도메인 (퓨니코드)
 - `tools/build/` — 사이트 빌더
-- `tools/make-og.js` — 공유 카드 이미지 `og.png` 생성 (`node tools/make-og.js`). 이름이나 문구를 바꾸면 다시 실행
+- `tools/og/make_cards.py` — 쪽마다 공유 카드(`og/<쪽>.jpg`, 공통 `og.jpg`) 생성 (`python3 tools/og/make_cards.py`, 바뀐 카드만). 카드 문구는 `tools/build/og_cards.py`
 
 기본 금리, 프리셋 값, 중개보수 요율표 등 바뀔 수 있는 값은 각 스크립트 상단에 상수로 모아두었습니다.
 

@@ -22,6 +22,7 @@ python3 tools/build/build.py
   `pages_tools4.py`는 연말정산·등기비용·연금저축IRP·육아휴직·연차·주택임대소득세·종합소득세·땅값 몇 배·아파트값 몇 배)
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽, 안내 글 4편, 안내 글 틀(`article`: 핵심 숫자 상자·차례)
 - `guide_keys.py` — 안내 글 맨 위 「핵심 숫자」 값(`GUIDE_KEYS`)
+- `og_cards.py` — 쪽마다 공유 카드(og:image) 내용. 계산기 38개 문구(`OG_TOOLS`), 안내 글은 제목·핵심 숫자로 자동
 - `pages_guides2.py` — 안내 글 84편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
 - `build.py` — 위를 모아 쓰고 `manifest.json`, `sw.js`, `sitemap.xml`, `js/analytics.js`를 생성
@@ -124,6 +125,27 @@ node tools/verify.js
 - 다른 폴더(예: 배포될 모습을 재현한 사본)를 검사하려면 `node tools/verify.js <폴더>`
 - Playwright(Chromium)가 필요합니다. 없으면 설치 방법을 출력하고 종료 코드 2로 끝납니다
 - `tools/`는 배포에서 빠지므로 이 스크립트는 사이트에 올라가지 않습니다
+
+## 공유 카드 (og:image, 2026-11)
+
+카톡·SNS에 링크를 붙이면 뜨는 그림을 쪽마다 따로 둡니다(`og/<쪽>.jpg`, 그 밖의 쪽은 공통 `og.jpg`).
+지금 공통 그림 한 장이면 무슨 숫자인지 안 보여 눌러 볼 이유가 없었고, 그 그림의 「계산기 21개」도 옛 숫자였습니다.
+
+```
+python3 tools/build/build.py          # 카드 숫자 확인 + tools/og/cards.json
+python3 tools/og/make_cards.py        # 바뀐 카드만 다시 그림(--all이면 전부). 127장이 5초
+```
+
+- 계산기: `tools/build/og_cards.py`의 `OG_TOOLS`에 (칩, 머리말, 큰 숫자 앞말, 큰 숫자, 아래 줄[, 숫자가 있는 안내 글]).
+  **카드의 숫자는 그 계산기 쪽이나 관련 안내 글(`TOOL_GUIDES`, 여섯째 칸) 본문에 똑같이 있어야** 하고, 없으면 빌드가 멈춥니다.
+  계산기를 새로 만들면 여기에도 한 줄 넣어야 빌드가 됩니다
+- 안내 글: 제목과 `guide_keys.py`의 핵심 숫자로 자동. 공통 카드의 계산기 수는 `TOOLS`에서
+- 카드 내용(문구·숫자·틀 `tools/og/card.html`)이 바뀌었는데 그림을 다시 그리지 않으면 **verify가 실패**합니다(`tools/og/og_hashes.json`과 `cards.json` 대조).
+  요율·자료가 바뀌어 안내 글 숫자를 다시 뽑으면 핵심 숫자 → 카드도 바뀌니 make_cards를 같이 돌릴 것
+- 글꼴(Pretendard)은 `tools/og/.font/`에 없으면 npm에서 한 번 받습니다(저장소에는 넣지 않음, `.gitignore`). 그림은 JPEG 88로 장당 50~60KB
+- og:image 주소 끝 `?v=`가 카드 내용 해시라 내용이 바뀌면 주소가 바뀝니다. 다만 **카카오톡은 한 번 본 링크의 미리보기를 한동안 저장**하므로,
+  이미 공유된 링크를 바로 바꾸려면 카카오 개발자 사이트의 「공유 디버거」에서 그 주소의 캐시를 지웁니다
+- 예전 `tools/make-og.js`·`og.png`는 이 단계로 바뀌어 지웠습니다
 
 ## 새 글 올린 뒤 할 일
 

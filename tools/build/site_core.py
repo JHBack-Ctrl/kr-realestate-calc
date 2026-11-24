@@ -703,6 +703,8 @@ def is_noindex(path):
 def head(title, desc, path, extra="", noindex=False, og_type="website"):
     noindex = noindex or is_noindex(path)
     url = BASE + ("" if path == "index.html" else path)
+    from og_cards import og_image, image_alt   # 쪽마다 공유 카드(2026-11). og_cards가 site_core를 읽으므로 여기서 가져온다
+    og = BASE + og_image(path)[0]; og_alt = image_alt(path).replace('"', "&quot;")
     return f'''<!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -726,13 +728,14 @@ def head(title, desc, path, extra="", noindex=False, og_type="website"):
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{desc}">
   <meta property="og:url" content="{url}">
-  <meta property="og:image" content="{BASE}og.png">
+  <meta property="og:image" content="{og}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{og_alt}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{title}">
   <meta name="twitter:description" content="{desc}">
-  <meta name="twitter:image" content="{BASE}og.png">
+  <meta name="twitter:image" content="{og}">
 {extra}</head>
 <body>
   <a class="skip-link" href="#main">본문으로 건너뛰기</a>
