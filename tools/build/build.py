@@ -127,6 +127,11 @@ write("manifest.json", json.dumps(manifest, ensure_ascii=False, indent=2) + "\n"
 # f08c47fec0942fa0는 구글의 공인 인증기관 ID(고정값).
 write("ads.txt", "google.com, " + ADSENSE_PUB.replace("ca-", "", 1) + ", DIRECT, f08c47fec0942fa0\n")
 
+# ---------- 4c) 공유 카드: 숫자가 본문에 있는지 확인하고 카드 명세를 쓴다(그림은 tools/og/make_cards.py) ----------
+from og_cards import check_og_cards, write_specs
+check_og_cards(read)
+write_specs("tools/og/cards.json")
+
 TERM_HTML = [term_path(t[0]) for t in TERMS]
 ALL_HTML = [t[0] for t in TOOLS] + [r[0] for r in REFS] + [h[0] for h in HUBS] + [g[0] for g in GUIDES] + [d[0] for d in DOCS] + [x[0] for x in TABLES] + [x[0] for x in FORMS] + ["glossary.html", "index.html", "404.html"]
 assets = ["css/site.css", "js/common.js", "js/analytics.js", "js/forms.js", "js/home.js", "favicon.svg", "apple-touch-icon.png", "icon-192.png", "icon-512.png", "manifest.json"] + \

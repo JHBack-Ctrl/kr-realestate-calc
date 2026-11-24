@@ -1370,6 +1370,26 @@ function near(label, got, want, tol) {
   expect('안내 글 목록: 주제마다 4편만 보임', await page.$$eval('.guide-topic[id^="t-"]', s => s.every(x => [...x.querySelectorAll('.tool-card')].filter(c => !c.closest('details:not([open])')).length <= 4)), true);
   await page.goto(BASE + 'guides.html#t-loan'); await page.waitForTimeout(100);
   expect('안내 글 목록: #주제로 오면 펼침', await page.$eval('#t-loan-more', d => d.open), true);
+  // 공유 카드(og:image, 2026-11): 모든 쪽의 그림이 있고 1200×630이며, 그린 카드가 지금 카드 내용(tools/og/cards.json)과 같은지
+  { const cards = JSON.parse(fs.readFileSync(path.join(__dirname, 'og', 'cards.json'), 'utf8'));
+    const drawn = JSON.parse(fs.readFileSync(path.join(__dirname, 'og', 'og_hashes.json'), 'utf8'));
+    const jpgSize = b => { for (let i = 2; i < b.length - 9;) { if (b[i] !== 0xFF) return null; const m = b[i + 1], len = b.readUInt16BE(i + 2); if (m >= 0xC0 && m <= 0xC3) return b.readUInt16BE(i + 7) + 'x' + b.readUInt16BE(i + 5); i += 2 + len; } return null; };
+    const bad = [];
+    for (const f of PAGES) {
+      const h = fs.readFileSync(path.join(ROOT, f), 'utf8');
+      const m = h.match(/<meta property="og:image" content="https?:\/\/[^/]+\/([^"?]+)\?v=([0-9a-f]{8})">/);
+      if (!m) { bad.push(f + ':태그'); continue; }
+      const [, img, v] = m, c = cards[img];
+      if (!c) { bad.push(f + ':' + img + ' 명세 없음'); continue; }
+      if (c.hash.slice(0, 8) !== v) bad.push(f + ':?v 다름');
+      if (drawn[img] !== c.hash) bad.push(f + ':' + img + ' 옛 그림(python3 tools/og/make_cards.py)');
+      const fp = path.join(ROOT, img); if (!fs.existsSync(fp)) { bad.push(f + ':' + img + ' 없음'); continue; }
+      if (jpgSize(fs.readFileSync(fp)) !== '1200x630') bad.push(f + ':' + img + ' 크기');
+      if (!/<meta property="og:image:alt" content="[^"]{10,}">/.test(h)) bad.push(f + ':alt');
+    }
+    expect('공유 카드(og:image) 그림·크기·내용', bad.slice(0, 8).join(',') || '모두 맞음', '모두 맞음');
+    const own = PAGES.filter(f => (fs.readFileSync(path.join(ROOT, f), 'utf8').match(/og:image" content="[^"]*\/(og\/[^"?]+)/) || [])[1] === 'og/' + f.replace('.html', '.jpg'));
+    expect('자기 카드를 쓰는 쪽(계산기 + 안내 글)', own.length, TOOL_PAGES.length + PAGES.filter(f => f.startsWith('guide-')).length); }
   // 한글 줄바꿈·회색 대비·푸터 링크 크기 (2026-11)
   expect('한글은 낱말 단위로 줄바꿈', await page.$eval('h1', e => getComputedStyle(e).wordBreak), 'keep-all');
   const ratio = await page.evaluate(() => { const lum = c => { const v = c.match(/[\d.]+/g).slice(0, 3).map(x => { x = x / 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); }); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
