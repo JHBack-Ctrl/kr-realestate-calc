@@ -370,22 +370,34 @@ GUIDES = [
      "종합소득세 세율은 과세표준에 따라 6%에서 45%까지 여덟 구간입니다. 과세표준 5,000만원의 산출세액은 624만원, 1억원은 1,956만원입니다. 구간을 넘으면 넘은 금액에만 높은 세율이 붙습니다. 세율표와 과세표준별 세금을 정리했습니다."),
     ("guide-loan-interest-by-amount.html", "2억·3억·5억 대출 이자, 금리별로 한 달에 얼마인가", "2억·3억·5억 대출 이자 — 금리 3~6% 한 달 이자, 30년 원리금 상환액, 총이자",
      "3억원을 연 4%로 30년 동안 원리금균등으로 갚으면 한 달 143만 2,246원, 총이자는 2억 1,560만 8,519원입니다. 2억·3억·5억원의 금리별 한 달 이자와 상환액, 기간과 상환 방식에 따른 차이를 정리했습니다."),
+    ("guide-savings-monthly-table.html", "적금 이자 표, 월 30만~200만원 넣으면 만기에 얼마 받나", "적금 이자 계산 표 — 월 30만·50만·100만·200만원, 1~3년 세후 만기 수령액",
+     "매달 50만원씩 연 3% 적금에 1년 넣으면 세금을 떼고 이자 8만 2,490원이 붙어 608만 2,490원을 받습니다. 월 30만~200만원의 기간별·금리별 세후 이자와 만기 수령액을 정리했습니다."),
+    ("guide-jeonse-loan-interest.html", "전세대출 이자, 1억~4억원 금리별로 한 달에 얼마인가", "전세대출 이자 계산 — 1억·2억·3억·4억 금리 3~5% 한 달 이자, 2년 총이자, 소득공제",
+     "전세대출 3억원을 연 4%로 빌리면 한 달 이자 100만원, 2년 동안 2,400만원입니다. 1억~4억원의 금리별 한 달 이자와 2년 총이자, 보증금 80% 대출과 소득공제 금액을 정리했습니다."),
+    ("guide-second-home-acquisition.html", "두 번째 집 취득세, 조정대상지역이면 8%", "2주택 취득세 — 조정대상지역 8%·비조정지역 1~3%, 집값별 표, 일시적 2주택 3년",
+     "집이 한 채 있는 세대가 조정대상지역에서 8억원 아파트를 더 사면 취득세는 6,720만원, 비조정지역이면 2,050만 4,000원입니다. 지역·집값별 숫자와 일시적 2주택, 주택 수 세는 법을 정리했습니다."),
+    ("guide-long-term-deduction.html", "장기보유특별공제 표, 보유·거주 기간별 공제율", "장기보유특별공제 표 — 일반 연 2% 최대 30%, 1세대 1주택 보유·거주 각 4% 최대 80%",
+     "장기보유특별공제는 일반 부동산이 보유 1년에 2%씩 최대 30%, 1세대 1주택 고가주택은 보유·거주 1년에 4%씩 최대 80%입니다. 기간별 공제율 표와 5억·10억원 차익의 양도세 차이를 정리했습니다."),
+    ("guide-gyeonggi-apartment.html", "경기도 시·군별 아파트값, 2006·2012·2020년부터 몇 배", "경기도 아파트값 몇 배 — 시·구별 매매가격지수 배수와 평균 매매가 표",
+     "한국부동산원 지수로 보면 경기도 아파트값은 2012년 12월부터 2026년 9월까지 1.41배입니다. 광명시 2.08배, 성남시 1.88배인 반면 동두천시는 0.87배입니다. 시·구별 배수와 평균 매매가를 정리했습니다."),
+    ("guide-monthly-to-hourly.html", "월급을 시급으로 바꾸면, 내 시급은 얼마인가", "월급 시급 환산 — 월급 200만~500만원 시급 표, 209시간, 최저임금 월급 215만 6,880원",
+     "월급을 시급으로 바꿀 때는 209시간으로 나눕니다. 월급 250만원이면 시급 11,961원, 300만원이면 14,354원입니다. 월급별 시급과 근무시간이 짧을 때의 계산, 최저임금에 들어가는 항목을 정리했습니다."),
 ]
 # 안내 글 주제 묶음(안내 글 목록 guides.html). 글은 꼭 한 묶음에만 넣는다 — 빠지거나 겹치면 빌드가 멈춘다.
 # 2026-11: 묶음 없이 오래된 글부터 84장이 한 줄로 이어져 폰에서 화면 23개 분량이었다. 새 글을 쓰면 여기에도 넣을 것
 GUIDE_TOPICS = [
     ("rent", "전세·월세", "conversion jeonse-vs-monthly jeonse-registry renewal-refusal jeonse-insurance-fail moving-14days deposit-vs-rent deposit-return "
-                         "renewal-rent-increase jeonse-ratio renewal-family rent-report jeonse-loan-vs-rent brokerage"),
+                         "renewal-rent-increase jeonse-ratio renewal-family rent-report jeonse-loan-vs-rent jeonse-loan-interest brokerage"),
     ("loan", "대출", "repayment loan-100m-interest loan-interest-by-amount dsr-ltv fixed-vs-variable loan-rate-structure prepayment mortgage-limit base-rate-change refinance loan-30-vs-40"),
-    ("buy", "집 살 때·팔 때", "acquisition-tax acquisition-6-9 first-home-acquisition mixed-use-acquisition buying-costs self-registration buy-vs-rent "
-                           "cgt-exemption cgt-heavy cgt-high-price cgt-filing temporary-two-homes officetel area-84 yield-vacancy"),
+    ("buy", "집 살 때·팔 때", "acquisition-tax acquisition-6-9 first-home-acquisition second-home-acquisition mixed-use-acquisition buying-costs self-registration buy-vs-rent "
+                           "cgt-exemption cgt-heavy cgt-high-price long-term-deduction cgt-filing temporary-two-homes officetel area-84 yield-vacancy"),
     ("hold", "보유세·상속·증여", "property-tax property-tax-table jongbuse-threshold jongbuse-payment rental-income-two-homes jeonse-deemed-rent gift-tax-free family-loan gift-vs-inheritance inheritance-threshold"),
     ("sub", "청약", "subscription-points subscription-notice-date subscription-first-rank subscription-deduction"),
     ("pay", "월급·연말정산", "salary-net salary-raise salary-table year-end-december card-deduction year-end-dependents year-end-result year-end-medical year-end-education year-end-job-change "
                           "rent-tax-credit-who rent-credit-refund pension-tax-credit freelancer-refund income-tax-brackets"),
-    ("work", "퇴직·휴가·저축", "severance severance-table severance-tax annual-leave-pay annual-leave-days minimum-wage-2027 weekly-holiday-pay hourly-wage-table parental-leave-pay unemployment-floor unemployment-days "
-                            "savings-real-rate deposit-100m"),
-    ("price", "집값·땅값 흐름", "apartment-multiple seoul-apartment-gu land-price-lookup land-index-sido apartment-vs-land real-price-multiple"),
+    ("work", "퇴직·휴가·저축", "severance severance-table severance-tax annual-leave-pay annual-leave-days minimum-wage-2027 weekly-holiday-pay hourly-wage-table monthly-to-hourly parental-leave-pay unemployment-floor unemployment-days "
+                            "savings-real-rate savings-monthly-table deposit-100m"),
+    ("price", "집값·땅값 흐름", "apartment-multiple seoul-apartment-gu gyeonggi-apartment land-price-lookup land-index-sido apartment-vs-land real-price-multiple"),
 ]
 GUIDE_NEW_COUNT = 6      # 「새로 올린 글」과 홈에 먼저 보이는 안내 글 수. 새 글은 GUIDES 맨 뒤에 붙이므로 뒤에서부터 센다
 
@@ -436,8 +448,8 @@ TOOL_GUIDES = {
     "loan.html": ["guide-loan-100m-interest.html", "guide-loan-interest-by-amount.html", "guide-repayment.html"],
     "dsr.html": ["guide-dsr-ltv.html", "guide-mortgage-limit.html", "guide-loan-30-vs-40.html"],
     "prepayment.html": ["guide-prepayment.html", "guide-refinance.html", "guide-repayment.html"],
-    "acquisition-tax.html": ["guide-acquisition-tax.html", "guide-first-home-acquisition.html", "guide-acquisition-6-9.html"],
-    "capital-gains-tax.html": ["guide-cgt-exemption.html", "guide-cgt-heavy.html", "guide-cgt-high-price.html"],
+    "acquisition-tax.html": ["guide-acquisition-tax.html", "guide-first-home-acquisition.html", "guide-second-home-acquisition.html"],
+    "capital-gains-tax.html": ["guide-cgt-exemption.html", "guide-long-term-deduction.html", "guide-cgt-heavy.html"],
     "yield.html": ["guide-yield-vacancy.html", "guide-mixed-use-acquisition.html", "guide-rental-income-two-homes.html"],
     "subscription.html": ["guide-subscription-points.html", "guide-subscription-first-rank.html", "guide-subscription-notice-date.html"],
     "area.html": ["guide-area-84.html", "guide-officetel.html"],
@@ -454,10 +466,10 @@ TOOL_GUIDES = {
     "salary.html": ["guide-salary-net.html", "guide-salary-table.html", "guide-salary-raise.html"],
     "severance.html": ["guide-severance-table.html", "guide-severance.html", "guide-severance-tax.html"],
     "inheritance-tax.html": ["guide-inheritance-threshold.html", "guide-gift-vs-inheritance.html"],
-    "jeonse-loan.html": ["guide-jeonse-loan-vs-rent.html", "guide-subscription-deduction.html", "guide-base-rate-change.html"],
-    "savings.html": ["guide-deposit-100m.html", "guide-savings-real-rate.html"],
+    "jeonse-loan.html": ["guide-jeonse-loan-interest.html", "guide-jeonse-loan-vs-rent.html", "guide-subscription-deduction.html"],
+    "savings.html": ["guide-savings-monthly-table.html", "guide-deposit-100m.html", "guide-savings-real-rate.html"],
     "unemployment-benefit.html": ["guide-unemployment-days.html", "guide-unemployment-floor.html", "guide-severance.html"],
-    "hourly-wage.html": ["guide-hourly-wage-table.html", "guide-weekly-holiday-pay.html", "guide-minimum-wage-2027.html"],
+    "hourly-wage.html": ["guide-hourly-wage-table.html", "guide-monthly-to-hourly.html", "guide-weekly-holiday-pay.html"],
     "year-end-tax.html": ["guide-year-end-result.html", "guide-card-deduction.html", "guide-year-end-education.html"],
     "registration-cost.html": ["guide-self-registration.html", "guide-buying-costs.html", "guide-acquisition-tax.html"],
     "pension-tax-credit.html": ["guide-pension-tax-credit.html", "guide-year-end-december.html", "guide-freelancer-refund.html"],
@@ -466,7 +478,7 @@ TOOL_GUIDES = {
     "rental-income-tax.html": ["guide-rental-income-two-homes.html", "guide-jeonse-deemed-rent.html", "guide-officetel.html"],
     "income-tax.html": ["guide-freelancer-refund.html", "guide-income-tax-brackets.html", "guide-year-end-dependents.html"],
     "land-multiple.html": ["guide-land-price-lookup.html", "guide-land-index-sido.html", "guide-apartment-vs-land.html"],
-    "apartment-multiple.html": ["guide-apartment-multiple.html", "guide-seoul-apartment-gu.html", "guide-real-price-multiple.html"],
+    "apartment-multiple.html": ["guide-apartment-multiple.html", "guide-seoul-apartment-gu.html", "guide-gyeonggi-apartment.html"],
 }
 DOCS = [
     ("about.html", "사이트 소개"), ("privacy.html", "개인정보처리방침"), ("terms.html", "이용약관"),

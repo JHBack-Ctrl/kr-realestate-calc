@@ -10,8 +10,8 @@
   "published": "2026-09-17"
  },
  "acquisition-tax.html": {
-  "hash": "b391416bcc20",
-  "modified": "2026-11-10",
+  "hash": "90fcd13f57ee",
+  "modified": "2026-11-25",
   "published": "2026-09-17"
  },
  "annual-leave.html": {
@@ -20,8 +20,8 @@
   "published": "2026-10-27"
  },
  "apartment-multiple.html": {
-  "hash": "4dbe2a501980",
-  "modified": "2026-11-05",
+  "hash": "b25b1907041b",
+  "modified": "2026-11-25",
   "published": "2026-11-03"
  },
  "area.html": {
@@ -40,8 +40,8 @@
   "published": "2026-09-17"
  },
  "capital-gains-tax.html": {
-  "hash": "191387d1b678",
-  "modified": "2026-11-03",
+  "hash": "5af7f70b257f",
+  "modified": "2026-11-25",
   "published": "2026-09-17"
  },
  "checklist.html": {
@@ -234,6 +234,11 @@
   "modified": "2026-10-27",
   "published": "2026-10-27"
  },
+ "guide-gyeonggi-apartment.html": {
+  "hash": "e95ef92785da",
+  "modified": "2026-11-25",
+  "published": "2026-11-25"
+ },
  "guide-hourly-wage-table.html": {
   "hash": "5c2922b48314",
   "modified": "2026-11-24",
@@ -258,6 +263,11 @@
   "hash": "4aac64e9227e",
   "modified": "2026-09-20",
   "published": "2026-09-20"
+ },
+ "guide-jeonse-loan-interest.html": {
+  "hash": "0451407356f8",
+  "modified": "2026-11-25",
+  "published": "2026-11-25"
  },
  "guide-jeonse-loan-vs-rent.html": {
   "hash": "747c6bb078a6",
@@ -319,6 +329,11 @@
   "modified": "2026-09-21",
   "published": "2026-09-21"
  },
+ "guide-long-term-deduction.html": {
+  "hash": "d62d95833c78",
+  "modified": "2026-11-25",
+  "published": "2026-11-25"
+ },
  "guide-minimum-wage-2027.html": {
   "hash": "537ac161b045",
   "modified": "2026-11-24",
@@ -328,6 +343,11 @@
   "hash": "0ed3fb965fd1",
   "modified": "2026-10-30",
   "published": "2026-10-30"
+ },
+ "guide-monthly-to-hourly.html": {
+  "hash": "2f4043d9ac2b",
+  "modified": "2026-11-25",
+  "published": "2026-11-25"
  },
  "guide-mortgage-limit.html": {
   "hash": "384e3e95fcb7",
@@ -434,10 +454,20 @@
   "modified": "2026-11-10",
   "published": "2026-11-10"
  },
+ "guide-savings-monthly-table.html": {
+  "hash": "a2f73a601099",
+  "modified": "2026-11-25",
+  "published": "2026-11-25"
+ },
  "guide-savings-real-rate.html": {
   "hash": "cfa5071b7ae7",
   "modified": "2026-10-27",
   "published": "2026-10-27"
+ },
+ "guide-second-home-acquisition.html": {
+  "hash": "9ee98af3e94c",
+  "modified": "2026-11-25",
+  "published": "2026-11-25"
  },
  "guide-self-registration.html": {
   "hash": "64f64d44c47d",
@@ -540,13 +570,13 @@
   "published": "2026-09-27"
  },
  "guides.html": {
-  "hash": "16c1ee124c01",
-  "modified": "2026-11-23",
+  "hash": "a59ffd36dd3d",
+  "modified": "2026-11-25",
   "published": "2026-09-17"
  },
  "hourly-wage.html": {
-  "hash": "26d8ca55f7c9",
-  "modified": "2026-11-23",
+  "hash": "f666d863ade7",
+  "modified": "2026-11-25",
   "published": "2026-10-26"
  },
  "income-tax.html": {
@@ -555,8 +585,8 @@
   "published": "2026-10-31"
  },
  "index.html": {
-  "hash": "5ab651a6ab9c",
-  "modified": "2026-11-23",
+  "hash": "ac4fff26962f",
+  "modified": "2026-11-25",
   "published": "2026-09-17"
  },
  "inheritance-tax.html": {
@@ -575,8 +605,8 @@
   "published": "2026-09-17"
  },
  "jeonse-loan.html": {
-  "hash": "6358d83a4668",
-  "modified": "2026-11-10",
+  "hash": "0daa0477a316",
+  "modified": "2026-11-25",
   "published": "2026-10-26"
  },
  "land-multiple.html": {
@@ -630,8 +660,8 @@
   "published": "2026-09-17"
  },
  "refs.html": {
-  "hash": "13e6cebf7c3f",
-  "modified": "2026-11-23",
+  "hash": "8fd8537cb410",
+  "modified": "2026-11-25",
   "published": "2026-09-20"
  },
  "registration-cost.html": {
@@ -665,8 +695,8 @@
   "published": "2026-09-17"
  },
  "savings.html": {
-  "hash": "23d5af47fd5d",
-  "modified": "2026-11-03",
+  "hash": "b249d9375d59",
+  "modified": "2026-11-25",
   "published": "2026-10-26"
  },
  "severance.html": {

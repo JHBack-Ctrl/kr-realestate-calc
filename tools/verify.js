@@ -1285,6 +1285,75 @@ function near(label, got, want, tol) {
     await loanCase('annuity', pr, r, m); expect(`대출 금액별 글 ${pr} ${r}% ${m}개월 월`, await get('out-first'), first); if (interest) expect(`대출 금액별 글 ${pr} ${r}% ${m}개월 이자`, await get('out-interest'), interest);
   }
   await loanCase('principal', '300000000', '4', '360'); expect('대출 금액별 글 원금균등 첫 달', await get('out-first'), '1,833,333'); expect('대출 금액별 글 원금균등 마지막 달', await get('c-pr-last'), '836,111'); expect('대출 금액별 글 원금균등 이자', await get('out-interest'), '180,500,000');
+  // ------------------------------------------------------------ 안내 글 6편 (2026-11-24) 본문 숫자
+  // guide-savings-monthly-table.html — [종류, 방식, 금액, 개월, 금리, 과세, 세전 이자, 세금, 세후 이자, 만기]
+  for (const [kind, method, amt, m, r, tax, gross, taxAmt, net, mat] of [
+      ['installment', 'simple', '300000', '12', '3', 'general', null, null, '49,500', '3,649,500'], ['installment', 'simple', '500000', '12', '3', 'general', '97,500', '15,010', '82,490', '6,082,490'],
+      ['installment', 'simple', '1000000', '12', '3', 'general', null, null, '164,970', '12,164,970'], ['installment', 'simple', '2000000', '12', '3', 'general', null, null, '329,940', '24,329,940'],
+      ['installment', 'simple', '300000', '24', '3', 'general', null, null, null, '7,390,350'], ['installment', 'simple', '300000', '36', '3', 'general', null, null, null, '11,222,580'],
+      ['installment', 'simple', '500000', '24', '3', 'general', null, null, '317,250', '12,317,250'], ['installment', 'simple', '500000', '36', '3', 'general', null, null, '704,300', '18,704,300'],
+      ['installment', 'simple', '1000000', '24', '3', 'general', null, null, null, '24,634,500'], ['installment', 'simple', '1000000', '36', '3', 'general', null, null, null, '37,408,590'],
+      ['installment', 'simple', '2000000', '24', '3', 'general', null, null, null, '49,269,000'], ['installment', 'simple', '2000000', '36', '3', 'general', null, null, null, '74,817,180'],
+      ['installment', 'simple', '500000', '12', '2.5', 'general', null, null, '68,750', null], ['installment', 'simple', '500000', '12', '3.5', 'general', null, null, '96,240', null],
+      ['installment', 'simple', '500000', '12', '4', 'general', null, null, '109,980', null], ['installment', 'simple', '500000', '12', '5', 'general', null, null, '137,480', null],
+      ['installment', 'simple', '1000000', '12', '2.5', 'general', null, null, '137,480', null], ['installment', 'simple', '1000000', '12', '3.5', 'general', null, null, '192,470', null],
+      ['installment', 'simple', '1000000', '12', '4', 'general', null, null, '219,960', null], ['installment', 'simple', '1000000', '12', '5', 'general', null, null, '274,950', null],
+      ['installment', 'simple', '1000000', '36', '3.5', 'general', '1,942,500', null, '1,643,360', null], ['installment', 'compound', '1000000', '36', '3.5', 'general', '2,010,269', null, '1,700,699', null],
+      ['installment', 'simple', '500000', '12', '3', 'none', '97,500', '0', '97,500', '6,097,500'], ['deposit', 'simple', '6000000', '12', '3', 'general', '180,000', null, '152,280', null]]) {
+    await fresh('savings.html'); await radio('kind', kind); await radio('method', method); await page.selectOption('#taxKind', tax); await type('months', m); await type('rate', r); await type('amount', amt);
+    const lab = `적금 표 글 ${kind} ${method} ${amt} ${m}개월 ${r}% ${tax}`;
+    if (gross) expect(lab + ' 세전', await get('out-interest'), gross); if (taxAmt) expect(lab + ' 세금', await get('out-tax'), taxAmt);
+    if (net) expect(lab + ' 세후', await get('out-net'), net); if (mat) expect(lab + ' 만기', await get('out-maturity'), mat);
+    if (amt === '500000' && m === '12' && r === '3' && tax === 'general') { expect('적금 표 글 원금 대비 세전', await get('out-gross-yield'), '1.63'); expect('적금 표 글 원금 대비 세후', await get('out-yield'), '1.37'); }
+  }
+  // guide-jeonse-loan-interest.html — [보증금, 비율, 상한, 금리, 대출금, 월 이자, 2년 이자, 1년 이자, 소득공제, 자기자금]
+  for (const [dep, ratio, cap, r, loan, mon, tot, yr, ded, own] of [
+      ['100000000', '100', '', '3', null, '250,000', null, null, null, null], ['100000000', '100', '', '4', null, '333,333', '7,999,992', '3,999,996', '1,599,998', null], ['100000000', '100', '', '5', null, '416,666', null, null, null, null],
+      ['150000000', '100', '', '3', null, '375,000', null, null, null, null], ['150000000', '100', '', '4', null, '500,000', '12,000,000', '6,000,000', null, null], ['150000000', '100', '', '5', null, '625,000', null, null, null, null],
+      ['200000000', '100', '', '3', null, '500,000', null, null, null, null], ['200000000', '100', '', '3.5', null, '583,333', null, null, null, null], ['200000000', '100', '', '4', null, '666,666', '15,999,984', '7,999,992', '3,199,996', null],
+      ['200000000', '100', '', '5', null, '833,333', null, null, null, null], ['250000000', '100', '', '4', null, null, null, '9,999,996', '3,999,998', null],
+      ['300000000', '100', '', '3', null, '750,000', null, null, null, null], ['300000000', '100', '', '3.5', null, '875,000', null, null, null, null], ['300000000', '100', '', '4', null, '1,000,000', '24,000,000', '12,000,000', '4,000,000', null],
+      ['300000000', '100', '', '4.5', null, '1,125,000', null, null, null, null], ['300000000', '100', '', '5', null, '1,250,000', null, null, null, null],
+      ['400000000', '100', '', '3', null, '1,000,000', null, null, null, null], ['400000000', '100', '', '4', null, '1,333,333', '31,999,992', '15,999,996', null, null], ['400000000', '100', '', '5', null, '1,666,666', null, null, null, null],
+      ['300000000', '80', '', '4', '240,000,000', '800,000', null, null, null, '60,000,000'], ['500000000', '80', '', '4', '400,000,000', '1,333,333', null, null, null, null],
+      ['400000000', '80', '200000000', '4', '200,000,000', '666,666', null, null, null, '200,000,000']]) {
+    await fresh('jeonse-loan.html'); await type('ratio', ratio); await type('rate', r); await type('months', '24'); if (cap) await type('cap', cap); await type('deposit', dep);
+    const lab = `전세대출 이자 글 ${dep} ${ratio}% ${r}%`;
+    if (loan) expect(lab + ' 대출금', await get('out-loan'), loan); if (mon) expect(lab + ' 월', await get('out-monthly'), mon); if (tot) expect(lab + ' 2년', await get('out-total'), tot);
+    if (yr) expect(lab + ' 1년', await get('out-yearly'), yr); if (ded) expect(lab + ' 공제', await get('out-deduct'), ded); if (own) expect(lab + ' 자기자금', await get('out-own'), own);
+  }
+  // guide-second-home-acquisition.html
+  await fresh('acquisition-tax.html');
+  for (const [pr, non, adj] of [['300000000', '3,300,000', '25,200,000'], ['500000000', '5,500,000', '42,000,000'], ['600000000', '6,600,000', '50,400,000'], ['800000000', '20,504,000', '67,200,000'],
+      ['1000000000', '33,000,000', '84,000,000'], ['1200000000', '39,600,000', '100,800,000']]) { await acq(`두 번째 집 글 ${pr} 비조정`, pr, 'nonadj2', false, false, non); await acq(`두 번째 집 글 ${pr} 조정`, pr, 'adj2', false, false, adj); }
+  await acq('두 번째 집 글 8억 비조정 3주택', '800000000', 'nonadj3', false, false, '67,200,000'); await acq('두 번째 집 글 8억 조정 3주택', '800000000', 'adj3', false, false, '99,200,000');
+  await acq('두 번째 집 글 8억 조정 85초과', '800000000', 'adj2', true, false, '72,000,000'); await acq('두 번째 집 글 10억 조정 85초과', '1000000000', 'adj2', true, false, '90,000,000');
+  await acq('두 번째 집 글 8억 1주택 85초과', '800000000', 'one', true, false, '22,104,000'); await acq('두 번째 집 글 10억 1주택 85초과', '1000000000', 'one', true, false, '35,000,000');
+  // guide-long-term-deduction.html — 2026-11-02 양도. 일반(2주택 비조정, 5억→10억)과 1세대 1주택(10억→20억)
+  const ltd = async (label, homes, acqDate, acqPrice, sale, res, want) => {
+    await fresh('capital-gains-tax.html'); await page.selectOption('#kind', 'house'); await page.selectOption('#dealType', 'sale'); await page.selectOption('#acqCause', 'buy');
+    await page.fill('#acqDate', acqDate); await type('acqPrice', acqPrice); await page.fill('#saleDate', '2026-11-02'); await type('salePrice', sale); await page.selectOption('#homes', homes); await page.fill('#resMonths', res);
+    expect(label, await get('out-total'), want);
+  };
+  for (const [y, d, want] of [[2, '2024-06-01', '190,366,000'], [3, '2023-06-01', '177,166,000'], [5, '2021-06-01', '168,366,000'], [10, '2016-06-01', '146,366,000'], [15, '2011-06-01', '124,366,000'], [20, '2006-06-01', '124,366,000']])
+    await ltd(`장특공 글 일반 ${y}년`, '2', d, '500000000', '1000000000', '0', want);
+  for (const [d, res, want] of [['2016-06-01', '0', '111,166,000'], ['2016-06-01', '24', '63,965,000'], ['2016-06-01', '60', '43,901,000'], ['2016-06-01', '120', '14,124,000'], ['2021-06-01', '60', '77,341,000'], ['2021-06-01', '0', '128,766,000'], ['2023-06-01', '36', '104,126,000']])
+    await ltd(`장특공 글 1주택 ${d} 거주 ${res}개월`, '1', d, '1000000000', '2000000000', res, want);
+  // guide-gyeonggi-apartment.html — 시·구별 2006·2012·2020·2021년부터 배수와 평균가
+  await fresh('apartment-multiple.html');
+  for (const [r, a06, a12, a20, a21, avg] of [['경기 전체', '1.43', '1.41', '1.11', '0.91', '599,000,000'], ['경기 과천시', '1.37', '1.85', '1.25', '1.14', '2,159,000,000'], ['경기 성남시', '1.53', '1.88', '1.37', '1.23', '1,411,000,000'], ['경기 하남시', '1.65', '1.78', '1.2', '1.09', '1,150,000,000'], ['경기 광명시', '2.28', '2.08', '1.21', '1.03', '879,000,000'], ['경기 안양시', '1.7', '1.87', '1.34', '1.02', '765,000,000'], ['경기 용인시', '1.27', '1.58', '1.19', '1.02', '740,000,000'], ['경기 의왕시', '1.53', '1.65', '1.22', '0.88', '739,000,000'], ['경기 구리시', '1.84', '1.79', '1.16', '1.01', '728,000,000'], ['경기 화성시', '1.43', '1.48', '1.18', '0.97', '646,000,000'], ['경기 수원시', '1.68', '1.69', '1.19', '0.98', '644,000,000'], ['경기 군포시', '1.42', '1.52', '1.17', '0.87', '523,000,000'], ['경기 남양주시', '1.52', '1.33', '1.09', '0.86', '514,000,000'], ['경기 고양시', '1.13', '1.25', '1', '0.81', '514,000,000'], ['경기 부천시', '1.54', '1.44', '1.11', '0.9', '503,000,000'], ['경기 김포시', '1.03', '1.19', '0.88', '0.81', '441,000,000'], ['경기 광주시', '1.02', '1.11', '1', '0.84', '441,000,000'], ['경기 안산시', '1.76', '1.4', '1.16', '0.84', '435,000,000'], ['경기 시흥시', '1.86', '1.33', '1.11', '0.81', '372,000,000'], ['경기 오산시', '1.46', '1.15', '1.08', '0.82', '349,000,000'], ['경기 파주시', '0.91', '1.06', '0.96', '0.82', '341,000,000'], ['경기 의정부시', '1.73', '1.1', '0.99', '0.8', '339,000,000'], ['경기 양주시', '1.43', '1', '0.96', '0.76', '281,000,000'], ['경기 평택시', '1.33', '0.98', '1.02', '0.79', '274,000,000'], ['경기 이천시', '1.43', '1.04', '0.97', '0.83', '211,000,000'], ['경기 여주시', '', '0.97', '1.01', '0.92', '181,000,000'], ['경기 안성시', '1.31', '1.05', '1.07', '0.84', '179,000,000'], ['경기 동두천시', '1.45', '0.87', '0.91', '0.76', '171,000,000'], ['경기 포천시', '', '1.01', '1', '0.87', '167,000,000'], ['경기 수원시 영통구', '1.88', '1.93', '1.28', '1.04', '879,000,000'], ['경기 수원시 팔달구', '1.73', '1.73', '1.15', '0.96', '562,000,000'], ['경기 수원시 권선구', '1.65', '1.64', '1.18', '0.96', '500,000,000'], ['경기 수원시 장안구', '1.42', '1.4', '1.08', '0.94', '539,000,000'], ['경기 성남시 분당구', '1.59', '2.05', '1.47', '1.33', '1,785,000,000'], ['경기 성남시 수정구', '1.53', '1.59', '1.2', '1.07', '1,104,000,000'], ['경기 성남시 중원구', '1.51', '1.52', '1.17', '1', '787,000,000'], ['경기 안양시 동안구', '1.77', '2.07', '1.44', '1.05', '892,000,000'], ['경기 안양시 만안구', '1.62', '1.54', '1.15', '0.95', '562,000,000'], ['경기 용인시 수지구', '1.31', '1.82', '1.25', '1.08', '1,014,000,000'], ['경기 용인시 기흥구', '1.28', '1.52', '1.16', '0.97', '673,000,000'], ['경기 용인시 처인구', '1.3', '1.19', '1.15', '0.98', '344,000,000'], ['경기 안산시 상록구', '1.75', '1.42', '1.19', '0.86', '409,000,000'], ['경기 안산시 단원구', '1.78', '1.38', '1.14', '0.83', '456,000,000'], ['경기 고양시 덕양구', '1.44', '1.41', '1.05', '0.83', '539,000,000'], ['경기 고양시 일산동구', '1.07', '1.23', '1', '0.82', '569,000,000'], ['경기 고양시 일산서구', '0.9', '1.11', '0.94', '0.78', '440,000,000']]) {
+    for (const [y, want] of [[2006, a06], [2012, a12], [2020, a20], [2021, a21]]) { if (!want) continue; await pick(r, y, 2026); expect(`경기 글 ${r} ${y}→2026`, await get('out-big'), want); }
+    await page.selectOption('#region', r); expect(`경기 글 ${r} 평균가`, await page.inputValue('#regionPrice'), avg);
+  }
+  // guide-monthly-to-hourly.html — 「월급을 시급으로 보기」 칸 (2026-11 추가)
+  for (const [pay, d, n, wage, hours, minPay] of [['2000000', '8', '5', '9,569', '209', '2,156,880'], ['2156880', '8', '5', '10,320', '209', null], ['2200000', '8', '5', '10,526', '209', null], ['2236300', '8', '5', '10,700', '209', null],
+      ['2300000', '8', '5', '11,004', '209', null], ['2500000', '8', '5', '11,961', '209', null], ['2800000', '8', '5', '13,397', '209', null], ['3000000', '8', '5', '14,354', '209', null], ['3300000', '8', '5', '15,789', '209', null],
+      ['3500000', '8', '5', '16,746', '209', null], ['4000000', '8', '5', '19,138', '209', null], ['4500000', '8', '5', '21,531', '209', null], ['5000000', '8', '5', '23,923', '209', null],
+      ['1500000', '4', '5', '14,423', '104', '1,073,280'], ['1500000', '6', '5', '9,615', '156', '1,609,920'], ['1500000', '7', '5', '8,196', '183', '1,888,560'], ['1500000', '5', '3', '19,230', '78', '804,960']]) {
+    await fresh('hourly-wage.html'); await setChk('holiday', true); await type('daily', d); await type('days', n); await type('monthlyPay', pay);
+    expect(`월급→시급 글 ${pay} ${d}×${n} 시급`, await get('out-rev-wage'), wage); expect(`월급→시급 글 ${pay} ${d}×${n} 시간`, await get('out-rev-hours'), hours);
+    if (minPay) expect(`월급→시급 글 ${d}×${n} 최저임금 월급`, await get('out-min-monthly'), minPay);
+  }
   // 안내 글마다 「같은 주제의 안내 글」 3편(청약처럼 글이 넷이면 나머지 셋). 모든 글이 다른 글 3편 이상에서 링크를 받는다 (2026-11)
   { const inbound = {}; const guidePages = PAGES.filter(f => f.startsWith('guide-'));
     for (const f of guidePages) { const links = [...fs.readFileSync(path.join(ROOT, f), 'utf8').matchAll(/<section class="card related topic-guides"[\s\S]*?<\/section>/g)].flatMap(m => [...m[0].matchAll(/class="tool-card" href="([^"]+)"/g)].map(x => x[1]));
