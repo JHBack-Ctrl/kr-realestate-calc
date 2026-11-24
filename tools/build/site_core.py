@@ -570,6 +570,12 @@ TILE_ICONS = {
 }
 _GUIDE_ICON = '<path d="M6 3h12v18H6z"/><path d="M9 8h6M9 12h6M9 16h3"/>'
 
+def js_const(path, name):
+    """계산기 js 상수 블록의 숫자 하나를 읽는다. 홈 「지금 적용 중인 기준」이 계산기와 다른 값을 말하지 않게 같은 곳에서 가져온다."""
+    m = re.search(r"\b" + re.escape(name) + r"\s*=\s*([\d.]+)", open(os.path.join(ROOT, path), encoding="utf-8").read())
+    assert m, path + ": 상수 " + name + "을 찾지 못했습니다"
+    v = float(m.group(1)); return int(v) if v.is_integer() else v
+
 def tile_icon(path):
     return '<span class="ico">' + _P.format(TILE_ICONS.get(path, _GUIDE_ICON)) + '</span>'
 
@@ -811,7 +817,65 @@ def fit_tables(html):
         return head + out + tail
     return _TABLE.sub(fix, html)
 
+# ---------------- 쪽 머리: 경로 · 계산기 머리 정리 (2026-11) ----------------
+# 영어 머리말(eyebrow: "Net Salary", "Guide" …)을 「홈 › 분류」 경로로 바꾼다. 현재 쪽 이름은 바로 아래 제목(h1)이라 넣지 않는다.
+# 계산기는 머리의 설명 문단(hero-body)을 입력·결과 아래 「이 계산기는」으로 옮긴다. 폰에서 첫 입력칸이 화면 아래 끝(650~790px)에 있었고
+# 취득세 계산기는 하단 결과 막대에 가려 보이지 않았다. 기존 계산기 4개는 쪽 본문이 원본이라 여러 번 빌드해도 같은 결과가 나오게 만든다.
+CAT_IDS = {"임대": "rent", "대출": "loan", "매매·투자": "buy", "생활": "life"}
+
+def crumbs(path):
+    tools = {t[0]: t for t in TOOLS}
+    if path in tools and tools[path][4] in CAT_IDS: items = [("index.html#c-" + CAT_IDS[tools[path][4]], tools[path][4])]
+    elif path in {g[0] for g in GUIDES}:
+        topic = [(k, label) for k, label, names in GUIDE_TOPICS if path[6:-5] in names.split()]
+        items = [("guides.html", "안내 글")] + [("guides.html#t-" + k, label) for k, label in topic[:1]]
+        if path == "guides.html": items = []
+    elif path.startswith("term-"): items = [("glossary.html", "용어 사전")]
+    elif path in {x[0] for x in TABLES}: items = [("tables.html", "표·자료")]
+    elif path in {x[0] for x in FORMS} or path == GLOSSARY_INDEX[0]: items = [("forms.html", "서식·용어")]
+    elif path in {r[0] for r in REFS} and path != "guides.html": items = [("refs.html", "참고 자료")]
+    elif path in {h[0] for h in HUBS} or path == "guides.html" or path in {d[0] for d in DOCS}: items = []
+    else: return None
+    sep = '<span class="sep" aria-hidden="true">›</span>'
+    links = ['<a href="index.html">홈</a>'] + [f'<a href="{h}">{n}</a>' for h, n in items]
+    return '<div class="hero-top"><nav class="crumbs" aria-label="현재 위치">' + sep.join(links) + '</nav></div>'
+
+def with_crumbs(path, main):
+    c = crumbs(path)
+    if c is None: return main
+    return re.sub(r'<p class="eyebrow">.*?</p>|<div class="hero-top">.*?</div>', lambda m: c, main, count=1, flags=re.S)
+
+def calc_head(main):
+    if 'id="calc-form"' not in main: return main
+    about = None
+    m = re.search(r'\n\s*<p class="hero-body">(.*?)</p>', main, re.S)
+    if m: about = re.sub(r"\s+", " ", m.group(1)).strip(); main = main[:m.start()] + main[m.end():]
+    m = re.search(r'\n    <section class="calc-about".*?</section>', main, re.S)
+    if m:
+        if about is None: about = re.search(r"<p>(.*?)</p>", m.group(0), re.S).group(1)
+        main = main[:m.start()] + main[m.end():]
+    if about is None: return main
+    i = main.find('<div class="layout">'); j = main.find('\n    </div>', i)
+    assert i >= 0 and j >= 0, "계산기 layout을 찾지 못했습니다"
+    j += len('\n    </div>')
+    block = f'''
+    <section class="calc-about" aria-labelledby="about-title">
+      <h2 id="about-title">이 계산기는</h2>
+      <p>{about}</p>
+    </section>'''
+    return main[:j] + block + main[j:]
+
+def calc_button(main):
+    """입력하는 즉시 계산되므로 폰에서는 계산 버튼이 결과로 내려가는 버튼이다(누르면 결과로 스크롤). 넓은 화면은 원래 이름."""
+    def fix(m):
+        inner = m.group(1)
+        w = re.search(r'<span class="when-wide">(.*?)</span>', inner)
+        label = w.group(1) if w else inner.strip()
+        return f'<button type="submit" class="btn btn-primary"><span class="when-wide">{label}</span><span class="when-narrow">결과 보기 ↓</span></button>'
+    return re.sub(r'<button type="submit" class="btn btn-primary">(.*?)</button>', fix, main, count=1, flags=re.S)
+
 def page(title, desc, path, main_html, extra_head="", scripts=(), noindex=False, sticky=None, with_rails=True, disclaimer=None, og_type="website"):
+    main_html = calc_button(calc_head(with_crumbs(path, main_html)))
     main_html = fit_tables(fit_suffixes(main_html))
     sc = "".join(f'\n  <script src="{asset(s)}"></script>' for s in scripts)
     sticky_html = f'''

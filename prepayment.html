@@ -10,7 +10,7 @@
   <meta name="google-adsense-account" content="ca-pub-8294238973326626">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/site.css?v=cb2639b3">
+  <link rel="stylesheet" href="css/site.css?v=1271c1e2">
   <link rel="canonical" href="https://xn--989anm2s84p8on6teba611m.com/prepayment.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -142,10 +142,9 @@
   <aside class="rail" aria-hidden="true"></aside>
   <main id="main" class="container">
     <section class="hero">
-      <p class="eyebrow">Loan · Prepayment</p>
+      <div class="hero-top"><nav class="crumbs" aria-label="현재 위치"><a href="index.html">홈</a><span class="sep" aria-hidden="true">›</span><a href="index.html#c-loan">대출</a></nav></div>
       <h1>중도상환수수료 계산기</h1>
       <p class="hero-sub">잔여일수 비율로 계산한 수수료와 면제일</p>
-      <p class="hero-body">상환금액, 수수료율, 대출 실행일과 상환 예정일을 넣으면 남은 기간 비율로 중도상환수수료를 계산하고 수수료가 사라지는 면제일을 알려줍니다. 약정서의 수수료율과 부과 기간을 그대로 넣으세요.</p>
     </section>
     <div class="layout">
       <div>
@@ -179,7 +178,7 @@
               <label class="toggle"><input type="checkbox" id="remember-toggle"><span class="knob" aria-hidden="true"></span>최근 계산 기억하기</label>
               <p class="field-help">이 기기의 브라우저에만 저장되며 서버로 보내지 않습니다. 끄면 저장한 값을 지웁니다.</p>
             </div>
-            <button type="submit" class="btn btn-primary">수수료 계산하기</button>
+            <button type="submit" class="btn btn-primary"><span class="when-wide">수수료 계산하기</span><span class="when-narrow">결과 보기 ↓</span></button>
             <div class="btn-row">
               <button type="button" id="native-share-btn" class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 16V3M7 8l5-5 5 5"/></svg>공유하기</button>
               <button type="button" id="share-btn" class="btn btn-ghost btn-sm">링크 복사</button>
@@ -203,6 +202,10 @@
         </section>
       </div>
     </div>
+    <section class="calc-about" aria-labelledby="about-title">
+      <h2 id="about-title">이 계산기는</h2>
+      <p>상환금액, 수수료율, 대출 실행일과 상환 예정일을 넣으면 남은 기간 비율로 중도상환수수료를 계산하고 수수료가 사라지는 면제일을 알려줍니다. 약정서의 수수료율과 부과 기간을 그대로 넣으세요.</p>
+    </section>
     <section class="card related related-guides" aria-labelledby="rel-guides-title">
       <h2 id="rel-guides-title">이 계산기와 함께 읽는 안내 글</h2>
       <div class="tool-grid"><a class="tool-card" href="guide-prepayment.html"><p class="t">중도상환수수료, 3년이 기준인 이유</p><p class="d">중도상환수수료는 남은 기간에 비례해 줄어듭니다. 3년이 기준이 된 법적 이유, 잔여일수로 계산하는 슬라이딩 방식, 1억원 예시로 본 경과 기간별 수수료, 갈아타기가 이득인지 판단하는 손익분기 개월 수를 정리합니다.</p></a><a class="tool-card" href="guide-refinance.html"><p class="t">대출 갈아타기, 금리가 얼마나 낮아야 수수료를 넘나</p><p class="d">금리가 낮은 대출로 갈아탈 때 중도상환수수료를 몇 달 만에 메우는지 계산합니다. 3억원 대출에서 0.5%p 낮추면 월 8만 7,060원이 줄고, 1.2% 수수료를 1년 차에 내면 약 28개월이 걸립니다. 수수료율·시점·금리 차이별 손익분기와 만기, 심사, 부대비용을 정리했습니다.</p></a><a class="tool-card" href="guide-repayment.html"><p class="t">원리금균등과 원금균등, 무엇이 다른가</p><p class="d">원리금균등, 원금균등, 만기일시 상환 방식의 차이를 숫자로 비교합니다. 총 이자와 월 부담이 어떻게 달라지는지, 어떤 상황에 어떤 방식이 맞는지 설명합니다.</p></a></div>
@@ -276,7 +279,7 @@
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="js/common.js?v=2219cd74"></script>
+  <script src="js/common.js?v=6a725983"></script>
   <script src="js/analytics.js?v=c8407f74"></script>
   <script src="js/prepayment.js?v=d14f5a96"></script>
 </body>

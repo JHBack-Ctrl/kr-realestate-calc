@@ -1,18 +1,49 @@
 # 안내 글 4편, 안내 글 목록, 홈 허브
+import html
 from site_core import *
+from guide_keys import GUIDE_KEYS
+
+def _plain(x):
+    return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", x)))
+
+def keynums(path, lead, body, cta):
+    """글 맨 위 「핵심 숫자」 상자와 계산기 버튼(2026-11). 값은 guide_keys.GUIDE_KEYS, 본문·첫 문단에 똑같이 있어야 한다."""
+    items = GUIDE_KEYS.get(path[6:-5], [])
+    text = _plain(lead + " " + body)
+    bad = [v for v, _l in items if v not in text]
+    assert not bad, path + ": 핵심 숫자가 본문에 없습니다 — " + ", ".join(bad)
+    cards = "".join(f'<div class="kn"><p class="v">{v}</p><p class="k">{l}</p></div>' for v, l in items)
+    grid = f'<div class="kn-grid">{cards}</div>' if items else ""
+    return f'''
+      <section class="keynums" aria-label="핵심 숫자">{grid}
+        <a class="kn-cta" href="{cta[1]}">{cta[2]} →</a>
+      </section>'''
+
+def toc(body):
+    """소제목이 넷 이상인 글은 「이 글의 차례」를 접어 둔다. 소제목에 s-1, s-2 … id를 붙인다."""
+    heads = re.findall(r"<h2>(.*?)</h2>", body)
+    n = iter(range(1, 999))
+    body = re.sub(r"<h2>", lambda m: f'<h2 id="s-{next(n)}">', body)
+    if len(heads) < 4: return body, ""
+    items = "".join(f'<li><a href="#s-{i}">{_plain(h).strip()}</a></li>' for i, h in enumerate(heads, 1))
+    return body, f'''
+      <details class="toc">
+        <summary>이 글의 차례 <span class="n">{len(heads)}</span></summary>
+        <ol>{items}</ol>
+      </details>'''
 
 def article(path, h1, lead, blocks, cta, related_tools):
     cta_html = f'''
         <div class="cta-box"><p>{cta[0]}</p><a class="btn btn-primary" href="{cta[1]}">{cta[2]}</a></div>'''
     rel = "".join(f'<a class="tool-card" href="{f}"><p class="t">{n}</p><p class="d">{d}</p></a>' for (f, n, _t, _d, _c, d) in [t for t in TOOLS if t[0] in related_tools])
-    body = "\n".join(blocks)
+    body, toc_html = toc("\n".join(blocks))
     return f'''    <article class="article">
       <section class="hero">
         <p class="eyebrow">Guide</p>
         <h1>{h1}</h1>
         <p class="lead">{lead}</p>
         <p class="meta">전국부동산계산기 · {DATE_LINE} · 참고용 설명이며 금융·세무·법률 자문이 아닙니다</p>
-      </section>
+      </section>{keynums(path, lead, body, cta)}{toc_html}
       <section class="card">
         <div class="prose">
 {body}
@@ -197,10 +228,18 @@ def guides_index():
     topics = guide_topics()
     newest = "".join(card(g) for g in GUIDES[::-1][:GUIDE_NEW_COUNT])
     jump = "".join(f'<a class="chip" href="#t-{k}">{label} <span class="n">{len(gs)}</span></a>' for (k, label, gs) in topics)
+    # 주제마다 4편만 보이고 나머지는 「n편 더 보기」로 접는다(2026-11: 폰에서 15,151px, 화면 18장 분량이었다).
+    # 접힌 글도 링크는 HTML에 그대로 있다(검색 로봇이 따라간다). guides.html#t-주제로 들어오면 common.js가 펼친다
+    SHOW = 4
+    more = lambda k, gs: (f'''
+      <details class="more-cards" id="t-{k}-more">
+        <summary>{len(gs) - SHOW}편 더 보기</summary>
+        <div class="tool-grid">{"".join(card(g) for g in gs[SHOW:])}</div>
+      </details>''' if len(gs) > SHOW else "")
     secs = "".join(f'''
     <section class="card guide-topic" id="t-{k}" aria-labelledby="t-{k}-h">
       <div class="sec-head"><h2 id="t-{k}-h">{label}</h2><span class="n">{len(gs)}편</span></div>
-      <div class="tool-grid">{"".join(card(g) for g in gs)}</div>
+      <div class="tool-grid">{"".join(card(g) for g in gs[:SHOW])}</div>{more(k, gs)}
     </section>''' for (k, label, gs) in topics)
     main = f'''    <section class="hero">
       <p class="eyebrow">Guides</p>
@@ -257,9 +296,9 @@ def refs_index():
 
 def home():
     """타일형 홈. 등록부에서 직접 만들기 때문에 계산기를 추가하면 홈에도 자동으로 붙는다."""
-    def tile(f, name, desc, extra_cls=""):
-        k = TILE_KEYS.get(f, "")
-        d = f'<span class="d">{desc}</span>' if desc else ""
+    def tile(f, name, desc, extra_cls="", show_desc=True):
+        k = TILE_KEYS.get(f, "") + ("" if show_desc or not desc else " " + desc)   # 설명을 숨긴 타일도 검색은 설명 낱말로 찾는다
+        d = f'<span class="d">{desc}</span>' if desc and show_desc else ""
         pub = PAGE_DATES.get(f, {}).get("published", "")
         return (f'<a class="tile{extra_cls}" href="{f}" data-k="{name} {k}" data-pub="{pub}">'
                 f'{tile_icon(f)}<span class="t">{name}</span>{d}</a>')
@@ -268,10 +307,11 @@ def home():
     pop = "".join(tile(f, n, d) for (f, n, _t, _d, _c, d) in sorted(
         [t for t in TOOLS if t[0] in POPULAR], key=lambda t: POPULAR.index(t[0])))
 
-    def section(title, inner, count, cls=""):
+    def section(title, inner, count, cls="", sid=""):
         n_ = f'<span class="n">{count}개</span>' if count else ""
+        i_ = f' id="{sid}"' if sid else ""
         return f'''
-    <section class="sec" data-sec>
+    <section class="sec"{i_} data-sec>
       <div class="sec-head"><h2>{title}</h2>{n_}</div>
       <div class="tiles{cls}" data-group>{inner}</div>
     </section>'''
@@ -279,7 +319,8 @@ def home():
     cat_secs = []
     for cat in CATS[:4]:
         items = [t for t in tools_by_cat(cat) if t[0] != "guides.html"]
-        cat_secs.append(section(cat, "".join(tile(f, n, d) for (f, n, _t, _d, _c, d) in items), len(items)))
+        # 분류별 목록은 아이콘과 이름만 있는 촘촘한 타일(2026-11: 큰 카드 38장이 폰에서 화면 8장 분량이었다). 설명은 「많이 찾는 계산기」와 각 쪽에
+        cat_secs.append(section(cat, "".join(tile(f, n, d, show_desc=False) for (f, n, _t, _d, _c, d) in items), len(items), cls=" mini", sid="c-" + CAT_IDS[cat]))
     # 광고는 첫 두 묶음 뒤에
     cats_html = "".join(cat_secs[:2]) + INLINE_AD + "".join(cat_secs[2:])
 
@@ -359,9 +400,20 @@ def home():
       </details>
     </section>'''
 
+    # 지금 적용 중인 기준(2026-11): 사이트가 숫자 기준을 공개하고 제때 고친다는 것을 첫 화면에서 보여 준다.
+    # 값은 계산기와 같은 곳에서 읽는다(기준금리는 RATE_HISTORY, 나머지는 계산기 js 상수). 손으로 적지 말 것
+    fmt_rate = lambda x: (f"{x:.2f}".rstrip("0").rstrip(".") if x != int(x) else str(int(x)))
+    mw, mw_y = js_const("js/hourly-wage.js", "MIN_WAGE"), js_const("js/hourly-wage.js", "MIN_WAGE_YEAR")
+    nmw, nmw_y = js_const("js/hourly-wage.js", "NEXT_MIN_WAGE"), js_const("js/hourly-wage.js", "NEXT_YEAR")
+    pen = js_const("js/salary.js", "PENSION_RATE")
+    facts = [("base-rate-history.html", "기준금리", f"{BASE_RATE:.2f}%", BASE_RATE_LABEL),
+             ("conversion.html", "전월세 전환율 상한", f"{fmt_rate(min(BASE_RATE + 2, 10))}%", "기준금리 + 2%p"),
+             ("hourly-wage.html", f"{mw_y}년 최저임금", f"{mw:,}원", f"{nmw_y}년 {nmw:,}원"),
+             ("salary.html", "국민연금 보험료율", f"{fmt_rate(pen * 2)}%", f"근로자 부담 {fmt_rate(pen)}%")]
+    facts_html = "".join(f'<a class="fact" href="{f}"><span class="k">{k}</span><span class="v">{v}</span><span class="s">{s_}</span></a>' for f, k, v, s_ in facts)
     n_tools = len(TOOLS)
     main = f'''    <section class="hero tile-hero">
-      <p class="eyebrow">Real Estate · Calculators</p>
+      <p class="kicker">부동산·생활 계산기</p>
       <h1>전국부동산계산기</h1>
       <p class="hero-sub">계산기 {n_tools}개와 세율표·서식·용어 사전. 회원가입 없이 브라우저에서만 계산합니다.</p>
     </section>
@@ -370,9 +422,13 @@ def home():
       <label class="sr-only" for="q">계산기 검색</label>
       <input class="tool-search" id="q" type="search" placeholder="무엇을 계산하시나요?  예: 취득세, 연봉, 전세" autocomplete="off">
     </div>
+    <section class="facts-sec" aria-labelledby="facts-title">
+      <div class="sec-head"><h2 id="facts-title">지금 적용 중인 기준</h2><span class="n">바뀌면 계산기와 함께 고칩니다</span></div>
+      <div class="facts">{facts_html}</div>
+    </section>
     <section class="sec fav-sec" id="fav-sec" hidden>
       <div class="sec-head"><h2>즐겨찾기</h2><span class="n">이 기기에만 저장</span></div>
-      <div class="tiles" id="fav-tiles"></div>
+      <div class="tiles mini" id="fav-tiles"></div>
     </section>{section("많이 찾는 계산기", pop, 0, cls=" hot")}{cats_html}{mini_sec}{ref_sec}
     <p class="tile-empty" id="tile-empty" hidden>찾는 계산기가 없습니다. 다른 말로 검색해 보세요.</p>
     <section class="card" style="margin-top:28px">

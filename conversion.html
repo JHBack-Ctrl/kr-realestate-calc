@@ -10,7 +10,7 @@
   <meta name="google-adsense-account" content="ca-pub-8294238973326626">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/site.css?v=cb2639b3">
+  <link rel="stylesheet" href="css/site.css?v=1271c1e2">
   <link rel="canonical" href="https://xn--989anm2s84p8on6teba611m.com/conversion.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -142,10 +142,9 @@
   <aside class="rail" aria-hidden="true"></aside>
   <main id="main" class="container">
     <section class="hero">
-      <p class="eyebrow">Rent · Conversion</p>
+      <div class="hero-top"><nav class="crumbs" aria-label="현재 위치"><a href="index.html">홈</a><span class="sep" aria-hidden="true">›</span><a href="index.html#c-rent">임대</a></nav></div>
       <h1>전월세 전환율 계산기</h1>
       <p class="hero-sub">법정 전환율로 전세와 월세를 서로 바꿔보기</p>
-      <p class="hero-body">한국은행 기준금리에 2%포인트를 더한 법정 전환율로 전세를 월세로, 월세를 전세로 환산합니다. 시장 전환율을 넣으면 두 기준을 나란히 비교할 수 있습니다. 계약 갱신 때 집주인이 제시한 월세가 상한을 넘는지 확인하는 용도입니다.</p>
     </section>
     <div class="layout">
       <div>
@@ -195,7 +194,7 @@
               <label class="toggle"><input type="checkbox" id="remember-toggle"><span class="knob" aria-hidden="true"></span>최근 계산 기억하기</label>
               <p class="field-help">이 기기의 브라우저에만 저장되며 서버로 보내지 않습니다. 끄면 저장한 값을 지웁니다.</p>
             </div>
-            <button type="submit" class="btn btn-primary">환산하기</button>
+            <button type="submit" class="btn btn-primary"><span class="when-wide">환산하기</span><span class="when-narrow">결과 보기 ↓</span></button>
             <div class="btn-row">
               <button type="button" id="native-share-btn" class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 16V3M7 8l5-5 5 5"/></svg>공유하기</button>
               <button type="button" id="share-btn" class="btn btn-ghost btn-sm">링크 복사</button>
@@ -222,6 +221,10 @@
         </section>
       </div>
     </div>
+    <section class="calc-about" aria-labelledby="about-title">
+      <h2 id="about-title">이 계산기는</h2>
+      <p>한국은행 기준금리에 2%포인트를 더한 법정 전환율로 전세를 월세로, 월세를 전세로 환산합니다. 시장 전환율을 넣으면 두 기준을 나란히 비교할 수 있습니다. 계약 갱신 때 집주인이 제시한 월세가 상한을 넘는지 확인하는 용도입니다.</p>
+    </section>
     <section class="card related related-guides" aria-labelledby="rel-guides-title">
       <h2 id="rel-guides-title">이 계산기와 함께 읽는 안내 글</h2>
       <div class="tool-grid"><a class="tool-card" href="guide-conversion.html"><p class="t">전월세 전환율, 어디에 쓰는 숫자인가</p><p class="d">전월세 전환율의 뜻, 법정 전환율이 적용되는 경우와 아닌 경우, 시장 전환율과의 차이, 전세와 월세 중 무엇이 나은지 판단하는 기준을 설명합니다.</p></a><a class="tool-card" href="guide-renewal-rent-increase.html"><p class="t">갱신 때 월세로 올리자고 하면, 5% 상한 계산법</p><p class="d">계약갱신요구권으로 갱신할 때 보증금과 월세를 섞어 올리면 전환율로 보증금 환산해 5% 상한과 비교합니다. 전세 3억원이면 월세 6만 2,500원까지, 보증금 2억원·월세 50만원이면 월세 56만 6,666원까지가 상한 안인 계산과 상한이 적용되지 않는 경우를 정리했습니다.</p></a><a class="tool-card" href="guide-deposit-vs-rent.html"><p class="t">보증금 올리고 월세 내리기, 언제 이득인가</p><p class="d">보증금을 더 내고 월세를 줄이는 조건은 집주인에게 일정한 금리로 돈을 맡기는 것과 같습니다. 보증금 4,000만원에 월세 15만원을 깎는 예시로 그 금리(연 4.5%)를 구하고, 예금·대출이자와 월세 세액공제에 따라 어느 쪽 월 실부담이 작은지 계산기로 확인합니다.</p></a></div>
@@ -297,7 +300,7 @@
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="js/common.js?v=2219cd74"></script>
+  <script src="js/common.js?v=6a725983"></script>
   <script src="js/analytics.js?v=c8407f74"></script>
   <script src="js/conversion.js?v=34c85c8d"></script>
 </body>

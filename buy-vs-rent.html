@@ -10,7 +10,7 @@
   <meta name="google-adsense-account" content="ca-pub-8294238973326626">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/site.css?v=cb2639b3">
+  <link rel="stylesheet" href="css/site.css?v=1271c1e2">
   <link rel="canonical" href="https://xn--989anm2s84p8on6teba611m.com/buy-vs-rent.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -142,10 +142,9 @@
   <aside class="rail" aria-hidden="true"></aside>
   <main id="main" class="container">
     <section class="hero">
-      <p class="eyebrow">Buy vs Jeonse</p>
+      <div class="hero-top"><nav class="crumbs" aria-label="현재 위치"><a href="index.html">홈</a><span class="sep" aria-hidden="true">›</span><a href="index.html#c-buy">매매·투자</a></nav></div>
       <h1>매매 vs 전세 총비용 비교 계산기</h1>
       <p class="hero-sub">보유기간 동안 실제로 나가는 돈을 같은 기준으로</p>
-      <p class="hero-body">대출이자, 자기자본 기회비용, 취득세, 중개보수, 보유세, 가격 변동까지 넣어 매매와 전세의 총비용을 비교합니다. 집값이 매년 몇 % 올라야 매매가 유리해지는지 손익분기 상승률도 계산합니다.</p>
     </section>
     <div class="layout">
       <div>
@@ -207,7 +206,7 @@
               <label class="toggle"><input type="checkbox" id="remember-toggle"><span class="knob" aria-hidden="true"></span>최근 계산 기억하기</label>
               <p class="field-help">이 기기의 브라우저에만 저장되며 서버로 보내지 않습니다. 끄면 저장한 값을 지웁니다.</p>
             </div>
-            <button type="submit" class="btn btn-primary">총비용 비교</button>
+            <button type="submit" class="btn btn-primary"><span class="when-wide">총비용 비교</span><span class="when-narrow">결과 보기 ↓</span></button>
             <div class="btn-row">
               <button type="button" id="native-share-btn" class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 16V3M7 8l5-5 5 5"/></svg>공유하기</button>
               <button type="button" id="share-btn" class="btn btn-ghost btn-sm">링크 복사</button>
@@ -231,6 +230,10 @@
         </section>
       </div>
     </div>
+    <section class="calc-about" aria-labelledby="about-title">
+      <h2 id="about-title">이 계산기는</h2>
+      <p>대출이자, 자기자본 기회비용, 취득세, 중개보수, 보유세, 가격 변동까지 넣어 매매와 전세의 총비용을 비교합니다. 집값이 매년 몇 % 올라야 매매가 유리해지는지 손익분기 상승률도 계산합니다.</p>
+    </section>
     <section class="card related related-guides" aria-labelledby="rel-guides-title">
       <h2 id="rel-guides-title">이 계산기와 함께 읽는 안내 글</h2>
       <div class="tool-grid"><a class="tool-card" href="guide-buy-vs-rent.html"><p class="t">매매와 전세, 집값이 몇 % 올라야 같아지나</p><p class="d">매매와 전세 중 어느 쪽이 덜 드는지는 앞으로의 집값에 달려 있습니다. 6억원 매매와 4억원 전세를 5년 기준으로 놓고, 사라지는 돈만 모아 비교한 총비용, 두 선택이 같아지는 연 집값 상승률, 기회비용과 보유기간에 따라 그 경계가 움직이는 폭을 계산기로 확인합니다.</p></a><a class="tool-card" href="guide-buying-costs.html"><p class="t">집 살 때 집값 말고 드는 돈</p><p class="d">아파트를 살 때 집값 외에 드는 돈을 취득세·중개보수·대출이자로 나눠 계산했습니다. 6억원이면 924만원, 7억 5천만원이면 1,980만원, 9억원이면 3,465만원으로 집값보다 훨씬 빠르게 늘어나는 이유와 생애최초 감면, 85㎡ 초과, 계산기에 없는 비용, 내는 시점을 정리했습니다.</p></a><a class="tool-card" href="guide-jeonse-vs-monthly.html"><p class="t">전세와 월세, 숫자로 비교하는 법</p><p class="d">전세와 월세를 같은 기준으로 비교하려면 보증금 기회비용을 넣어야 합니다. 계산 순서와 흔한 착각, 금액 외에 봐야 할 것을 정리합니다.</p></a></div>
@@ -296,7 +299,7 @@
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="js/common.js?v=2219cd74"></script>
+  <script src="js/common.js?v=6a725983"></script>
   <script src="js/analytics.js?v=c8407f74"></script>
   <script src="js/buy-vs-rent.js?v=e228a501"></script>
 </body>

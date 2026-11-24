@@ -1319,6 +1319,57 @@ function near(label, got, want, tol) {
   expect('안내 글 목록 주제 묶음', await page.$$eval('.guide-topic[id^="t-"]', s => s.length), 8);
   expect('안내 글 목록: 주제 묶음에 모든 글 한 번씩', await page.$$eval('.guide-topic[id^="t-"] .tool-card', a => a.length + '/' + new Set(a.map(x => x.getAttribute('href'))).size), guideCount + '/' + guideCount);
   expect('안내 글 목록 바로가기', await page.$$eval('.guide-jump a', a => a.every(x => document.querySelector(x.getAttribute('href'))) && a.length), 8);
+  // 화면 정리 (2026-11): 계산기 첫 화면·결과 막대·빈 결과·버튼, 경로, 홈 기준 띠, 안내 글 상자·차례, 목록 접기, 데스크톱 입력 카드
+  expect('영어 머리말(eyebrow)이 남은 쪽', PAGES.filter(f => fs.readFileSync(path.join(ROOT, f), 'utf8').includes('class="eyebrow"')).join(',') || '없음', '없음');
+  { const noCrumb = PAGES.filter(f => f !== 'index.html' && f !== '404.html' && !fs.readFileSync(path.join(ROOT, f), 'utf8').includes('<nav class="crumbs"'));
+    expect('경로(홈 › 분류)가 없는 쪽', noCrumb.join(',') || '없음', '없음');
+    const home = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+    const badHash = [...new Set(TOOL_PAGES.flatMap(f => [...fs.readFileSync(path.join(ROOT, f), 'utf8').matchAll(/<nav class="crumbs".*?<\/nav>/g)].flatMap(m => [...m[0].matchAll(/href="index\.html#([^"]+)"/g)].map(x => x[1]))))].filter(id => !home.includes(`id="${id}"`));
+    expect('계산기 경로의 분류가 홈에 있음', badHash.join(',') || '없음', '없음'); }
+  { const firstLow = [], barEarly = [];
+    for (const t of TOOL_PAGES) {
+      await fresh(t);
+      const r = await page.evaluate(() => { const el = document.querySelector('#calc-form input:not([type=checkbox]):not([type=radio]):not([type=hidden]), #calc-form select, #calc-form .segmented'); return { b: Math.round(el.getBoundingClientRect().bottom), bar: document.getElementById('sticky-summary').classList.contains('show'), body: !!document.querySelector('.hero .hero-body') }; });
+      if (r.b > 640) firstLow.push(t + ':' + r.b); if (r.bar) barEarly.push(t); if (r.body) firstLow.push(t + ':hero-body');
+    }
+    expect('폰 첫 화면에 첫 입력칸(아래 끝 640px 이내)', firstLow.join(',') || '모두', '모두');
+    expect('값을 넣기 전 하단 결과 막대', barEarly.join(',') || '안 뜸', '안 뜸'); }
+  await fresh('salary.html');
+  expect('빈 결과: 흐리게 + 안내', await page.evaluate(() => document.getElementById('result').classList.contains('is-empty') && !document.querySelector('#result .empty-hint').hidden), true);
+  expect('즐겨찾기 단추는 경로 줄에', await page.$$eval('.hero-top .fav-btn', b => b.length), 1);
+  expect('계산기 설명은 입력·결과 아래로', await page.evaluate(() => { const a = document.querySelector('.calc-about'); return !!a && a.previousElementSibling.classList.contains('layout'); }), true);
+  expect('폰 계산 버튼 이름', (await page.innerText('#calc-form button[type="submit"]')).trim(), '결과 보기 ↓');
+  await type('salary', '50000000'); await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(400);
+  expect('값을 넣으면 빈 결과 표시가 사라짐', await page.evaluate(() => document.getElementById('result').classList.contains('is-empty')), false);
+  expect('값을 넣으면 하단 결과 막대', await page.evaluate(() => document.getElementById('sticky-summary').classList.contains('show')), true);
+  await page.setViewportSize({ width: 1280, height: 900 }); await fresh('salary.html'); await type('salary', '50000000'); await page.waitForTimeout(150);
+  expect('데스크톱 계산 버튼 이름', (await page.innerText('#calc-form button[type="submit"]')).trim(), '실수령액 계산');
+  expect('데스크톱: 결과 쪽이 길면 입력 카드가 따라옴', await page.evaluate(() => document.querySelector('main .layout').classList.contains('stick-left')), true);
+  await page.setViewportSize({ width: 390, height: 844 });
+  // 홈 「지금 적용 중인 기준」은 계산기와 같은 값
+  await page.goto(BASE + 'index.html'); const facts = await page.$$eval('.fact', a => a.map(x => [x.getAttribute('href'), x.querySelector('.v').textContent, x.querySelector('.s').textContent]));
+  expect('홈 기준 띠 4칸', facts.length, 4);
+  expect('홈 분류 목록은 설명 없는 촘촘한 타일', await page.$$eval('.sec[id^="c-"] .tile', t => t.length > 30 && t.every(x => !x.querySelector('.d'))), true);
+  await page.goto(BASE + 'base-rate-history.html'); expect('홈 기준금리 = 기준금리 이력', (await page.innerText('main')).includes(facts[0][1]), true);
+  await fresh('hourly-wage.html'); expect('홈 최저임금 = 시급 계산기', (await get('out-min')) + '원', facts[2][1]);
+  await page.goto(BASE + 'salary.html'); expect('홈 국민연금 = 연봉 계산기', (await page.innerText('main')).includes('국민연금 (' + facts[3][2].replace('근로자 부담 ', '') + ')'), true);
+  // 안내 글: 핵심 숫자 상자(값은 본문에 그대로), 계산기 버튼, 차례
+  { const bad = [];
+    for (const f of PAGES.filter(x => x.startsWith('guide-'))) {
+      const h = fs.readFileSync(path.join(ROOT, f), 'utf8');
+      const plain = x => x.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ');
+      const prose = plain((h.match(/<p class="lead">([\s\S]*?)<\/p>/) || ['', ''])[1] + ' ' + (h.match(/<div class="prose">([\s\S]*?)<\/div>\s*<div class="cta-box">/) || ['', ''])[1]);
+      const vals = [...h.matchAll(/<div class="kn"><p class="v">(.*?)<\/p>/g)].map(m => plain(m[1]).trim());
+      const cta = (h.match(/<a class="kn-cta" href="([^"]+)"/) || [])[1], box = (h.match(/<div class="cta-box">.*?href="([^"]+)"/) || [])[1];
+      const toc = [...h.matchAll(/<details class="toc">[\s\S]*?<\/details>/g)].flatMap(m => [...m[0].matchAll(/href="#([^"]+)"/g)].map(x => x[1]));
+      if (!vals.length) bad.push(f + ':숫자없음'); vals.filter(v => !prose.includes(v)).forEach(v => bad.push(f + ':' + v));
+      if (!cta || cta !== box) bad.push(f + ':버튼'); toc.filter(id => !h.includes(`id="${id}"`)).forEach(id => bad.push(f + ':#' + id));
+    }
+    expect('안내 글 핵심 숫자·버튼·차례', bad.join(',') || '모두 맞음', '모두 맞음'); }
+  await page.goto(BASE + 'guides.html');
+  expect('안내 글 목록: 주제마다 4편만 보임', await page.$$eval('.guide-topic[id^="t-"]', s => s.every(x => [...x.querySelectorAll('.tool-card')].filter(c => !c.closest('details:not([open])')).length <= 4)), true);
+  await page.goto(BASE + 'guides.html#t-loan'); await page.waitForTimeout(100);
+  expect('안내 글 목록: #주제로 오면 펼침', await page.$eval('#t-loan-more', d => d.open), true);
   // 한글 줄바꿈·회색 대비·푸터 링크 크기 (2026-11)
   expect('한글은 낱말 단위로 줄바꿈', await page.$eval('h1', e => getComputedStyle(e).wordBreak), 'keep-all');
   const ratio = await page.evaluate(() => { const lum = c => { const v = c.match(/[\d.]+/g).slice(0, 3).map(x => { x = x / 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); }); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };

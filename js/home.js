@@ -5,11 +5,11 @@
   var empty = document.getElementById('tile-empty');
   if (!q) return;
 
-  // NEW: 처음 게시한 지 30일 안 된 쪽(data-pub는 빌드가 page_dates.json에서 넣는다)
+  // NEW: 처음 게시한 지 14일 안 된 쪽(data-pub는 빌드가 page_dates.json에서 넣는다). 2026-11에 30일 → 14일: 계산기 38개 중 14개에 붙어 뜻이 흐려졌다
   var now = new Date();
   [].forEach.call(document.querySelectorAll('.tile[data-pub]'), function (t) {
     var age = (now - new Date(t.getAttribute('data-pub') + 'T00:00:00')) / 86400000;
-    if (age >= 0 && age <= 30) { var b = document.createElement('span'); b.className = 'badge-new'; b.textContent = 'NEW'; t.appendChild(b); }
+    if (age >= 0 && age <= 14) { var b = document.createElement('span'); b.className = 'badge-new'; b.textContent = 'NEW'; t.appendChild(b); }
   });
 
   // 즐겨찾기: 계산기 화면에서 ☆를 누른 것. 아래 묶음의 타일을 복사해 맨 위에 둔다
@@ -17,10 +17,10 @@
   if (favSec && favTiles && window.Site) {
     var added = 0;
     Site.getFavs().forEach(function (f) {
-      var src = document.querySelector('[data-group] .tile[href="' + f + '"]');
+      var src = document.querySelector('.tiles.mini[data-group] .tile[href="' + f + '"]') || document.querySelector('[data-group] .tile[href="' + f + '"]');
       if (src) { favTiles.appendChild(src.cloneNode(true)); added++; }
     });
-    favSec.hidden = !added;   // 즐겨찾기가 없으면 묶음째 숨긴다(2026-11: 빈 상자가 첫 화면을 차지했음). 방법은 계산기 제목 아래 ☆ 단추에 적혀 있다
+    favSec.hidden = !added;   // 즐겨찾기가 없으면 묶음째 숨긴다(2026-11: 빈 상자가 첫 화면을 차지했음). 방법은 계산기 제목 위 오른쪽 ☆ 단추
   }
   var hasFav = !!(favTiles && favTiles.children.length);
   var more = document.getElementById('more-guides');   // 접어 둔 안내 글. 검색할 때는 펼쳐서 찾는다

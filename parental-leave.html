@@ -10,7 +10,7 @@
   <meta name="google-adsense-account" content="ca-pub-8294238973326626">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/site.css?v=cb2639b3">
+  <link rel="stylesheet" href="css/site.css?v=1271c1e2">
   <link rel="canonical" href="https://xn--989anm2s84p8on6teba611m.com/parental-leave.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -150,10 +150,9 @@
   <aside class="rail" aria-hidden="true"></aside>
   <main id="main" class="container">
     <section class="hero">
-      <p class="eyebrow">Parental Leave Pay</p>
+      <div class="hero-top"><nav class="crumbs" aria-label="현재 위치"><a href="index.html">홈</a><span class="sep" aria-hidden="true">›</span><a href="index.html#c-life">생활</a></nav></div>
       <h1>육아휴직 급여 계산기</h1>
       <p class="hero-sub">통상임금과 개월 수로 보는 달마다 받는 금액</p>
-      <p class="hero-body">월 통상임금과 쓸 개월 수를 넣으면 2025년 개편 기준(1~3개월 250만원, 4~6개월 200만원, 이후 80%·160만원 상한)으로 달마다 받는 육아휴직 급여와 합계를 계산합니다. 6+6 부모육아휴직제도 반영합니다.</p>
     </section>
     <div class="layout">
       <div>
@@ -178,7 +177,7 @@
               <label class="toggle"><input type="checkbox" id="remember-toggle"><span class="knob" aria-hidden="true"></span>최근 계산 기억하기</label>
               <p class="field-help">이 기기의 브라우저에만 저장되며 서버로 보내지 않습니다. 끄면 저장한 값을 지웁니다.</p>
             </div>
-            <button type="submit" class="btn btn-primary">육아휴직 급여 계산</button>
+            <button type="submit" class="btn btn-primary"><span class="when-wide">육아휴직 급여 계산</span><span class="when-narrow">결과 보기 ↓</span></button>
             <div class="btn-row">
               <button type="button" id="native-share-btn" class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 16V3M7 8l5-5 5 5"/></svg>공유하기</button>
               <button type="button" id="share-btn" class="btn btn-ghost btn-sm">링크 복사</button>
@@ -202,6 +201,10 @@
         </section>
       </div>
     </div>
+    <section class="calc-about" aria-labelledby="about-title">
+      <h2 id="about-title">이 계산기는</h2>
+      <p>월 통상임금과 쓸 개월 수를 넣으면 2025년 개편 기준(1~3개월 250만원, 4~6개월 200만원, 이후 80%·160만원 상한)으로 달마다 받는 육아휴직 급여와 합계를 계산합니다. 6+6 부모육아휴직제도 반영합니다.</p>
+    </section>
     <section class="card related related-guides" aria-labelledby="rel-guides-title">
       <h2 id="rel-guides-title">이 계산기와 함께 읽는 안내 글</h2>
       <div class="tool-grid"><a class="tool-card" href="guide-parental-leave-pay.html"><p class="t">육아휴직 1년, 통상임금별로 받는 돈</p><p class="d">통상임금 200만원이면 육아휴직 1년에 2,160만원, 250만원을 넘으면 모두 2,310만원입니다. 6+6 부모육아휴직제로 첫 6개월에 더 받는 금액과 1년 6개월 연장, 신청 조건을 계산기로 정리했습니다.</p></a></div>
@@ -274,7 +277,7 @@
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="js/common.js?v=2219cd74"></script>
+  <script src="js/common.js?v=6a725983"></script>
   <script src="js/analytics.js?v=c8407f74"></script>
   <script src="js/parental-leave.js?v=aca1b002"></script>
 </body>

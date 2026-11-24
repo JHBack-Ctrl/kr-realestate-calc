@@ -10,7 +10,7 @@
   <meta name="google-adsense-account" content="ca-pub-8294238973326626">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/site.css?v=cb2639b3">
+  <link rel="stylesheet" href="css/site.css?v=1271c1e2">
   <link rel="canonical" href="https://xn--989anm2s84p8on6teba611m.com/rate-compare.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -142,10 +142,9 @@
   <aside class="rail" aria-hidden="true"></aside>
   <main id="main" class="container">
     <section class="hero">
-      <p class="eyebrow">Fixed vs Variable</p>
+      <div class="hero-top"><nav class="crumbs" aria-label="현재 위치"><a href="index.html">홈</a><span class="sep" aria-hidden="true">›</span><a href="index.html#c-loan">대출</a></nav></div>
       <h1>고정금리 vs 변동금리 비교 계산기</h1>
       <p class="hero-sub">금리가 매년 얼마나 올라야 고정이 유리해지는지</p>
-      <p class="hero-body">같은 대출을 고정금리와 변동금리로 받았을 때 총 이자와 월 상환액 변화를 비교합니다. 변동금리 상승 시나리오를 바꿔가며 손익분기점을 찾아보세요.</p>
     </section>
     <div class="layout">
       <div>
@@ -176,7 +175,7 @@
               <label class="toggle"><input type="checkbox" id="remember-toggle"><span class="knob" aria-hidden="true"></span>최근 계산 기억하기</label>
               <p class="field-help">이 기기의 브라우저에만 저장되며 서버로 보내지 않습니다. 끄면 저장한 값을 지웁니다.</p>
             </div>
-            <button type="submit" class="btn btn-primary">총 이자 비교</button>
+            <button type="submit" class="btn btn-primary"><span class="when-wide">총 이자 비교</span><span class="when-narrow">결과 보기 ↓</span></button>
             <div class="btn-row">
               <button type="button" id="native-share-btn" class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 16V3M7 8l5-5 5 5"/></svg>공유하기</button>
               <button type="button" id="share-btn" class="btn btn-ghost btn-sm">링크 복사</button>
@@ -208,6 +207,10 @@
         </section>
       </div>
     </div>
+    <section class="calc-about" aria-labelledby="about-title">
+      <h2 id="about-title">이 계산기는</h2>
+      <p>같은 대출을 고정금리와 변동금리로 받았을 때 총 이자와 월 상환액 변화를 비교합니다. 변동금리 상승 시나리오를 바꿔가며 손익분기점을 찾아보세요.</p>
+    </section>
     <section class="card related related-guides" aria-labelledby="rel-guides-title">
       <h2 id="rel-guides-title">이 계산기와 함께 읽는 안내 글</h2>
       <div class="tool-grid"><a class="tool-card" href="guide-fixed-vs-variable.html"><p class="t">고정금리와 변동금리, 어느 쪽이 유리한가</p><p class="d">고정금리와 변동금리 중 무엇을 고를지 총 이자로 비교합니다. 변동금리가 매년 몇 %p 올라야 고정이 유리해지는지 손익분기점을 예시 숫자로 보여주고, 대출 기간이 길수록 고정이 유리해지는 이유와 중도상환·대환이라는 탈출구를 정리합니다.</p></a><a class="tool-card" href="guide-loan-rate-structure.html"><p class="t">대출금리는 어떻게 정해지나</p><p class="d">같은 은행에서 같은 날 대출을 받아도 사람마다 금리가 다른 이유를 구조로 설명합니다. 지표금리(코픽스·금융채·한국은행 기준금리), 가산금리, 우대금리가 각각 무엇으로 정해지는지, 0.3%p 차이가 총 이자에 얼마가 되는지, 지금 금리는 어디서 확인하는지 정리합니다.</p></a><a class="tool-card" href="guide-base-rate-change.html"><p class="t">기준금리 0.25%p, 내 대출 이자는 얼마나 바뀌나</p><p class="d">기준금리가 0.25%p 움직이면 3억원 30년 대출의 월 상환액은 약 4만 3천원, 대출 한도는 약 700만원대, 2억원 전월세 전환 월세 상한은 4만 1,667원씩 달라집니다. 대출금리가 바로 바뀌지 않는 이유와 함께 계산기로 정리했습니다.</p></a></div>
@@ -274,7 +277,7 @@
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="js/common.js?v=2219cd74"></script>
+  <script src="js/common.js?v=6a725983"></script>
   <script src="js/analytics.js?v=c8407f74"></script>
   <script src="js/rate-compare.js?v=5f1f6692"></script>
 </body>

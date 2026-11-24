@@ -10,7 +10,7 @@
   <meta name="google-adsense-account" content="ca-pub-8294238973326626">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/site.css?v=cb2639b3">
+  <link rel="stylesheet" href="css/site.css?v=1271c1e2">
   <link rel="canonical" href="https://xn--989anm2s84p8on6teba611m.com/area.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -142,10 +142,9 @@
   <aside class="rail" aria-hidden="true"></aside>
   <main id="main" class="container">
     <section class="hero">
-      <p class="eyebrow">Area · Unit</p>
+      <div class="hero-top"><nav class="crumbs" aria-label="현재 위치"><a href="index.html">홈</a><span class="sep" aria-hidden="true">›</span><a href="index.html#c-buy">매매·투자</a></nav></div>
       <h1>평수 변환기</h1>
       <p class="hero-sub">평과 제곱미터를 바꾸고 평당 가격을 계산</p>
-      <p class="hero-body">평을 제곱미터로, 제곱미터를 평으로 바꿉니다. 총액과 면적을 넣으면 평당·㎡당 가격이 나옵니다. 전용면적과 공급면적이 왜 다른지도 아래에 정리했습니다.</p>
     </section>
     <div class="layout">
       <div>
@@ -178,7 +177,7 @@
               <label class="toggle"><input type="checkbox" id="remember-toggle"><span class="knob" aria-hidden="true"></span>최근 계산 기억하기</label>
               <p class="field-help">이 기기의 브라우저에만 저장되며 서버로 보내지 않습니다. 끄면 저장한 값을 지웁니다.</p>
             </div>
-            <button type="submit" class="btn btn-primary">변환하기</button>
+            <button type="submit" class="btn btn-primary"><span class="when-wide">변환하기</span><span class="when-narrow">결과 보기 ↓</span></button>
             <div class="btn-row">
               <button type="button" id="native-share-btn" class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 16V3M7 8l5-5 5 5"/></svg>공유하기</button>
               <button type="button" id="share-btn" class="btn btn-ghost btn-sm">링크 복사</button>
@@ -202,6 +201,10 @@
         </section>
       </div>
     </div>
+    <section class="calc-about" aria-labelledby="about-title">
+      <h2 id="about-title">이 계산기는</h2>
+      <p>평을 제곱미터로, 제곱미터를 평으로 바꿉니다. 총액과 면적을 넣으면 평당·㎡당 가격이 나옵니다. 전용면적과 공급면적이 왜 다른지도 아래에 정리했습니다.</p>
+    </section>
     <section class="card related related-guides" aria-labelledby="rel-guides-title">
       <h2 id="rel-guides-title">이 계산기와 함께 읽는 안내 글</h2>
       <div class="tool-grid"><a class="tool-card" href="guide-area-84.html"><p class="t">84㎡가 34평이 아닌 이유</p><p class="d">84㎡는 25.4평인데 왜 34평형이라고 부르는지 전용면적, 공급면적, 계약면적의 차이로 설명합니다. 59㎡·84㎡의 평 환산, 발코니 확장 서비스 면적, 평당 가격을 어느 면적으로 나누느냐에 따라 달라지는 문제를 정리합니다.</p></a><a class="tool-card" href="guide-officetel.html"><p class="t">오피스텔은 주택인가</p><p class="d">아파트 한 채에 주거용 오피스텔 한 채면 세금에서는 대개 1가구 2주택입니다. 취득세는 주택 외 4%인데 주택 수에는 들어가고, 양도세·종부세는 주거용이면 주택입니다. 주택 수에서 빠지는 오피스텔과 청약 판정까지 정리합니다.</p></a></div>
@@ -276,7 +279,7 @@
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="js/common.js?v=2219cd74"></script>
+  <script src="js/common.js?v=6a725983"></script>
   <script src="js/analytics.js?v=c8407f74"></script>
   <script src="js/area.js?v=78b1a0c5"></script>
 </body>
