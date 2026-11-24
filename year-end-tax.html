@@ -10,7 +10,7 @@
   <meta name="google-adsense-account" content="ca-pub-8294238973326626">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/site.css?v=cb2639b3">
+  <link rel="stylesheet" href="css/site.css?v=1271c1e2">
   <link rel="canonical" href="https://xn--989anm2s84p8on6teba611m.com/year-end-tax.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -150,10 +150,9 @@
   <aside class="rail" aria-hidden="true"></aside>
   <main id="main" class="container">
     <section class="hero">
-      <p class="eyebrow">Year-end Tax</p>
+      <div class="hero-top"><nav class="crumbs" aria-label="현재 위치"><a href="index.html">홈</a><span class="sep" aria-hidden="true">›</span><a href="index.html#c-life">생활</a></nav></div>
       <h1>연말정산 환급액 계산기</h1>
       <p class="hero-sub">공제 항목을 넣어 보는 13월의 월급</p>
-      <p class="hero-body">총급여와 부양가족, 신용카드 사용액, 주택청약·전세대출, 보험·의료·교육·기부·월세, 연금저축·IRP를 넣으면 2026년 귀속 기준 결정세액을 계산하고 이미 낸 세금과 비교해 환급액이나 추가 납부액을 참고용으로 추정합니다.</p>
     </section>
     <div class="layout">
       <div>
@@ -240,7 +239,7 @@
               <label class="toggle"><input type="checkbox" id="remember-toggle"><span class="knob" aria-hidden="true"></span>최근 계산 기억하기</label>
               <p class="field-help">이 기기의 브라우저에만 저장되며 서버로 보내지 않습니다. 끄면 저장한 값을 지웁니다.</p>
             </div>
-            <button type="submit" class="btn btn-primary">환급액 계산</button>
+            <button type="submit" class="btn btn-primary"><span class="when-wide">환급액 계산</span><span class="when-narrow">결과 보기 ↓</span></button>
             <div class="btn-row">
               <button type="button" id="native-share-btn" class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 16V3M7 8l5-5 5 5"/></svg>공유하기</button>
               <button type="button" id="share-btn" class="btn btn-ghost btn-sm">링크 복사</button>
@@ -266,6 +265,10 @@
         </section>
       </div>
     </div>
+    <section class="calc-about" aria-labelledby="about-title">
+      <h2 id="about-title">이 계산기는</h2>
+      <p>총급여와 부양가족, 신용카드 사용액, 주택청약·전세대출, 보험·의료·교육·기부·월세, 연금저축·IRP를 넣으면 2026년 귀속 기준 결정세액을 계산하고 이미 낸 세금과 비교해 환급액이나 추가 납부액을 참고용으로 추정합니다.</p>
+    </section>
     <section class="card related related-guides" aria-labelledby="rel-guides-title">
       <h2 id="rel-guides-title">이 계산기와 함께 읽는 안내 글</h2>
       <div class="tool-grid"><a class="tool-card" href="guide-year-end-result.html"><p class="t">연말정산 결과 읽는 법, 환급이 줄어든 이유</p><p class="d">연말정산 환급액은 결정세액과 1년 동안 뗀 기납부세액의 차이입니다. 결정세액이 같은 총급여 5,000만원도 뗀 세금에 따라 68만원 환급부터 41만원 추가 납부까지 갈립니다. 원천징수영수증 읽는 법을 정리했습니다.</p></a><a class="tool-card" href="guide-card-deduction.html"><p class="t">신용카드 소득공제, 얼마를 써야 얼마 돌려받나</p><p class="d">신용카드 소득공제는 총급여의 25%를 넘겨 쓴 금액부터 시작합니다. 총급여 5,000만원이 신용카드 2,000만원을 쓰면 18만 5,620원, 체크카드면 37만 1,250원, 한도를 채우면 49만 5,000원입니다. 총급여별 표와 한도를 정리했습니다.</p></a><a class="tool-card" href="guide-year-end-education.html"><p class="t">연말정산 교육비 공제, 누구 학비가 얼마까지 되나</p><p class="d">교육비 세액공제는 공제 대상 금액의 15%입니다. 본인은 한도가 없고 자녀는 초·중·고 300만원, 대학생 900만원까지입니다. 총급여 5,000만원이 300만원을 공제받으면 세금이 35만 2,000원 줄어듭니다. 되는 항목과 안 되는 항목을 정리했습니다.</p></a></div>
@@ -340,7 +343,7 @@
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="js/common.js?v=2219cd74"></script>
+  <script src="js/common.js?v=6a725983"></script>
   <script src="js/analytics.js?v=c8407f74"></script>
   <script src="js/year-end-tax.js?v=90585b10"></script>
 </body>

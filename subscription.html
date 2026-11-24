@@ -10,7 +10,7 @@
   <meta name="google-adsense-account" content="ca-pub-8294238973326626">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/site.css?v=cb2639b3">
+  <link rel="stylesheet" href="css/site.css?v=1271c1e2">
   <link rel="canonical" href="https://xn--989anm2s84p8on6teba611m.com/subscription.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -150,10 +150,9 @@
   <aside class="rail" aria-hidden="true"></aside>
   <main id="main" class="container">
     <section class="hero">
-      <p class="eyebrow">Subscription · Score</p>
+      <div class="hero-top"><nav class="crumbs" aria-label="현재 위치"><a href="index.html">홈</a><span class="sep" aria-hidden="true">›</span><a href="index.html#c-buy">매매·투자</a></nav></div>
       <h1>청약 가점 계산기</h1>
       <p class="hero-sub">무주택기간·부양가족·통장기간으로 84점 만점 계산</p>
-      <p class="hero-body">생년월일, 혼인 여부, 부양가족 수, 청약통장 가입일을 넣으면 가점을 계산합니다. 무주택기간은 만 30세부터 자동 산정되고, 입주자모집공고일을 넣으면 그날 기준으로 셉니다. 참고용이며 실제 청약에서는 청약홈이 산정한 점수를 써야 합니다. 잘못 넣어 당첨되면 취소될 수 있습니다.</p>
     </section>
     <div class="layout">
       <div>
@@ -205,7 +204,7 @@
               <label class="toggle"><input type="checkbox" id="remember-toggle"><span class="knob" aria-hidden="true"></span>최근 계산 기억하기</label>
               <p class="field-help">이 기기의 브라우저에만 저장되며 서버로 보내지 않습니다. 끄면 저장한 값을 지웁니다.</p>
             </div>
-            <button type="submit" class="btn btn-primary">가점 계산하기</button>
+            <button type="submit" class="btn btn-primary"><span class="when-wide">가점 계산하기</span><span class="when-narrow">결과 보기 ↓</span></button>
             <div class="btn-row">
               <button type="button" id="native-share-btn" class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 16V3M7 8l5-5 5 5"/></svg>공유하기</button>
               <button type="button" id="share-btn" class="btn btn-ghost btn-sm">링크 복사</button>
@@ -242,6 +241,10 @@
         </section>
       </div>
     </div>
+    <section class="calc-about" aria-labelledby="about-title">
+      <h2 id="about-title">이 계산기는</h2>
+      <p>생년월일, 혼인 여부, 부양가족 수, 청약통장 가입일을 넣으면 가점을 계산합니다. 무주택기간은 만 30세부터 자동 산정되고, 입주자모집공고일을 넣으면 그날 기준으로 셉니다. 참고용이며 실제 청약에서는 청약홈이 산정한 점수를 써야 합니다. 잘못 넣어 당첨되면 취소될 수 있습니다.</p>
+    </section>
     <section class="card related related-guides" aria-labelledby="rel-guides-title">
       <h2 id="rel-guides-title">이 계산기와 함께 읽는 안내 글</h2>
       <div class="tool-grid"><a class="tool-card" href="guide-subscription-points.html"><p class="t">청약 가점이 안 오르는 이유</p><p class="d">청약 가점은 무주택기간 32점, 부양가족 35점, 청약통장 17점으로 84점 만점입니다. 만 30세 전 무주택기간이 0점인 이유, 부양가족 인정 기준, 통장 가입기간 계산법과 가점이 오르는 속도를 설명합니다.</p></a><a class="tool-card" href="guide-subscription-first-rank.html"><p class="t">청약 1순위 조건, 가입 기간과 지역별 예치금</p><p class="d">청약 1순위는 통장 가입 기간과 국민주택 납입 횟수 또는 민영주택 예치금으로 정해집니다. 서울 거주자가 85㎡ 이하 민영주택에 넣으려면 300만원. 지역별 예치금 표와 규제지역 세대주 요건을 정리했습니다.</p></a><a class="tool-card" href="guide-subscription-notice-date.html"><p class="t">청약 가점, 공고일 보름 차이로 3점이 갈린다</p><p class="d">청약 가점의 무주택기간·통장 가입기간·부양가족 요건은 모두 입주자모집공고일 기준으로 셉니다. 공고일이 보름 달라져 17점이 20점이 되는 예시, 내 점수가 오르는 날을 찾는 법, 항목별 만점에 닿는 날짜, 30세 전 혼인신고가 점수를 바꾸는 폭을 계산기로 확인합니다.</p></a></div>
@@ -326,7 +329,7 @@
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="js/common.js?v=2219cd74"></script>
+  <script src="js/common.js?v=6a725983"></script>
   <script src="js/analytics.js?v=c8407f74"></script>
   <script src="js/subscription.js?v=0989644b"></script>
 </body>

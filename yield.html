@@ -10,7 +10,7 @@
   <meta name="google-adsense-account" content="ca-pub-8294238973326626">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/site.css?v=cb2639b3">
+  <link rel="stylesheet" href="css/site.css?v=1271c1e2">
   <link rel="canonical" href="https://xn--989anm2s84p8on6teba611m.com/yield.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -142,13 +142,9 @@
   <aside class="rail" aria-hidden="true"></aside>
   <main id="main" class="container">
     <section class="hero">
-      <p class="eyebrow">Commercial · Yield</p>
+      <div class="hero-top"><nav class="crumbs" aria-label="현재 위치"><a href="index.html">홈</a><span class="sep" aria-hidden="true">›</span><a href="index.html#c-buy">매매·투자</a></nav></div>
       <h1>상가 수익률 계산기</h1>
       <p class="hero-sub">공실과 대출을 반영한 총투자·자기자본 수익률</p>
-      <p class="hero-body">
-        매매가, 보증금, 월세, 운영비, 공실률, 대출 조건을 넣으면 연 순영업수익과 수익률을 계산합니다.
-        입력한 가정에 따른 산술 결과이며 미래 수익을 보장하지 않습니다. 취득세·재산세·양도세 등 세금은 포함하지 않습니다.
-      </p>
     </section>
 
     <div class="layout">
@@ -217,7 +213,7 @@
               <label class="toggle"><input type="checkbox" id="remember-toggle"><span class="knob" aria-hidden="true"></span>최근 계산 기억하기</label>
               <p class="field-help">이 기기의 브라우저에만 저장되며 서버로 보내지 않습니다. 끄면 저장한 값을 지웁니다.</p>
             </div>
-            <button type="submit" class="btn btn-primary">수익률 계산하기</button>
+            <button type="submit" class="btn btn-primary"><span class="when-wide">수익률 계산하기</span><span class="when-narrow">결과 보기 ↓</span></button>
             <div class="btn-row">
               <button type="button" id="native-share-btn" class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 16V3M7 8l5-5 5 5"/></svg>공유하기</button>
               <button type="button" id="share-btn" class="btn btn-ghost btn-sm">링크 복사</button>
@@ -268,6 +264,10 @@
         </section>
       </div>
     </div>
+    <section class="calc-about" aria-labelledby="about-title">
+      <h2 id="about-title">이 계산기는</h2>
+      <p>매매가, 보증금, 월세, 운영비, 공실률, 대출 조건을 넣으면 연 순영업수익과 수익률을 계산합니다. 입력한 가정에 따른 산술 결과이며 미래 수익을 보장하지 않습니다. 취득세·재산세·양도세 등 세금은 포함하지 않습니다.</p>
+    </section>
     <section class="card related related-guides" aria-labelledby="rel-guides-title">
       <h2 id="rel-guides-title">이 계산기와 함께 읽는 안내 글</h2>
       <div class="tool-grid"><a class="tool-card" href="guide-yield-vacancy.html"><p class="t">상가 수익률, 공실을 넣으면 달라지는 것</p><p class="d">분양 광고의 상가 수익률에는 공실·운영비·부대비용이 빠져 있습니다. 5억원 상가 예시로 광고식 6.67%가 5.54%가 되는 과정, 공실률별 수익률 표, 대출이 공실의 영향을 키우는 구조, 대출 효과가 뒤집히는 공실률을 계산기로 확인합니다.</p></a><a class="tool-card" href="guide-mixed-use-acquisition.html"><p class="t">상가주택 취득세, 주택 부분과 상가 부분을 나눠 내는 법</p><p class="d">상가주택(겸용주택) 취득세는 취득가액을 주택 부분과 상가 부분으로 나눠 따로 계산합니다. 12억원 상가주택에서 주택이 60%면 3,633만 6,000원. 주택 비율별 세금, 다주택 중과, 비율 나누는 법을 계산기로 정리했습니다.</p></a><a class="tool-card" href="guide-rental-income-two-homes.html"><p class="t">2주택 집주인 월세 세금, 등록하면 얼마나 줄어드나</p><p class="d">2주택자의 월세 100만원 임대소득세는 미등록 61만 6,000원, 등록 12만 3,200원입니다. 월세별 분리과세, 기본공제 조건, 2,000만원 경계, 2026년부터 생긴 고가 2주택 간주임대료를 계산기로 정리했습니다.</p></a></div>
@@ -348,7 +348,7 @@
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="js/common.js?v=2219cd74"></script>
+  <script src="js/common.js?v=6a725983"></script>
   <script src="js/analytics.js?v=c8407f74"></script>
   <script src="js/yield.js?v=33d61741"></script>
 </body>

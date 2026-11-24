@@ -10,7 +10,7 @@
   <meta name="google-adsense-account" content="ca-pub-8294238973326626">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/site.css?v=cb2639b3">
+  <link rel="stylesheet" href="css/site.css?v=1271c1e2">
   <link rel="canonical" href="https://xn--989anm2s84p8on6teba611m.com/moving.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -142,10 +142,9 @@
   <aside class="rail" aria-hidden="true"></aside>
   <main id="main" class="container">
     <section class="hero">
-      <p class="eyebrow">Moving Checklist</p>
+      <div class="hero-top"><nav class="crumbs" aria-label="현재 위치"><a href="index.html">홈</a><span class="sep" aria-hidden="true">›</span><a href="index.html#c-rent">임대</a></nav></div>
       <h1>이사 체크리스트 · D-day 계산기</h1>
       <p class="hero-sub">이사 날짜 하나로 한 달 전부터 이사 후 30일까지 할 일을 날짜별로</p>
-      <p class="hero-body">이사일을 넣으면 각 단계의 날짜가 계산되고, 항목을 체크하면 진행률이 보입니다. 전입신고 14일, 자동차 변경등록 30일 같은 법정 기한도 함께 나옵니다.</p>
     </section>
     <div class="layout">
       <div>
@@ -201,7 +200,7 @@
               <label class="toggle"><input type="checkbox" id="remember-toggle"><span class="knob" aria-hidden="true"></span>최근 계산 기억하기</label>
               <p class="field-help">이 기기의 브라우저에만 저장되며 서버로 보내지 않습니다. 끄면 저장한 값을 지웁니다.</p>
             </div>
-            <button type="submit" class="btn btn-primary">날짜 계산</button>
+            <button type="submit" class="btn btn-primary"><span class="when-wide">날짜 계산</span><span class="when-narrow">결과 보기 ↓</span></button>
             <div class="btn-row">
               <button type="button" id="native-share-btn" class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 16V3M7 8l5-5 5 5"/></svg>공유하기</button>
               <button type="button" id="share-btn" class="btn btn-ghost btn-sm">링크 복사</button>
@@ -230,6 +229,10 @@
         </section>
       </div>
     </div>
+    <section class="calc-about" aria-labelledby="about-title">
+      <h2 id="about-title">이 계산기는</h2>
+      <p>이사일을 넣으면 각 단계의 날짜가 계산되고, 항목을 체크하면 진행률이 보입니다. 전입신고 14일, 자동차 변경등록 30일 같은 법정 기한도 함께 나옵니다.</p>
+    </section>
     <section class="card related related-guides" aria-labelledby="rel-guides-title">
       <h2 id="rel-guides-title">이 계산기와 함께 읽는 안내 글</h2>
       <div class="tool-grid"><a class="tool-card" href="guide-moving-14days.html"><p class="t">이사 후 14일, 늦으면 순위가 밀린다</p><p class="d">전입신고는 이사 후 14일 이내가 법정 기한이지만, 보증금을 지키려면 잔금 당일에 해야 합니다. 대항력이 다음 날 0시에 생기는 구조, 확정일자를 같이 받아야 하는 이유, 30일 기한인 자동차 변경등록, 확정일자와 전세권의 차이를 정리합니다.</p></a><a class="tool-card" href="guide-rent-report.html"><p class="t">전월세 신고, 누가 언제까지 해야 하나</p><p class="d">보증금 6,000만원 또는 월세 30만원을 넘는 임대차 계약은 계약일부터 30일 안에 신고해야 합니다. 2025년 6월부터 과태료가 붙고, 신고하면 확정일자가 자동으로 붙습니다. 대상·방법·갱신 계약을 정리했습니다.</p></a><a class="tool-card" href="guide-jeonse-registry.html"><p class="t">전세 계약 전, 등기부에서 볼 세 가지</p><p class="d">전세 계약 전에 등기부등본에서 소유자, 가압류·경매, 근저당 채권최고액을 확인하는 방법을 설명합니다. 전세가율 계산, 신탁등기, 계약일과 잔금일에 다시 확인해야 하는 이유까지 정리합니다.</p></a></div>
@@ -287,7 +290,7 @@
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="js/common.js?v=2219cd74"></script>
+  <script src="js/common.js?v=6a725983"></script>
   <script src="js/analytics.js?v=c8407f74"></script>
   <script src="js/moving.js?v=396f06dd"></script>
 </body>

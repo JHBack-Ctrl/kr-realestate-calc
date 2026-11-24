@@ -10,7 +10,7 @@
   <meta name="google-adsense-account" content="ca-pub-8294238973326626">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/site.css?v=cb2639b3">
+  <link rel="stylesheet" href="css/site.css?v=1271c1e2">
   <link rel="canonical" href="https://xn--989anm2s84p8on6teba611m.com/dsr.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -142,10 +142,9 @@
   <aside class="rail" aria-hidden="true"></aside>
   <main id="main" class="container">
     <section class="hero">
-      <p class="eyebrow">Loan · Limit</p>
+      <div class="hero-top"><nav class="crumbs" aria-label="현재 위치"><a href="index.html">홈</a><span class="sep" aria-hidden="true">›</span><a href="index.html#c-loan">대출</a></nav></div>
       <h1>DSR·LTV 대출 한도 계산기</h1>
       <p class="hero-sub">연소득과 담보로 보는 주택담보대출 가능 금액</p>
-      <p class="hero-body">연소득, 담보 시세, 기존 대출 상환액과 신규 대출 조건을 넣으면 LTV 한도와 DSR 한도를 각각 계산해 낮은 쪽을 예상 한도로 보여줍니다. 비율과 스트레스 가산폭은 규제에 따라 바뀌므로 직접 넣게 했습니다.</p>
     </section>
     <div class="layout">
       <div>
@@ -206,7 +205,7 @@
               <label class="toggle"><input type="checkbox" id="remember-toggle"><span class="knob" aria-hidden="true"></span>최근 계산 기억하기</label>
               <p class="field-help">이 기기의 브라우저에만 저장되며 서버로 보내지 않습니다. 끄면 저장한 값을 지웁니다.</p>
             </div>
-            <button type="submit" class="btn btn-primary">한도 계산하기</button>
+            <button type="submit" class="btn btn-primary"><span class="when-wide">한도 계산하기</span><span class="when-narrow">결과 보기 ↓</span></button>
             <div class="btn-row">
               <button type="button" id="native-share-btn" class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 16V3M7 8l5-5 5 5"/></svg>공유하기</button>
               <button type="button" id="share-btn" class="btn btn-ghost btn-sm">링크 복사</button>
@@ -235,6 +234,10 @@
         </section>
       </div>
     </div>
+    <section class="calc-about" aria-labelledby="about-title">
+      <h2 id="about-title">이 계산기는</h2>
+      <p>연소득, 담보 시세, 기존 대출 상환액과 신규 대출 조건을 넣으면 LTV 한도와 DSR 한도를 각각 계산해 낮은 쪽을 예상 한도로 보여줍니다. 비율과 스트레스 가산폭은 규제에 따라 바뀌므로 직접 넣게 했습니다.</p>
+    </section>
     <section class="card related related-guides" aria-labelledby="rel-guides-title">
       <h2 id="rel-guides-title">이 계산기와 함께 읽는 안내 글</h2>
       <div class="tool-grid"><a class="tool-card" href="guide-dsr-ltv.html"><p class="t">DSR이 막으면 LTV는 소용없다</p><p class="d">LTV는 집값 기준, DSR은 소득 기준 대출 한도입니다. 둘 중 낮은 쪽이 실제 한도가 되는데 요즘은 대부분 DSR이 먼저 걸립니다. 규제지역 LTV 40%와 수도권 스트레스 금리 3.0%p가 한도를 어떻게 줄이는지 예시 숫자로 설명합니다.</p></a><a class="tool-card" href="guide-mortgage-limit.html"><p class="t">연봉별 주택담보대출 한도, DSR이 정하는 금액</p><p class="d">연봉 4,000만원부터 1억원까지 주택담보대출 DSR 한도를 계산했습니다. 연봉 5,000만원은 가산 없이 3억 2,893만원, 지방(0.75%p) 3억 182만원, 수도권(3.0%p) 2억 3,836만원입니다. 기간·금리·기존 대출과 금액 상한, 집값 경계까지 정리했습니다.</p></a><a class="tool-card" href="guide-loan-30-vs-40.html"><p class="t">주담대 30년과 40년, 이자는 얼마나 늘고 한도는 얼마나 느나</p><p class="d">3억원 연 4% 대출을 40년으로 늘리면 월 상환액은 17만 8,431원 줄고 총이자는 8,622만원 늘어납니다. DSR 한도는 연소득 5,000만원에서 최대 4,968만원 커집니다. 수도권·규제지역 30년 제한도 정리했습니다.</p></a></div>
@@ -312,7 +315,7 @@
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="js/common.js?v=2219cd74"></script>
+  <script src="js/common.js?v=6a725983"></script>
   <script src="js/analytics.js?v=c8407f74"></script>
   <script src="js/dsr.js?v=911198ae"></script>
 </body>

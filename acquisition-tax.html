@@ -10,7 +10,7 @@
   <meta name="google-adsense-account" content="ca-pub-8294238973326626">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/site.css?v=cb2639b3">
+  <link rel="stylesheet" href="css/site.css?v=1271c1e2">
   <link rel="canonical" href="https://xn--989anm2s84p8on6teba611m.com/acquisition-tax.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -158,10 +158,9 @@
   <aside class="rail" aria-hidden="true"></aside>
   <main id="main" class="container">
     <section class="hero">
-      <p class="eyebrow">Tax · Acquisition</p>
+      <div class="hero-top"><nav class="crumbs" aria-label="현재 위치"><a href="index.html">홈</a><span class="sep" aria-hidden="true">›</span><a href="index.html#c-buy">매매·투자</a></nav></div>
       <h1>취득세 계산기</h1>
       <p class="hero-sub">취득세·지방교육세·농어촌특별세 참고용 추정</p>
-      <p class="hero-body">취득가액과 주택 수, 조정대상지역 여부, 전용면적을 넣으면 취득세와 함께 붙는 지방교육세, 농어촌특별세를 합한 예상 세금을 계산합니다. 상가주택은 주택 부분과 상가 부분을 나눠 계산합니다. 세율은 개정될 수 있고 주택 수 판정은 개인 상황에 따라 달라 결과는 참고용입니다. 실제 신고는 위택스 화면과 세무사 확인을 기준으로 하세요.</p>
     </section>
     <div class="layout">
       <div>
@@ -203,7 +202,7 @@
               <label class="toggle"><input type="checkbox" id="remember-toggle"><span class="knob" aria-hidden="true"></span>최근 계산 기억하기</label>
               <p class="field-help">이 기기의 브라우저에만 저장되며 서버로 보내지 않습니다. 끄면 저장한 값을 지웁니다.</p>
             </div>
-            <button type="submit" class="btn btn-primary">취득세 계산하기</button>
+            <button type="submit" class="btn btn-primary"><span class="when-wide">취득세 계산하기</span><span class="when-narrow">결과 보기 ↓</span></button>
             <div class="btn-row">
               <button type="button" id="native-share-btn" class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 16V3M7 8l5-5 5 5"/></svg>공유하기</button>
               <button type="button" id="share-btn" class="btn btn-ghost btn-sm">링크 복사</button>
@@ -257,6 +256,10 @@
         </section>
       </div>
     </div>
+    <section class="calc-about" aria-labelledby="about-title">
+      <h2 id="about-title">이 계산기는</h2>
+      <p>취득가액과 주택 수, 조정대상지역 여부, 전용면적을 넣으면 취득세와 함께 붙는 지방교육세, 농어촌특별세를 합한 예상 세금을 계산합니다. 상가주택은 주택 부분과 상가 부분을 나눠 계산합니다. 세율은 개정될 수 있고 주택 수 판정은 개인 상황에 따라 달라 결과는 참고용입니다. 실제 신고는 위택스 화면과 세무사 확인을 기준으로 하세요.</p>
+    </section>
     <section class="card related related-guides" aria-labelledby="rel-guides-title">
       <h2 id="rel-guides-title">이 계산기와 함께 읽는 안내 글</h2>
       <div class="tool-grid"><a class="tool-card" href="guide-acquisition-tax.html"><p class="t">취득세, 주택 수에 따라 왜 이렇게 달라지나</p><p class="d">같은 8억 집인데 취득세가 1,300만원일 수도, 1억원일 수도 있습니다. 주택 수, 조정대상지역, 전용면적이 취득세율을 어떻게 바꾸는지 예시 숫자로 설명하고 생애최초 감면과 신고 기한까지 정리합니다.</p></a><a class="tool-card" href="guide-first-home-acquisition.html"><p class="t">생애최초 취득세 감면, 집값별로 얼마 줄어드나</p><p class="d">생애최초 감면은 취득세에서 최대 200만원을 빼 줍니다. 2억원 이하 집은 지방교육세만 남고, 3억원이면 330만원이 130만원이 됩니다. 집값별 감면 전후 금액, 12억원 경계, 요건과 3년 추징을 정리했습니다.</p></a><a class="tool-card" href="guide-acquisition-6-9.html"><p class="t">6억~9억 취득세, 5천만원마다 얼마씩 오르나</p><p class="d">6억원 초과 9억원 이하 주택의 취득세율은 집값에 따라 1%에서 3%까지 이어서 오르고 소수점 둘째 자리까지 반올림합니다. 6억 660만원, 7억 1,286만원, 8억 2,050만원, 9억 2,970만원으로 늘어나는 폭과 경계 근처, 85㎡ 초과·생애최초를 취득세 계산기로 정리했습니다.</p></a></div>
@@ -350,7 +353,7 @@
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="js/common.js?v=2219cd74"></script>
+  <script src="js/common.js?v=6a725983"></script>
   <script src="js/analytics.js?v=c8407f74"></script>
   <script src="js/acquisition-tax.js?v=9f95e47c"></script>
 </body>

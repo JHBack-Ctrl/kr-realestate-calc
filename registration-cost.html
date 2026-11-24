@@ -10,7 +10,7 @@
   <meta name="google-adsense-account" content="ca-pub-8294238973326626">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/site.css?v=cb2639b3">
+  <link rel="stylesheet" href="css/site.css?v=1271c1e2">
   <link rel="canonical" href="https://xn--989anm2s84p8on6teba611m.com/registration-cost.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -150,10 +150,9 @@
   <aside class="rail" aria-hidden="true"></aside>
   <main id="main" class="container">
     <section class="hero">
-      <p class="eyebrow">Registration Cost</p>
+      <div class="hero-top"><nav class="crumbs" aria-label="현재 위치"><a href="index.html">홈</a><span class="sep" aria-hidden="true">›</span><a href="index.html#c-buy">매매·투자</a></nav></div>
       <h1>등기비용 계산기</h1>
       <p class="hero-sub">셀프등기에 드는 국민주택채권·인지세·수수료</p>
-      <p class="hero-body">주택 매매가격과 공시가격, 지역, 채권 할인율을 넣으면 소유권이전등기 때 사야 하는 국민주택채권과 즉시 매도 부담, 인지세, 등기신청수수료를 계산합니다. 취득세와 법무사 보수를 넣으면 합계에 더합니다.</p>
     </section>
     <div class="layout">
       <div>
@@ -195,7 +194,7 @@
               <label class="toggle"><input type="checkbox" id="remember-toggle"><span class="knob" aria-hidden="true"></span>최근 계산 기억하기</label>
               <p class="field-help">이 기기의 브라우저에만 저장되며 서버로 보내지 않습니다. 끄면 저장한 값을 지웁니다.</p>
             </div>
-            <button type="submit" class="btn btn-primary">등기비용 계산</button>
+            <button type="submit" class="btn btn-primary"><span class="when-wide">등기비용 계산</span><span class="when-narrow">결과 보기 ↓</span></button>
             <div class="btn-row">
               <button type="button" id="native-share-btn" class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 16V3M7 8l5-5 5 5"/></svg>공유하기</button>
               <button type="button" id="share-btn" class="btn btn-ghost btn-sm">링크 복사</button>
@@ -221,6 +220,10 @@
         </section>
       </div>
     </div>
+    <section class="calc-about" aria-labelledby="about-title">
+      <h2 id="about-title">이 계산기는</h2>
+      <p>주택 매매가격과 공시가격, 지역, 채권 할인율을 넣으면 소유권이전등기 때 사야 하는 국민주택채권과 즉시 매도 부담, 인지세, 등기신청수수료를 계산합니다. 취득세와 법무사 보수를 넣으면 합계에 더합니다.</p>
+    </section>
     <section class="card related related-guides" aria-labelledby="rel-guides-title">
       <h2 id="rel-guides-title">이 계산기와 함께 읽는 안내 글</h2>
       <div class="tool-grid"><a class="tool-card" href="guide-self-registration.html"><p class="t">셀프등기로 줄어드는 돈, 그대로인 돈</p><p class="d">셀프등기로 줄어드는 돈은 법무사 보수뿐입니다. 서울 6억원 아파트의 법정 비용 778만 2,000원, 채권 할인율 1%p마다 10만 9,200원 차이, 지역·신청 방법별 차이와 셀프등기 순서를 정리했습니다.</p></a><a class="tool-card" href="guide-buying-costs.html"><p class="t">집 살 때 집값 말고 드는 돈</p><p class="d">아파트를 살 때 집값 외에 드는 돈을 취득세·중개보수·대출이자로 나눠 계산했습니다. 6억원이면 924만원, 7억 5천만원이면 1,980만원, 9억원이면 3,465만원으로 집값보다 훨씬 빠르게 늘어나는 이유와 생애최초 감면, 85㎡ 초과, 계산기에 없는 비용, 내는 시점을 정리했습니다.</p></a><a class="tool-card" href="guide-acquisition-tax.html"><p class="t">취득세, 주택 수에 따라 왜 이렇게 달라지나</p><p class="d">같은 8억 집인데 취득세가 1,300만원일 수도, 1억원일 수도 있습니다. 주택 수, 조정대상지역, 전용면적이 취득세율을 어떻게 바꾸는지 예시 숫자로 설명하고 생애최초 감면과 신고 기한까지 정리합니다.</p></a></div>
@@ -294,7 +297,7 @@
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="js/common.js?v=2219cd74"></script>
+  <script src="js/common.js?v=6a725983"></script>
   <script src="js/analytics.js?v=c8407f74"></script>
   <script src="js/registration-cost.js?v=4cd814cc"></script>
 </body>

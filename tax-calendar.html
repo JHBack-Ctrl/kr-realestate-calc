@@ -10,7 +10,7 @@
   <meta name="google-adsense-account" content="ca-pub-8294238973326626">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/site.css?v=cb2639b3">
+  <link rel="stylesheet" href="css/site.css?v=1271c1e2">
   <link rel="canonical" href="https://xn--989anm2s84p8on6teba611m.com/tax-calendar.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -142,10 +142,9 @@
   <aside class="rail" aria-hidden="true"></aside>
   <main id="main" class="container">
     <section class="hero">
-      <p class="eyebrow">Tax Calendar</p>
+      <div class="hero-top"><nav class="crumbs" aria-label="현재 위치"><a href="index.html">홈</a><span class="sep" aria-hidden="true">›</span><a href="index.html#c-buy">매매·투자</a></nav></div>
       <h1>부동산 세금 달력 · 신고 납부 기한 계산기</h1>
       <p class="hero-sub">취득세 60일, 양도세 예정신고, 재산세 7·9월, 종부세 12월</p>
-      <p class="hero-body">잔금일을 넣으면 취득세와 양도세 신고 기한이, 보유 항목을 켜면 매년 돌아오는 재산세·종부세·임대소득세 일정이 오늘 기준 D-day와 함께 나옵니다.</p>
     </section>
     <div class="layout">
       <div>
@@ -180,7 +179,7 @@
               <label class="toggle"><input type="checkbox" id="remember-toggle"><span class="knob" aria-hidden="true"></span>최근 계산 기억하기</label>
               <p class="field-help">이 기기의 브라우저에만 저장되며 서버로 보내지 않습니다. 끄면 저장한 값을 지웁니다.</p>
             </div>
-            <button type="submit" class="btn btn-primary">기한 계산</button>
+            <button type="submit" class="btn btn-primary"><span class="when-wide">기한 계산</span><span class="when-narrow">결과 보기 ↓</span></button>
             <div class="btn-row">
               <button type="button" id="native-share-btn" class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 16V3M7 8l5-5 5 5"/></svg>공유하기</button>
               <button type="button" id="share-btn" class="btn btn-ghost btn-sm">링크 복사</button>
@@ -204,6 +203,10 @@
         </section>
       </div>
     </div>
+    <section class="calc-about" aria-labelledby="about-title">
+      <h2 id="about-title">이 계산기는</h2>
+      <p>잔금일을 넣으면 취득세와 양도세 신고 기한이, 보유 항목을 켜면 매년 돌아오는 재산세·종부세·임대소득세 일정이 오늘 기준 D-day와 함께 나옵니다.</p>
+    </section>
     <section class="card related related-guides" aria-labelledby="rel-guides-title">
       <h2 id="rel-guides-title">이 계산기와 함께 읽는 안내 글</h2>
       <div class="tool-grid"><a class="tool-card" href="guide-property-tax.html"><p class="t">재산세·종부세, 6월 1일이 가르는 것</p><p class="d">재산세와 종합부동산세는 6월 1일 소유자에게 1년치가 부과됩니다. 잔금일 하루 차이로 부담자가 바뀌는 이유, 재산세 7월·9월 분납과 종부세 12월 납부 일정, 공시가격에서 세액이 나오는 구조, 1세대 1주택 공제와 확인처를 정리합니다.</p></a><a class="tool-card" href="guide-cgt-filing.html"><p class="t">집 팔고 두 달 뒤 말일, 양도세 예정신고 기한</p><p class="d">양도소득세 예정신고 기한은 양도일이 속한 달의 말일부터 2개월입니다. 11월 2일에 팔면 2027년 1월 31일(일요일이라 2월 1일)입니다. 양도일별 기한, 양도일 기준, 신고 대상, 무신고·납부지연 가산세와 분할납부를 정리했습니다.</p></a><a class="tool-card" href="guide-year-end-december.html"><p class="t">12월에 할 수 있는 연말정산, 카드 25%와 연금저축</p><p class="d">연말정산 결과는 12월 31일까지 쓴 돈과 넣은 돈으로 정해집니다. 같은 2,000만원을 써도 신용카드 18만원, 체크카드 37만원 환급. 연금저축·IRP와 혼인세액공제까지 계산기로 확인합니다.</p></a></div>
@@ -274,7 +277,7 @@
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="js/common.js?v=2219cd74"></script>
+  <script src="js/common.js?v=6a725983"></script>
   <script src="js/analytics.js?v=c8407f74"></script>
   <script src="js/tax-calendar.js?v=f70d9b6a"></script>
 </body>

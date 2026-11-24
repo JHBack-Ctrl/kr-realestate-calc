@@ -10,7 +10,7 @@
   <meta name="google-adsense-account" content="ca-pub-8294238973326626">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/site.css?v=cb2639b3">
+  <link rel="stylesheet" href="css/site.css?v=1271c1e2">
   <link rel="canonical" href="https://xn--989anm2s84p8on6teba611m.com/rent.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -150,14 +150,9 @@
   <aside class="rail" aria-hidden="true"></aside>
   <main id="main" class="container">
     <section class="hero">
-      <p class="eyebrow">Rent · True Cost</p>
+      <div class="hero-top"><nav class="crumbs" aria-label="현재 위치"><a href="index.html">홈</a><span class="sep" aria-hidden="true">›</span><a href="index.html#c-rent">임대</a></nav></div>
       <h1>월세 실부담 계산기</h1>
       <p class="hero-sub">관리비·보증금 기회비용 포함, 진짜 매달 나가는 돈</p>
-      <p class="hero-body">
-        월세 실부담은 월세만이 아니라 관리비 계산과 보증금 기회비용까지 더해야 보입니다.
-        숫자를 넣으면 실제 월·연 지출, 전세 월세 환산 비교표, 두 매물 비교를 바로 계산합니다.
-        입력한 값은 저장되지 않으며 모든 계산은 브라우저 안에서만 처리됩니다.
-      </p>
     </section>
 
     <div class="layout">
@@ -239,7 +234,7 @@
               <label class="toggle"><input type="checkbox" id="remember-toggle"><span class="knob" aria-hidden="true"></span>최근 계산 기억하기</label>
               <p class="field-help">이 기기의 브라우저에만 저장되며 서버로 보내지 않습니다. 끄면 저장한 값을 지웁니다.</p>
             </div>
-            <button type="submit" class="btn btn-primary">실부담 계산하기</button>
+            <button type="submit" class="btn btn-primary"><span class="when-wide">실부담 계산하기</span><span class="when-narrow">결과 보기 ↓</span></button>
             <div class="btn-row">
               <button type="button" id="native-share-btn" class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 16V3M7 8l5-5 5 5"/></svg>공유하기</button>
               <button type="button" id="share-btn" class="btn btn-ghost btn-sm">링크 복사</button>
@@ -351,6 +346,10 @@
         </section>
       </div>
     </div>
+    <section class="calc-about" aria-labelledby="about-title">
+      <h2 id="about-title">이 계산기는</h2>
+      <p>월세 실부담은 월세만이 아니라 관리비 계산과 보증금 기회비용까지 더해야 보입니다. 숫자를 넣으면 실제 월·연 지출, 전세 월세 환산 비교표, 두 매물 비교를 바로 계산합니다. 입력한 값은 저장되지 않으며 모든 계산은 브라우저 안에서만 처리됩니다.</p>
+    </section>
     <section class="card related related-guides" aria-labelledby="rel-guides-title">
       <h2 id="rel-guides-title">이 계산기와 함께 읽는 안내 글</h2>
       <div class="tool-grid"><a class="tool-card" href="guide-jeonse-vs-monthly.html"><p class="t">전세와 월세, 숫자로 비교하는 법</p><p class="d">전세와 월세를 같은 기준으로 비교하려면 보증금 기회비용을 넣어야 합니다. 계산 순서와 흔한 착각, 금액 외에 봐야 할 것을 정리합니다.</p></a><a class="tool-card" href="guide-deposit-vs-rent.html"><p class="t">보증금 올리고 월세 내리기, 언제 이득인가</p><p class="d">보증금을 더 내고 월세를 줄이는 조건은 집주인에게 일정한 금리로 돈을 맡기는 것과 같습니다. 보증금 4,000만원에 월세 15만원을 깎는 예시로 그 금리(연 4.5%)를 구하고, 예금·대출이자와 월세 세액공제에 따라 어느 쪽 월 실부담이 작은지 계산기로 확인합니다.</p></a><a class="tool-card" href="guide-jeonse-loan-vs-rent.html"><p class="t">전세대출 이자 vs 월세, 한 달에 실제로 나가는 돈</p><p class="d">같은 집을 전세 3억원(대출 80%, 연 4%)으로 들어가면 월 95만원, 보증금 5천·월세 100만원이면 112만 5,000원입니다. 금리별 차이와 연말정산 환급, 1주택자 대출 한도까지 계산기로 비교했습니다.</p></a></div>
@@ -439,7 +438,7 @@
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="js/common.js?v=2219cd74"></script>
+  <script src="js/common.js?v=6a725983"></script>
   <script src="js/analytics.js?v=c8407f74"></script>
   <script src="js/rent.js?v=8863bc2b"></script>
 </body>

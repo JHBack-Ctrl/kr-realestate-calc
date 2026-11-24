@@ -10,7 +10,7 @@
   <meta name="google-adsense-account" content="ca-pub-8294238973326626">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/site.css?v=cb2639b3">
+  <link rel="stylesheet" href="css/site.css?v=1271c1e2">
   <link rel="canonical" href="https://xn--989anm2s84p8on6teba611m.com/comprehensive-property-tax.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -150,10 +150,9 @@
   <aside class="rail" aria-hidden="true"></aside>
   <main id="main" class="container">
     <section class="hero">
-      <p class="eyebrow">Comprehensive Property Tax</p>
+      <div class="hero-top"><nav class="crumbs" aria-label="현재 위치"><a href="index.html">홈</a><span class="sep" aria-hidden="true">›</span><a href="index.html#c-buy">매매·투자</a></nav></div>
       <h1>종합부동산세 계산기</h1>
       <p class="hero-sub">공시가격 합계로 보는 종부세와 농어촌특별세</p>
-      <p class="hero-body">본인 명의 주택 공시가격 합계와 보유 주택 수를 넣으면 기본공제, 공정시장가액비율, 누진세율, 재산세 공제, 1세대 1주택 세액공제를 차례로 적용해 12월에 낼 종부세를 참고용으로 추정합니다.</p>
     </section>
     <div class="layout">
       <div>
@@ -183,7 +182,7 @@
               <label class="toggle"><input type="checkbox" id="remember-toggle"><span class="knob" aria-hidden="true"></span>최근 계산 기억하기</label>
               <p class="field-help">이 기기의 브라우저에만 저장되며 서버로 보내지 않습니다. 끄면 저장한 값을 지웁니다.</p>
             </div>
-            <button type="submit" class="btn btn-primary">종부세 계산</button>
+            <button type="submit" class="btn btn-primary"><span class="when-wide">종부세 계산</span><span class="when-narrow">결과 보기 ↓</span></button>
             <div class="btn-row">
               <button type="button" id="native-share-btn" class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 16V3M7 8l5-5 5 5"/></svg>공유하기</button>
               <button type="button" id="share-btn" class="btn btn-ghost btn-sm">링크 복사</button>
@@ -209,6 +208,10 @@
         </section>
       </div>
     </div>
+    <section class="calc-about" aria-labelledby="about-title">
+      <h2 id="about-title">이 계산기는</h2>
+      <p>본인 명의 주택 공시가격 합계와 보유 주택 수를 넣으면 기본공제, 공정시장가액비율, 누진세율, 재산세 공제, 1세대 1주택 세액공제를 차례로 적용해 12월에 낼 종부세를 참고용으로 추정합니다.</p>
+    </section>
     <section class="card related related-guides" aria-labelledby="rel-guides-title">
       <h2 id="rel-guides-title">이 계산기와 함께 읽는 안내 글</h2>
       <div class="tool-grid"><a class="tool-card" href="guide-jongbuse-payment.html"><p class="t">종부세 고지서 받은 뒤, 12월 15일까지 내는 법</p><p class="d">종합부동산세는 12월 1일부터 15일까지 냅니다. 세액이 250만원을 넘으면 일부를 6개월 뒤로 나눠 낼 수 있고, 고령·장기보유 1주택자는 납부유예도 됩니다. 공시가격별 세액과 나눠 낼 수 있는 금액을 계산기로 뽑았습니다.</p></a><a class="tool-card" href="guide-jongbuse-threshold.html"><p class="t">종부세 고지서, 공시가격 얼마부터 나오나</p><p class="d">종부세는 1주택 공시가격 12억원, 그 외 합계 9억원부터 나옵니다. 1주택 15억원 69만원, 20억원 228만원, 2주택 합계 15억원 127만원과 나이·보유 세액공제, 부부 공동명의, 분납을 계산기로 정리했습니다.</p></a><a class="tool-card" href="guide-property-tax.html"><p class="t">재산세·종부세, 6월 1일이 가르는 것</p><p class="d">재산세와 종합부동산세는 6월 1일 소유자에게 1년치가 부과됩니다. 잔금일 하루 차이로 부담자가 바뀌는 이유, 재산세 7월·9월 분납과 종부세 12월 납부 일정, 공시가격에서 세액이 나오는 구조, 1세대 1주택 공제와 확인처를 정리합니다.</p></a></div>
@@ -283,7 +286,7 @@
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="js/common.js?v=2219cd74"></script>
+  <script src="js/common.js?v=6a725983"></script>
   <script src="js/analytics.js?v=c8407f74"></script>
   <script src="js/comprehensive-property-tax.js?v=749a724a"></script>
 </body>

@@ -10,7 +10,7 @@
   <meta name="google-adsense-account" content="ca-pub-8294238973326626">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/site.css?v=cb2639b3">
+  <link rel="stylesheet" href="css/site.css?v=1271c1e2">
   <link rel="canonical" href="https://xn--989anm2s84p8on6teba611m.com/jeonse-loan.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -150,10 +150,9 @@
   <aside class="rail" aria-hidden="true"></aside>
   <main id="main" class="container">
     <section class="hero">
-      <p class="eyebrow">Jeonse Loan</p>
+      <div class="hero-top"><nav class="crumbs" aria-label="현재 위치"><a href="index.html">홈</a><span class="sep" aria-hidden="true">›</span><a href="index.html#c-loan">대출</a></nav></div>
       <h1>전세자금대출 이자 계산기</h1>
       <p class="hero-sub">대출 가능 금액과 월 이자, 자기자금까지 더한 월 주거비</p>
-      <p class="hero-body">전세 보증금과 대출 비율·상한, 금리, 기간을 넣으면 대출금과 자기자금, 월 이자와 기간 총 이자, 보증료와 자기자금 기회비용을 더한 월 주거비, 연말정산 소득공제 대상 금액을 계산합니다.</p>
     </section>
     <div class="layout">
       <div>
@@ -194,7 +193,7 @@
               <label class="toggle"><input type="checkbox" id="remember-toggle"><span class="knob" aria-hidden="true"></span>최근 계산 기억하기</label>
               <p class="field-help">이 기기의 브라우저에만 저장되며 서버로 보내지 않습니다. 끄면 저장한 값을 지웁니다.</p>
             </div>
-            <button type="submit" class="btn btn-primary">이자 계산</button>
+            <button type="submit" class="btn btn-primary"><span class="when-wide">이자 계산</span><span class="when-narrow">결과 보기 ↓</span></button>
             <div class="btn-row">
               <button type="button" id="native-share-btn" class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 16V3M7 8l5-5 5 5"/></svg>공유하기</button>
               <button type="button" id="share-btn" class="btn btn-ghost btn-sm">링크 복사</button>
@@ -220,6 +219,10 @@
         </section>
       </div>
     </div>
+    <section class="calc-about" aria-labelledby="about-title">
+      <h2 id="about-title">이 계산기는</h2>
+      <p>전세 보증금과 대출 비율·상한, 금리, 기간을 넣으면 대출금과 자기자금, 월 이자와 기간 총 이자, 보증료와 자기자금 기회비용을 더한 월 주거비, 연말정산 소득공제 대상 금액을 계산합니다.</p>
+    </section>
     <section class="card related related-guides" aria-labelledby="rel-guides-title">
       <h2 id="rel-guides-title">이 계산기와 함께 읽는 안내 글</h2>
       <div class="tool-grid"><a class="tool-card" href="guide-jeonse-loan-vs-rent.html"><p class="t">전세대출 이자 vs 월세, 한 달에 실제로 나가는 돈</p><p class="d">같은 집을 전세 3억원(대출 80%, 연 4%)으로 들어가면 월 95만원, 보증금 5천·월세 100만원이면 112만 5,000원입니다. 금리별 차이와 연말정산 환급, 1주택자 대출 한도까지 계산기로 비교했습니다.</p></a><a class="tool-card" href="guide-subscription-deduction.html"><p class="t">청약통장 연말정산, 300만원 넣으면 얼마 돌려받나</p><p class="d">주택청약종합저축에 1년 300만원을 넣으면 120만원을 소득에서 빼 줍니다. 총급여 4,000만~7,000만원이면 세금이 19만 8,000원 줄고 7,000만원을 넘으면 0원입니다. 조건, 무주택확인서, 해지 추징을 정리했습니다.</p></a><a class="tool-card" href="guide-base-rate-change.html"><p class="t">기준금리 0.25%p, 내 대출 이자는 얼마나 바뀌나</p><p class="d">기준금리가 0.25%p 움직이면 3억원 30년 대출의 월 상환액은 약 4만 3천원, 대출 한도는 약 700만원대, 2억원 전월세 전환 월세 상한은 4만 1,667원씩 달라집니다. 대출금리가 바로 바뀌지 않는 이유와 함께 계산기로 정리했습니다.</p></a></div>
@@ -294,7 +297,7 @@
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="js/common.js?v=2219cd74"></script>
+  <script src="js/common.js?v=6a725983"></script>
   <script src="js/analytics.js?v=c8407f74"></script>
   <script src="js/jeonse-loan.js?v=4e83a61d"></script>
 </body>

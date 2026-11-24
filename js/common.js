@@ -101,7 +101,9 @@
       lsSet(FAV_KEY, JSON.stringify(a.slice(0, FAV_MAX))); paint();
       toast(i === -1 ? '홈 맨 위 「즐겨찾기」에 넣었습니다' : '즐겨찾기에서 뺐습니다');
     });
-    paint(); h1.parentNode.insertBefore(btn, h1.nextSibling);
+    paint();
+    var top = document.querySelector('main .hero-top');   // 경로 줄 오른쪽(2026-11). 없으면 예전처럼 제목 아래
+    if (top) top.appendChild(btn); else h1.parentNode.insertBefore(btn, h1.nextSibling);
   }
 
   // ---- 토스트 ----
@@ -388,13 +390,56 @@
   }
 
   // ---- 모바일 하단 요약 바 ----
+  // 계산기(wireCalc)에서는 값을 넣거나 예시 버튼을 누르기 전에는 띄우지 않는다(2026-11). 열자마자 「0원」 막대가 떠서
+  // 고장 난 것처럼 보였고, 취득세 계산기는 이 막대가 첫 입력칸을 가렸다
+  var stickyWant = false, stickyGate = false, calcTouched = false;
+  function paintSticky() { var bar = $('sticky-summary'); if (bar) bar.classList.toggle('show', stickyWant && (!stickyGate || calcTouched)); }
   function bindStickySummary(targetId) {
     var bar = $('sticky-summary'), target = $(targetId);
     if (!bar || !target || !('IntersectionObserver' in window)) return;
     var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) { bar.classList.toggle('show', !en.isIntersecting && en.boundingClientRect.top > 0); });
+      entries.forEach(function (en) { stickyWant = !en.isIntersecting && en.boundingClientRect.top > 0; paintSticky(); });
     }, { threshold: 0.2 });
     io.observe(target);
+  }
+
+  // 아무것도 넣지 않은 첫 화면: 결과의 0을 흐리게 하고 안내를 보인다. 값을 넣거나 저장·공유된 값을 불러오면 사라진다
+  function paintEmpty() {
+    var r = $('result'), s = $('sticky-monthly');
+    if (!r) return;
+    var v = s ? s.textContent.trim() : '';
+    var empty = !calcTouched && /^(—|-|0|0원|0[.,]0+%?|0%)?$/.test(v);
+    r.classList.toggle('is-empty', empty);
+    var hint = r.querySelector('.empty-hint');
+    if (empty && !hint) {
+      hint = document.createElement('p'); hint.className = 'empty-hint';
+      hint.textContent = ($$('#calc-form input[placeholder]').length ? '입력칸의 회색 숫자는 예시입니다. ' : '') + '값을 넣으면 바로 계산됩니다.' +
+        ($$('.chip[data-preset]').length ? ' 위의 예시 버튼을 누르면 예시 값이 채워집니다.' : '');
+      r.insertBefore(hint, r.firstChild);
+    }
+    if (hint) hint.hidden = !empty;
+  }
+  function touchCalc() {
+    if (calcTouched) return;
+    calcTouched = true; document.documentElement.classList.add('calc-touched');
+    paintSticky(); paintEmpty();
+  }
+
+  // 데스크톱 2단: 결과 쪽(표)이 훨씬 길면 입력 카드가 따라 내려온다. 화면보다 긴 입력 카드는 아래 끝이 화면 바닥에 닿은 뒤 멈춘다
+  // (top을 음수로 줘서). 결과 쪽이 짧으면 예전처럼 결과 쪽이 따라온다(css .layout > .col-sticky)
+  var stickLeft = function () {};
+  function initStickLeft() {
+    var lay = document.querySelector('main .layout');
+    if (!lay || !$('calc-form') || !window.matchMedia) return;
+    var left = lay.firstElementChild, right = lay.querySelector(':scope > .col-sticky');
+    if (!left || !right || left === right) return;
+    stickLeft = function () {
+      var on = window.matchMedia('(min-width: 900px)').matches && right.offsetHeight > left.offsetHeight + 160;
+      lay.classList.toggle('stick-left', on);
+      var head = document.querySelector('.site-header'), hh = (head ? head.offsetHeight : 0) + 16;   // 위에 붙어 있는 머리(메뉴) 아래로
+      left.style.top = on ? Math.min(hh, window.innerHeight - left.offsetHeight - 16) + 'px' : '';
+    };
+    stickLeft(); window.addEventListener('resize', stickLeft);
   }
 
   // ---- 앱 설치(서비스 워커) ----
@@ -531,11 +576,13 @@
   // o = { key, recalc, share: () => {title, text}, card: () => 이미지 카드, preset?: (name) => void, onApply?: () => void }
   function wireCalc(o) {
     var form = $('calc-form');
-    var mem = remember({ key: o.key, get: function () { return formState(form); }, set: function (st) { applyState(form, st); if (o.onApply) o.onApply(); } });
-    function recalc() { o.recalc(); updateMoneyHints(); mem.save(); }
-    bindMoneyInputs(document, recalc);
-    $$('input[type="number"], input[type="date"], input[type="text"]:not([data-money]), select', form).forEach(function (el) { el.addEventListener('input', recalc); el.addEventListener('change', recalc); });
-    $$('input[type="radio"], input[type="checkbox"]', form).forEach(function (el) { if (el.id !== 'remember-toggle') el.addEventListener('change', recalc); });
+    var mem = remember({ key: o.key, get: function () { return formState(form); }, set: function (st) { applyState(form, st); if (o.onApply) o.onApply(); touchCalc(); } });
+    function recalc() { o.recalc(); updateMoneyHints(); mem.save(); paintEmpty(); stickLeft(); }
+    function edited() { touchCalc(); recalc(); }
+    stickyGate = true;
+    bindMoneyInputs(document, edited);
+    $$('input[type="number"], input[type="date"], input[type="text"]:not([data-money]), select', form).forEach(function (el) { el.addEventListener('input', edited); el.addEventListener('change', edited); });
+    $$('input[type="radio"], input[type="checkbox"]', form).forEach(function (el) { if (el.id !== 'remember-toggle') el.addEventListener('change', edited); });
     form.addEventListener('submit', function (e) {
       e.preventDefault(); recalc();
       var r = $('result'); if (r && r.scrollIntoView) r.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -544,7 +591,7 @@
       c.addEventListener('click', function () {
         if (o.preset) o.preset(c.getAttribute('data-preset'));
         $$('.chip[data-preset]').forEach(function (x) { x.classList.toggle('active', x === c && c.getAttribute('data-preset') !== 'clear'); });
-        recalc();
+        touchCalc(); recalc();
       });
     });
     var shareParams = function () { return formState(form); };
@@ -552,8 +599,9 @@
     bindNativeShare('native-share-btn', function () { var s = o.share(); return { title: s.title, text: s.text, params: shareParams() }; });
     bindImageSave('image-btn', o.card);
     var q = readQuery();
-    if (Object.keys(q).length) { applyState(form, q); if (o.onApply) o.onApply(); }
+    if (Object.keys(q).length) { applyState(form, q); if (o.onApply) o.onApply(); touchCalc(); }
     else mem.load();
+    initStickLeft();
     recalc();
     bindStickySummary('result');
     return recalc;
@@ -586,5 +634,12 @@
 
   // 테마는 화면 깜빡임을 줄이기 위해 즉시 적용
   applyTheme(lsGet(THEME_KEY));
-  ready(function () { initTheme(); initMenu(); markCurrentNav(); initNavScroll(); initSoonLinks(); initServiceWorker(); initInstallPrompt(); initFavButton(); initTables(); });
+  // 주소 끝 #이 접힌 묶음을 가리키면 펼친다(안내 글 목록의 주제 묶음: 4편 + 「더 보기」, 2026-11)
+  function openHashTarget() {
+    var id = decodeURIComponent((location.hash || '').slice(1)); if (!id) return;
+    var t = document.getElementById(id); if (!t) return;
+    var d = t.matches('details') ? t : t.querySelector('details.more-cards'); if (d) d.open = true;
+  }
+  ready(function () { initTheme(); initMenu(); markCurrentNav(); initNavScroll(); initSoonLinks(); initServiceWorker(); initInstallPrompt(); initFavButton(); initTables(); openHashTarget(); });
+  window.addEventListener('hashchange', openHashTarget);
 })(window);

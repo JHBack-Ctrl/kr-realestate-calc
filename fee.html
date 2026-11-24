@@ -10,7 +10,7 @@
   <meta name="google-adsense-account" content="ca-pub-8294238973326626">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="css/site.css?v=cb2639b3">
+  <link rel="stylesheet" href="css/site.css?v=1271c1e2">
   <link rel="canonical" href="https://xn--989anm2s84p8on6teba611m.com/fee.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -150,13 +150,9 @@
   <aside class="rail" aria-hidden="true"></aside>
   <main id="main" class="container">
     <section class="hero">
-      <p class="eyebrow">Brokerage · Fee</p>
+      <div class="hero-top"><nav class="crumbs" aria-label="현재 위치"><a href="index.html">홈</a><span class="sep" aria-hidden="true">›</span><a href="index.html#c-rent">임대</a></nav></div>
       <h1>중개보수 계산기</h1>
       <p class="hero-sub">법정 상한 요율 기준 예상 최대 중개보수</p>
-      <p class="hero-body">
-        거래 종류와 금액을 넣으면 공인중개사법 시행규칙의 상한 요율표로 예상 최대 중개보수를 계산합니다.
-        중개보수는 상한 이내에서 협의로 정하므로 여기 나오는 금액은 "최대치"이며 실제 금액은 낮을 수 있습니다.
-      </p>
     </section>
 
     <div class="layout">
@@ -210,7 +206,7 @@
               <label class="toggle"><input type="checkbox" id="remember-toggle"><span class="knob" aria-hidden="true"></span>최근 계산 기억하기</label>
               <p class="field-help">이 기기의 브라우저에만 저장되며 서버로 보내지 않습니다. 끄면 저장한 값을 지웁니다.</p>
             </div>
-            <button type="submit" class="btn btn-primary">중개보수 계산하기</button>
+            <button type="submit" class="btn btn-primary"><span class="when-wide">중개보수 계산하기</span><span class="when-narrow">결과 보기 ↓</span></button>
             <div class="btn-row">
               <button type="button" id="native-share-btn" class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 16V3M7 8l5-5 5 5"/></svg>공유하기</button>
               <button type="button" id="share-btn" class="btn btn-ghost btn-sm">링크 복사</button>
@@ -265,6 +261,10 @@
         </section>
       </div>
     </div>
+    <section class="calc-about" aria-labelledby="about-title">
+      <h2 id="about-title">이 계산기는</h2>
+      <p>거래 종류와 금액을 넣으면 공인중개사법 시행규칙의 상한 요율표로 예상 최대 중개보수를 계산합니다. 중개보수는 상한 이내에서 협의로 정하므로 여기 나오는 금액은 "최대치"이며 실제 금액은 낮을 수 있습니다.</p>
+    </section>
     <section class="card related related-guides" aria-labelledby="rel-guides-title">
       <h2 id="rel-guides-title">이 계산기와 함께 읽는 안내 글</h2>
       <div class="tool-grid"><a class="tool-card" href="guide-brokerage.html"><p class="t">복비, 얼마까지 내야 하나</p><p class="d">부동산 중개보수 요율표를 읽는 법, 월세 거래금액 환산, 한도액, 부가세, 협의 요령을 설명합니다.</p></a><a class="tool-card" href="guide-buying-costs.html"><p class="t">집 살 때 집값 말고 드는 돈</p><p class="d">아파트를 살 때 집값 외에 드는 돈을 취득세·중개보수·대출이자로 나눠 계산했습니다. 6억원이면 924만원, 7억 5천만원이면 1,980만원, 9억원이면 3,465만원으로 집값보다 훨씬 빠르게 늘어나는 이유와 생애최초 감면, 85㎡ 초과, 계산기에 없는 비용, 내는 시점을 정리했습니다.</p></a><a class="tool-card" href="guide-jeonse-registry.html"><p class="t">전세 계약 전, 등기부에서 볼 세 가지</p><p class="d">전세 계약 전에 등기부등본에서 소유자, 가압류·경매, 근저당 채권최고액을 확인하는 방법을 설명합니다. 전세가율 계산, 신탁등기, 계약일과 잔금일에 다시 확인해야 하는 이유까지 정리합니다.</p></a></div>
@@ -354,7 +354,7 @@
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="js/common.js?v=2219cd74"></script>
+  <script src="js/common.js?v=6a725983"></script>
   <script src="js/analytics.js?v=c8407f74"></script>
   <script src="js/fee.js?v=589b4273"></script>
 </body>
