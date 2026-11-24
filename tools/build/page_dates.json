@@ -234,6 +234,16 @@
   "modified": "2026-10-27",
   "published": "2026-10-27"
  },
+ "guide-hourly-wage-table.html": {
+  "hash": "ba7394e1ca0e",
+  "modified": "2026-11-24",
+  "published": "2026-11-23"
+ },
+ "guide-income-tax-brackets.html": {
+  "hash": "b46e89f3fb4d",
+  "modified": "2026-11-23",
+  "published": "2026-11-23"
+ },
  "guide-inheritance-threshold.html": {
   "hash": "cfb7f30b6c80",
   "modified": "2026-11-03",
@@ -298,6 +308,11 @@
   "hash": "d8a77e1d4d5a",
   "modified": "2026-11-10",
   "published": "2026-11-10"
+ },
+ "guide-loan-interest-by-amount.html": {
+  "hash": "cb57447661ef",
+  "modified": "2026-11-23",
+  "published": "2026-11-23"
  },
  "guide-loan-rate-structure.html": {
   "hash": "1c2c3851f702",
@@ -474,6 +489,11 @@
   "modified": "2026-10-23",
   "published": "2026-10-23"
  },
+ "guide-unemployment-days.html": {
+  "hash": "c99e1eb1ed1d",
+  "modified": "2026-11-23",
+  "published": "2026-11-23"
+ },
  "guide-unemployment-floor.html": {
   "hash": "3baa60e4ba98",
   "modified": "2026-10-30",
@@ -493,6 +513,11 @@
   "hash": "52844727461d",
   "modified": "2026-10-31",
   "published": "2026-10-31"
+ },
+ "guide-year-end-education.html": {
+  "hash": "0c343bf597df",
+  "modified": "2026-11-23",
+  "published": "2026-11-23"
  },
  "guide-year-end-job-change.html": {
   "hash": "c245a52e6a06",
@@ -515,23 +540,23 @@
   "published": "2026-09-27"
  },
  "guides.html": {
-  "hash": "176ed1828c0b",
-  "modified": "2026-11-20",
+  "hash": "0fc3e737aaa3",
+  "modified": "2026-11-23",
   "published": "2026-09-17"
  },
  "hourly-wage.html": {
-  "hash": "c4cf8ef4ee48",
-  "modified": "2026-11-10",
+  "hash": "2b99602d098f",
+  "modified": "2026-11-23",
   "published": "2026-10-26"
  },
  "income-tax.html": {
-  "hash": "8ac3cba6ad2c",
-  "modified": "2026-10-31",
+  "hash": "ce6c3528af0c",
+  "modified": "2026-11-23",
   "published": "2026-10-31"
  },
  "index.html": {
-  "hash": "21f47f784695",
-  "modified": "2026-11-20",
+  "hash": "2ea402fdad56",
+  "modified": "2026-11-23",
   "published": "2026-09-17"
  },
  "inheritance-tax.html": {
@@ -560,8 +585,8 @@
   "published": "2026-11-02"
  },
  "loan.html": {
-  "hash": "4f7888f0c033",
-  "modified": "2026-11-20",
+  "hash": "28990206725c",
+  "modified": "2026-11-23",
   "published": "2026-09-17"
  },
  "moving.html": {
@@ -605,8 +630,8 @@
   "published": "2026-09-17"
  },
  "refs.html": {
-  "hash": "be589ff10553",
-  "modified": "2026-11-20",
+  "hash": "310160a4df98",
+  "modified": "2026-11-23",
   "published": "2026-09-20"
  },
  "registration-cost.html": {
@@ -885,13 +910,13 @@
   "published": "2026-09-17"
  },
  "unemployment-benefit.html": {
-  "hash": "eee5380b8a6e",
-  "modified": "2026-11-03",
+  "hash": "3de06dee0b19",
+  "modified": "2026-11-23",
   "published": "2026-10-26"
  },
  "year-end-tax.html": {
-  "hash": "4865e3c1ec5c",
-  "modified": "2026-11-20",
+  "hash": "96997984743a",
+  "modified": "2026-11-23",
   "published": "2026-10-27"
  },
  "yield.html": {

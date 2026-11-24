@@ -337,7 +337,10 @@ def home():
                    "guide-annual-leave-days.html": "연차 개수 계산", "guide-weekly-holiday-pay.html": "주휴수당 계산법",
                    "guide-loan-100m-interest.html": "1억 대출 이자", "guide-card-deduction.html": "신용카드 소득공제",
                    "guide-family-loan.html": "부모님께 빌린 돈", "guide-jeonse-deemed-rent.html": "전세 간주임대료",
-                   "guide-severance-table.html": "퇴직금 계산 표"}
+                   "guide-severance-table.html": "퇴직금 계산 표",
+                   "guide-unemployment-days.html": "실업급여 수급 기간", "guide-hourly-wage-table.html": "시급별 월급 표",
+                   "guide-year-end-education.html": "교육비 공제", "guide-income-tax-brackets.html": "소득세 세율 구간",
+                   "guide-loan-interest-by-amount.html": "2억·3억·5억 대출 이자"}
     gtile = lambda g: (f'<a class="tile" href="{g[0]}" data-k="{g[1]}" data-pub="{PAGE_DATES.get(g[0], {}).get("published", "")}">'
                        f'{tile_icon(g[0])}<span class="t">{GUIDE_SHORT.get(g[0], g[1])}</span></a>')
     # 안내 글은 새 글 몇 편만 먼저 보이고 나머지는 접어 둔다(2026-11: 타일 78개가 폰에서 화면 4개 분량이었다).
