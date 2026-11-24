@@ -11,7 +11,7 @@
   var CHILD_CREDIT = [0, 250000, 550000], CHILD_CREDIT_EXTRA = 400000;   // 8세 이상 자녀: 1명 25만, 2명 55만, 3명째부터 40만씩 (js/year-end-tax.js와 같은 값)
   var PENSION_SAVING_CAP = 6000000, PENSION_TOTAL_CAP = 9000000, PENSION_LINE = 45000000, PENSION_HIGH = 15, PENSION_LOW = 12;   // 종합소득금액 4,500만원 이하 15%
   var WITHHOLD_RATE = 3, LOCAL_RATE = 10;               // 사업소득 원천징수 3% + 지방소득세 0.3%
-  // 단순경비율: 업종코드마다 국세청이 해마다 3월에 고시. 기본값은 940909(기타자영업) 2024년 귀속 고시값.
+  // 단순경비율: 업종코드마다 국세청이 해마다 3월에 고시. 기본값은 940909(기타자영업) 2025년 귀속 고시값(국세청 고시 제2026-14호, 2024년 귀속과 같음).
   // 수입금액 4,000만원 초과분은 초과율을 쓴다. 직전 해 수입 3,600만원 미만(인적용역), 신규는 그해 7,500만원 미만일 때 쓸 수 있다
   var SIMPLE_RATE_DEFAULT = 64.1, SIMPLE_OVER_DEFAULT = 49.7, SIMPLE_OVER_LINE = 40000000, SIMPLE_NEW_CAP = 75000000;
 
