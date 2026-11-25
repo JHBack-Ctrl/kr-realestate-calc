@@ -1396,6 +1396,11 @@ function near(label, got, want, tol) {
   { const ext = await page.$$eval('main a.tool-card[href^="http"]', a => a.map(x => [x.getAttribute('href'), x.target, x.rel]));
     expect('참고 자료 공공 사이트 링크 수', ext.length, 13); expect('참고 자료 공공 사이트 링크 새 창·noopener', ext.every(([h, t, r]) => h.startsWith('https://') && t === '_blank' && r === 'noopener'), true);
     expect('참고 자료 공공 사이트 링크 중복 없음', new Set(ext.map(x => x[0])).size, 13); }
+  // 홈에도 같은 13곳 (2026-11-26, 참고 자료 쪽에만 있어 홈에서 안 보인다는 말이 있었음). 검색창에서도 찾아진다
+  await page.goto(BASE + 'index.html');
+  { const ext = await page.$$eval('#c-links a.tile', a => a.map(x => [x.getAttribute('href'), x.target, x.rel]));
+    expect('홈 공공 사이트 링크 수', ext.length, 13); expect('홈 공공 사이트 링크 새 창·noopener', ext.every(([h, t, r]) => h.startsWith('https://') && t === '_blank' && r === 'noopener'), true);
+    await page.fill('#q', '실거래'); expect('홈 검색으로 공공 사이트 찾기', await page.$$eval('#c-links .tile', t => t.filter(x => !x.hidden && x.offsetParent).length), 1); await page.fill('#q', ''); }
   // 주 40시간을 넘으면 연장 시간(5인 이상 1.5배)도 넣는다 — 하루 8시간·주 6일: 209 + 35×1.5 = 261.5시간 (2026-11 Codex 지적)
   await fresh('hourly-wage.html'); await setChk('holiday', true); await setChk('big', true); await type('daily', '8'); await type('days', '6'); await type('monthlyPay', '3000000');
   expect('월급→시급 연장 포함 시간', await get('out-rev-hours'), '261.5'); expect('월급→시급 연장 포함 최저임금 월급', await get('out-min-monthly'), '2,698,680'); expect('월급→시급 연장 포함 시급', await get('out-rev-wage'), '11,472');
