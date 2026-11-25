@@ -1354,6 +1354,10 @@ function near(label, got, want, tol) {
     expect(`월급→시급 글 ${pay} ${d}×${n} 시급`, await get('out-rev-wage'), wage); expect(`월급→시급 글 ${pay} ${d}×${n} 시간`, await get('out-rev-hours'), hours);
     if (minPay) expect(`월급→시급 글 ${d}×${n} 최저임금 월급`, await get('out-min-monthly'), minPay);
   }
+  // 주 40시간을 넘으면 연장 시간(5인 이상 1.5배)도 넣는다 — 하루 8시간·주 6일: 209 + 35×1.5 = 261.5시간 (2026-11 Codex 지적)
+  await fresh('hourly-wage.html'); await setChk('holiday', true); await setChk('big', true); await type('daily', '8'); await type('days', '6'); await type('monthlyPay', '3000000');
+  expect('월급→시급 연장 포함 시간', await get('out-rev-hours'), '261.5'); expect('월급→시급 연장 포함 최저임금 월급', await get('out-min-monthly'), '2,698,680'); expect('월급→시급 연장 포함 시급', await get('out-rev-wage'), '11,472');
+  await setChk('big', false); expect('월급→시급 5인 미만 시간', await get('out-rev-hours'), '244'); expect('월급→시급 5인 미만 최저임금 월급', await get('out-min-monthly'), '2,518,080');
   // 안내 글마다 「같은 주제의 안내 글」 3편(청약처럼 글이 넷이면 나머지 셋). 모든 글이 다른 글 3편 이상에서 링크를 받는다 (2026-11)
   { const inbound = {}; const guidePages = PAGES.filter(f => f.startsWith('guide-'));
     for (const f of guidePages) { const links = [...fs.readFileSync(path.join(ROOT, f), 'utf8').matchAll(/<section class="card related topic-guides"[\s\S]*?<\/section>/g)].flatMap(m => [...m[0].matchAll(/class="tool-card" href="([^"]+)"/g)].map(x => x[1]));

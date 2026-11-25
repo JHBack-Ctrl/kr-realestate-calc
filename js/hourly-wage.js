@@ -27,8 +27,10 @@
     var monthly = won(monthHours * i.wage + overMonthHours * overMult * i.wage);
     var incomeTax = i.biz ? floor10(monthly * BIZ_TAX / 100) : 0, local = floor10(incomeTax * BIZ_LOCAL / 100);
     // 월급을 시급으로: 월급 ÷ 월 환산 시간(주 40시간이면 209). 원 미만 버림
-    var revWage = i.monthlyPay > 0 && monthHours > 0 ? won(i.monthlyPay / monthHours) : 0;
-    return { revWage: revWage, minMonthly: MIN_WAGE * monthHours, week: week, over: over, holidayHours: holidayHours, holidayPay: holidayPay, weekly: weekly, monthHours: monthHours, overMonthHours: overMonthHours,
+    // 주 40시간을 넘으면 연장 시간(5인 이상 1.5배)도 나누는 시간과 최저임금 월급에 넣는다
+    var paidHours = monthHours + overMonthHours * overMult;
+    var revWage = i.monthlyPay > 0 && paidHours > 0 ? won(i.monthlyPay / paidHours) : 0;
+    return { revWage: revWage, paidHours: paidHours, minMonthly: won(MIN_WAGE * paidHours), week: week, over: over, holidayHours: holidayHours, holidayPay: holidayPay, weekly: weekly, monthHours: monthHours, overMonthHours: overMonthHours,
       monthly: monthly, yearly: monthly * 12, tax: incomeTax + local, net: monthly - incomeTax - local };
   }
   function readInput() {
@@ -43,7 +45,7 @@
     S.setText('out-weekly', S.fmtWon(has ? r.weekly : 0)); S.setText('out-holiday', S.fmtWon(has ? r.holidayPay : 0)); S.setText('out-yearly', S.fmtWon(has ? r.yearly : 0));
     S.setText('out-week-hours', S.fmtNum(r.week, 1)); S.setText('out-holiday-hours', S.fmtNum(r.holidayHours, 1)); S.setText('out-month-hours', r.monthHours + (r.overMonthHours ? ' + 연장 ' + r.overMonthHours : ''));
     S.setText('out-tax', S.fmtWon(r.tax)); S.setText('out-net', S.fmtWon(has ? r.net : 0));
-    S.setText('out-rev-wage', S.fmtWon(r.revWage)); S.setText('out-rev-hours', r.monthHours); S.setText('out-min-monthly', S.fmtWon(r.minMonthly));
+    S.setText('out-rev-wage', S.fmtWon(r.revWage)); S.setText('out-rev-hours', S.fmtNum(r.paidHours, 1)); S.setText('out-min-monthly', S.fmtWon(r.minMonthly));
     S.setText('out-min', S.fmtWon(MIN_WAGE)); S.setText('out-next-min', S.fmtWon(NEXT_MIN_WAGE));
     S.setText('rules-date', RULES_DATE);
     var below = i.wage > 0 && i.wage < MIN_WAGE, belowNext = i.wage > 0 && !below && i.wage < NEXT_MIN_WAGE;
