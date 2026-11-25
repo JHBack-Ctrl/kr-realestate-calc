@@ -294,26 +294,26 @@ def forms_index():
 # 주소가 바뀌면 여기만 고친다. 2026-11-25에 열어 본 곳: 공시가격 알리미·R-ONE·정부24·청약홈·HUG·금융상품 한눈에·한국은행.
 # 실거래가·토지이음·인터넷등기소·부동산거래관리시스템·홈택스·위택스는 작업 환경(해외 접속)에서 응답이 없어 열어 보지 못했다
 PUBLIC_LINKS = [
-    ("https://rt.molit.go.kr/", "국토교통부 실거래가 공개시스템", "아파트·연립·단독·토지의 실제 거래 가격과 전월세 가격"),
-    ("https://www.realtyprice.kr/", "부동산 공시가격 알리미", "공동주택·단독주택 공시가격, 개별공시지가"),
-    ("https://www.eum.go.kr/", "토지이음", "토지이용계획, 용도지역, 개발 규제 확인"),
-    ("https://www.reb.or.kr/r-one/", "한국부동산원 부동산통계 (R-ONE)", "매매·전세 가격지수, 지가지수, 거래량 통계"),
-    ("https://www.iros.go.kr/", "대법원 인터넷등기소", "등기부등본(등기사항증명서) 열람·발급, 확정일자"),
-    ("https://www.gov.kr/", "정부24", "건축물대장, 토지대장, 전입신고, 주민등록등본"),
-    ("https://www.applyhome.co.kr/", "청약홈", "분양 일정, 청약 신청, 당첨 조회, 청약 자격 확인"),
-    ("https://www.khug.or.kr/", "주택도시보증공사 (HUG)", "전세보증금 반환보증, 안심전세 정보"),
-    ("https://rtms.molit.go.kr/", "부동산거래관리시스템", "부동산 거래 신고, 주택 임대차(전월세) 신고"),
-    ("https://www.hometax.go.kr/", "국세청 홈택스", "양도소득세·증여세·종합소득세 신고, 연말정산 간소화"),
-    ("https://www.wetax.go.kr/", "위택스", "취득세·재산세 등 지방세 신고와 납부"),
-    ("https://finlife.fss.or.kr/", "금융감독원 금융상품 한눈에", "은행별 예금·적금·주택담보대출·전세대출 금리 비교"),
-    ("https://www.bok.or.kr/", "한국은행", "기준금리와 금융통화위원회 일정"),
+    ("https://rt.molit.go.kr/", "국토교통부 실거래가 공개시스템", "아파트·연립·단독·토지의 실제 거래 가격과 전월세 가격", "실거래가 조회"),
+    ("https://www.realtyprice.kr/", "부동산 공시가격 알리미", "공동주택·단독주택 공시가격, 개별공시지가", "공시가격·공시지가"),
+    ("https://www.eum.go.kr/", "토지이음", "토지이용계획, 용도지역, 개발 규제 확인", "토지이용계획 (토지이음)"),
+    ("https://www.reb.or.kr/r-one/", "한국부동산원 부동산통계 (R-ONE)", "매매·전세 가격지수, 지가지수, 거래량 통계", "부동산원 통계"),
+    ("https://www.iros.go.kr/", "대법원 인터넷등기소", "등기부등본(등기사항증명서) 열람·발급, 확정일자", "등기부등본 (인터넷등기소)"),
+    ("https://www.gov.kr/", "정부24", "건축물대장, 토지대장, 전입신고, 주민등록등본", "정부24 (건축물대장)"),
+    ("https://www.applyhome.co.kr/", "청약홈", "분양 일정, 청약 신청, 당첨 조회, 청약 자격 확인", "청약홈"),
+    ("https://www.khug.or.kr/", "주택도시보증공사 (HUG)", "전세보증금 반환보증, 안심전세 정보", "전세보증 (HUG)"),
+    ("https://rtms.molit.go.kr/", "부동산거래관리시스템", "부동산 거래 신고, 주택 임대차(전월세) 신고", "거래·전월세 신고"),
+    ("https://www.hometax.go.kr/", "국세청 홈택스", "양도소득세·증여세·종합소득세 신고, 연말정산 간소화", "홈택스"),
+    ("https://www.wetax.go.kr/", "위택스", "취득세·재산세 등 지방세 신고와 납부", "위택스 (취득세·재산세)"),
+    ("https://finlife.fss.or.kr/", "금융감독원 금융상품 한눈에", "은행별 예금·적금·주택담보대출·전세대출 금리 비교", "은행 금리 비교 (금감원)"),
+    ("https://www.bok.or.kr/", "한국은행", "기준금리와 금융통화위원회 일정", "한국은행 기준금리"),
 ]
 
 def refs_index():
     return _hub("refs.html", "References", "참고 자료", "계약과 세금 전에 확인할 것",
                 "세율이나 법령을 해석하지 않습니다. 무엇을 어디서 확인해야 하는지, 숫자를 어떻게 읽어야 하는지 안내합니다.",
                 [("확인 목록·확인처", None, [(f, n, d) for (f, n, _t, _d, _c, d) in REFS if f != "guides.html"]),
-                 ("자주 쓰는 공공 사이트", "실거래가, 공시가격, 등기부, 청약, 세금 신고처럼 직접 확인해야 하는 곳입니다. 모두 공공기관 사이트이고 새 창으로 열립니다.", PUBLIC_LINKS),
+                 ("자주 쓰는 공공 사이트", "실거래가, 공시가격, 등기부, 청약, 세금 신고처럼 직접 확인해야 하는 곳입니다. 모두 공공기관 사이트이고 새 창으로 열립니다.", [(f, n, d) for (f, n, d, _s) in PUBLIC_LINKS]),
                  ("안내 글", f"부동산 숫자를 읽는 법 {len(GUIDES)}편.", [(f, n, "") for (f, n, _t, _d) in GUIDES] + [("guides.html", "안내 글 목록 전체 보기", "")])])
 
 def home():
@@ -425,6 +425,15 @@ def home():
       </details>
     </section>'''
 
+    # 자주 쓰는 공공 사이트(2026-11-26): 참고 자료 쪽에만 넣었더니 홈에서 보이지 않는다는 말이 있어 홈에도 둔다. 새 창으로 열린다
+    ext_icon = '<span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></span>'
+    links = "".join(f'<a class="tile" href="{f}" target="_blank" rel="noopener" data-k="{n} {d} {sn}">{ext_icon}<span class="t">{sn}</span></a>' for (f, n, d, sn) in PUBLIC_LINKS)
+    links_sec = f'''
+    <section class="sec" id="c-links" data-sec>
+      <div class="sec-head"><h2>자주 쓰는 공공 사이트</h2><a class="n" href="refs.html">설명 보기</a></div>
+      <div class="tiles mini" data-group>{links}</div>
+    </section>'''
+
     # 지금 적용 중인 기준(2026-11): 사이트가 숫자 기준을 공개하고 제때 고친다는 것을 첫 화면에서 보여 준다.
     # 값은 계산기와 같은 곳에서 읽는다(기준금리는 RATE_HISTORY, 나머지는 계산기 js 상수). 손으로 적지 말 것
     fmt_rate = lambda x: (f"{x:.2f}".rstrip("0").rstrip(".") if x != int(x) else str(int(x)))
@@ -454,7 +463,7 @@ def home():
     <section class="sec fav-sec" id="fav-sec" hidden>
       <div class="sec-head"><h2>즐겨찾기</h2><span class="n">이 기기에만 저장</span></div>
       <div class="tiles mini" id="fav-tiles"></div>
-    </section>{section("많이 찾는 계산기", pop, 0, cls=" hot")}{cats_html}{mini_sec}{ref_sec}
+    </section>{section("많이 찾는 계산기", pop, 0, cls=" hot")}{cats_html}{mini_sec}{ref_sec}{links_sec}
     <p class="tile-empty" id="tile-empty" hidden>찾는 계산기가 없습니다. 다른 말로 검색해 보세요.</p>
     <section class="card" style="margin-top:28px">
       <h2>이 사이트의 원칙</h2>
