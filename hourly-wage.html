@@ -179,6 +179,9 @@
                 <label class="toggle"><input type="checkbox" id="big"><span class="knob" aria-hidden="true"></span>5인 이상 사업장 (주 40시간 넘는 시간 1.5배)</label>
               </div>              <div class="field">
                 <label class="toggle"><input type="checkbox" id="biz"><span class="knob" aria-hidden="true"></span>3.3% 떼기 (사업소득·프리랜서)</label>
+              </div>              <div class="field">
+                <label for="monthlyPay">월급을 시급으로 보기 (선택)</label>
+                <div class="input-wrap"><input id="monthlyPay" type="text" inputmode="numeric" autocomplete="off" placeholder="2,500,000" data-money><span class="suffix">원</span></div>
               </div>            <div class="field" style="margin-top:14px">
               <label class="toggle"><input type="checkbox" id="remember-toggle"><span class="knob" aria-hidden="true"></span>최근 계산 기억하기</label>
               <p class="field-help">이 기기의 브라우저에만 저장되며 서버로 보내지 않습니다. 끄면 저장한 값을 지웁니다.</p>
@@ -203,7 +206,7 @@
         <section class="card">
           <h2>계산 내역</h2>
           <div class="table-wrap"><table class="tbl"><tbody>
-            <tr><th scope="row">주 근무시간</th><td><span id="out-week-hours">0</span>시간</td></tr><tr><th scope="row">주휴시간</th><td><span id="out-holiday-hours">0</span>시간</td></tr><tr><th scope="row">월 환산 시간</th><td><span id="out-month-hours">0</span>시간</td></tr><tr><th scope="row">3.3% 공제</th><td>−<span id="out-tax">0</span>원</td></tr><tr><th scope="row">3.3% 뗀 뒤 월급</th><td><span id="out-net">0</span>원</td></tr><tr><th scope="row">2026년 최저임금</th><td><span id="out-min">0</span>원</td></tr><tr><th scope="row">2027년 최저임금</th><td><span id="out-next-min">0</span>원</td></tr>
+            <tr><th scope="row">주 근무시간</th><td><span id="out-week-hours">0</span>시간</td></tr><tr><th scope="row">주휴시간</th><td><span id="out-holiday-hours">0</span>시간</td></tr><tr><th scope="row">월 환산 시간</th><td><span id="out-month-hours">0</span>시간</td></tr><tr><th scope="row">3.3% 공제</th><td>−<span id="out-tax">0</span>원</td></tr><tr><th scope="row">3.3% 뗀 뒤 월급</th><td><span id="out-net">0</span>원</td></tr><tr><th scope="row">2026년 최저임금</th><td><span id="out-min">0</span>원</td></tr><tr><th scope="row">2027년 최저임금</th><td><span id="out-next-min">0</span>원</td></tr><tr><th scope="row">월급을 시급으로 (월급 ÷ <span id="out-rev-hours">0</span>시간)</th><td><span id="out-rev-wage">0</span>원</td></tr><tr><th scope="row">이 근무시간의 최저임금 월급</th><td><span id="out-min-monthly">0</span>원</td></tr>
           </tbody></table></div>
           <p class="result-note"><span id="rules-date"></span>. 세전 금액입니다. 월 환산 시간은 시간 단위로 반올림했습니다.</p>
         </section>
@@ -215,7 +218,7 @@
     </section>
     <section class="card related related-guides" aria-labelledby="rel-guides-title">
       <h2 id="rel-guides-title">이 계산기와 함께 읽는 안내 글</h2>
-      <div class="tool-grid"><a class="tool-card" href="guide-hourly-wage-table.html"><p class="t">시급별 월급 표, 최저임금부터 2만원까지</p><p class="d">시급을 월급으로 바꿀 때는 한 달을 209시간으로 계산합니다. 시급 12,000원이면 월 250만 8,000원, 15,000원이면 313만 5,000원입니다. 최저임금부터 2만원까지의 월급·연봉과 근무시간별 금액, 세금을 뗀 금액을 정리했습니다.</p></a><a class="tool-card" href="guide-weekly-holiday-pay.html"><p class="t">주휴수당 계산법, 주 몇 시간부터 얼마 받나</p><p class="d">주휴수당은 1주 15시간 이상 일하고 출근할 날을 다 나오면 받습니다. 2026년 최저임금으로 주 40시간 8만 2,560원, 주 20시간 4만 1,280원입니다. 근무시간별 금액, 받는 조건, 주휴수당을 넣은 시급을 정리했습니다.</p></a><a class="tool-card" href="guide-minimum-wage-2027.html"><p class="t">2027년 최저임금 10,700원, 주휴수당 포함 월급</p><p class="d">2027년 최저임금 10,700원이면 주 40시간 월 223만 6,300원입니다. 주 30·20·15·14시간 월급, 주 15시간 경계에서 달라지는 18만 1,900원, 3.3%와 수습 90%를 계산기로 정리했습니다.</p></a></div>
+      <div class="tool-grid"><a class="tool-card" href="guide-hourly-wage-table.html"><p class="t">시급별 월급 표, 최저임금부터 2만원까지</p><p class="d">시급을 월급으로 바꿀 때는 한 달을 209시간으로 계산합니다. 시급 12,000원이면 월 250만 8,000원, 15,000원이면 313만 5,000원입니다. 최저임금부터 2만원까지의 월급·연봉과 근무시간별 금액, 세금을 뗀 금액을 정리했습니다.</p></a><a class="tool-card" href="guide-monthly-to-hourly.html"><p class="t">월급을 시급으로 바꾸면, 내 시급은 얼마인가</p><p class="d">월급을 시급으로 바꿀 때는 209시간으로 나눕니다. 월급 250만원이면 시급 11,961원, 300만원이면 14,354원입니다. 월급별 시급과 근무시간이 짧을 때의 계산, 최저임금에 들어가는 항목을 정리했습니다.</p></a><a class="tool-card" href="guide-weekly-holiday-pay.html"><p class="t">주휴수당 계산법, 주 몇 시간부터 얼마 받나</p><p class="d">주휴수당은 1주 15시간 이상 일하고 출근할 날을 다 나오면 받습니다. 2026년 최저임금으로 주 40시간 8만 2,560원, 주 20시간 4만 1,280원입니다. 근무시간별 금액, 받는 조건, 주휴수당을 넣은 시급을 정리했습니다.</p></a></div>
     </section>
     <section class="card" aria-labelledby="guide-title">
       <h2 id="guide-title">시급으로 월급 계산하는 법</h2>
@@ -288,6 +291,6 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="js/common.js?v=6a725983"></script>
   <script src="js/analytics.js?v=c8407f74"></script>
-  <script src="js/hourly-wage.js?v=575dba59"></script>
+  <script src="js/hourly-wage.js?v=fa703e85"></script>
 </body>
 </html>

@@ -26,12 +26,17 @@
     var overMonthHours = Math.round(over * WEEKS_PER_MONTH);
     var monthly = won(monthHours * i.wage + overMonthHours * overMult * i.wage);
     var incomeTax = i.biz ? floor10(monthly * BIZ_TAX / 100) : 0, local = floor10(incomeTax * BIZ_LOCAL / 100);
-    return { week: week, over: over, holidayHours: holidayHours, holidayPay: holidayPay, weekly: weekly, monthHours: monthHours, overMonthHours: overMonthHours,
+    // 월급을 시급으로: 월급 ÷ 월 환산 시간(주 40시간이면 209). 원 미만 버림
+    // 주 40시간을 넘으면 연장 시간(5인 이상 1.5배)도 나누는 시간과 최저임금 월급에 넣는다
+    var paidHours = monthHours + overMonthHours * overMult;
+    var revWage = i.monthlyPay > 0 && paidHours > 0 ? won(i.monthlyPay / paidHours) : 0;
+    return { revWage: revWage, paidHours: paidHours, minMonthly: won(MIN_WAGE * paidHours), week: week, over: over, holidayHours: holidayHours, holidayPay: holidayPay, weekly: weekly, monthHours: monthHours, overMonthHours: overMonthHours,
       monthly: monthly, yearly: monthly * 12, tax: incomeTax + local, net: monthly - incomeTax - local };
   }
   function readInput() {
     return { wage: S.parseMoney($('wage').value), daily: Math.min(24, S.parseNonNegative($('daily').value)), days: Math.min(7, Math.floor(S.parseNonNegative($('days').value))),
-      holiday: $('holiday').checked, big: $('big').checked, biz: $('biz').checked };
+      holiday: $('holiday').checked, big: $('big').checked, biz: $('biz').checked,
+      monthlyPay: $('monthlyPay') ? S.parseMoney($('monthlyPay').value) : 0 };
   }
   var last = null;
   function render(i) {
@@ -40,6 +45,7 @@
     S.setText('out-weekly', S.fmtWon(has ? r.weekly : 0)); S.setText('out-holiday', S.fmtWon(has ? r.holidayPay : 0)); S.setText('out-yearly', S.fmtWon(has ? r.yearly : 0));
     S.setText('out-week-hours', S.fmtNum(r.week, 1)); S.setText('out-holiday-hours', S.fmtNum(r.holidayHours, 1)); S.setText('out-month-hours', r.monthHours + (r.overMonthHours ? ' + 연장 ' + r.overMonthHours : ''));
     S.setText('out-tax', S.fmtWon(r.tax)); S.setText('out-net', S.fmtWon(has ? r.net : 0));
+    S.setText('out-rev-wage', S.fmtWon(r.revWage)); S.setText('out-rev-hours', S.fmtNum(r.paidHours, 1)); S.setText('out-min-monthly', S.fmtWon(r.minMonthly));
     S.setText('out-min', S.fmtWon(MIN_WAGE)); S.setText('out-next-min', S.fmtWon(NEXT_MIN_WAGE));
     S.setText('rules-date', RULES_DATE);
     var below = i.wage > 0 && i.wage < MIN_WAGE, belowNext = i.wage > 0 && !below && i.wage < NEXT_MIN_WAGE;
@@ -56,7 +62,7 @@
       key: 'hourly-wage',
       recalc: function () { render(readInput()); },
       preset: function (name) {
-        if (name === 'clear') { $('wage').value = ''; return; }
+        if (name === 'clear') { $('wage').value = ''; if ($('monthlyPay')) $('monthlyPay').value = ''; return; }
         var p = { min40: [MIN_WAGE, 8, 5], min20: [MIN_WAGE, 5, 4], w12: [12000, 4, 3] }[name]; if (!p) return;
         S.setMoney('wage', p[0]); $('daily').value = String(p[1]); $('days').value = String(p[2]); $('holiday').checked = true; $('big').checked = true; $('biz').checked = false;
       },

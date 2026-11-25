@@ -154,12 +154,14 @@ def hourly_wage_page():
     left = form_open([("min40", "최저임금·주 40시간"), ("min20", "최저임금·주 20시간"), ("w12", "시급 1.2만·주 12시간"), ("clear", "지우기")]) + \
         money("wage", "시급", "10,320") + num("daily", "하루 근무시간", "8", "시간", step="0.5") + num("days", "주 근무일수", "5", "일", step="1", max_="7") + \
         check("holiday", "주휴수당 포함 (주 15시간 이상·개근)") + check("big", "5인 이상 사업장 (주 40시간 넘는 시간 1.5배)") + \
-        check("biz", "3.3% 떼기 (사업소득·프리랜서)") + form_close("월급 계산")
+        check("biz", "3.3% 떼기 (사업소득·프리랜서)") + money("monthlyPay", "월급을 시급으로 보기 (선택)", "2,500,000") + form_close("월급 계산")
     right = result_hero("월급 (주휴수당 포함)", "out-monthly", "원", [("주급", "out-weekly", "원"), ("주휴수당 (주)", "out-holiday", "원"), ("연봉 환산", "out-yearly", "원")]) + \
         _breakdown("계산 내역", [("주 근무시간", '<span id="out-week-hours">0</span>시간', False), ("주휴시간", '<span id="out-holiday-hours">0</span>시간', False),
                               ("월 환산 시간", '<span id="out-month-hours">0</span>시간', False), ("3.3% 공제", '−<span id="out-tax">0</span>원', False),
                               ("3.3% 뗀 뒤 월급", '<span id="out-net">0</span>원', False), ("2026년 최저임금", '<span id="out-min">0</span>원', False),
-                              ("2027년 최저임금", '<span id="out-next-min">0</span>원', False)],
+                              ("2027년 최저임금", '<span id="out-next-min">0</span>원', False),
+                              ('월급을 시급으로 (월급 ÷ <span id="out-rev-hours">0</span>시간)', '<span id="out-rev-wage">0</span>원', False),
+                              ("이 근무시간의 최저임금 월급", '<span id="out-min-monthly">0</span>원', False)],
                    "세전 금액입니다. 월 환산 시간은 시간 단위로 반올림했습니다.")
     guide = prose_section("시급으로 월급 계산하는 법", [
         "<ol><li><strong>주휴시간</strong> = 주 근무시간 ÷ 40 × 8 (주 15시간 미만이면 0, 40시간이 넘어도 8)</li><li><strong>월 환산 시간</strong> = (주 근무시간 + 주휴시간) × 4.345</li><li><strong>월급</strong> = 시급 × 월 환산 시간. 5인 이상 사업장에서 주 40시간을 넘긴 시간은 1.5배</li></ol>",

@@ -12,7 +12,7 @@
 python3 tools/build/build.py
 ```
 
-등록부에서 185쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
+등록부에서 191쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
 같은 소스로 두 번 돌리면 결과가 같아야 합니다(멱등). 달라지면 버그입니다.
 
 - `site_core.py` — 등록부(TOOLS, TABLES, FORMS, REFS, GUIDES, HUBS, RATE_HISTORY)와 공통 틀.
@@ -23,7 +23,7 @@ python3 tools/build/build.py
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽, 안내 글 4편, 안내 글 틀(`article`: 핵심 숫자 상자·차례)
 - `guide_keys.py` — 안내 글 맨 위 「핵심 숫자」 값(`GUIDE_KEYS`)
 - `og_cards.py` — 쪽마다 공유 카드(og:image) 내용. 계산기 38개 문구(`OG_TOOLS`), 안내 글은 제목·핵심 숫자로 자동
-- `pages_guides2.py` — 안내 글 84편
+- `pages_guides2.py` — 안내 글 90편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
 - `build.py` — 위를 모아 쓰고 `manifest.json`, `sw.js`, `sitemap.xml`, `js/analytics.js`를 생성
 
@@ -44,8 +44,8 @@ python3 tools/build/build.py
 
 ### 검색 제외 (noindex)
 
-185쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
-검색 대상은 172쪽입니다(2026-11-22). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
+191쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
+검색 대상은 178쪽입니다(2026-11-24). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
 
 - 용어 9쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
 - 용어 39쪽 중 30쪽은 1,000자 이상으로 늘려 검색에 되돌렸습니다: 대항력·확정일자·전세가율·DSR·LTV,
@@ -133,7 +133,7 @@ node tools/verify.js
 
 ```
 python3 tools/build/build.py          # 카드 숫자 확인 + tools/og/cards.json
-python3 tools/og/make_cards.py        # 바뀐 카드만 다시 그림(--all이면 전부). 127장이 5초
+python3 tools/og/make_cards.py        # 바뀐 카드만 다시 그림(--all이면 전부). 133장이 5초
 ```
 
 - 계산기: `tools/build/og_cards.py`의 `OG_TOOLS`에 (칩, 머리말, 큰 숫자 앞말, 큰 숫자, 아래 줄[, 숫자가 있는 안내 글]).
@@ -201,11 +201,11 @@ https://전국부동산계산기.com/guide-prepayment.html
   **국회 통과 전이라 미반영**. 통과되면 양도 연도별로 바꿔야 함.
   안내 글 `guide-cgt-heavy.html`(2주택 양도세 중과)도 숫자와 「앞으로 바뀔 수 있는 것」 절을 고치고,
   `tools/verify.js`의 양도세 기대값을 새로 뽑을 것.
-  비과세 한도(12억)나 장기보유특별공제가 바뀌면 `guide-cgt-high-price.html`도 다시 뽑을 것.
+  비과세 한도(12억)나 장기보유특별공제가 바뀌면 `guide-cgt-high-price.html`과 `guide-long-term-deduction.html`(공제율 표, 5억·10억 차익 양도세)도 다시 뽑을 것.
   중과·일시적 2주택 기한(`TEMP_TWO_YEARS`)이 바뀌면 `guide-temporary-two-homes.html`의 조정지역 숫자도 다시 뽑을 것
 - 취득세: `js/acquisition-tax.js`. 바뀌면 `js/buy-vs-rent.js`의 `PRESET_ACQ_RATE`(8억 예시 버튼의
   취득세율, 현재 2.56%)도 취득세 계산기에 8억·1주택을 넣어 다시 뽑은 실효세율로 바꿀 것.
-  안내 글 `guide-acquisition-tax.html`·`guide-acquisition-6-9.html`·`guide-buying-costs.html`·`guide-mixed-use-acquisition.html`(상가주택)의 숫자도 다시 뽑을 것.
+  안내 글 `guide-acquisition-tax.html`·`guide-acquisition-6-9.html`·`guide-buying-costs.html`·`guide-mixed-use-acquisition.html`(상가주택)·`guide-second-home-acquisition.html`(2주택 8%, 집값별 표, 일시적 2주택 3년)의 숫자도 다시 뽑을 것.
   생애최초 감면(`FIRST_HOME_CAP` 200만원, 12억 이하)은 2028-12-31 취득분까지(2025년 말 연장). 소형·저가주택 300만원 한도는 계산기에 없고,
   2026년 8월 개편안(청년 추가 감면 등)은 **국회 통과 전이라 미반영**. 바뀌면 `guide-first-home-acquisition.html`(집값별 표·요건·추징)을 다시 뽑을 것.
   3개월 내 전입 요건은 2025년 말 개정으로 바뀌었다는 안내가 여럿이나 원문을 확인하지 못해(2026-11) 글·FAQ에는 「관할 시·군·구청 확인」으로 적어 둠
@@ -252,7 +252,8 @@ https://전국부동산계산기.com/guide-prepayment.html
   옮기고, 8월 고시 뒤 `NEXT_MIN_WAGE`를 그다음 해 값으로. 계산기 본문 예시(`pages_tools3.hourly_wage_page`)와 verify 기대값도 다시 뽑을 것.
   안내 글 `guide-minimum-wage-2027.html`은 「계산기는 2026년 10,320원과 비교」 문장과 2026·2027 비교표를 손볼 것.
   `guide-weekly-holiday-pay.html`(주휴수당 2026·2027 열, 「주휴 포함 시급 12,384원」 문장)도 새 해 기준으로 고칠 것.
-  `guide-hourly-wage-table.html`(시급별 월급 표)은 첫 두 줄(10,320원·10,700원)의 설명 문장을 새 해 기준으로 고칠 것
+  `guide-hourly-wage-table.html`(시급별 월급 표)은 첫 두 줄(10,320원·10,700원)의 설명 문장을 새 해 기준으로 고칠 것.
+  `guide-monthly-to-hourly.html`(월급별 시급 표의 비고, 최저임금 월급 215만 6,880원, 근무시간별 최저임금 월급)도 새 해 기준으로 다시 뽑을 것
 - `js/unemployment-benefit.js` — `MIN_WAGE`, `DAILY_MAX`(하루 상한 68,100원), `RULES_DATE`. **2027년 1월 주의**:
   최저임금 10,700원이면 하한이 68,480원으로 지금 상한을 넘으므로 상한이 또 오를 가능성이 큼. 고용노동부 발표로 확인할 것.
   계산기 본문의 「334만원 이하면 하한, 344만원 이상이면 상한」 문장과 예시 숫자, 안내 글 `guide-unemployment-floor.html`(표·날수별 총액·
@@ -265,6 +266,7 @@ https://전국부동산계산기.com/guide-prepayment.html
     안내 글 `guide-unemployment-floor.html`(「2027년에 바뀔 것」 절)·`guide-unemployment-days.html`(「개편안이 시행되면」 절, 12개월 기한 문장)·
     `guide-minimum-wage-2027.html`(실업급여 문단)을 고칠 것. ④가 시행되면 `guide-hourly-wage-table.html`의 「월 60시간(주 15시간) 이상」 문장도 고칠 것
 - `js/savings.js`(이자소득세 15.4%)와 `js/jeonse-loan.js`(주택임차차입금 소득공제 40%·400만원)는 거의 안 바뀜.
+  바뀌면 `guide-savings-monthly-table.html`(월 납입액별 만기 수령액)과 `guide-jeonse-loan-interest.html`(소득공제액 표, 1주택자 2억 한도 문단)도 다시 뽑을 것.
   예금자보호 한도(1억원, 2025-09부터)와 금융소득 종합과세 기준(2,000만원)은 `guide-deposit-100m.html`에 적혀 있음
 - **땅값 몇 배 계산기 자료**(한국부동산원 지가지수 + 통계청 소비자물가지수) — 원자료는 `tools/data/raw/`(받은 그대로),
   `python3 tools/data/convert_land_index.py`가 `tools/data/land_index.json`으로 정리하고, 빌드가 `js/land-index-data.js`와 지역 목록을 만든다.
@@ -287,7 +289,7 @@ https://전국부동산계산기.com/guide-prepayment.html
     `PriceIndex.adopt()`(wireCalc의 onApply)가 살린다 — 빼면 첫 계산에서 처음 값으로 덮인다(2026-11 버그).
     땅값 계산기는 지역 평균 땅값(원/㎡) 공식 자료가 없고 임야·논밭·대지가 섞여 의미도 약해 자동으로 넣지 않는다
   - 자료를 새로 받으면 안내 글을 다시 뽑을 것(숫자는 전부 verify에 있어 실패한 곳이 고칠 곳):
-    아파트 — `guide-apartment-multiple.html`(시·도 표), `guide-seoul-apartment-gu.html`(서울 25개 구 표·평균가), `guide-inheritance-threshold.html`(서울 평균 아파트 예시)
+    아파트 — `guide-apartment-multiple.html`(시·도 표), `guide-seoul-apartment-gu.html`(서울 25개 구 표·평균가), `guide-gyeonggi-apartment.html`(경기 시·구 표·평균가), `guide-inheritance-threshold.html`(서울 평균 아파트 예시)
     땅값 — `guide-land-price-lookup.html`(전국 지가지수), `guide-land-index-sido.html`(시·도 표, 1987·1990년부터)
     둘 다 — `guide-apartment-vs-land.html`(같은 지역 비교), `guide-real-price-multiple.html`(물가 뺀 배수. 물가 자료가 바뀌어도)
   - 자료 파일이 없으면 처음 화면이 매매가 직접 입력이고 지역 고르기는 「자료 준비 중」. 시안은 `APT_INDEX_FILE=<가짜 자료 경로>`로 빌드해 보고 그 뒤 그냥 다시 빌드할 것
@@ -339,7 +341,7 @@ https://전국부동산계산기.com/guide-prepayment.html
 ### 수시
 
 - 조정대상지역 지정·해제 → 취득세·양도세 계산기는 사용자가 직접 고르므로 코드 수정은 불필요.
-  다만 안내 글에 예시로 적힌 지역이 있으면 확인. `guide-subscription-first-rank.html`·`guide-dsr-ltv.html`·`term-ltv.html`과 DSR 계산기 FAQ(`pages_new.py`)에
+  다만 안내 글에 예시로 적힌 지역이 있으면 확인(`guide-second-home-acquisition.html`에 「서울 25개 구와 경기 일부」). `guide-subscription-first-rank.html`·`guide-dsr-ltv.html`·`term-ltv.html`과 DSR 계산기 FAQ(`pages_new.py`)에
   지금 규제지역(서울 25개 구·경기 12곳, 2026년 7월 1일 화성 동탄구·용인 기흥구·구리시 추가 — 국토부 보도자료)이 적혀 있음. 청약 예치금·1순위 기간이 바뀌어도 이 글을 고칠 것
 - 전월세 신고제(보증금 6천만원·월세 30만원 초과, 30일, 과태료 최대 30만원·거짓 100만원) → 계산기 상수는 없고 `guide-rent-report.html`만 고치면 됨
 - 오피스텔 주택 수 특례(소형 신축, 시가표준액 1억 이하 제외) → 계산기 상수는 없고 `guide-officetel.html`의 「주택 수에서 빠지는 오피스텔」 절만 고치면 됨
@@ -353,7 +355,7 @@ https://전국부동산계산기.com/guide-prepayment.html
   바뀌면 안내 글 `guide-mortgage-limit`·`guide-dsr-ltv`·`guide-base-rate-change`·`guide-refinance`·`guide-loan-30-vs-40`,
   용어 `term-dsr`·`term-ltv`·`term-stress-dsr`의 숫자를 다시 뽑을 것
 - 전세대출 규제(1주택자 수도권·규제지역 2억원 한도는 2025-09 대책, 이자 DSR 반영은 2025-10-29부터) →
-  계산기에는 상수가 없고 `pages_tools3.jeonse_loan_page`의 FAQ·본문 문장과 안내 글 `guide-jeonse-loan-vs-rent.html`(1주택자 2억 한도 절)에만 있음. 바뀌면 그 문장을 고칠 것
+  계산기에는 상수가 없고 `pages_tools3.jeonse_loan_page`의 FAQ·본문 문장과 안내 글 `guide-jeonse-loan-vs-rent.html`(1주택자 2억 한도 절)·`guide-jeonse-loan-interest.html`에만 있음. 바뀌면 그 문장을 고칠 것
 - 등기신청수수료·국민주택채권 매입률 → `js/registration-cost.js`의 `FEE`, `BOND`. 수수료는 2025-08-01에 올랐음(서면 18,000·
   전자표준양식 15,000·전자 10,000). 채권 할인율은 매일 바뀌어 입력값으로 둠(기본 10%는 예시). 바뀌면 안내 글 `guide-self-registration.html`도
 - 중개보수 요율 → 거의 안 바뀜
