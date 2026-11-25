@@ -1391,6 +1391,11 @@ function near(label, got, want, tol) {
     const lab = `대출 낀 수익률 글 대출${loan} ${r}%`; expect(lab + ' 총투자', await get('out-cap'), cap); expect(lab + ' 자기자본', await get('out-coc'), coc); expect(lab + ' 순영업', await get('out-noi'), '23,880,000');
     if (int) expect(lab + ' 이자', await get('out-int'), int); if (cf) expect(lab + ' 현금흐름', await get('out-cf'), cf);
   }
+  // 참고 자료의 공공 사이트 링크 모음 (2026-11-25): 13곳, 모두 https·새 창·noopener
+  await page.goto(BASE + 'refs.html');
+  { const ext = await page.$$eval('main a.tool-card[href^="http"]', a => a.map(x => [x.getAttribute('href'), x.target, x.rel]));
+    expect('참고 자료 공공 사이트 링크 수', ext.length, 13); expect('참고 자료 공공 사이트 링크 새 창·noopener', ext.every(([h, t, r]) => h.startsWith('https://') && t === '_blank' && r === 'noopener'), true);
+    expect('참고 자료 공공 사이트 링크 중복 없음', new Set(ext.map(x => x[0])).size, 13); }
   // 주 40시간을 넘으면 연장 시간(5인 이상 1.5배)도 넣는다 — 하루 8시간·주 6일: 209 + 35×1.5 = 261.5시간 (2026-11 Codex 지적)
   await fresh('hourly-wage.html'); await setChk('holiday', true); await setChk('big', true); await type('daily', '8'); await type('days', '6'); await type('monthlyPay', '3000000');
   expect('월급→시급 연장 포함 시간', await get('out-rev-hours'), '261.5'); expect('월급→시급 연장 포함 최저임금 월급', await get('out-min-monthly'), '2,698,680'); expect('월급→시급 연장 포함 시급', await get('out-rev-wage'), '11,472');
