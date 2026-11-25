@@ -263,7 +263,9 @@ def _hub(path, eyebrow, h1, sub, body, sections):
     secs = ""
     for (title, note, cards) in sections:
         note_html = f'<p class="hub-sub">{note}</p>' if note else ""
-        cards_html = "".join(f'<a class="tool-card" href="{f}"><p class="t">{n}</p><p class="d">{d}</p></a>' for (f, n, d) in cards)
+        # 바깥 사이트 카드는 새 창으로 연다(이름 끝에 ↗)
+        ext = lambda f: ' target="_blank" rel="noopener"' if f.startswith("http") else ""
+        cards_html = "".join(f'<a class="tool-card" href="{f}"{ext(f)}><p class="t">{n}{" ↗" if ext(f) else ""}</p><p class="d">{d}</p></a>' for (f, n, d) in cards)
         secs += f'''
     <section class="card">
       <h2>{title}</h2>{note_html}
@@ -288,10 +290,30 @@ def forms_index():
                 [("서식", None, [(f, n, d) for (f, n, _t, _d, d) in FORMS]),
                  ("용어 사전", "대항력, 확정일자, 근저당, DSR… 계약·등기·세금·대출 용어를 쉬운 말로.", [("glossary.html", "부동산 용어 사전", "39개 용어, 항목마다 관련 계산기 연결")])])
 
+# 「참고 자료」의 공공 사이트 링크 모음 (2026-11-25). 모두 공공기관이고, 이 사이트와 제휴 관계가 없다.
+# 주소가 바뀌면 여기만 고친다. 2026-11-25에 열어 본 곳: 공시가격 알리미·R-ONE·정부24·청약홈·HUG·금융상품 한눈에·한국은행.
+# 실거래가·토지이음·인터넷등기소·부동산거래관리시스템·홈택스·위택스는 작업 환경(해외 접속)에서 응답이 없어 열어 보지 못했다
+PUBLIC_LINKS = [
+    ("https://rt.molit.go.kr/", "국토교통부 실거래가 공개시스템", "아파트·연립·단독·토지의 실제 거래 가격과 전월세 가격"),
+    ("https://www.realtyprice.kr/", "부동산 공시가격 알리미", "공동주택·단독주택 공시가격, 개별공시지가"),
+    ("https://www.eum.go.kr/", "토지이음", "토지이용계획, 용도지역, 개발 규제 확인"),
+    ("https://www.reb.or.kr/r-one/", "한국부동산원 부동산통계 (R-ONE)", "매매·전세 가격지수, 지가지수, 거래량 통계"),
+    ("https://www.iros.go.kr/", "대법원 인터넷등기소", "등기부등본(등기사항증명서) 열람·발급, 확정일자"),
+    ("https://www.gov.kr/", "정부24", "건축물대장, 토지대장, 전입신고, 주민등록등본"),
+    ("https://www.applyhome.co.kr/", "청약홈", "분양 일정, 청약 신청, 당첨 조회, 청약 자격 확인"),
+    ("https://www.khug.or.kr/", "주택도시보증공사 (HUG)", "전세보증금 반환보증, 안심전세 정보"),
+    ("https://rtms.molit.go.kr/", "부동산거래관리시스템", "부동산 거래 신고, 주택 임대차(전월세) 신고"),
+    ("https://www.hometax.go.kr/", "국세청 홈택스", "양도소득세·증여세·종합소득세 신고, 연말정산 간소화"),
+    ("https://www.wetax.go.kr/", "위택스", "취득세·재산세 등 지방세 신고와 납부"),
+    ("https://finlife.fss.or.kr/", "금융감독원 금융상품 한눈에", "은행별 예금·적금·주택담보대출·전세대출 금리 비교"),
+    ("https://www.bok.or.kr/", "한국은행", "기준금리와 금융통화위원회 일정"),
+]
+
 def refs_index():
     return _hub("refs.html", "References", "참고 자료", "계약과 세금 전에 확인할 것",
                 "세율이나 법령을 해석하지 않습니다. 무엇을 어디서 확인해야 하는지, 숫자를 어떻게 읽어야 하는지 안내합니다.",
                 [("확인 목록·확인처", None, [(f, n, d) for (f, n, _t, _d, _c, d) in REFS if f != "guides.html"]),
+                 ("자주 쓰는 공공 사이트", "실거래가, 공시가격, 등기부, 청약, 세금 신고처럼 직접 확인해야 하는 곳입니다. 모두 공공기관 사이트이고 새 창으로 열립니다.", PUBLIC_LINKS),
                  ("안내 글", f"부동산 숫자를 읽는 법 {len(GUIDES)}편.", [(f, n, "") for (f, n, _t, _d) in GUIDES] + [("guides.html", "안내 글 목록 전체 보기", "")])])
 
 def home():
@@ -383,7 +405,8 @@ def home():
                    "guide-year-end-education.html": "교육비 공제", "guide-income-tax-brackets.html": "소득세 세율 구간",
                    "guide-loan-interest-by-amount.html": "2억·3억·5억 대출 이자",
                    "guide-savings-monthly-table.html": "적금 이자 표", "guide-jeonse-loan-interest.html": "전세대출 이자 표", "guide-second-home-acquisition.html": "두 번째 집 취득세",
-                   "guide-long-term-deduction.html": "장기보유특별공제 표", "guide-gyeonggi-apartment.html": "경기도 시별 아파트값", "guide-monthly-to-hourly.html": "월급을 시급으로"}
+                   "guide-long-term-deduction.html": "장기보유특별공제 표", "guide-gyeonggi-apartment.html": "경기도 시별 아파트값", "guide-monthly-to-hourly.html": "월급을 시급으로",
+                   "guide-deposit-interest-table.html": "예금 이자 표", "guide-credit-loan-mortgage-limit.html": "신용대출과 주담대 한도", "guide-yield-leverage.html": "대출 낀 상가 수익률"}
     gtile = lambda g: (f'<a class="tile" href="{g[0]}" data-k="{g[1]}" data-pub="{PAGE_DATES.get(g[0], {}).get("published", "")}">'
                        f'{tile_icon(g[0])}<span class="t">{GUIDE_SHORT.get(g[0], g[1])}</span></a>')
     # 안내 글은 새 글 몇 편만 먼저 보이고 나머지는 접어 둔다(2026-11: 타일 78개가 폰에서 화면 4개 분량이었다).

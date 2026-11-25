@@ -382,21 +382,27 @@ GUIDES = [
      "한국부동산원 지수로 보면 경기도 아파트값은 2012년 12월부터 2026년 9월까지 1.41배입니다. 광명시 2.08배, 성남시 1.88배인 반면 동두천시는 0.87배입니다. 시·구별 배수와 평균 매매가를 정리했습니다."),
     ("guide-monthly-to-hourly.html", "월급을 시급으로 바꾸면, 내 시급은 얼마인가", "월급 시급 환산 — 월급 200만~500만원 시급 표, 209시간, 최저임금 월급 215만 6,880원",
      "월급을 시급으로 바꿀 때는 209시간으로 나눕니다. 월급 250만원이면 시급 11,961원, 300만원이면 14,354원입니다. 월급별 시급과 근무시간이 짧을 때의 계산, 최저임금에 들어가는 항목을 정리했습니다."),
+    ("guide-deposit-interest-table.html", "예금 이자 표, 1,000만~1억원 맡기면 세후 얼마 받나", "예금 이자 계산 표 — 1천만·3천만·5천만·1억원, 6개월·1년·2년 세후 이자",
+     "5,000만원을 연 3% 정기예금에 1년 맡기면 세금 23만 1,000원을 떼고 이자 126만 9,000원을 받습니다. 1,000만~1억원의 기간별·금리별 세후 이자와 만기 수령액을 정리했습니다."),
+    ("guide-credit-loan-mortgage-limit.html", "신용대출이 있으면 주택담보대출 한도는 얼마나 줄어드나", "신용대출·마이너스통장과 주담대 한도 — 기존 대출 연간 원리금별 DSR 한도 표",
+     "연봉 5,000만원의 수도권 주택담보대출 DSR 한도는 2억 3,836만 2,712원인데, 1년에 750만원씩 갚는 신용대출이 있으면 1억 4,897만 6,695원입니다. 기존 대출별 한도와 계산 방식을 정리했습니다."),
+    ("guide-yield-leverage.html", "대출을 끼고 상가를 사면 수익률은 어떻게 달라지나", "상가 대출 레버리지 수익률 — 대출금·금리별 자기자본 수익률과 현금흐름 표",
+     "매매가 5억원, 월세 220만원인 상가의 총투자 수익률은 4.82%입니다. 3억원을 연 4%로 빌리면 자기자본 수익률 6.09%, 연 6%면 3.02%입니다. 대출금·금리별 수익률과 현금흐름을 정리했습니다."),
 ]
 # 안내 글 주제 묶음(안내 글 목록 guides.html). 글은 꼭 한 묶음에만 넣는다 — 빠지거나 겹치면 빌드가 멈춘다.
 # 2026-11: 묶음 없이 오래된 글부터 84장이 한 줄로 이어져 폰에서 화면 23개 분량이었다. 새 글을 쓰면 여기에도 넣을 것
 GUIDE_TOPICS = [
     ("rent", "전세·월세", "conversion jeonse-vs-monthly jeonse-registry renewal-refusal jeonse-insurance-fail moving-14days deposit-vs-rent deposit-return "
                          "renewal-rent-increase jeonse-ratio renewal-family rent-report jeonse-loan-vs-rent jeonse-loan-interest brokerage"),
-    ("loan", "대출", "repayment loan-100m-interest loan-interest-by-amount dsr-ltv fixed-vs-variable loan-rate-structure prepayment mortgage-limit base-rate-change refinance loan-30-vs-40"),
+    ("loan", "대출", "repayment loan-100m-interest loan-interest-by-amount dsr-ltv fixed-vs-variable loan-rate-structure prepayment mortgage-limit credit-loan-mortgage-limit base-rate-change refinance loan-30-vs-40"),
     ("buy", "집 살 때·팔 때", "acquisition-tax acquisition-6-9 first-home-acquisition second-home-acquisition mixed-use-acquisition buying-costs self-registration buy-vs-rent "
-                           "cgt-exemption cgt-heavy cgt-high-price long-term-deduction cgt-filing temporary-two-homes officetel area-84 yield-vacancy"),
+                           "cgt-exemption cgt-heavy cgt-high-price long-term-deduction cgt-filing temporary-two-homes officetel area-84 yield-vacancy yield-leverage"),
     ("hold", "보유세·상속·증여", "property-tax property-tax-table jongbuse-threshold jongbuse-payment rental-income-two-homes jeonse-deemed-rent gift-tax-free family-loan gift-vs-inheritance inheritance-threshold"),
     ("sub", "청약", "subscription-points subscription-notice-date subscription-first-rank subscription-deduction"),
     ("pay", "월급·연말정산", "salary-net salary-raise salary-table year-end-december card-deduction year-end-dependents year-end-result year-end-medical year-end-education year-end-job-change "
                           "rent-tax-credit-who rent-credit-refund pension-tax-credit freelancer-refund income-tax-brackets"),
     ("work", "퇴직·휴가·저축", "severance severance-table severance-tax annual-leave-pay annual-leave-days minimum-wage-2027 weekly-holiday-pay hourly-wage-table monthly-to-hourly parental-leave-pay unemployment-floor unemployment-days "
-                            "savings-real-rate savings-monthly-table deposit-100m"),
+                            "savings-real-rate savings-monthly-table deposit-interest-table deposit-100m"),
     ("price", "집값·땅값 흐름", "apartment-multiple seoul-apartment-gu gyeonggi-apartment land-price-lookup land-index-sido apartment-vs-land real-price-multiple"),
 ]
 GUIDE_NEW_COUNT = 6      # 「새로 올린 글」과 홈에 먼저 보이는 안내 글 수. 새 글은 GUIDES 맨 뒤에 붙이므로 뒤에서부터 센다
@@ -446,11 +452,11 @@ TOOL_GUIDES = {
     "rent-tax-credit.html": ["guide-rent-tax-credit-who.html", "guide-rent-credit-refund.html", "guide-year-end-december.html"],
     "fee.html": ["guide-brokerage.html", "guide-buying-costs.html", "guide-jeonse-registry.html"],
     "loan.html": ["guide-loan-100m-interest.html", "guide-loan-interest-by-amount.html", "guide-repayment.html"],
-    "dsr.html": ["guide-dsr-ltv.html", "guide-mortgage-limit.html", "guide-loan-30-vs-40.html"],
+    "dsr.html": ["guide-dsr-ltv.html", "guide-mortgage-limit.html", "guide-credit-loan-mortgage-limit.html"],
     "prepayment.html": ["guide-prepayment.html", "guide-refinance.html", "guide-repayment.html"],
     "acquisition-tax.html": ["guide-acquisition-tax.html", "guide-first-home-acquisition.html", "guide-second-home-acquisition.html"],
     "capital-gains-tax.html": ["guide-cgt-exemption.html", "guide-long-term-deduction.html", "guide-cgt-heavy.html"],
-    "yield.html": ["guide-yield-vacancy.html", "guide-mixed-use-acquisition.html", "guide-rental-income-two-homes.html"],
+    "yield.html": ["guide-yield-vacancy.html", "guide-yield-leverage.html", "guide-mixed-use-acquisition.html"],
     "subscription.html": ["guide-subscription-points.html", "guide-subscription-first-rank.html", "guide-subscription-notice-date.html"],
     "area.html": ["guide-area-84.html", "guide-officetel.html"],
     "renewal.html": ["guide-renewal-refusal.html", "guide-renewal-family.html", "guide-renewal-rent-increase.html"],
@@ -467,7 +473,7 @@ TOOL_GUIDES = {
     "severance.html": ["guide-severance-table.html", "guide-severance.html", "guide-severance-tax.html"],
     "inheritance-tax.html": ["guide-inheritance-threshold.html", "guide-gift-vs-inheritance.html"],
     "jeonse-loan.html": ["guide-jeonse-loan-interest.html", "guide-jeonse-loan-vs-rent.html", "guide-subscription-deduction.html"],
-    "savings.html": ["guide-savings-monthly-table.html", "guide-deposit-100m.html", "guide-savings-real-rate.html"],
+    "savings.html": ["guide-savings-monthly-table.html", "guide-deposit-interest-table.html", "guide-deposit-100m.html"],
     "unemployment-benefit.html": ["guide-unemployment-days.html", "guide-unemployment-floor.html", "guide-severance.html"],
     "hourly-wage.html": ["guide-hourly-wage-table.html", "guide-monthly-to-hourly.html", "guide-weekly-holiday-pay.html"],
     "year-end-tax.html": ["guide-year-end-result.html", "guide-card-deduction.html", "guide-year-end-education.html"],

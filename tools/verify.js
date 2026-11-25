@@ -1354,6 +1354,48 @@ function near(label, got, want, tol) {
     expect(`월급→시급 글 ${pay} ${d}×${n} 시급`, await get('out-rev-wage'), wage); expect(`월급→시급 글 ${pay} ${d}×${n} 시간`, await get('out-rev-hours'), hours);
     if (minPay) expect(`월급→시급 글 ${d}×${n} 최저임금 월급`, await get('out-min-monthly'), minPay);
   }
+  // ------------------------------------------------------------ 안내 글 3편 (2026-11-25) 본문 숫자
+  // guide-deposit-interest-table.html — 정기예금 [금액, 개월, 금리, 방식, 과세, 세전, 세금, 세후, 만기]
+  for (const [amt, m, r, method, tax, gross, taxAmt, net, mat] of [
+      ['10000000', '12', '3', 'simple', 'general', '300,000', null, '253,800', '10,253,800'], ['20000000', '12', '3', 'simple', 'general', null, null, '507,600', '20,507,600'], ['30000000', '12', '3', 'simple', 'general', null, null, '761,400', '30,761,400'],
+      ['50000000', '12', '3', 'simple', 'general', '1,500,000', '231,000', '1,269,000', '51,269,000'], ['70000000', '12', '3', 'simple', 'general', null, null, '1,776,600', '71,776,600'], ['100000000', '12', '3', 'simple', 'general', null, null, '2,538,000', '102,538,000'],
+      ['10000000', '6', '3', 'simple', 'general', null, null, '126,900', null], ['10000000', '24', '3', 'simple', 'general', null, null, '507,600', null], ['30000000', '6', '3', 'simple', 'general', null, null, '380,700', null], ['30000000', '24', '3', 'simple', 'general', null, null, '1,522,800', null],
+      ['50000000', '6', '3', 'simple', 'general', null, null, '634,500', null], ['50000000', '24', '3', 'simple', 'general', null, null, '2,538,000', null], ['100000000', '6', '3', 'simple', 'general', null, null, '1,269,000', null], ['100000000', '24', '3', 'simple', 'general', null, null, '5,076,000', null],
+      ['10000000', '12', '2.5', 'simple', 'general', null, null, '211,500', null], ['10000000', '12', '3.5', 'simple', 'general', null, null, '296,100', null], ['10000000', '12', '4', 'simple', 'general', null, null, '338,400', null],
+      ['50000000', '12', '2.5', 'simple', 'general', null, null, '1,057,500', null], ['50000000', '12', '3.5', 'simple', 'general', null, null, '1,480,500', null], ['50000000', '12', '4', 'simple', 'general', null, null, '1,692,000', null],
+      ['30000000', '12', '3.5', 'simple', 'general', null, null, '888,300', null], ['30000000', '12', '4', 'simple', 'general', null, null, '1,015,200', null],
+      ['50000000', '24', '3', 'compound', 'general', null, null, '2,612,342', null], ['50000000', '36', '3', 'simple', 'general', null, null, '3,807,000', null], ['50000000', '36', '3', 'compound', 'general', null, null, '3,978,390', null],
+      ['50000000', '12', '3', 'simple', 'none', null, '0', '1,500,000', null]]) {
+    await fresh('savings.html'); await radio('kind', 'deposit'); await radio('method', method); await page.selectOption('#taxKind', tax); await type('months', m); await type('rate', r); await type('amount', amt);
+    const lab = `예금 표 글 ${amt} ${m}개월 ${r}% ${method} ${tax}`;
+    if (gross) expect(lab + ' 세전', await get('out-interest'), gross); if (taxAmt) expect(lab + ' 세금', await get('out-tax'), taxAmt); if (net) expect(lab + ' 세후', await get('out-net'), net); if (mat) expect(lab + ' 만기', await get('out-maturity'), mat);
+  }
+  // guide-credit-loan-mortgage-limit.html — 4.5%, 30년, DSR 40%, LTV에 안 걸리게 시세 30억. 기존 대출 연간 원리금별 DSR 한도
+  await fresh('dsr.html');
+  await type('value', '3000000000'); await page.fill('#ltv', '70'); await type('senior', '0'); await page.fill('#rate', '4.5'); await page.fill('#years', '30'); await page.fill('#dsr', '40');
+  for (const [st, inc, ex, want] of [
+      ['3.0', '50000000', '0', '238,362,712'], ['3.0', '50000000', '3000000', '202,608,305'], ['3.0', '50000000', '5000000', '178,772,034'], ['3.0', '50000000', '7500000', '148,976,695'], ['3.0', '50000000', '10000000', '119,181,356'],
+      ['3.0', '50000000', '15000000', '59,590,678'], ['3.0', '50000000', '20000000', '0'], ['3.0', '80000000', '0', '381,380,340'], ['3.0', '80000000', '3000000', '345,625,933'], ['3.0', '80000000', '5000000', '321,789,661'],
+      ['3.0', '80000000', '7500000', '291,994,322'], ['3.0', '80000000', '10000000', '262,198,983'], ['3.0', '80000000', '15000000', '202,608,305'], ['3.0', '80000000', '20000000', '143,017,627'],
+      ['3.0', '60000000', '0', '286,035,255'], ['3.0', '60000000', '7500000', '196,649,238'], ['3.0', '100000000', '0', '476,725,424'], ['3.0', '100000000', '7500000', '387,339,407'],
+      ['0.75', '50000000', '0', '301,820,987'], ['0.75', '50000000', '3000000', '256,547,839'], ['0.75', '50000000', '5000000', '226,365,741'], ['0.75', '50000000', '7500000', '188,638,117'], ['0.75', '50000000', '10000000', '150,910,494'],
+      ['0.75', '50000000', '15000000', '75,455,247'], ['0.75', '80000000', '0', '482,913,580'], ['0.75', '80000000', '3000000', '437,640,432'], ['0.75', '80000000', '5000000', '407,458,333'], ['0.75', '80000000', '7500000', '369,730,710'],
+      ['0.75', '80000000', '10000000', '332,003,086'], ['0.75', '80000000', '15000000', '256,547,839']]) {
+    await page.fill('#stress', st); await type('existing', ex); await type('income', inc); expect(`신용대출 한도 글 가산${st} 연봉${inc} 기존${ex}`, await get('out-dsr'), want);
+  }
+  // guide-yield-leverage.html — 5억, 부대비용 2,500만, 보증금 3,000만, 월세 220만, 공실 5%, 운영비 120만. [대출, 금리, 총투자, 자기자본, 이자, 현금흐름]
+  for (const [loan, r, cap, coc, int, cf] of [['0', '5', '4.82', '4.82', '0', '23,880,000'], ['100000000', '4', '4.82', '5.03', null, null], ['100000000', '5', '4.82', '4.78', '5,000,000', '18,880,000'], ['100000000', '6', '4.82', '4.53', null, null],
+      ['200000000', '4', '4.82', '5.38', null, null], ['200000000', '5', '4.82', '4.71', '10,000,000', '13,880,000'], ['200000000', '6', '4.82', '4.03', null, null], ['200000000', '4.8', '4.82', '4.84', null, null],
+      ['300000000', '4', '4.82', '6.09', '12,000,000', '11,880,000'], ['300000000', '5', '4.82', '4.55', '15,000,000', '8,880,000'], ['300000000', '6', '4.82', '3.02', '18,000,000', '5,880,000']]) {
+    await fresh('yield.html'); await type('cost', '25000000'); await type('deposit', '30000000'); await type('rent', '2200000'); await type('opex', '1200000'); await type('loan', loan); await page.fill('#vacancy', '5'); await page.fill('#loanRate', r); await type('price', '500000000');
+    const lab = `대출 낀 수익률 글 대출${loan} ${r}%`; expect(lab + ' 총투자', await get('out-cap'), cap); expect(lab + ' 자기자본', await get('out-coc'), coc); expect(lab + ' 순영업', await get('out-noi'), '23,880,000');
+    if (int) expect(lab + ' 이자', await get('out-int'), int); if (cf) expect(lab + ' 현금흐름', await get('out-cf'), cf);
+  }
+  // 참고 자료의 공공 사이트 링크 모음 (2026-11-25): 13곳, 모두 https·새 창·noopener
+  await page.goto(BASE + 'refs.html');
+  { const ext = await page.$$eval('main a.tool-card[href^="http"]', a => a.map(x => [x.getAttribute('href'), x.target, x.rel]));
+    expect('참고 자료 공공 사이트 링크 수', ext.length, 13); expect('참고 자료 공공 사이트 링크 새 창·noopener', ext.every(([h, t, r]) => h.startsWith('https://') && t === '_blank' && r === 'noopener'), true);
+    expect('참고 자료 공공 사이트 링크 중복 없음', new Set(ext.map(x => x[0])).size, 13); }
   // 주 40시간을 넘으면 연장 시간(5인 이상 1.5배)도 넣는다 — 하루 8시간·주 6일: 209 + 35×1.5 = 261.5시간 (2026-11 Codex 지적)
   await fresh('hourly-wage.html'); await setChk('holiday', true); await setChk('big', true); await type('daily', '8'); await type('days', '6'); await type('monthlyPay', '3000000');
   expect('월급→시급 연장 포함 시간', await get('out-rev-hours'), '261.5'); expect('월급→시급 연장 포함 최저임금 월급', await get('out-min-monthly'), '2,698,680'); expect('월급→시급 연장 포함 시급', await get('out-rev-wage'), '11,472');

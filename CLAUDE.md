@@ -12,7 +12,7 @@
 python3 tools/build/build.py
 ```
 
-등록부에서 191쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
+등록부에서 194쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
 같은 소스로 두 번 돌리면 결과가 같아야 합니다(멱등). 달라지면 버그입니다.
 
 - `site_core.py` — 등록부(TOOLS, TABLES, FORMS, REFS, GUIDES, HUBS, RATE_HISTORY)와 공통 틀.
@@ -23,7 +23,7 @@ python3 tools/build/build.py
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽, 안내 글 4편, 안내 글 틀(`article`: 핵심 숫자 상자·차례)
 - `guide_keys.py` — 안내 글 맨 위 「핵심 숫자」 값(`GUIDE_KEYS`)
 - `og_cards.py` — 쪽마다 공유 카드(og:image) 내용. 계산기 38개 문구(`OG_TOOLS`), 안내 글은 제목·핵심 숫자로 자동
-- `pages_guides2.py` — 안내 글 90편
+- `pages_guides2.py` — 안내 글 93편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
 - `build.py` — 위를 모아 쓰고 `manifest.json`, `sw.js`, `sitemap.xml`, `js/analytics.js`를 생성
 
@@ -44,8 +44,8 @@ python3 tools/build/build.py
 
 ### 검색 제외 (noindex)
 
-191쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
-검색 대상은 178쪽입니다(2026-11-24). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
+194쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
+검색 대상은 181쪽입니다(2026-11-25). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
 
 - 용어 9쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
 - 용어 39쪽 중 30쪽은 1,000자 이상으로 늘려 검색에 되돌렸습니다: 대항력·확정일자·전세가율·DSR·LTV,
@@ -133,7 +133,7 @@ node tools/verify.js
 
 ```
 python3 tools/build/build.py          # 카드 숫자 확인 + tools/og/cards.json
-python3 tools/og/make_cards.py        # 바뀐 카드만 다시 그림(--all이면 전부). 133장이 5초
+python3 tools/og/make_cards.py        # 바뀐 카드만 다시 그림(--all이면 전부). 136장이 5초
 ```
 
 - 계산기: `tools/build/og_cards.py`의 `OG_TOOLS`에 (칩, 머리말, 큰 숫자 앞말, 큰 숫자, 아래 줄[, 숫자가 있는 안내 글]).
@@ -266,7 +266,7 @@ https://전국부동산계산기.com/guide-prepayment.html
     안내 글 `guide-unemployment-floor.html`(「2027년에 바뀔 것」 절)·`guide-unemployment-days.html`(「개편안이 시행되면」 절, 12개월 기한 문장)·
     `guide-minimum-wage-2027.html`(실업급여 문단)을 고칠 것. ④가 시행되면 `guide-hourly-wage-table.html`의 「월 60시간(주 15시간) 이상」 문장도 고칠 것
 - `js/savings.js`(이자소득세 15.4%)와 `js/jeonse-loan.js`(주택임차차입금 소득공제 40%·400만원)는 거의 안 바뀜.
-  바뀌면 `guide-savings-monthly-table.html`(월 납입액별 만기 수령액)과 `guide-jeonse-loan-interest.html`(소득공제액 표, 1주택자 2억 한도 문단)도 다시 뽑을 것.
+  바뀌면 `guide-savings-monthly-table.html`(월 납입액별 만기 수령액)·`guide-deposit-interest-table.html`(예치 금액별 세후 이자)과 `guide-jeonse-loan-interest.html`(소득공제액 표, 1주택자 2억 한도 문단)도 다시 뽑을 것.
   예금자보호 한도(1억원, 2025-09부터)와 금융소득 종합과세 기준(2,000만원)은 `guide-deposit-100m.html`에 적혀 있음
 - **땅값 몇 배 계산기 자료**(한국부동산원 지가지수 + 통계청 소비자물가지수) — 원자료는 `tools/data/raw/`(받은 그대로),
   `python3 tools/data/convert_land_index.py`가 `tools/data/land_index.json`으로 정리하고, 빌드가 `js/land-index-data.js`와 지역 목록을 만든다.
@@ -352,13 +352,15 @@ https://전국부동산계산기.com/guide-prepayment.html
   2025-10-15 대책 이후 수도권·규제지역 LTV 40%(생애최초 70%), 스트레스 3.0%p, 금액 상한 6억·4억·2억.
   지방은 1.5%p의 50%(0.75%p)를 2026년 12월까지 운영 — **2027년 1월에 지방 기준을 확인할 것**.
   수도권·규제지역 주담대 만기는 2025-06-28부터 최장 30년(`guide-loan-30-vs-40.html`이 이걸 전제로 40년은 그 밖 지역 이야기로 씀).
-  바뀌면 안내 글 `guide-mortgage-limit`·`guide-dsr-ltv`·`guide-base-rate-change`·`guide-refinance`·`guide-loan-30-vs-40`,
+  바뀌면 안내 글 `guide-mortgage-limit`·`guide-dsr-ltv`·`guide-base-rate-change`·`guide-refinance`·`guide-loan-30-vs-40`·`guide-credit-loan-mortgage-limit`(기존 대출별 한도 표, 수도권 3.0%p·지방 0.75%p),
   용어 `term-dsr`·`term-ltv`·`term-stress-dsr`의 숫자를 다시 뽑을 것
 - 전세대출 규제(1주택자 수도권·규제지역 2억원 한도는 2025-09 대책, 이자 DSR 반영은 2025-10-29부터) →
   계산기에는 상수가 없고 `pages_tools3.jeonse_loan_page`의 FAQ·본문 문장과 안내 글 `guide-jeonse-loan-vs-rent.html`(1주택자 2억 한도 절)·`guide-jeonse-loan-interest.html`에만 있음. 바뀌면 그 문장을 고칠 것
 - 등기신청수수료·국민주택채권 매입률 → `js/registration-cost.js`의 `FEE`, `BOND`. 수수료는 2025-08-01에 올랐음(서면 18,000·
   전자표준양식 15,000·전자 10,000). 채권 할인율은 매일 바뀌어 입력값으로 둠(기본 10%는 예시). 바뀌면 안내 글 `guide-self-registration.html`도
 - 중개보수 요율 → 거의 안 바뀜
+- 공공 사이트 링크 모음(`refs.html` 「자주 쓰는 공공 사이트」 13곳) → `pages_guides.PUBLIC_LINKS`. 주소가 바뀌거나 사이트가 합쳐지면 여기만 고칠 것.
+  실거래가·토지이음·인터넷등기소·부동산거래관리시스템·홈택스·위택스는 작업 환경(해외 접속)에서 응답이 없어 2026-11-25에 열어 보지 못했음. 해마다 한 번 눌러 볼 것
 
 ## 화면 기능 (2026-10 추가)
 

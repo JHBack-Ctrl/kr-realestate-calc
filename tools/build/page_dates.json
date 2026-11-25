@@ -60,8 +60,8 @@
   "published": "2026-09-17"
  },
  "dsr.html": {
-  "hash": "ae1a292ff7b4",
-  "modified": "2026-11-19",
+  "hash": "6437413348d2",
+  "modified": "2026-11-25",
   "published": "2026-09-17"
  },
  "fee.html": {
@@ -184,10 +184,20 @@
   "modified": "2026-10-06",
   "published": "2026-09-17"
  },
+ "guide-credit-loan-mortgage-limit.html": {
+  "hash": "efb5db2847d7",
+  "modified": "2026-11-25",
+  "published": "2026-11-25"
+ },
  "guide-deposit-100m.html": {
   "hash": "6efe8a509474",
   "modified": "2026-11-03",
   "published": "2026-11-03"
+ },
+ "guide-deposit-interest-table.html": {
+  "hash": "205f6d2f264e",
+  "modified": "2026-11-25",
+  "published": "2026-11-25"
  },
  "guide-deposit-return.html": {
   "hash": "59cd72f6d024",
@@ -564,13 +574,18 @@
   "modified": "2026-10-31",
   "published": "2026-10-31"
  },
+ "guide-yield-leverage.html": {
+  "hash": "5e363912444d",
+  "modified": "2026-11-25",
+  "published": "2026-11-25"
+ },
  "guide-yield-vacancy.html": {
   "hash": "4dc485eff077",
   "modified": "2026-09-27",
   "published": "2026-09-27"
  },
  "guides.html": {
-  "hash": "a59ffd36dd3d",
+  "hash": "e71ecaeb84db",
   "modified": "2026-11-25",
   "published": "2026-09-17"
  },
@@ -585,7 +600,7 @@
   "published": "2026-10-31"
  },
  "index.html": {
-  "hash": "ac4fff26962f",
+  "hash": "c491f9bb5bad",
   "modified": "2026-11-25",
   "published": "2026-09-17"
  },
@@ -660,7 +675,7 @@
   "published": "2026-09-17"
  },
  "refs.html": {
-  "hash": "8fd8537cb410",
+  "hash": "dc6523a8d166",
   "modified": "2026-11-25",
   "published": "2026-09-20"
  },
@@ -695,7 +710,7 @@
   "published": "2026-09-17"
  },
  "savings.html": {
-  "hash": "b249d9375d59",
+  "hash": "17c3886b31e2",
   "modified": "2026-11-25",
   "published": "2026-10-26"
  },
@@ -950,8 +965,8 @@
   "published": "2026-10-27"
  },
  "yield.html": {
-  "hash": "cad40f3a6b34",
-  "modified": "2026-10-30",
+  "hash": "a8ef46fd7066",
+  "modified": "2026-11-25",
   "published": "2026-09-17"
  }
 }
