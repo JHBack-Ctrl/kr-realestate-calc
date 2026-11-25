@@ -522,6 +522,28 @@
   "page": "guide-conversion.html",
   "title": "전월세 전환율, 어디에 쓰는 숫자인가"
  },
+ "og/guide-credit-loan-mortgage-limit.jpg": {
+  "chip": "안내 글 · 대출",
+  "foot": "참고용 · 계산 기준과 출처는 본문에 있습니다",
+  "hash": "1c03a2098257",
+  "keys": [
+   [
+    "2억 3,836만 2,712원",
+    "연봉 5,000만원 수도권 DSR 한도"
+   ],
+   [
+    "1억 4,897만 6,695원",
+    "연 750만원 갚는 대출이 있을 때"
+   ],
+   [
+    "약 1,192만원",
+    "연간 원리금 100만원마다 줄어드는 한도"
+   ]
+  ],
+  "kind": "guide",
+  "page": "guide-credit-loan-mortgage-limit.html",
+  "title": "신용대출이 있으면 주택담보대출 한도는 얼마나 줄어드나"
+ },
  "og/guide-deposit-100m.jpg": {
   "chip": "안내 글 · 퇴직·휴가·저축",
   "foot": "참고용 · 계산 기준과 출처는 본문에 있습니다",
@@ -543,6 +565,28 @@
   "kind": "guide",
   "page": "guide-deposit-100m.html",
   "title": "1억 예금하면 이자 얼마인가"
+ },
+ "og/guide-deposit-interest-table.jpg": {
+  "chip": "안내 글 · 퇴직·휴가·저축",
+  "foot": "참고용 · 계산 기준과 출처는 본문에 있습니다",
+  "hash": "8a5ce525075b",
+  "keys": [
+   [
+    "126만 9,000원",
+    "5,000만원 · 연 3% · 1년 세후 이자"
+   ],
+   [
+    "23만 1,000원",
+    "이자소득세(15.4%)"
+   ],
+   [
+    "8만 4,600원",
+    "1,000만원 · 금리 1%p · 1년 세후"
+   ]
+  ],
+  "kind": "guide",
+  "page": "guide-deposit-interest-table.html",
+  "title": "예금 이자 표, 1,000만~1억원 맡기면 세후 얼마 받나"
  },
  "og/guide-deposit-return.jpg": {
   "chip": "안내 글 · 전세·월세",
@@ -2177,6 +2221,28 @@
   "kind": "guide",
   "page": "guide-year-end-result.html",
   "title": "연말정산 결과 읽는 법, 환급이 줄어든 이유"
+ },
+ "og/guide-yield-leverage.jpg": {
+  "chip": "안내 글 · 집 살 때·팔 때",
+  "foot": "참고용 · 계산 기준과 출처는 본문에 있습니다",
+  "hash": "73ca2ff326b0",
+  "keys": [
+   [
+    "4.82%",
+    "대출 없이 살 때(총투자 수익률)"
+   ],
+   [
+    "6.09%",
+    "3억원 · 연 4% 대출"
+   ],
+   [
+    "3.02%",
+    "3억원 · 연 6% 대출"
+   ]
+  ],
+  "kind": "guide",
+  "page": "guide-yield-leverage.html",
+  "title": "대출을 끼고 상가를 사면 수익률은 어떻게 달라지나"
  },
  "og/guide-yield-vacancy.jpg": {
   "chip": "안내 글 · 집 살 때·팔 때",
