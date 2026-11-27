@@ -1401,6 +1401,57 @@ function near(label, got, want, tol) {
   { const ext = await page.$$eval('#c-links a.tile', a => a.map(x => [x.getAttribute('href'), x.target, x.rel]));
     expect('홈 공공 사이트 링크 수', ext.length, 13); expect('홈 공공 사이트 링크 새 창·noopener', ext.every(([h, t, r]) => h.startsWith('https://') && t === '_blank' && r === 'noopener'), true);
     await page.fill('#q', '실거래'); expect('홈 검색으로 공공 사이트 찾기', await page.$$eval('#c-links .tile', t => t.filter(x => !x.hidden && x.offsetParent).length), 1); await page.fill('#q', ''); }
+  // ------------------------------------------------------------ 안내 글 4편 (2026-11-27) 본문 숫자
+  // guide-one-home-rental-tax.html — 1주택. [기준시가 12억 초과, 월세(월), 보증금, 등록, 다른 소득 2천만 이하, 구분, 1년 세금]
+  for (const [high, rent, dep, reg, low, kind, want] of [[false, '1000000', '100000000', false, true, '비과세', '0'], [false, '0', '500000000', false, true, '비과세', '0'], [true, '0', '500000000', false, true, '비과세', '0'],
+      [true, '500000', '100000000', false, true, null, '154,000'], [true, '500000', '100000000', false, false, null, '462,000'], [true, '1000000', '100000000', false, true, null, '616,000'], [true, '1000000', '100000000', false, false, null, '924,000'],
+      [true, '1500000', '100000000', false, true, null, '1,078,000'], [true, '1500000', '100000000', false, false, null, '1,386,000'], [true, '1660000', '100000000', false, true, null, '1,225,840'], [true, '1660000', '100000000', false, false, null, '1,533,840'],
+      [true, '1700000', '100000000', false, true, '종합과세', null], [true, '1000000', '1000000000', false, true, null, '616,000'], [true, '1000000', '100000000', true, true, null, '123,200'], [true, '500000', '100000000', true, true, null, '0']]) {
+    await fresh('rental-income-tax.html'); await page.selectOption('#homes', '1'); await setChk('high', high); await setChk('highBoth', false); await setChk('reg', reg); await setChk('otherLow', low); await type('deposit', dep); await type('rent', rent);
+    const lab = `1주택 월세 글 ${high ? '12억 초과' : '12억 이하'} 월${rent} 보증금${dep}${reg ? ' 등록' : ''}${low ? '' : ' 공제없음'}`;
+    if (kind) expect(lab + ' 구분', await get('out-kind'), kind); if (want) expect(lab + ' 세금', await get('out-total'), want);
+  }
+  await page.fill('#rent', ''); await type('rent', '1000000'); await setChk('reg', false); await setChk('otherLow', true);
+  expect('1주택 월세 글 과세표준', await get('out-base'), '4,000,000'); expect('1주택 월세 글 소득세', await get('out-tax'), '560,000'); expect('1주택 월세 글 지방소득세', await get('out-local'), '56,000');
+  // guide-inheritance-spouse.html — [재산, 배우자, 자녀, 배우자가 받는 금액, 상속세, 배우자공제]
+  for (const [est, sp, kids, amt, want, spDed] of [
+      ['1000000000', false, '2', '', '86,330,000', null], ['1000000000', true, '2', '', '0', null], ['1500000000', false, '2', '', '231,345,000', null], ['1500000000', true, '2', '', '59,031,429', null],
+      ['2000000000', false, '2', '', '424,860,000', null], ['2000000000', true, '2', '', '128,040,000', '855,000,000'], ['3000000000', false, '2', '', '812,860,000', null], ['3000000000', true, '2', '', '314,834,286', null],
+      ['4000000000', false, '2', '', '1,248,875,000', null], ['4000000000', true, '2', '', '536,548,572', null], ['5000000000', false, '2', '', '1,733,875,000', null], ['5000000000', true, '2', '', '758,262,858', null],
+      ['1500000000', true, '1', '', '9,506,000', null], ['2000000000', true, '1', '', '48,112,000', null], ['3000000000', true, '1', '', '144,918,000', null], ['5000000000', true, '1', '', null, '2,997,000,000'],
+      ['1500000000', true, '3', '', '86,330,000', null], ['2000000000', true, '3', '', '183,330,000', null], ['3000000000', true, '3', '', '425,506,667', null],
+      ['2000000000', true, '2', '500000000', '231,345,000', '500,000,000'], ['2000000000', true, '2', '700000000', '173,145,000', '700,000,000'], ['2000000000', true, '2', '1000000000', '128,040,000', '855,000,000'],
+      ['3000000000', true, '2', '500000000', '618,860,000', null], ['3000000000', true, '2', '1000000000', '424,860,000', null], ['1000000000', false, '1', '', '86,330,000', null], ['1000000000', false, '3', '', '86,330,000', null]]) {
+    await fresh('inheritance-tax.html'); await setChk('spouse', sp); await type('kids', kids); if (sp && amt) await type('spouseAmt', amt); await type('estate', est);
+    const lab = `배우자 상속세 글 ${est} ${sp ? '배우자+' : ''}자녀${kids}${amt ? ' 받는금액' + amt : ''}`;
+    if (want) expect(lab, await get('out-tax'), want); if (spDed) expect(lab + ' 배우자공제', await get('out-spouse'), spDed);
+  }
+  // guide-subscription-points-examples.html — 공고일 2026-12-01. [생년월일, 혼인신고일, 마지막 주택 처분일, 부양가족, 통장 가입일, 무주택, 부양, 통장, 합계]
+  for (const [birth, marriage, lastSale, dep, account, h, d, a, tot] of [['1998-03-10', '', '', '0', '2018-03-01', '0', '5', '10', '15'], ['1993-06-15', '', '', '0', '2015-03-01', '8', '5', '13', '26'],
+      ['1991-05-10', '2019-10-01', '', '2', '2012-01-01', '16', '15', '16', '47'], ['1991-05-10', '2022-10-01', '', '2', '2012-01-01', '12', '15', '16', '43'], ['1984-03-20', '2012-05-01', '', '3', '2008-01-01', '30', '20', '17', '67'],
+      ['1981-08-05', '2009-04-11', '', '4', '2006-05-01', '32', '25', '17', '74'], ['1984-03-20', '2012-05-01', '2022-06-30', '3', '2008-01-01', '10', '20', '17', '47']]) {
+    await fresh('subscription.html'); await page.fill('#birth', birth); await setChk('married', !!marriage); if (marriage) await page.fill('#marriage', marriage);
+    await setChk('ownedBefore', !!lastSale); if (lastSale) await page.fill('#lastSale', lastSale); await setChk('owner', false); await page.fill('#dependents', dep); await page.fill('#account', account); await page.fill('#notice', '2026-12-01');
+    const lab = `가점 예시 글 ${birth}${marriage ? ' 혼인' + marriage : ''}${lastSale ? ' 처분' + lastSale : ''}`;
+    expect(lab + ' 무주택', await get('out-homeless'), h); expect(lab + ' 부양', await get('out-dependent'), d); expect(lab + ' 통장', await get('out-account'), a); expect(lab + ' 합계', await get('out-total'), tot);
+  }
+  // guide-buy-vs-rent-by-price.html — 대출 40%(연 4%), 전세대출 40%(연 3.5%), 보유세 0.15%, 기회비용 3%. [집값, 대출, 취득세율, 중개보수, 보증금, 전세대출, 전세 중개보수]
+  for (const [price, loan, acqR, fee, jeonse, jLoan, jFee, rows] of [
+      ['500000000', '200000000', '1.1', '0.4', '300000000', '120000000', '0.3', [[4, 0, 3, '80,500,000', '39,300,000', '1,677,083', '818,750', '2.00%'], [4, 1, 3, '60,197,995'], [4, 2, 3, '39,283,920'], [4, 3, 3, '17,745,595'], [8, 0, 3, null, null, null, null, '1.74%']]],
+      ['800000000', '320000000', '2.56', '0.4', '500000000', '200000000', '0.3', [[4, 0, 3, '140,480,000', '65,500,000', '2,926,667', '1,364,583', '2.27%'], [4, 1, 3, '107,996,792'], [4, 2, 3, '74,534,272'], [4, 3, 3, '40,072,952'], [8, 0, 3, null, null, null, null, '1.83%'], [4, 0, 4, '159,680,000', '77,500,000', null, null, '2.47%']]],
+      ['1200000000', '480000000', '3.3', '0.6', '700000000', '280000000', '0.4', [[4, 0, 3, '224,400,000', '92,400,000', '4,675,000', '1,925,000', '2.64%'], [4, 1, 3, '175,675,188'], [4, 2, 3, '125,481,408'], [4, 3, 3, '73,789,428'], [8, 0, 3, null, null, null, null, '2.06%']]]]) {
+    for (const [y, g, opp, bt, jt, bm, jm, be] of rows) {
+      await fresh('buy-vs-rent.html'); await type('price', price); await type('loan', loan); await type('jeonse', jeonse); await type('jLoan', jLoan);
+      for (const [k, v] of [['loanRate', '4'], ['acqRate', acqR], ['buyFee', fee], ['propTax', '0.15'], ['growth', String(g)], ['jRate', '3.5'], ['jFee', jFee], ['years', String(y)], ['opp', String(opp)]]) { await page.fill('#' + k, v); await page.dispatchEvent('#' + k, 'input'); }
+      const lab = `집값별 매수 전세 글 ${price} ${y}년 상승${g}% 기회${opp}%`;
+      if (bt) expect(lab + ' 매수', await get('out-buy-total'), bt); if (jt) expect(lab + ' 전세', await get('out-j-total'), jt);
+      if (bm) expect(lab + ' 매수 월', await get('out-buy-month'), bm); if (jm) expect(lab + ' 전세 월', await get('out-j-month'), jm); if (be) expect(lab + ' 경계', await get('out-be'), be);
+    }
+  }
+  await fresh('acquisition-tax.html'); for (const [p, want] of [['500000000', '5,500,000'], ['800000000', '20,504,000'], ['1200000000', '39,600,000']]) await acq(`집값별 매수 전세 글 취득세 ${p}`, p, 'one', false, false, want);
+  for (const [deal, p, want] of [['sale', '500000000', '2,000,000'], ['sale', '800000000', '3,200,000'], ['sale', '1200000000', '7,200,000'], ['jeonse', '300000000', '900,000'], ['jeonse', '500000000', '1,500,000'], ['jeonse', '700000000', '2,800,000']]) {
+    await fresh('fee.html'); await radio('kind', 'house'); await radio('deal', deal); await type('price', p); expect(`집값별 매수 전세 글 중개보수 ${deal} ${p}`, await get('out-fee'), want);
+  }
   // 주 40시간을 넘으면 연장 시간(5인 이상 1.5배)도 넣는다 — 하루 8시간·주 6일: 209 + 35×1.5 = 261.5시간 (2026-11 Codex 지적)
   await fresh('hourly-wage.html'); await setChk('holiday', true); await setChk('big', true); await type('daily', '8'); await type('days', '6'); await type('monthlyPay', '3000000');
   expect('월급→시급 연장 포함 시간', await get('out-rev-hours'), '261.5'); expect('월급→시급 연장 포함 최저임금 월급', await get('out-min-monthly'), '2,698,680'); expect('월급→시급 연장 포함 시급', await get('out-rev-wage'), '11,472');

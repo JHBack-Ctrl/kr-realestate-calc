@@ -388,6 +388,14 @@ GUIDES = [
      "연봉 5,000만원의 수도권 주택담보대출 DSR 한도는 2억 3,836만 2,712원인데, 1년에 750만원씩 갚는 신용대출이 있으면 1억 4,897만 6,695원입니다. 기존 대출별 한도와 계산 방식을 정리했습니다."),
     ("guide-yield-leverage.html", "대출을 끼고 상가를 사면 수익률은 어떻게 달라지나", "상가 대출 레버리지 수익률 — 대출금·금리별 자기자본 수익률과 현금흐름 표",
      "매매가 5억원, 월세 220만원인 상가의 총투자 수익률은 4.82%입니다. 3억원을 연 4%로 빌리면 자기자본 수익률 6.09%, 연 6%면 3.02%입니다. 대출금·금리별 수익률과 현금흐름을 정리했습니다."),
+    ("guide-one-home-rental-tax.html", "집 한 채 월세 놓으면 세금 내나", "1주택 월세 소득세 — 기준시가 12억원 이하 비과세, 초과 시 월세별 세금 표",
+     "부부 합산 집이 한 채이고 기준시가가 12억원 이하면 월세를 받아도 소득세가 없습니다. 12억원을 넘으면 월세 100만원에 1년 61만 6,000원입니다. 월세별 세금과 한 채인지 세는 법을 정리했습니다."),
+    ("guide-inheritance-spouse.html", "배우자가 있으면 상속세는 얼마나 줄어드나", "상속세 배우자공제 — 최소 5억·최대 30억원, 재산·자녀 수별 상속세 표",
+     "상속재산 20억원을 배우자와 자녀 2명이 받으면 상속세는 1억 2,804만원, 배우자 없이 자녀만 받으면 4억 2,486만원입니다. 재산별·자녀 수별 상속세와 배우자가 받는 금액에 따른 차이를 정리했습니다."),
+    ("guide-subscription-points-examples.html", "청약 가점 계산 예시, 30대·40대 몇 점인가", "청약 가점 계산 예시 — 미혼 1인·3인·4인 가족 점수, 30세 전 혼인, 예전 주택 처분",
+     "청약 가점은 만 33세 미혼 1인이면 26점, 만 35세 3인 가족 47점, 만 42세 4인 가족 67점입니다. 나이·혼인 시기·가족 수별 점수와 예전에 집이 있었을 때의 차이를 정리했습니다."),
+    ("guide-buy-vs-rent-by-price.html", "집값별로 사는 것과 전세, 4년 비용 비교", "매매 vs 전세 비용 비교 — 5억·8억·12억원 집 4년 비용, 집값 상승률별 표",
+     "집값이 그대로라면 8억원 집을 사서 4년 살 때 사라지는 돈은 1억 4,048만원, 5억원 전세는 6,550만원입니다. 5억·8억·12억원 집의 4년 비용과 두 쪽이 같아지는 상승률을 정리했습니다."),
 ]
 # 안내 글 주제 묶음(안내 글 목록 guides.html). 글은 꼭 한 묶음에만 넣는다 — 빠지거나 겹치면 빌드가 멈춘다.
 # 2026-11: 묶음 없이 오래된 글부터 84장이 한 줄로 이어져 폰에서 화면 23개 분량이었다. 새 글을 쓰면 여기에도 넣을 것
@@ -395,10 +403,10 @@ GUIDE_TOPICS = [
     ("rent", "전세·월세", "conversion jeonse-vs-monthly jeonse-registry renewal-refusal jeonse-insurance-fail moving-14days deposit-vs-rent deposit-return "
                          "renewal-rent-increase jeonse-ratio renewal-family rent-report jeonse-loan-vs-rent jeonse-loan-interest brokerage"),
     ("loan", "대출", "repayment loan-100m-interest loan-interest-by-amount dsr-ltv fixed-vs-variable loan-rate-structure prepayment mortgage-limit credit-loan-mortgage-limit base-rate-change refinance loan-30-vs-40"),
-    ("buy", "집 살 때·팔 때", "acquisition-tax acquisition-6-9 first-home-acquisition second-home-acquisition mixed-use-acquisition buying-costs self-registration buy-vs-rent "
+    ("buy", "집 살 때·팔 때", "acquisition-tax acquisition-6-9 first-home-acquisition second-home-acquisition mixed-use-acquisition buying-costs self-registration buy-vs-rent buy-vs-rent-by-price "
                            "cgt-exemption cgt-heavy cgt-high-price long-term-deduction cgt-filing temporary-two-homes officetel area-84 yield-vacancy yield-leverage"),
-    ("hold", "보유세·상속·증여", "property-tax property-tax-table jongbuse-threshold jongbuse-payment rental-income-two-homes jeonse-deemed-rent gift-tax-free family-loan gift-vs-inheritance inheritance-threshold"),
-    ("sub", "청약", "subscription-points subscription-notice-date subscription-first-rank subscription-deduction"),
+    ("hold", "보유세·상속·증여", "property-tax property-tax-table jongbuse-threshold jongbuse-payment rental-income-two-homes one-home-rental-tax jeonse-deemed-rent gift-tax-free family-loan gift-vs-inheritance inheritance-threshold inheritance-spouse"),
+    ("sub", "청약", "subscription-points subscription-points-examples subscription-notice-date subscription-first-rank subscription-deduction"),
     ("pay", "월급·연말정산", "salary-net salary-raise salary-table year-end-december card-deduction year-end-dependents year-end-result year-end-medical year-end-education year-end-job-change "
                           "rent-tax-credit-who rent-credit-refund pension-tax-credit freelancer-refund income-tax-brackets"),
     ("work", "퇴직·휴가·저축", "severance severance-table severance-tax annual-leave-pay annual-leave-days minimum-wage-2027 weekly-holiday-pay hourly-wage-table monthly-to-hourly parental-leave-pay unemployment-floor unemployment-days "
@@ -457,21 +465,21 @@ TOOL_GUIDES = {
     "acquisition-tax.html": ["guide-acquisition-tax.html", "guide-first-home-acquisition.html", "guide-second-home-acquisition.html"],
     "capital-gains-tax.html": ["guide-cgt-exemption.html", "guide-long-term-deduction.html", "guide-cgt-heavy.html"],
     "yield.html": ["guide-yield-vacancy.html", "guide-yield-leverage.html", "guide-mixed-use-acquisition.html"],
-    "subscription.html": ["guide-subscription-points.html", "guide-subscription-first-rank.html", "guide-subscription-notice-date.html"],
+    "subscription.html": ["guide-subscription-points.html", "guide-subscription-points-examples.html", "guide-subscription-first-rank.html"],
     "area.html": ["guide-area-84.html", "guide-officetel.html"],
     "renewal.html": ["guide-renewal-refusal.html", "guide-renewal-family.html", "guide-renewal-rent-increase.html"],
     "jeonse-insurance.html": ["guide-jeonse-insurance-fail.html", "guide-jeonse-ratio.html", "guide-deposit-return.html"],
     "jeonse-fraud-check.html": ["guide-jeonse-registry.html", "guide-jeonse-ratio.html", "guide-deposit-return.html"],
     "moving.html": ["guide-moving-14days.html", "guide-rent-report.html", "guide-jeonse-registry.html"],
     "rate-compare.html": ["guide-fixed-vs-variable.html", "guide-loan-rate-structure.html", "guide-base-rate-change.html"],
-    "buy-vs-rent.html": ["guide-buy-vs-rent.html", "guide-buying-costs.html", "guide-jeonse-vs-monthly.html"],
+    "buy-vs-rent.html": ["guide-buy-vs-rent.html", "guide-buy-vs-rent-by-price.html", "guide-buying-costs.html"],
     "tax-calendar.html": ["guide-property-tax.html", "guide-cgt-filing.html", "guide-year-end-december.html"],
     "property-tax.html": ["guide-property-tax-table.html", "guide-property-tax.html", "guide-jongbuse-threshold.html"],
     "comprehensive-property-tax.html": ["guide-jongbuse-payment.html", "guide-jongbuse-threshold.html", "guide-property-tax.html"],
     "gift-tax.html": ["guide-gift-tax-free.html", "guide-family-loan.html", "guide-gift-vs-inheritance.html"],
     "salary.html": ["guide-salary-net.html", "guide-salary-table.html", "guide-salary-raise.html"],
     "severance.html": ["guide-severance-table.html", "guide-severance.html", "guide-severance-tax.html"],
-    "inheritance-tax.html": ["guide-inheritance-threshold.html", "guide-gift-vs-inheritance.html"],
+    "inheritance-tax.html": ["guide-inheritance-threshold.html", "guide-inheritance-spouse.html", "guide-gift-vs-inheritance.html"],
     "jeonse-loan.html": ["guide-jeonse-loan-interest.html", "guide-jeonse-loan-vs-rent.html", "guide-subscription-deduction.html"],
     "savings.html": ["guide-savings-monthly-table.html", "guide-deposit-interest-table.html", "guide-deposit-100m.html"],
     "unemployment-benefit.html": ["guide-unemployment-days.html", "guide-unemployment-floor.html", "guide-severance.html"],
@@ -481,7 +489,7 @@ TOOL_GUIDES = {
     "pension-tax-credit.html": ["guide-pension-tax-credit.html", "guide-year-end-december.html", "guide-freelancer-refund.html"],
     "parental-leave.html": ["guide-parental-leave-pay.html"],
     "annual-leave.html": ["guide-annual-leave-days.html", "guide-annual-leave-pay.html", "guide-minimum-wage-2027.html"],
-    "rental-income-tax.html": ["guide-rental-income-two-homes.html", "guide-jeonse-deemed-rent.html", "guide-officetel.html"],
+    "rental-income-tax.html": ["guide-one-home-rental-tax.html", "guide-rental-income-two-homes.html", "guide-jeonse-deemed-rent.html"],
     "income-tax.html": ["guide-freelancer-refund.html", "guide-income-tax-brackets.html", "guide-year-end-dependents.html"],
     "land-multiple.html": ["guide-land-price-lookup.html", "guide-land-index-sido.html", "guide-apartment-vs-land.html"],
     "apartment-multiple.html": ["guide-apartment-multiple.html", "guide-seoul-apartment-gu.html", "guide-gyeonggi-apartment.html"],

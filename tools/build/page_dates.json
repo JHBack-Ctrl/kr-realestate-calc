@@ -35,8 +35,8 @@
   "published": "2026-09-17"
  },
  "buy-vs-rent.html": {
-  "hash": "0c14ddac8e9b",
-  "modified": "2026-10-30",
+  "hash": "c196b0f3fd55",
+  "modified": "2026-11-28",
   "published": "2026-09-17"
  },
  "capital-gains-tax.html": {
@@ -143,6 +143,11 @@
   "hash": "3bf2b5771522",
   "modified": "2026-10-06",
   "published": "2026-09-17"
+ },
+ "guide-buy-vs-rent-by-price.html": {
+  "hash": "2e3b86153c94",
+  "modified": "2026-11-28",
+  "published": "2026-11-28"
  },
  "guide-buy-vs-rent.html": {
   "hash": "0ae6785cc010",
@@ -259,6 +264,11 @@
   "modified": "2026-11-23",
   "published": "2026-11-23"
  },
+ "guide-inheritance-spouse.html": {
+  "hash": "c2c156a52f62",
+  "modified": "2026-11-28",
+  "published": "2026-11-28"
+ },
  "guide-inheritance-threshold.html": {
   "hash": "206d8a2770b5",
   "modified": "2026-11-03",
@@ -373,6 +383,11 @@
   "hash": "606bf0635f86",
   "modified": "2026-10-30",
   "published": "2026-09-21"
+ },
+ "guide-one-home-rental-tax.html": {
+  "hash": "2b61d7df654e",
+  "modified": "2026-11-28",
+  "published": "2026-11-28"
  },
  "guide-parental-leave-pay.html": {
   "hash": "3125fdf3bd31",
@@ -519,6 +534,11 @@
   "modified": "2026-10-01",
   "published": "2026-10-01"
  },
+ "guide-subscription-points-examples.html": {
+  "hash": "a01e70144f5d",
+  "modified": "2026-11-28",
+  "published": "2026-11-28"
+ },
  "guide-subscription-points.html": {
   "hash": "50f034e65b4b",
   "modified": "2026-09-20",
@@ -585,8 +605,8 @@
   "published": "2026-09-27"
  },
  "guides.html": {
-  "hash": "e71ecaeb84db",
-  "modified": "2026-11-25",
+  "hash": "c677c84e74d9",
+  "modified": "2026-11-28",
   "published": "2026-09-17"
  },
  "hourly-wage.html": {
@@ -600,13 +620,13 @@
   "published": "2026-10-31"
  },
  "index.html": {
-  "hash": "ca88958c5025",
-  "modified": "2026-11-25",
+  "hash": "beecb8e9f510",
+  "modified": "2026-11-28",
   "published": "2026-09-17"
  },
  "inheritance-tax.html": {
-  "hash": "64fe2dcfba77",
-  "modified": "2026-11-03",
+  "hash": "5631471114c5",
+  "modified": "2026-11-28",
   "published": "2026-10-26"
  },
  "jeonse-fraud-check.html": {
@@ -675,8 +695,8 @@
   "published": "2026-09-17"
  },
  "refs.html": {
-  "hash": "dc6523a8d166",
-  "modified": "2026-11-25",
+  "hash": "378a7369cad6",
+  "modified": "2026-11-28",
   "published": "2026-09-20"
  },
  "registration-cost.html": {
@@ -700,8 +720,8 @@
   "published": "2026-09-17"
  },
  "rental-income-tax.html": {
-  "hash": "877b5556a23f",
-  "modified": "2026-11-20",
+  "hash": "08964abcd656",
+  "modified": "2026-11-28",
   "published": "2026-10-27"
  },
  "salary.html": {
@@ -720,8 +740,8 @@
   "published": "2026-09-17"
  },
  "subscription.html": {
-  "hash": "accffa15f663",
-  "modified": "2026-11-10",
+  "hash": "f2caa5d266d0",
+  "modified": "2026-11-28",
   "published": "2026-09-17"
  },
  "table-acquisition-tax.html": {
