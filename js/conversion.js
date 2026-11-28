@@ -4,8 +4,8 @@
   var S = window.Site, $ = S.$;
 
   // ---- 상수 (기준일 표시. 기준금리는 한국은행 발표 시 갱신) ----
-  var BASE_RATE_DEFAULT = 3.00;      // 한국은행 기준금리 (%) — 화면에서 수정 가능
-  var BASE_RATE_DATE = '2026년 8월 27일 결정';
+  var BASE_RATE_DEFAULT = 3.25;      // 한국은행 기준금리 (%) — 화면에서 수정 가능
+  var BASE_RATE_DATE = '2026년 11월 26일 결정';
   var LEGAL_SPREAD = 2.0;            // 주택임대차보호법 시행령: 기준금리 + 2%p
   var LEGAL_CAP = 10.0;              // 연 10% 상한
   var MARKET_RATE_DEFAULT = 5.5;     // 시장 전환율 예시 (%) — 참고용

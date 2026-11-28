@@ -101,15 +101,17 @@
   "sub": "1주택 12억원 · 2주택 이상 9억원까지는 0원 · 농특세 포함"
  },
  "og/conversion.jpg": {
-  "big": "83만 3,333원",
+  "big": "87만 5,000원",
   "chip": "전월세 전환율 계산기",
   "foot": "가입 없이 바로 계산 · 참고용",
-  "hash": "8a40ceaba17e",
+  "hash": "ab31726de9d2",
   "kind": "tool",
-  "lead": "전세 3억을 보증금 1억으로 낮추면(전환율 5%)",
+  "lead": "전세 3억을 보증금 1억으로 낮추면(전환율 5.25%)",
   "page": "conversion.html",
   "pre": "월세",
-  "src": [],
+  "src": [
+   "guide-base-rate-change.html"
+  ],
   "sub": "집주인이 월 90만원을 부르면 전환율 5.4%를 적용한 셈"
  },
  "og/dsr.jpg": {

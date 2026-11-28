@@ -12,7 +12,7 @@
   var WINDOW_CUTOFF = '2020-12-10';
   var RAISE_CAP = 5;             // 갱신 시 증액 상한 %
   var DEFAULT_MONTHS = 24;       // 기본 계약 기간
-  var BASE_RATE_DEFAULT = 3.00, CONV_ADD = 2.0, CONV_CAP = 10; // 법정 전환율 = 기준금리 + 2%p (상한 10%)
+  var BASE_RATE_DEFAULT = 3.25, CONV_ADD = 2.0, CONV_CAP = 10; // 법정 전환율 = 기준금리 + 2%p (상한 10%)
   var TENANT_TERMINATE_MONTHS = 3; // 묵시적 갱신 후 임차인 해지 통지 → 3개월 뒤 효력
 
   function readInput() {

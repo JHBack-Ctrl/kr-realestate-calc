@@ -168,6 +168,7 @@ function near(label, got, want, tol) {
   expect('갱신 상태', await get('out-status'), '가능'); expect('갱신 만기', await get('out-end'), '2027-03-01');
   expect('갱신 시작', await get('out-wstart'), '2026-09-01'); expect('갱신 마감', await get('out-wend'), '2026-12-31');
   expect('갱신 D-day', await get('out-big'), dday(2026, 12, 31));
+  await page.fill('#baseRate', '3');   // term-gaesinyogugwon.html은 「기준금리 3%면」으로 적은 예시. 기본값(지금 기준금리)이 바뀌어도 그 금리로 대조한다(2026-11-26 인상)
   expect('보증금 5%', await get('out-dep-cap'), '52,500,000'); expect('월세 5%', await get('out-rent-cap'), '630,000'); expect('환산 상한', await get('out-equiv-cap'), '203,700,000');
   expect('환산 보증금', await get('out-equiv'), '194,000,000');   // term-gaesinyogugwon.html
   expect('묵시적 갱신 해지 효력일', await get('out-terminate'), '2026-12-21');   // term-muksijeokgaesin.html (시계 9/21 + 3개월)
