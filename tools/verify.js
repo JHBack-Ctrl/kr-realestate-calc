@@ -788,6 +788,20 @@ function near(label, got, want, tol) {
     await page.selectOption('#kind', kind); if (kind === 'one') { await page.selectOption('#age', age); await page.selectOption('#hold', hold); }
     await type('price', pr); expect(`종부세 글 ${kind} ${age} ${hold} ${pr}`, await get('out-total'), want);
   }
+  // 2026-11-28 보강: 1주택 표 14~40억, 세액공제 표, 2·3주택 합계 12~40억, 고지서 금액 예시(13억 2,300만원, 2주택 합계 34억 5,900만원)
+  for (const [kind, age, hold, pr, want] of [['one', 'a0', 'h0', '1400000000', '460,800'], ['one', 'a0', 'h0', '1600000000', '921,600'], ['one', 'a0', 'h0', '1700000000', '1,152,000'], ['one', 'a0', 'h0', '2200000000', '3,024,000'],
+      ['one', 'a0', 'h0', '2800000000', '6,566,400'], ['one', 'a0', 'h0', '3500000000', '11,347,200'], ['one', 'a0', 'h0', '4000000000', '15,379,200'], ['one', 'a0', 'h0', '1323000000', '283,392'],
+      ['one', 'a60', 'h5', '1500000000', '414,720'], ['one', 'a65', 'h10', '1500000000', '207,360'], ['one', 'a70', 'h15', '1500000000', '138,240'], ['one', 'a65', 'h10', '2000000000', '682,560'], ['one', 'a70', 'h15', '2000000000', '455,040'],
+      ['one', 'a60', 'h5', '2500000000', '2,877,120'], ['one', 'a65', 'h10', '2500000000', '1,438,560'], ['one', 'a70', 'h15', '2500000000', '959,040'], ['one', 'a60', 'h5', '3000000000', '4,648,320'], ['one', 'a65', 'h10', '3000000000', '2,324,160'], ['one', 'a70', 'h15', '3000000000', '1,549,440'],
+      ['two', 'a0', 'h0', '1000000000', '187,200'], ['two', 'a0', 'h0', '1200000000', '561,600'], ['three', 'a0', 'h0', '1200000000', '561,600'], ['two', 'a0', 'h0', '1500000000', '1,267,200'], ['two', 'a0', 'h0', '1800000000', '2,260,800'], ['three', 'a0', 'h0', '1800000000', '2,260,800'],
+      ['two', 'a0', 'h0', '2500000000', '5,875,200'], ['three', 'a0', 'h0', '2500000000', '5,875,200'], ['two', 'a0', 'h0', '3000000000', '8,827,200'], ['three', 'a0', 'h0', '3000000000', '9,331,200'],
+      ['two', 'a0', 'h0', '3500000000', '12,643,200'], ['three', 'a0', 'h0', '3500000000', '15,667,200'], ['two', 'a0', 'h0', '4000000000', '16,459,200'], ['three', 'a0', 'h0', '4000000000', '22,003,200'],
+      ['two', 'a0', 'h0', '3459000000', '12,330,288'], ['three', 'a0', 'h0', '3459000000', '15,147,648']]) {
+    await page.selectOption('#kind', kind); if (kind === 'one') { await page.selectOption('#age', age); await page.selectOption('#hold', hold); }
+    await type('price', pr); expect(`종부세 글 보강 ${kind} ${age} ${hold} ${pr}`, await get('out-total'), want);
+  }
+  await page.selectOption('#kind', 'one'); await page.selectOption('#age', 'a0'); await page.selectOption('#hold', 'h0'); await type('price', '1323000000'); expect('종부세 글 13억 2,300만 과세표준', await get('out-base'), '73,800,000');
+  await page.selectOption('#kind', 'two'); await type('price', '3459000000'); expect('종부세 글 2주택 34억 5,900만 과세표준', await get('out-base'), '1,535,400,000');
   await fresh('property-tax.html'); await type('price', '1500000000'); expect('재산세 1주택 15억', await get('out-total'), '3,429,000');
   // guide-year-end-december.html — 총급여 5천·본인 1명, 기납부세액 추정
   await fresh('year-end-tax.html'); await openGroups(); await type('salary', '50000000');
