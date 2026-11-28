@@ -12,7 +12,7 @@
 python3 tools/build/build.py
 ```
 
-등록부에서 194쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
+등록부에서 198쪽 전체를 다시 만듭니다. HTML을 직접 고치지 말고 빌더를 고치세요.
 같은 소스로 두 번 돌리면 결과가 같아야 합니다(멱등). 달라지면 버그입니다.
 
 - `site_core.py` — 등록부(TOOLS, TABLES, FORMS, REFS, GUIDES, HUBS, RATE_HISTORY)와 공통 틀.
@@ -23,7 +23,7 @@ python3 tools/build/build.py
 - `pages_guides.py` — 홈, 안내 글 목록, 허브 3쪽, 안내 글 4편, 안내 글 틀(`article`: 핵심 숫자 상자·차례)
 - `guide_keys.py` — 안내 글 맨 위 「핵심 숫자」 값(`GUIDE_KEYS`)
 - `og_cards.py` — 쪽마다 공유 카드(og:image) 내용. 계산기 38개 문구(`OG_TOOLS`), 안내 글은 제목·핵심 숫자로 자동
-- `pages_guides2.py` — 안내 글 93편
+- `pages_guides2.py` — 안내 글 97편
 - `pages_tables.py` / `pages_forms.py` / `pages_glossary.py` — 표·서식·용어
 - `build.py` — 위를 모아 쓰고 `manifest.json`, `sw.js`, `sitemap.xml`, `js/analytics.js`를 생성
 
@@ -44,8 +44,8 @@ python3 tools/build/build.py
 
 ### 검색 제외 (noindex)
 
-194쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
-검색 대상은 181쪽입니다(2026-11-25). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
+198쪽 중 13쪽은 `<meta name="robots" content="noindex, follow">`가 붙고 사이트맵에서 빠집니다.
+검색 대상은 185쪽입니다(2026-11-27). 정하는 곳은 `site_core.is_noindex()` 한 곳입니다.
 
 - 용어 9쪽(`term-*.html`, 본문 400~700자)과 카드 목록 허브 3쪽(`tables`, `forms`, `refs`), 404
 - 용어 39쪽 중 30쪽은 1,000자 이상으로 늘려 검색에 되돌렸습니다: 대항력·확정일자·전세가율·DSR·LTV,
@@ -133,7 +133,7 @@ node tools/verify.js
 
 ```
 python3 tools/build/build.py          # 카드 숫자 확인 + tools/og/cards.json
-python3 tools/og/make_cards.py        # 바뀐 카드만 다시 그림(--all이면 전부). 136장이 5초
+python3 tools/og/make_cards.py        # 바뀐 카드만 다시 그림(--all이면 전부). 140장이 5초
 ```
 
 - 계산기: `tools/build/og_cards.py`의 `OG_TOOLS`에 (칩, 머리말, 큰 숫자 앞말, 큰 숫자, 아래 줄[, 숫자가 있는 안내 글]).
@@ -206,6 +206,7 @@ https://전국부동산계산기.com/guide-prepayment.html
 - 취득세: `js/acquisition-tax.js`. 바뀌면 `js/buy-vs-rent.js`의 `PRESET_ACQ_RATE`(8억 예시 버튼의
   취득세율, 현재 2.56%)도 취득세 계산기에 8억·1주택을 넣어 다시 뽑은 실효세율로 바꿀 것.
   안내 글 `guide-acquisition-tax.html`·`guide-acquisition-6-9.html`·`guide-buying-costs.html`·`guide-mixed-use-acquisition.html`(상가주택)·`guide-second-home-acquisition.html`(2주택 8%, 집값별 표, 일시적 2주택 3년)의 숫자도 다시 뽑을 것.
+  `guide-buy-vs-rent-by-price.html`은 취득세율(1.1·2.56·3.3%)과 중개보수 상한 요율을 가정으로 쓰니 둘 중 하나가 바뀌면 다시 뽑을 것.
   생애최초 감면(`FIRST_HOME_CAP` 200만원, 12억 이하)은 2028-12-31 취득분까지(2025년 말 연장). 소형·저가주택 300만원 한도는 계산기에 없고,
   2026년 8월 개편안(청년 추가 감면 등)은 **국회 통과 전이라 미반영**. 바뀌면 `guide-first-home-acquisition.html`(집값별 표·요건·추징)을 다시 뽑을 것.
   3개월 내 전입 요건은 2025년 말 개정으로 바뀌었다는 안내가 여럿이나 원문을 확인하지 못해(2026-11) 글·FAQ에는 「관할 시·군·구청 확인」으로 적어 둠
@@ -217,7 +218,7 @@ https://전국부동산계산기.com/guide-prepayment.html
   `guide-family-loan.html`은 적정 이자율 연 4.6%·이자 차액 1,000만원 기준(상증세법 41조의4)으로 쓴 규정 글. 이자율이 바뀌면 표와 「약 2억 1,739만원」을 고칠 것
 - 상속세: `js/inheritance-tax.js`의 `LUMP`, `CHILD`, `SPOUSE_MIN/MAX`, `RATES`. 자녀공제 5억 상향·유산취득세 전환이
   **국회 통과 전이라 미반영**(2026-10). 통과되면 상수와 계산기 FAQ 「앞으로 바뀔 수 있나요?」(`pages_tools3.py`), verify 기대값,
-  안내 글 `guide-gift-vs-inheritance.html`의 비교표와 `guide-inheritance-threshold.html`(재산별 상속세 표, 서울 평균 아파트 예시)를 고칠 것
+  안내 글 `guide-gift-vs-inheritance.html`의 비교표와 `guide-inheritance-threshold.html`(재산별 상속세 표, 서울 평균 아파트 예시)·`guide-inheritance-spouse.html`(배우자공제 5억~30억, 재산·자녀 수별 표)를 고칠 것
 - 연말정산: `js/year-end-tax.js` 상수 블록(카드 한도·공제율, 월세, 연금계좌, 혼인세액공제 2026년까지). 2026년 8월 개편안의
   월세 한도 1,200만원·청년 17%, 자녀세액공제 나이 기준은 **2027년 귀속, 국회 통과 전이라 미반영**. 통과되면 `js/rent-tax-credit.js`도 같이.
   혼인세액공제는 2026년 혼인신고분까지라 연장 여부를 확인하고, 안내 글 `guide-year-end-december.html`(카드·연금·혼인 숫자)과
@@ -228,7 +229,7 @@ https://전국부동산계산기.com/guide-prepayment.html
   청약통장 소득공제(`SUBSCRIPTION_*`, 연 300만원 × 40%, 총급여 7천만원)는 2028년까지 기한이 있고 2026년 개편안의 상시화는 **국회 통과 전**.
   바뀌면 `guide-subscription-deduction.html`(납입액별·전세대출 합산 표)도 다시 뽑을 것
 - 주택임대소득세: `js/rental-income-tax.js`의 `DEEMED_RATE`(간주임대료 이자율, 매년 3월 시행규칙. 2026년 귀속 3.1%)와 소형주택 주택 수 제외(2026년까지).
-  바뀌면 안내 글 `guide-rental-income-two-homes.html`의 간주임대료 숫자와 `guide-jeonse-deemed-rent.html`(보증금별 표, 0원·종합과세 경계 금액)도 다시 뽑을 것
+  바뀌면 안내 글 `guide-rental-income-two-homes.html`의 간주임대료 숫자, `guide-one-home-rental-tax.html`(1주택 12억 기준·월세별 세금)과 `guide-jeonse-deemed-rent.html`(보증금별 표, 0원·종합과세 경계 금액)도 다시 뽑을 것
 - 표: `tools/build/pages_tables.py`
 
 ### 1월 — 4대보험 요율·소득세
@@ -358,7 +359,8 @@ https://전국부동산계산기.com/guide-prepayment.html
   계산기에는 상수가 없고 `pages_tools3.jeonse_loan_page`의 FAQ·본문 문장과 안내 글 `guide-jeonse-loan-vs-rent.html`(1주택자 2억 한도 절)·`guide-jeonse-loan-interest.html`에만 있음. 바뀌면 그 문장을 고칠 것
 - 등기신청수수료·국민주택채권 매입률 → `js/registration-cost.js`의 `FEE`, `BOND`. 수수료는 2025-08-01에 올랐음(서면 18,000·
   전자표준양식 15,000·전자 10,000). 채권 할인율은 매일 바뀌어 입력값으로 둠(기본 10%는 예시). 바뀌면 안내 글 `guide-self-registration.html`도
-- 중개보수 요율 → 거의 안 바뀜
+- 중개보수 요율 → 거의 안 바뀜. 바뀌면 `guide-buy-vs-rent-by-price.html`의 가정 표도
+- 청약 가점표(무주택 32·부양가족 35·통장 17) → 바뀌면 `guide-subscription-points-examples.html`(다섯 경우 점수, 공고일 2026-12-01 고정)도
 - 공공 사이트 링크 모음(홈 맨 아래 묶음 `#c-links`과 `refs.html` 「자주 쓰는 공공 사이트」, 13곳) → `pages_guides.PUBLIC_LINKS`(넷째 칸이 홈 타일의 짧은 이름). 주소가 바뀌거나 사이트가 합쳐지면 여기만 고칠 것.
   실거래가·토지이음·인터넷등기소·부동산거래관리시스템·홈택스·위택스는 작업 환경(해외 접속)에서 응답이 없어 2026-11-25에 열어 보지 못했음. 해마다 한 번 눌러 볼 것
 

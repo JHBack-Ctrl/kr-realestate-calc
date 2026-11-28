@@ -346,6 +346,28 @@
   "page": "guide-brokerage.html",
   "title": "복비, 얼마까지 내야 하나"
  },
+ "og/guide-buy-vs-rent-by-price.jpg": {
+  "chip": "안내 글 · 집 살 때·팔 때",
+  "foot": "참고용 · 계산 기준과 출처는 본문에 있습니다",
+  "hash": "c1524c763292",
+  "keys": [
+   [
+    "1억 4,048만원",
+    "8억원 집 사서 4년, 집값 그대로"
+   ],
+   [
+    "6,550만원",
+    "같은 동네 5억원 전세 4년"
+   ],
+   [
+    "연 2.27%",
+    "두 쪽이 같아지는 집값 상승률"
+   ]
+  ],
+  "kind": "guide",
+  "page": "guide-buy-vs-rent-by-price.html",
+  "title": "집값별로 사는 것과 전세, 4년 비용 비교"
+ },
  "og/guide-buy-vs-rent.jpg": {
   "chip": "안내 글 · 집 살 때·팔 때",
   "foot": "참고용 · 계산 기준과 출처는 본문에 있습니다",
@@ -848,6 +870,28 @@
   "page": "guide-income-tax-brackets.html",
   "title": "종합소득세 세율 구간, 소득이 늘면 세금은 얼마나 느나"
  },
+ "og/guide-inheritance-spouse.jpg": {
+  "chip": "안내 글 · 보유세·상속·증여",
+  "foot": "참고용 · 계산 기준과 출처는 본문에 있습니다",
+  "hash": "c9a2ca85b021",
+  "keys": [
+   [
+    "1억 2,804만원",
+    "20억원 · 배우자와 자녀 2명"
+   ],
+   [
+    "4억 2,486만원",
+    "같은 20억원 · 배우자 없음"
+   ],
+   [
+    "30억원",
+    "배우자공제 최대"
+   ]
+  ],
+  "kind": "guide",
+  "page": "guide-inheritance-spouse.html",
+  "title": "배우자가 있으면 상속세는 얼마나 줄어드나"
+ },
  "og/guide-inheritance-threshold.jpg": {
   "chip": "안내 글 · 보유세·상속·증여",
   "foot": "참고용 · 계산 기준과 출처는 본문에 있습니다",
@@ -1349,6 +1393,28 @@
   "kind": "guide",
   "page": "guide-officetel.html",
   "title": "오피스텔은 주택인가"
+ },
+ "og/guide-one-home-rental-tax.jpg": {
+  "chip": "안내 글 · 보유세·상속·증여",
+  "foot": "참고용 · 계산 기준과 출처는 본문에 있습니다",
+  "hash": "38848d73b90b",
+  "keys": [
+   [
+    "12억원",
+    "기준시가 이하 1주택은 월세 비과세"
+   ],
+   [
+    "61만 6,000원",
+    "12억원 초과 · 월세 100만원 1년 세금"
+   ],
+   [
+    "2,000만원",
+    "넘으면 종합과세(1년 월세)"
+   ]
+  ],
+  "kind": "guide",
+  "page": "guide-one-home-rental-tax.html",
+  "title": "집 한 채 월세 놓으면 세금 내나"
  },
  "og/guide-parental-leave-pay.jpg": {
   "chip": "안내 글 · 퇴직·휴가·저축",
@@ -1979,6 +2045,28 @@
   "kind": "guide",
   "page": "guide-subscription-notice-date.html",
   "title": "청약 가점, 공고일 보름 차이로 3점이 갈린다"
+ },
+ "og/guide-subscription-points-examples.jpg": {
+  "chip": "안내 글 · 청약",
+  "foot": "참고용 · 계산 기준과 출처는 본문에 있습니다",
+  "hash": "6a2c3663824d",
+  "keys": [
+   [
+    "26점",
+    "만 33세 미혼 1인"
+   ],
+   [
+    "47점",
+    "만 35세 · 3인 가족"
+   ],
+   [
+    "67점",
+    "만 42세 · 4인 가족"
+   ]
+  ],
+  "kind": "guide",
+  "page": "guide-subscription-points-examples.html",
+  "title": "청약 가점 계산 예시, 30대·40대 몇 점인가"
  },
  "og/guide-subscription-points.jpg": {
   "chip": "안내 글 · 청약",
