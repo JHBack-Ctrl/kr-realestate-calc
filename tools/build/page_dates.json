@@ -30,8 +30,8 @@
   "published": "2026-09-17"
  },
  "base-rate-history.html": {
-  "hash": "9f8a557fb89e",
-  "modified": "2026-10-23",
+  "hash": "481c05b050f9",
+  "modified": "2026-11-28",
   "published": "2026-09-17"
  },
  "buy-vs-rent.html": {
@@ -55,8 +55,8 @@
   "published": "2026-10-24"
  },
  "conversion.html": {
-  "hash": "3a80798c2820",
-  "modified": "2026-10-30",
+  "hash": "8dae19f58a8a",
+  "modified": "2026-11-28",
   "published": "2026-09-17"
  },
  "dsr.html": {
@@ -135,8 +135,8 @@
   "published": "2026-09-20"
  },
  "guide-base-rate-change.html": {
-  "hash": "46bc898e0cc5",
-  "modified": "2026-10-23",
+  "hash": "ad61b75e413f",
+  "modified": "2026-11-28",
   "published": "2026-10-21"
  },
  "guide-brokerage.html": {
@@ -185,8 +185,8 @@
   "published": "2026-10-21"
  },
  "guide-conversion.html": {
-  "hash": "6566b111c8e9",
-  "modified": "2026-10-06",
+  "hash": "952fd27b70bd",
+  "modified": "2026-11-28",
   "published": "2026-09-17"
  },
  "guide-credit-loan-mortgage-limit.html": {
@@ -435,8 +435,8 @@
   "published": "2026-09-20"
  },
  "guide-renewal-rent-increase.html": {
-  "hash": "ba66fa3a22b7",
-  "modified": "2026-10-21",
+  "hash": "59a667169425",
+  "modified": "2026-11-28",
   "published": "2026-10-21"
  },
  "guide-rent-credit-refund.html": {
@@ -620,7 +620,7 @@
   "published": "2026-10-31"
  },
  "index.html": {
-  "hash": "beecb8e9f510",
+  "hash": "54fbd1fd7ec7",
   "modified": "2026-11-28",
   "published": "2026-09-17"
  },
@@ -705,8 +705,8 @@
   "published": "2026-10-27"
  },
  "renewal.html": {
-  "hash": "5eac0bef5b11",
-  "modified": "2026-11-03",
+  "hash": "a0940eea8e58",
+  "modified": "2026-11-28",
   "published": "2026-09-17"
  },
  "rent-tax-credit.html": {

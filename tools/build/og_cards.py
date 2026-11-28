@@ -5,7 +5,7 @@
 # 카드의 숫자는 그 계산기 쪽이나 관련 안내 글(TOOL_GUIDES, src) 본문에 똑같이 있어야 한다. 없으면 빌드가 멈춘다(build.py check_og_cards).
 # 그림은 `python3 tools/og/make_cards.py`가 바뀐 카드만 다시 그린다. 카드 내용과 그림이 어긋나면 verify가 잡는다.
 import hashlib, json, os, re
-from site_core import ROOT, TOOLS, GUIDES, GUIDE_TOPICS, TOOL_GUIDES
+from site_core import ROOT, TOOLS, GUIDES, GUIDE_TOPICS, TOOL_GUIDES, BASE_RATE, man_won, conv_monthly
 from guide_keys import GUIDE_KEYS
 
 TEMPLATE = os.path.join(ROOT, "tools", "og", "card.html")   # 카드 틀. 바꾸면 모든 카드가 다시 그려진다(해시에 들어감)
@@ -13,7 +13,8 @@ TEMPLATE = os.path.join(ROOT, "tools", "og", "card.html")   # 카드 틀. 바꾸
 # 파일: (칩, 머리말, 큰 숫자 앞말, 큰 숫자, 아래 줄[, 숫자가 있는 안내 글])
 OG_TOOLS = {
     "rent.html": ("월세 실부담 계산기", "같은 집, 보증금 5,000만원 · 월세 100만원이면", "월 주거비", "112만 5,000원", "전세 3억원(대출 80%)은 95만원 · 보증금 기회비용까지 넣은 실부담", "guide-jeonse-loan-vs-rent.html"),
-    "conversion.html": ("전월세 전환율 계산기", "전세 3억을 보증금 1억으로 낮추면(전환율 5%)", "월세", "83만 3,333원", "집주인이 월 90만원을 부르면 전환율 5.4%를 적용한 셈"),
+    # 전환율 카드는 지금 기준금리로 계산한다(금리가 바뀌면 RATE_HISTORY만 고치면 됨). 숫자는 기준금리 글의 표에 있다
+    "conversion.html": ("전월세 전환율 계산기", f"전세 3억을 보증금 1억으로 낮추면(전환율 {min(BASE_RATE + 2, 10):g}%)", "월세", man_won(conv_monthly(BASE_RATE)), "집주인이 월 90만원을 부르면 전환율 5.4%를 적용한 셈", "guide-base-rate-change.html"),
     "rent-tax-credit.html": ("월세 세액공제 계산기", "총급여 5,000만원 · 월세 60만원이면", "1년", "122만 4,000원", "공제율 17% · 총급여 8,000만원 이하 무주택 세대주"),
     "fee.html": ("중개보수 계산기", "3억원 아파트를 사면", "중개보수 상한", "120만원", "같은 3억원 전세는 90만원 · 법정 상한 요율 기준"),
     "loan.html": ("대출이자 계산기", "3억원을 연 4%로 30년 동안 갚으면", "월", "143만 2,246원", "원리금균등 · 30년 총이자 2억 1,560만 8,519원"),
